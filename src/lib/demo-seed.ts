@@ -1438,76 +1438,145 @@ export const DEMO_MAINTENANCE: T<"work_items">[] = [
 // DEMO_INVENTORY ids — powers the Materials & BOM dashboard
 // (composition, stock coverage, buildable units, costing).
 
+/**
+ * Garment routing for a kidswear piece. Minutes per piece become hours over
+ * a typical run, so costing and critical path read like a real sewing floor.
+ */
+function garmentStages(opts: { sewHours: number; print?: "screen" | "embroidery"; imported?: boolean }) {
+  const s = (
+    id: string, order: number, name: string, name_ar: string, department: string,
+    duration_hours: number, labor_cost: number, machine_cost: number, checklist: string[],
+    extra: Record<string, unknown> = {},
+  ) => ({
+    id, order, name, name_ar, department, duration_hours, labor_cost, machine_cost,
+    material_waste_pct: department === "cutting" ? 8 : 0, overhead_cost: Math.round(labor_cost * 0.15),
+    dependency_type: "sequential" as const, depends_on: order > 1 ? [`st-${order - 1}`] : [], checklist, ...extra,
+  });
+  const list = [
+    s("st-1", 1, "Pattern & Marker", "الباترون والماركر", "pattern", 3, 6, 1, ["Grade sizes 2Y–12Y", "Marker efficiency ≥ 85%"]),
+    s("st-2", 2, "Cutting", "القص", "cutting", 2, 4, 2, ["Check shade by roll", "Bundle and ticket by size"], { machine: "Straight knife" }),
+  ];
+  if (opts.print) {
+    list.push(s("st-3", 3, opts.print === "screen" ? "Screen Print" : "Embroidery", opts.print === "screen" ? "طباعة سلك سكرين" : "تطريز", "embroidery", 2, 5, 4,
+      ["Match approved strike-off", "Cure / trim threads"], { can_run_parallel: false }));
+  }
+  const n = list.length;
+  list.push(
+    s(`st-${n + 1}`, n + 1, "Sewing", "الخياطة", "sewing", opts.sewHours, 22, 4, ["Seam allowance per spec", "Label placement"], { team: "Sewing Line A", capacity_units_per_day: 180 }),
+    s(`st-${n + 2}`, n + 2, "Finishing & Pressing", "التشطيب والكي", "pressing", 1.5, 4, 1, ["Trim threads", "Press and fold"]),
+    s(`st-${n + 3}`, n + 3, "Quality Control", "مراقبة الجودة", "qc", 1, 3, 0, ["AQL 2.5 inspection", "Measure against size chart"], { quality_checkpoint: true, blocks_next: true }),
+    s(`st-${n + 4}`, n + 4, "Packing & Labels", "التغليف والتيكيت", "packing", 0.5, 2, 0, ["Hang tag + size sticker", "Polybag"]),
+  );
+  return list;
+}
+
+/** A soft garment silhouette on a pastel tile — stands in for a product photo. */
+const tile = (fill: string, path: string) =>
+  `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%23${fill}'/%3E%3Cpath d='${path}' fill='%23FFFFFF' opacity='0.85'/%3E%3C/svg%3E`;
+
 export const DEMO_PRODUCTS: T<"resources">[] = [
   {
-    id: "prd-01", workspace_id: W, name_en: "Silk Evening Dress — Amira", name_ar: "فستان سهرة حرير — أميرة",
+    id: "prd-01", workspace_id: W, name_en: "Explorer Zip Hoodie", name_ar: "هودي إكسبلورر بسوستة",
     type: "product", utilization: 0, department: "production", skills: ["product"],
     metadata: {
-      sku: "DRS-AMR-001", category: "Dresses", product_type: "dress",
-      main_material: "Silk", secondary_material: "Chiffon", finish: "Embroidered",
+      sku: "CUB-HOOD-EXP", category: "Children", product_type: "hoodie", active: true,
+      description: "Brushed French terry zip hoodie with a CUBS woven label. Sizes 2Y–12Y.",
+      main_material: "French Terry 320gsm (imported, Turkey)", secondary_material: "1x1 Rib", finish: "Garment Washed",
+      sizes: ["2Y", "4Y", "6Y", "8Y", "10Y", "12Y"], colors: ["Sage", "Navy", "Sand"],
       bom: [
-        { id: "b1", material: "Silk", qty: 3, unit: "m", costPerUnit: 300 },
-        { id: "b2", material: "Chiffon", qty: 2, unit: "m", costPerUnit: 60 },
-        { id: "b3", material: "Lining (Viscose)", qty: 2.5, unit: "m", costPerUnit: 40 },
-        { id: "b4", material: "Invisible Zipper", qty: 1, unit: "pcs", costPerUnit: 20 },
-        { id: "b5", material: "Beading Kit", qty: 1, unit: "set", costPerUnit: 150 },
+        { id: "b1", material: "French Terry 320gsm (imported)", qty: 0.9, unit: "m", costPerUnit: 165 },
+        { id: "b2", material: "1x1 Rib — cuffs & hem", qty: 0.15, unit: "m", costPerUnit: 80 },
+        { id: "b3", material: "YKK Metal Zip 35cm (imported)", qty: 1, unit: "pcs", costPerUnit: 38 },
+        { id: "b4", material: "CUBS Woven Label", qty: 1, unit: "pcs", costPerUnit: 4 },
+        { id: "b5", material: "Hang Tag + Polybag", qty: 1, unit: "set", costPerUnit: 6 },
       ],
-      labor_cost: 600, machine_cost: 80, overhead_cost: 100, suggested_price: 3200,
-      images: ["data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%238C6FAE'/%3E%3Cpath d='M30 18h20l4 20-14 30-14-30z' fill='%23E8EFE8' opacity='0.7'/%3E%3C/svg%3E"],
+      stages: garmentStages({ sewHours: 6, imported: true }),
+      labor_cost: 41, machine_cost: 12, overhead_cost: 18, suggested_price: 1190,
+      images: [tile("9DB8A0", "M26 20l8-4h12l8 4 8 14-7 4-3-5v31H28V33l-3 5-7-4z")],
     },
-    created_at: ts(45), updated_at: ts(3),
+    created_at: ts(45), updated_at: ts(1),
   },
   {
-    id: "prd-02", workspace_id: W, name_en: "Wool Blazer — Nadia", name_ar: "بِلدة صوف — نادية",
+    id: "prd-02", workspace_id: W, name_en: "Adventure Jogger Set", name_ar: "طقم جوجر أدفنشر",
     type: "product", utilization: 0, department: "production", skills: ["product"],
     metadata: {
-      sku: "BLZ-NAD-001", category: "Suits", product_type: "blazer",
-      main_material: "Wool", secondary_material: "Satin Lining", finish: "Tailored",
+      sku: "CUB-SET-ADV", category: "Children", product_type: "set", active: true,
+      description: "Crew sweatshirt and elastic-waist jogger in cotton fleece.",
+      main_material: "Cotton Fleece 280gsm", secondary_material: "Waistband Elastic 30mm", finish: "Embroidered chest logo",
+      sizes: ["2Y", "4Y", "6Y", "8Y", "10Y"], colors: ["Navy", "Heather Grey"],
       bom: [
-        { id: "b1", material: "Wool", qty: 3.5, unit: "m", costPerUnit: 200 },
-        { id: "b2", material: "Satin Lining", qty: 3, unit: "m", costPerUnit: 60 },
-        { id: "b3", material: "Shoulder Pads", qty: 2, unit: "pcs", costPerUnit: 25 },
-        { id: "b4", material: "Buttons (horn)", qty: 5, unit: "pcs", costPerUnit: 12 },
-        { id: "b5", material: "Interfacing", qty: 2, unit: "m", costPerUnit: 30 },
+        { id: "b1", material: "Cotton Fleece 280gsm", qty: 1.2, unit: "m", costPerUnit: 120 },
+        { id: "b2", material: "Waistband Elastic 30mm", qty: 0.7, unit: "m", costPerUnit: 14 },
+        { id: "b3", material: "Rib Trim (imported, China)", qty: 0.2, unit: "m", costPerUnit: 70 },
+        { id: "b4", material: "Embroidery Thread", qty: 1, unit: "set", costPerUnit: 9 },
+        { id: "b5", material: "CUBS Woven Label", qty: 2, unit: "pcs", costPerUnit: 4 },
       ],
-      labor_cost: 450, machine_cost: 60, overhead_cost: 80, suggested_price: 2100,
-      images: ["data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%232D3139'/%3E%3Cpath d='M28 16h24v8l-4 36H32L28 24z' fill='%237B818E' opacity='0.8'/%3E%3C/svg%3E"],
+      stages: garmentStages({ sewHours: 7, print: "embroidery" }),
+      labor_cost: 49, machine_cost: 16, overhead_cost: 22, suggested_price: 1450,
+      images: [tile("4A5A7A", "M24 16h32l6 14-6 2v6H24v-6l-6-2zM28 42h24l-2 26h-8l-2-16-2 16h-8z")],
     },
-    created_at: ts(60), updated_at: ts(5),
+    created_at: ts(30), updated_at: ts(0),
   },
   {
-    id: "prd-03", workspace_id: W, name_en: "Cotton T-Shirt — Cairo", name_ar: "تيشيرت قطن — القاهرة",
+    id: "prd-03", workspace_id: W, name_en: "Little Cub Pyjama Set", name_ar: "طقم بيجامة ليتل كب",
     type: "product", utilization: 0, department: "production", skills: ["product"],
     metadata: {
-      sku: "TSH-CAI-001", category: "Tops", product_type: "tshirt",
-      main_material: "Cotton Jersey", finish: "Screen Printed",
+      sku: "CUB-PJ-LCB", category: "Children", product_type: "sleepwear", active: true,
+      description: "Printed interlock pyjama set with snap placket. Print matched across panels.",
+      main_material: "Printed Interlock 200gsm (imported, Portugal)", finish: "Soft wash",
+      sizes: ["1Y", "2Y", "4Y", "6Y", "8Y"], colors: ["Bear Print", "Star Print"],
       bom: [
-        { id: "b1", material: "Cotton Jersey", qty: 1.5, unit: "m", costPerUnit: 45 },
-        { id: "b2", material: "Ribbing", qty: 0.3, unit: "m", costPerUnit: 12 },
-        { id: "b3", material: "Labels", qty: 1, unit: "set", costPerUnit: 3 },
+        { id: "b1", material: "Printed Interlock 200gsm (imported)", qty: 1.15, unit: "m", costPerUnit: 140 },
+        { id: "b2", material: "Snap Buttons 12mm", qty: 4, unit: "pcs", costPerUnit: 2 },
+        { id: "b3", material: "Care Label (EN/AR)", qty: 1, unit: "pcs", costPerUnit: 2 },
+        { id: "b4", material: "Gift Box", qty: 1, unit: "pcs", costPerUnit: 18 },
       ],
-      labor_cost: 35, machine_cost: 10, overhead_cost: 8, suggested_price: 120,
-      images: ["data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%23E8EFE8'/%3E%3Cpath d='M26 22h28l-4 10h-6v28H30V32h-6z' fill='%238C6FAE' opacity='0.6'/%3E%3C/svg%3E"],
+      stages: garmentStages({ sewHours: 5, imported: true }),
+      labor_cost: 36, machine_cost: 10, overhead_cost: 15, suggested_price: 890,
+      images: [tile("E4B97A", "M22 18h36l4 12-6 3v35H24V33l-6-3z")],
     },
-    created_at: ts(30), updated_at: ts(2),
+    created_at: ts(20), updated_at: ts(0),
   },
   {
-    id: "prd-04", workspace_id: W, name_en: "Bridal Gown — Leila", name_ar: "فستان عرس ليلى",
+    id: "prd-04", workspace_id: W, name_en: "Everyday Tee 3-Pack", name_ar: "تيشيرت يومي 3 قطع",
     type: "product", utilization: 0, department: "production", skills: ["product"],
     metadata: {
-      sku: "BRL-LEI-001", category: "Bridal", product_type: "bridal",
-      main_material: "Silk", secondary_material: "Tulle & Lace", finish: "Hand Embroidered",
+      sku: "CUB-TEE-3PK", category: "Children", product_type: "tshirt", active: true,
+      description: "Combed cotton crew tees, screen-printed CUBS mark, sold as a 3-pack.",
+      main_material: "Combed Cotton Jersey 180gsm", finish: "Screen Printed",
+      sizes: ["2Y", "4Y", "6Y", "8Y", "10Y", "12Y"], colors: ["Multicolour"],
       bom: [
-        { id: "b1", material: "Silk", qty: 5, unit: "m", costPerUnit: 300 },
-        { id: "b2", material: "Tulle", qty: 8, unit: "m", costPerUnit: 40 },
-        { id: "b3", material: "Lace", qty: 3, unit: "m", costPerUnit: 150 },
-        { id: "b4", material: "Beading Kit", qty: 1, unit: "set", costPerUnit: 200 },
-        { id: "b5", material: "Invisible Zipper", qty: 1, unit: "pcs", costPerUnit: 20 },
+        { id: "b1", material: "Combed Cotton Jersey 180gsm", qty: 1.8, unit: "m", costPerUnit: 62 },
+        { id: "b2", material: "Neck Rib", qty: 0.24, unit: "m", costPerUnit: 40 },
+        { id: "b3", material: "Plastisol Ink", qty: 3, unit: "prints", costPerUnit: 5 },
+        { id: "b4", material: "CUBS Printed Neck Label", qty: 3, unit: "pcs", costPerUnit: 1.5 },
+        { id: "b5", material: "3-Pack Box", qty: 1, unit: "pcs", costPerUnit: 14 },
       ],
-      labor_cost: 1200, machine_cost: 100, overhead_cost: 200, suggested_price: 8500,
-      images: ["data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%23FAF6EE'/%3E%3Cpath d='M30 12h20l6 24-16 40-16-40z' fill='%23DAD6CE' stroke='%238C6FAE' stroke-width='1.5'/%3E%3C/svg%3E"],
+      stages: garmentStages({ sewHours: 4, print: "screen" }),
+      labor_cost: 30, machine_cost: 14, overhead_cost: 12, suggested_price: 790,
+      images: [tile("C98B8B", "M24 20h32l8 10-7 5-3-3v36H26V32l-3 3-7-5z")],
     },
-    created_at: ts(90), updated_at: ts(7),
+    created_at: ts(60), updated_at: ts(2),
+  },
+  {
+    id: "prd-05", workspace_id: W, name_en: "Trail Windbreaker", name_ar: "جاكيت ويندبريكر تريل",
+    type: "product", utilization: 0, department: "production", skills: ["product"],
+    metadata: {
+      sku: "CUB-JKT-TRL", category: "Outerwear", product_type: "jacket", active: true,
+      description: "Packable ripstop windbreaker with mesh lining and reflective tab.",
+      main_material: "Ripstop Nylon (imported, China)", secondary_material: "Mesh Lining", finish: "DWR coated",
+      sizes: ["4Y", "6Y", "8Y", "10Y", "12Y"], colors: ["Mustard", "Olive"],
+      bom: [
+        { id: "b1", material: "Ripstop Nylon (imported)", qty: 1.3, unit: "m", costPerUnit: 150 },
+        { id: "b2", material: "Mesh Lining", qty: 1, unit: "m", costPerUnit: 45 },
+        { id: "b3", material: "Plastic Zip 40cm", qty: 1, unit: "pcs", costPerUnit: 22 },
+        { id: "b4", material: "Reflective Tab", qty: 1, unit: "pcs", costPerUnit: 8 },
+      ],
+      stages: garmentStages({ sewHours: 8, imported: true }),
+      labor_cost: 58, machine_cost: 14, overhead_cost: 24, suggested_price: 1650,
+      images: [tile("D6A93A", "M26 16h28l10 16-7 4-3-4v36H26V32l-3 4-7-4z")],
+    },
+    created_at: ts(8), updated_at: ts(3),
   },
 ];
 
