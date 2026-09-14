@@ -484,116 +484,6 @@ create table audit_logs (
 create index audit_logs_workspace_idx on audit_logs(workspace_id);
 create index audit_logs_created_idx   on audit_logs(workspace_id, created_at desc);
 
--- ─── pos_registers ────────────────────────────────────────
-create table pos_registers (
-  id            uuid        primary key default uuid_generate_v4(),
-  workspace_id  uuid        not null references workspaces(id) on delete cascade,
-  branch_id     uuid        not null references branches(id) on delete cascade,
-  register_code text        not null,
-  name          text        not null,
-  name_ar       text,
-  status        text        not null default 'active'
-                            check (status in ('active','inactive','maintenance')),
-  opened_by     uuid,
-  opened_at     timestamptz,
-  closed_at     timestamptz,
-  float_amount  numeric     not null default 0,
-  current_cash  numeric     not null default 0,
-  metadata      jsonb       not null default '{}',
-  created_at    timestamptz not null default now(),
-  updated_at    timestamptz not null default now()
-);
-
-create index pos_registers_workspace_idx on pos_registers(workspace_id);
-create index pos_registers_branch_idx    on pos_registers(branch_id);
-
--- ─── pos_transactions ─────────────────────────────────────
-create table pos_transactions (
-  id                      uuid        primary key default uuid_generate_v4(),
-  workspace_id            uuid        not null references workspaces(id) on delete cascade,
-  branch_id               uuid        not null references branches(id) on delete cascade,
-  register_id             uuid        not null references pos_registers(id) on delete cascade,
-  transaction_number      text        not null,
-  customer_id             uuid,
-  customer_name           text,
-  customer_phone          text,
-  loyalty_card_number     text,
-  subtotal                numeric     not null default 0,
-  discount_amount         numeric     not null default 0,
-  discount_percent        numeric     not null default 0,
-  tax_amount              numeric     not null default 0,
-  tax_rate                numeric     not null default 15,
-  total                   numeric     not null default 0,
-  currency                text        not null default 'SAR',
-  payment_method          text        not null default 'cash'
-                            check (payment_method in ('cash','card','mobile_wallet','loyalty_points','split')),
-  payment_details         jsonb       not null default '{}',
-  status                  text        not null default 'completed'
-                            check (status in ('completed','voided','refunded','pending')),
-  cashier_name            text        not null,
-  notes                   text,
-  receipt_printed         boolean     not null default false,
-  loyalty_points_earned   integer     not null default 0,
-  loyalty_points_redeemed integer     not null default 0,
-  metadata                jsonb       not null default '{}',
-  created_at              timestamptz not null default now(),
-  updated_at              timestamptz not null default now()
-);
-
-create index pos_transactions_workspace_idx on pos_transactions(workspace_id);
-create index pos_transactions_branch_idx    on pos_transactions(branch_id);
-create index pos_transactions_register_idx  on pos_transactions(register_id);
-create index pos_transactions_created_idx   on pos_transactions(workspace_id, created_at desc);
-create index pos_transactions_status_idx    on pos_transactions(workspace_id, status);
-
--- ─── pos_transaction_items ────────────────────────────────
-create table pos_transaction_items (
-  id              uuid        primary key default uuid_generate_v4(),
-  workspace_id    uuid        not null references workspaces(id) on delete cascade,
-  transaction_id  uuid        not null references pos_transactions(id) on delete cascade,
-  product_id      uuid,
-  product_name    text        not null,
-  product_name_ar text,
-  sku             text,
-  quantity        numeric     not null default 1,
-  unit_price      numeric     not null default 0,
-  discount_amount numeric     not null default 0,
-  discount_percent numeric    not null default 0,
-  total           numeric     not null default 0,
-  cost_price      numeric     not null default 0,
-  branch_id       uuid        not null references branches(id) on delete cascade,
-  metadata        jsonb       not null default '{}',
-  created_at      timestamptz not null default now(),
-  updated_at      timestamptz not null default now()
-);
-
-create index pos_transaction_items_workspace_idx on pos_transaction_items(workspace_id);
-create index pos_transaction_items_txn_idx       on pos_transaction_items(transaction_id);
-
--- ─── branch_inventory ─────────────────────────────────────
-create table branch_inventory (
-  id                uuid        primary key default uuid_generate_v4(),
-  workspace_id      uuid        not null references workspaces(id) on delete cascade,
-  branch_id         uuid        not null references branches(id) on delete cascade,
-  product_id        uuid        not null,
-  product_name      text        not null,
-  sku               text,
-  quantity          integer     not null default 0,
-  reserved_quantity integer     not null default 0,
-  reorder_level     integer     not null default 5,
-  unit_cost         numeric     not null default 0,
-  unit_price        numeric     not null default 0,
-  last_restocked_at timestamptz,
-  metadata          jsonb       not null default '{}',
-  created_at        timestamptz not null default now(),
-  updated_at        timestamptz not null default now()
-);
-
-create index branch_inventory_workspace_idx on branch_inventory(workspace_id);
-create index branch_inventory_branch_idx    on branch_inventory(branch_id);
-create index branch_inventory_product_idx   on branch_inventory(product_id);
-
-
 -- ===========================================================
 -- TRIGGERS
 -- ===========================================================
@@ -615,8 +505,7 @@ begin
     'people','organizations','projects','tasks','goals',
     'deals','invoices','payments','expenses','resources',
     'notes','meetings','documents','activities',
-    'relationships','files','intelligence_events','audit_logs',
-    'pos_registers','pos_transactions','pos_transaction_items','branch_inventory'
+    'relationships','files','intelligence_events','audit_logs'
   ] loop
     execute format('
       create trigger set_updated_at
@@ -859,63 +748,6 @@ create table loyalty_accounts (
 
 create unique index loyalty_accounts_customer_idx on loyalty_accounts(customer_id);
 
--- ─── loyalty_transactions ─────────────────────────────────
-create table loyalty_transactions (
-  id                    uuid        primary key default uuid_generate_v4(),
-  workspace_id          uuid        not null references workspaces(id) on delete cascade,
-  account_id            uuid        not null references loyalty_accounts(id) on delete cascade,
-  customer_id           uuid        not null references crm_customers(id) on delete cascade,
-  type                  text        not null
-                        check (type in ('earn','redeem','adjust','expire','transfer')),
-  points                integer     not null,
-  description           text        not null default '',
-  description_ar        text        not null default '',
-  reference_type        text,
-  reference_id          uuid,
-  created_at            timestamptz not null default now(),
-  created_by            uuid        references auth.users(id)
-);
-
-create index loyalty_transactions_account_idx on loyalty_transactions(account_id, created_at desc);
-
--- ─── loyalty_rewards ──────────────────────────────────────
-create table loyalty_rewards (
-  id                    uuid        primary key default uuid_generate_v4(),
-  workspace_id          uuid        not null references workspaces(id) on delete cascade,
-  name                  text        not null,
-  name_ar               text        not null default '',
-  description           text        not null default '',
-  description_ar        text        not null default '',
-  points_cost           integer     not null,
-  discount_amount       numeric     not null default 0,
-  active                boolean     not null default true,
-  max_redemptions       integer,
-  redemption_count      integer     not null default 0,
-  expires_at            timestamptz,
-  created_at            timestamptz not null default now(),
-  updated_at            timestamptz not null default now()
-);
-
-create index loyalty_rewards_workspace_idx on loyalty_rewards(workspace_id);
-
--- ─── loyalty_redemptions ──────────────────────────────────
-create table loyalty_redemptions (
-  id                    uuid        primary key default uuid_generate_v4(),
-  workspace_id          uuid        not null references workspaces(id) on delete cascade,
-  account_id            uuid        not null references loyalty_accounts(id) on delete cascade,
-  reward_id             uuid        not null references loyalty_rewards(id) on delete cascade,
-  customer_id           uuid        not null references crm_customers(id) on delete cascade,
-  points_used           integer     not null,
-  discount_applied      numeric     not null default 0,
-  status                text        not null default 'pending'
-                        check (status in ('pending','completed','cancelled')),
-  redeemed_at           timestamptz not null default now(),
-  redeemed_by           uuid        references auth.users(id),
-  order_id              uuid
-);
-
-create index loyalty_redemptions_customer_idx on loyalty_redemptions(customer_id);
-
 -- ─── customer_relationships ───────────────────────────────
 create table customer_relationships (
   id                    uuid        primary key default uuid_generate_v4(),
@@ -1054,10 +886,9 @@ returns boolean language sql security definer stable as $$
   );
 $$;
 
-alter table pos_registers        enable row level security;
-alter table pos_transactions     enable row level security;
-alter table pos_transaction_items enable row level security;
-alter table branch_inventory     enable row level security;
+
+
+
 
 -- ─── profiles ─────────────────────────────────────────────
 create policy "profiles_select" on profiles
@@ -1108,10 +939,8 @@ begin
     'deals','invoices','payments','expenses','resources',
     'notes','meetings','documents','activities',
     'relationships','files','intelligence_events','audit_logs',
-    'pos_registers','pos_transactions','pos_transaction_items','branch_inventory',
     'crm_customers','crm_timeline_events','crm_tasks','crm_notes',
-    'crm_leads','crm_alerts','loyalty_accounts','loyalty_transactions',
-    'loyalty_rewards','loyalty_redemptions','customer_relationships',
+    'crm_leads','crm_alerts','loyalty_accounts','customer_relationships',
     'crm_activity_feed','customer_ai_summaries','customer_communication_logs'
   ] loop
     execute format('
@@ -1126,6 +955,70 @@ begin
     ', t, t, t, t);
   end loop;
 end $$;
+
+
+-- ████ supabase/work-items.sql ████
+-- ============================================================
+-- Bumblebee — work_items
+--
+-- The generic work table (tasks, quotations, sales/purchase orders,
+-- maintenance, stock movements…). It lived in schema-clean-install.sql but
+-- was missing from schema.sql, so a fresh install broke at
+-- users-access-control.sql, which extends it. Run right after schema.sql.
+--
+-- The checks match the unions in src/lib/database.types.ts — the app writes
+-- all of these values, and the clean-install checks rejected most of them.
+-- Idempotent.
+-- ============================================================
+
+create table if not exists work_items (
+  id              uuid        primary key default uuid_generate_v4(),
+  workspace_id    uuid        not null references workspaces(id) on delete cascade,
+  title_en        text        not null,
+  title_ar        text,
+  type            text        not null default 'task'
+                              check (type in ('task','project','milestone','action','initiative','ticket','request',
+                                              'purchase_request','purchase_order','production_order','stock_movement',
+                                              'maintenance','quotation','sales_order')),
+  status          text        not null default 'todo'
+                              check (status in ('backlog','planned','todo','in_progress','review','done','blocked','cancelled',
+                                                'draft','submitted','approved','rejected','ordered','sent',
+                                                'partially_received','received','expired','converted')),
+  priority        text        not null default 'medium'
+                              check (priority in ('critical','urgent','high','medium','low')),
+  assignee_id     uuid                 references people(id) on delete set null,
+  parent_id       uuid                 references work_items(id) on delete cascade,
+  organization_id uuid                 references organizations(id) on delete set null,
+  due_date        date,
+  progress        integer     not null default 0 check (progress between 0 and 100),
+  total_amount    numeric,
+  tags            text[]      not null default '{}',
+  metadata        jsonb       not null default '{}',
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
+);
+
+create index if not exists work_items_workspace_idx on work_items(workspace_id);
+create index if not exists work_items_status_idx    on work_items(workspace_id, status);
+create index if not exists work_items_type_idx      on work_items(workspace_id, type);
+create index if not exists work_items_assignee_idx  on work_items(assignee_id);
+create index if not exists work_items_parent_idx    on work_items(parent_id);
+
+alter table work_items enable row level security;
+do $$ begin if to_regclass('work_items') is not null then execute 'drop policy if exists "workspace_select" on work_items'; end if; end $$;
+do $$ begin if to_regclass('work_items') is not null then execute 'drop policy if exists "workspace_insert" on work_items'; end if; end $$;
+do $$ begin if to_regclass('work_items') is not null then execute 'drop policy if exists "workspace_update" on work_items'; end if; end $$;
+do $$ begin if to_regclass('work_items') is not null then execute 'drop policy if exists "workspace_delete" on work_items'; end if; end $$;
+
+create policy "workspace_select" on work_items for select using (is_workspace_member(workspace_id));
+create policy "workspace_insert" on work_items for insert with check (is_workspace_member(workspace_id));
+create policy "workspace_update" on work_items for update using (is_workspace_member(workspace_id));
+create policy "workspace_delete" on work_items for delete using (is_workspace_admin(workspace_id));
+do $$ begin if to_regclass('work_items') is not null then execute 'drop trigger if exists set_updated_at on work_items'; end if; end $$;
+create trigger set_updated_at before update on work_items
+  for each row execute function update_updated_at();
+
+grant select, insert, update, delete on work_items to authenticated;
 
 
 -- ████ supabase/users-access-control.sql ████
@@ -1511,123 +1404,6 @@ ALTER TABLE workspace_invitations ENABLE ROW LEVEL SECURITY;
 -- 3. owner + admin can create invitations
 -- 4. No more circular RLS issues
 -- ═══════════════════════════════════════════════════════════
-
-
--- ████ supabase/fix-trigger-rls.sql ████
--- ============================================================
--- Bumblebee — Fix: handle_new_user trigger + profiles RLS
---
--- Run this in Supabase SQL Editor.
---
--- Fixes two bugs that cause "Database error saving new user":
---   1. handle_new_user() missing SET search_path = public
---   2. profiles_insert RLS policy blocks trigger (auth.uid() = null
---      at signup time — no session exists yet when the trigger fires)
--- ============================================================
-
-
--- ── 1. Recreate the trigger function with correct search_path ──
---
--- SECURITY DEFINER makes the function run as its owner (postgres).
--- SET search_path = public ensures it can resolve "profiles" even
--- when called from the auth schema trigger context.
-
-create or replace function public.handle_new_user()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  insert into public.profiles (id, email, full_name, avatar_url)
-  values (
-    new.id,
-    coalesce(new.email, ''),
-    coalesce(new.raw_user_meta_data->>'full_name', ''),
-    new.raw_user_meta_data->>'avatar_url'
-  )
-  on conflict (id) do nothing;
-  return new;
-end;
-$$;
-
-
--- ── 2. Recreate the trigger (idempotent) ──────────────────────
-do $$ begin if to_regclass('auth.users') is not null then execute 'drop trigger if exists on_auth_user_created on auth.users'; end if; end $$;
-
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute function public.handle_new_user();
-
-
--- ── 3. Fix profiles RLS INSERT policy ─────────────────────────
---
--- Old policy: with check (id = auth.uid())
---   → Fails for trigger inserts because auth.uid() = null at signup time.
---
--- New policy: with check (true)
---   → Allows any insert. Safe because:
---     a) profiles.id is a FK → auth.users(id): only valid auth UIDs accepted.
---     b) The SECURITY DEFINER trigger controls who inserts on signup.
---     c) WorkspaceSetup upserts the same row with the authenticated user's
---        own ID — still safe in practice.
---   Reads and updates still enforce auth.uid() = id.
-do $$ begin if to_regclass('public.profiles') is not null then execute 'drop policy if exists "profiles_insert" on public.profiles'; end if; end $$;
-
-create policy "profiles_insert" on public.profiles
-  for insert with check (true);
-
-
--- ── 4. Ensure authenticated role has table-level INSERT grant ──
---
--- Needed if the fix-grants migration hasn't been run yet.
-
-grant usage on schema public to authenticated, anon;
-
-grant select, insert, update, delete on
-  public.profiles,
-  public.workspaces,
-  public.workspace_members,
-  public.organizations,
-  public.people,
-  public.work_items,
-  public.deals,
-  public.invoices,
-  public.payments,
-  public.expenses,
-  public.resources,
-  public.activity_events
-to authenticated;
-
-grant select on public.profiles to anon;
-
-
--- ── DONE ──────────────────────────────────────────────────────
--- Verify: sign up a new email/password user.
--- Supabase Auth should create the auth.users row,
--- the trigger fires and inserts into public.profiles,
--- user lands on WorkspaceSetup to create their workspace.
--- ============================================================
-
-
--- ████ supabase/fix-workspaces-select-rls.sql ████
--- ============================================================
--- Bumblebee — Fix: workspaces SELECT policy blocks INSERT…RETURNING
---
--- Run this in Supabase SQL Editor.
---
--- Root cause: workspaces_select uses is_workspace_member(id),
--- but during onboarding the workspace_members row doesn't exist
--- yet when the INSERT…RETURNING fires. PostgreSQL evaluates the
--- SELECT policy on RETURNING rows, so the insert fails with
--- 42501 even though the INSERT policy itself passes.
---
--- Fix: let the workspace owner always read their own workspace.
--- ============================================================
-do $$ begin if to_regclass('workspaces') is not null then execute 'drop policy if exists "workspaces_select" on workspaces'; end if; end $$;
-
-CREATE POLICY "workspaces_select" ON workspaces
-  FOR SELECT USING (owner_id = auth.uid() OR is_workspace_member(id));
 
 
 -- ████ supabase/premium-auth-onboarding-notifications.sql ████
@@ -4450,6 +4226,168 @@ as $$
 $$;
 
 grant execute on function is_active_member(uuid) to authenticated;
+
+
+-- ████ supabase/fix-trigger-rls.sql ████
+-- ============================================================
+-- Bumblebee — Fix: handle_new_user trigger + profiles RLS
+--
+-- Run this in Supabase SQL Editor.
+--
+-- Fixes two bugs that cause "Database error saving new user":
+--   1. handle_new_user() missing SET search_path = public
+--   2. profiles_insert RLS policy blocks trigger (auth.uid() = null
+--      at signup time — no session exists yet when the trigger fires)
+-- ============================================================
+
+
+-- ── 1. Recreate the trigger function with correct search_path ──
+--
+-- SECURITY DEFINER makes the function run as its owner (postgres).
+-- SET search_path = public ensures it can resolve "profiles" even
+-- when called from the auth schema trigger context.
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, email, full_name, avatar_url)
+  values (
+    new.id,
+    coalesce(new.email, ''),
+    coalesce(new.raw_user_meta_data->>'full_name', ''),
+    new.raw_user_meta_data->>'avatar_url'
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+
+-- ── 2. Recreate the trigger (idempotent) ──────────────────────
+do $$ begin if to_regclass('auth.users') is not null then execute 'drop trigger if exists on_auth_user_created on auth.users'; end if; end $$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+
+-- ── 3. Fix profiles RLS INSERT policy ─────────────────────────
+--
+-- Old policy: with check (id = auth.uid())
+--   → Fails for trigger inserts because auth.uid() = null at signup time.
+--
+-- New policy: with check (true)
+--   → Allows any insert. Safe because:
+--     a) profiles.id is a FK → auth.users(id): only valid auth UIDs accepted.
+--     b) The SECURITY DEFINER trigger controls who inserts on signup.
+--     c) WorkspaceSetup upserts the same row with the authenticated user's
+--        own ID — still safe in practice.
+--   Reads and updates still enforce auth.uid() = id.
+do $$ begin if to_regclass('public.profiles') is not null then execute 'drop policy if exists "profiles_insert" on public.profiles'; end if; end $$;
+
+create policy "profiles_insert" on public.profiles
+  for insert with check (true);
+
+
+-- ── 4. Ensure authenticated role has table-level INSERT grant ──
+--
+-- Needed if the fix-grants migration hasn't been run yet.
+
+grant usage on schema public to authenticated, anon;
+
+grant select, insert, update, delete on
+  public.profiles,
+  public.workspaces,
+  public.workspace_members,
+  public.organizations,
+  public.people,
+  public.work_items,
+  public.deals,
+  public.invoices,
+  public.payments,
+  public.expenses,
+  public.resources,
+  public.activity_events
+to authenticated;
+
+grant select on public.profiles to anon;
+
+
+-- ── DONE ──────────────────────────────────────────────────────
+-- Verify: sign up a new email/password user.
+-- Supabase Auth should create the auth.users row,
+-- the trigger fires and inserts into public.profiles,
+-- user lands on WorkspaceSetup to create their workspace.
+-- ============================================================
+
+
+-- ████ supabase/fix-workspaces-select-rls.sql ████
+-- ============================================================
+-- Bumblebee — Fix: workspaces SELECT policy blocks INSERT…RETURNING
+--
+-- Run this in Supabase SQL Editor.
+--
+-- Root cause: workspaces_select uses is_workspace_member(id),
+-- but during onboarding the workspace_members row doesn't exist
+-- yet when the INSERT…RETURNING fires. PostgreSQL evaluates the
+-- SELECT policy on RETURNING rows, so the insert fails with
+-- 42501 even though the INSERT policy itself passes.
+--
+-- Fix: let the workspace owner always read their own workspace.
+-- ============================================================
+do $$ begin if to_regclass('workspaces') is not null then execute 'drop policy if exists "workspaces_select" on workspaces'; end if; end $$;
+
+CREATE POLICY "workspaces_select" ON workspaces
+  FOR SELECT USING (owner_id = auth.uid() OR is_workspace_member(id));
+
+
+-- ████ supabase/enable-crm-rls.sql ████
+-- ============================================================
+-- Bumblebee — turn on RLS for the CRM tables
+--
+-- schema.sql creates the workspace_select/insert/update/delete policies for
+-- these tables, but never runs ENABLE ROW LEVEL SECURITY on them — so the
+-- policies were inert and, after fix-grants.sql, anyone holding the public
+-- anon key could read every customer, lead, note and communication log.
+--
+-- Enabling RLS here makes the existing policies apply. Any table that somehow
+-- lacks them gets the same workspace pattern, so nothing is left locked out
+-- or wide open. Idempotent.
+-- ============================================================
+
+do $$
+declare
+  t text;
+begin
+  foreach t in array array[
+    'crm_customers', 'crm_timeline_events', 'crm_tasks', 'crm_notes', 'crm_leads', 'crm_alerts',
+    'crm_activity_feed', 'customer_ai_summaries', 'customer_communication_logs',
+    'customer_relationships', 'loyalty_accounts'
+  ] loop
+    if to_regclass(t) is null then
+      continue;
+    end if;
+
+    execute format('alter table %I enable row level security', t);
+
+    if not exists (select 1 from pg_policies where schemaname = 'public' and tablename = t and policyname = 'workspace_select') then
+      execute format('create policy "workspace_select" on %I for select using (is_workspace_member(workspace_id))', t);
+    end if;
+    if not exists (select 1 from pg_policies where schemaname = 'public' and tablename = t and policyname = 'workspace_insert') then
+      execute format('create policy "workspace_insert" on %I for insert with check (is_workspace_member(workspace_id))', t);
+    end if;
+    if not exists (select 1 from pg_policies where schemaname = 'public' and tablename = t and policyname = 'workspace_update') then
+      execute format('create policy "workspace_update" on %I for update using (is_workspace_member(workspace_id))', t);
+    end if;
+    if not exists (select 1 from pg_policies where schemaname = 'public' and tablename = t and policyname = 'workspace_delete') then
+      execute format('create policy "workspace_delete" on %I for delete using (is_workspace_admin(workspace_id))', t);
+    end if;
+  end loop;
+end $$;
 
 
 -- ████ supabase/fix-grants.sql ████
