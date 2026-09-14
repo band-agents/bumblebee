@@ -130,7 +130,7 @@ export default function Landing() {
               </span>, in one place.
             </h1>
             <p className="mt-6 text-[1.15rem] leading-relaxed text-muted-foreground max-w-[46ch]">
-              {BRAND.name} runs the whole of {CLIENT.name}'s making: production stages, product listings,
+              {BRAND.name} runs everything {CLIENT.name} makes: production stages, product listings,
               imported fabric and trims, sales, finance and your team — in English and Arabic.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -167,7 +167,7 @@ export default function Landing() {
       {/* ── Stage strip ─────────────────────────────────── */}
       <section id="production" className="border-y border-border bg-sidebar">
         <div className="max-w-[1200px] mx-auto px-5 py-10">
-          <p className="text-caption font-semibold text-brand-ink mb-5">How an order moves through {CLIENT.name}'s floor</p>
+          <p className="text-caption font-semibold text-brand-ink mb-5">How an order moves through the {CLIENT.name} floor</p>
           <ol className="grid grid-cols-4 sm:grid-cols-7 gap-3">
             {STAGES.map(({ icon: Icon, en, ar }, i) => (
               <li key={en} className="flex flex-col items-center text-center gap-2">
@@ -286,7 +286,7 @@ export default function Landing() {
               <img src={CLIENT.logo} alt={CLIENT.name} width={48} height={48} loading="lazy" />
             </div>
             <h2 className="text-[clamp(1.8rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] max-w-[22ch]">
-              {CLIENT.name}'s workspace is ready. Sign in and look around.
+              The {CLIENT.name} workspace is ready. Sign in and look around.
             </h2>
           </div>
           <Link href="/auth" className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl bg-foreground text-background text-body font-semibold hover:opacity-90 transition-opacity">
