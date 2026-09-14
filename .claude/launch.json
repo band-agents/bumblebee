@@ -2,32 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "thoth",
+      "name": "bumblebee-demo",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["vite", "--host", "0.0.0.0", "--port", "5174"],
-      "port": 5174,
-      "cwd": "/Users/dan/Downloads/THOTH-Production-Ready"
+      "runtimeArgs": ["vite", "--config", "vite.config.ts", "--host", "127.0.0.1", "--port", "5176", "--strictPort"],
+      "port": 5176
     },
     {
-      "name": "thoth-demo",
-      "runtimeExecutable": "env",
-      "runtimeArgs": ["VITE_SUPABASE_URL=", "VITE_SUPABASE_ANON_KEY=", "npx", "vite", "--host", "0.0.0.0", "--port", "5175"],
-      "port": 5175,
-      "cwd": "/Users/dan/Downloads/THOTH-Production-Ready"
-    },
-    {
-      "name": "fashion-live",
+      "name": "bumblebee-preview",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["vite", "--host", "0.0.0.0", "--port", "5177"],
-      "port": 5177,
-      "cwd": "/Users/dan/Desktop/thoth master file"
-    },
-    {
-      "name": "fashion-demo",
-      "runtimeExecutable": "env",
-      "runtimeArgs": ["VITE_SUPABASE_URL=", "VITE_SUPABASE_ANON_KEY=", "npx", "vite", "--host", "0.0.0.0", "--port", "5176"],
-      "port": 5176,
-      "cwd": "/Users/dan/Desktop/thoth master file"
+      "runtimeArgs": ["vite", "preview", "--config", "vite.config.ts", "--host", "127.0.0.1", "--port", "5177", "--strictPort"],
+      "port": 5177
     }
   ]
 }
