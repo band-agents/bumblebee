@@ -376,7 +376,7 @@ export interface Database {
           start_date: string | null;
           due_date: string | null;
           completed_date: string | null;
-          status: "pending" | "cutting" | "edgebanding" | "drilling" | "assembly" | "finishing" | "quality_check" | "packing" | "ready" | "delivered" | "cancelled";
+          status: "pending" | "pattern" | "cutting" | "sewing" | "edgebanding" | "drilling" | "assembly" | "finishing" | "quality_check" | "packing" | "ready" | "delivered" | "cancelled";
           current_stage: string | null;
           progress: number;
           materials_summary: Json;

@@ -484,7 +484,7 @@ export default function ExecutiveDashboard() {
               </div>
               {/* Production stages */}
               <div className="flex items-center gap-1">
-                {["Pattern", "Cutting", "Sewing", "Assembly", "Pressing", "QC", "Pack"].map((stage, i) => {
+                {["Pattern", "Cutting", "Sewing", "Finishing", "QC", "Pack"].map((stage, i) => {
                   const pct = [85, 72, 60, 45, 30, 20, 10][i];
                   return (
                     <div key={stage} className="flex-1 text-center">
@@ -652,8 +652,8 @@ export default function ExecutiveDashboard() {
               </div>
               <div className="space-y-2">
                 {[
-                  { name: "Silk Chiffon", stock: 12, min: 20, unit: "meters" },
-                  { name: "Cotton Twill", stock: 8, min: 15, unit: "meters" },
+                  { name: "Printed Interlock (imported)", stock: 12, min: 20, unit: "meters" },
+                  { name: "Waistband Elastic 30mm", stock: 8, min: 15, unit: "meters" },
                   { name: "YKK Zippers", stock: 45, min: 100, unit: "pcs" },
                 ].map((item) => (
                   <div key={item.name} className="flex items-center justify-between text-micro">

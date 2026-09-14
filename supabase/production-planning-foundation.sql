@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS production_orders (
   completed_date  DATE,
   -- Status
   status          TEXT NOT NULL DEFAULT 'pending'
-                  CHECK (status IN ('pending','cutting','edgebanding','drilling','assembly','finishing','quality_check','packing','ready','delivered','cancelled')),
+                  CHECK (status IN ('pending','pattern','cutting','sewing','edgebanding','drilling','assembly','finishing','quality_check','packing','ready','delivered','cancelled')),
   current_stage   TEXT DEFAULT 'pending',
   progress        INTEGER DEFAULT 0,
   -- Materials

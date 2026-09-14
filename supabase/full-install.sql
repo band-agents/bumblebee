@@ -14,29 +14,29 @@ create extension if not exists "uuid-ossp";
 create extension if not exists "pg_trgm";
 
 -- ─── Drop existing triggers first ─────────────────────────
-drop trigger if exists on_auth_user_created      on auth.users;
-drop trigger if exists on_profile_created_workspace on profiles;
-drop trigger if exists set_updated_at on profiles;
-drop trigger if exists set_updated_at on workspaces;
-drop trigger if exists set_updated_at on workspace_members;
-drop trigger if exists set_updated_at on people;
-drop trigger if exists set_updated_at on organizations;
-drop trigger if exists set_updated_at on projects;
-drop trigger if exists set_updated_at on tasks;
-drop trigger if exists set_updated_at on goals;
-drop trigger if exists set_updated_at on deals;
-drop trigger if exists set_updated_at on invoices;
-drop trigger if exists set_updated_at on payments;
-drop trigger if exists set_updated_at on expenses;
-drop trigger if exists set_updated_at on resources;
-drop trigger if exists set_updated_at on notes;
-drop trigger if exists set_updated_at on meetings;
-drop trigger if exists set_updated_at on documents;
-drop trigger if exists set_updated_at on activities;
-drop trigger if exists set_updated_at on relationships;
-drop trigger if exists set_updated_at on files;
-drop trigger if exists set_updated_at on intelligence_events;
-drop trigger if exists set_updated_at on audit_logs;
+do $$ begin if to_regclass('auth.users') is not null then execute 'drop trigger if exists on_auth_user_created on auth.users'; end if; end $$;
+do $$ begin if to_regclass('profiles') is not null then execute 'drop trigger if exists on_profile_created_workspace on profiles'; end if; end $$;
+do $$ begin if to_regclass('profiles') is not null then execute 'drop trigger if exists set_updated_at on profiles'; end if; end $$;
+do $$ begin if to_regclass('workspaces') is not null then execute 'drop trigger if exists set_updated_at on workspaces'; end if; end $$;
+do $$ begin if to_regclass('workspace_members') is not null then execute 'drop trigger if exists set_updated_at on workspace_members'; end if; end $$;
+do $$ begin if to_regclass('people') is not null then execute 'drop trigger if exists set_updated_at on people'; end if; end $$;
+do $$ begin if to_regclass('organizations') is not null then execute 'drop trigger if exists set_updated_at on organizations'; end if; end $$;
+do $$ begin if to_regclass('projects') is not null then execute 'drop trigger if exists set_updated_at on projects'; end if; end $$;
+do $$ begin if to_regclass('tasks') is not null then execute 'drop trigger if exists set_updated_at on tasks'; end if; end $$;
+do $$ begin if to_regclass('goals') is not null then execute 'drop trigger if exists set_updated_at on goals'; end if; end $$;
+do $$ begin if to_regclass('deals') is not null then execute 'drop trigger if exists set_updated_at on deals'; end if; end $$;
+do $$ begin if to_regclass('invoices') is not null then execute 'drop trigger if exists set_updated_at on invoices'; end if; end $$;
+do $$ begin if to_regclass('payments') is not null then execute 'drop trigger if exists set_updated_at on payments'; end if; end $$;
+do $$ begin if to_regclass('expenses') is not null then execute 'drop trigger if exists set_updated_at on expenses'; end if; end $$;
+do $$ begin if to_regclass('resources') is not null then execute 'drop trigger if exists set_updated_at on resources'; end if; end $$;
+do $$ begin if to_regclass('notes') is not null then execute 'drop trigger if exists set_updated_at on notes'; end if; end $$;
+do $$ begin if to_regclass('meetings') is not null then execute 'drop trigger if exists set_updated_at on meetings'; end if; end $$;
+do $$ begin if to_regclass('documents') is not null then execute 'drop trigger if exists set_updated_at on documents'; end if; end $$;
+do $$ begin if to_regclass('activities') is not null then execute 'drop trigger if exists set_updated_at on activities'; end if; end $$;
+do $$ begin if to_regclass('relationships') is not null then execute 'drop trigger if exists set_updated_at on relationships'; end if; end $$;
+do $$ begin if to_regclass('files') is not null then execute 'drop trigger if exists set_updated_at on files'; end if; end $$;
+do $$ begin if to_regclass('intelligence_events') is not null then execute 'drop trigger if exists set_updated_at on intelligence_events'; end if; end $$;
+do $$ begin if to_regclass('audit_logs') is not null then execute 'drop trigger if exists set_updated_at on audit_logs'; end if; end $$;
 
 -- ─── Drop all tables (reverse dependency order) ───────────
 drop table if exists audit_logs          cascade;
@@ -1553,8 +1553,7 @@ $$;
 
 
 -- ── 2. Recreate the trigger (idempotent) ──────────────────────
-
-drop trigger if exists on_auth_user_created on auth.users;
+do $$ begin if to_regclass('auth.users') is not null then execute 'drop trigger if exists on_auth_user_created on auth.users'; end if; end $$;
 
 create trigger on_auth_user_created
   after insert on auth.users
@@ -1573,8 +1572,7 @@ create trigger on_auth_user_created
 --     c) WorkspaceSetup upserts the same row with the authenticated user's
 --        own ID — still safe in practice.
 --   Reads and updates still enforce auth.uid() = id.
-
-drop policy if exists "profiles_insert" on public.profiles;
+do $$ begin if to_regclass('public.profiles') is not null then execute 'drop policy if exists "profiles_insert" on public.profiles'; end if; end $$;
 
 create policy "profiles_insert" on public.profiles
   for insert with check (true);
@@ -1626,8 +1624,7 @@ grant select on public.profiles to anon;
 --
 -- Fix: let the workspace owner always read their own workspace.
 -- ============================================================
-
-DROP POLICY IF EXISTS "workspaces_select" ON workspaces;
+do $$ begin if to_regclass('workspaces') is not null then execute 'drop policy if exists "workspaces_select" on workspaces'; end if; end $$;
 
 CREATE POLICY "workspaces_select" ON workspaces
   FOR SELECT USING (owner_id = auth.uid() OR is_workspace_member(id));
@@ -1659,19 +1656,16 @@ CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id, stat
 
 -- RLS
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
-
-DROP POLICY IF EXISTS "notifications_select" ON notifications;
+do $$ begin if to_regclass('notifications') is not null then execute 'drop policy if exists "notifications_select" on notifications'; end if; end $$;
 CREATE POLICY "notifications_select" ON notifications FOR SELECT USING (
   workspace_id IN (SELECT workspace_id FROM workspace_members WHERE user_id = auth.uid())
   AND (user_id IS NULL OR user_id = auth.uid())
 );
-
-DROP POLICY IF EXISTS "notifications_insert" ON notifications;
+do $$ begin if to_regclass('notifications') is not null then execute 'drop policy if exists "notifications_insert" on notifications'; end if; end $$;
 CREATE POLICY "notifications_insert" ON notifications FOR INSERT WITH CHECK (
   workspace_id IN (SELECT workspace_id FROM workspace_members WHERE user_id = auth.uid())
 );
-
-DROP POLICY IF EXISTS "notifications_update" ON notifications;
+do $$ begin if to_regclass('notifications') is not null then execute 'drop policy if exists "notifications_update" on notifications'; end if; end $$;
 CREATE POLICY "notifications_update" ON notifications FOR UPDATE USING (
   (user_id = auth.uid()) OR
   (user_id IS NULL AND workspace_id IN (SELECT workspace_id FROM workspace_members WHERE user_id = auth.uid()))
@@ -1724,8 +1718,7 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
-
-DROP TRIGGER IF EXISTS trg_release_notification ON work_items;
+do $$ begin if to_regclass('work_items') is not null then execute 'drop trigger if exists trg_release_notification on work_items'; end if; end $$;
 CREATE TRIGGER trg_release_notification
   AFTER UPDATE ON work_items
   FOR EACH ROW
@@ -2229,16 +2222,13 @@ CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN NEW.updated_at = now(); RETURN NEW; END;
 $$ LANGUAGE plpgsql;
-
-DROP TRIGGER IF EXISTS trg_site_visits_updated ON site_visits;
+do $$ begin if to_regclass('site_visits') is not null then execute 'drop trigger if exists trg_site_visits_updated on site_visits'; end if; end $$;
 CREATE TRIGGER trg_site_visits_updated BEFORE UPDATE ON site_visits
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_measurements_updated ON measurements;
+do $$ begin if to_regclass('measurements') is not null then execute 'drop trigger if exists trg_measurements_updated on measurements'; end if; end $$;
 CREATE TRIGGER trg_measurements_updated BEFORE UPDATE ON measurements
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_meas_attach_updated ON measurement_attachments;
+do $$ begin if to_regclass('measurement_attachments') is not null then execute 'drop trigger if exists trg_meas_attach_updated on measurement_attachments'; end if; end $$;
 CREATE TRIGGER trg_meas_attach_updated BEFORE UPDATE ON measurement_attachments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -2359,16 +2349,13 @@ CREATE POLICY "design_files_read" ON storage.objects
   FOR SELECT USING (bucket_id = 'design-files');
 
 -- ─── Updated_at triggers ──────────────────────────────────
-
-DROP TRIGGER IF EXISTS trg_design_briefs_updated ON design_briefs;
+do $$ begin if to_regclass('design_briefs') is not null then execute 'drop trigger if exists trg_design_briefs_updated on design_briefs'; end if; end $$;
 CREATE TRIGGER trg_design_briefs_updated BEFORE UPDATE ON design_briefs
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_design_files_updated ON design_files;
+do $$ begin if to_regclass('design_files') is not null then execute 'drop trigger if exists trg_design_files_updated on design_files'; end if; end $$;
 CREATE TRIGGER trg_design_files_updated BEFORE UPDATE ON design_files
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_design_comments_updated ON design_comments;
+do $$ begin if to_regclass('design_comments') is not null then execute 'drop trigger if exists trg_design_comments_updated on design_comments'; end if; end $$;
 CREATE TRIGGER trg_design_comments_updated BEFORE UPDATE ON design_comments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -2401,7 +2388,7 @@ CREATE TABLE IF NOT EXISTS production_orders (
   completed_date  DATE,
   -- Status
   status          TEXT NOT NULL DEFAULT 'pending'
-                  CHECK (status IN ('pending','cutting','edgebanding','drilling','assembly','finishing','quality_check','packing','ready','delivered','cancelled')),
+                  CHECK (status IN ('pending','pattern','cutting','sewing','edgebanding','drilling','assembly','finishing','quality_check','packing','ready','delivered','cancelled')),
   current_stage   TEXT DEFAULT 'pending',
   progress        INTEGER DEFAULT 0,
   -- Materials
@@ -2484,16 +2471,13 @@ CREATE POLICY "production_stage_log_workspace" ON production_stage_log
   USING (workspace_id IN (SELECT workspace_id FROM workspace_members WHERE user_id = auth.uid()));
 
 -- ─── Triggers ─────────────────────────────────────────────
-
-DROP TRIGGER IF EXISTS trg_prod_orders_updated ON production_orders;
+do $$ begin if to_regclass('production_orders') is not null then execute 'drop trigger if exists trg_prod_orders_updated on production_orders'; end if; end $$;
 CREATE TRIGGER trg_prod_orders_updated BEFORE UPDATE ON production_orders
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_cutting_list_updated ON cutting_list_items;
+do $$ begin if to_regclass('cutting_list_items') is not null then execute 'drop trigger if exists trg_cutting_list_updated on cutting_list_items'; end if; end $$;
 CREATE TRIGGER trg_cutting_list_updated BEFORE UPDATE ON cutting_list_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_stage_log_updated ON production_stage_log;
+do $$ begin if to_regclass('production_stage_log') is not null then execute 'drop trigger if exists trg_stage_log_updated on production_stage_log'; end if; end $$;
 CREATE TRIGGER trg_stage_log_updated BEFORE UPDATE ON production_stage_log
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -2584,12 +2568,10 @@ CREATE POLICY "qc_photos_read" ON storage.objects
   FOR SELECT USING (bucket_id = 'qc-photos');
 
 -- ─── Triggers ─────────────────────────────────────────────
-
-DROP TRIGGER IF EXISTS trg_qc_inspections_updated ON qc_inspections;
+do $$ begin if to_regclass('qc_inspections') is not null then execute 'drop trigger if exists trg_qc_inspections_updated on qc_inspections'; end if; end $$;
 CREATE TRIGGER trg_qc_inspections_updated BEFORE UPDATE ON qc_inspections
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_qc_defects_updated ON qc_defects;
+do $$ begin if to_regclass('qc_defects') is not null then execute 'drop trigger if exists trg_qc_defects_updated on qc_defects'; end if; end $$;
 CREATE TRIGGER trg_qc_defects_updated BEFORE UPDATE ON qc_defects
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -2697,12 +2679,10 @@ CREATE POLICY "installation_photos_read" ON storage.objects
   FOR SELECT USING (bucket_id = 'installation-photos');
 
 -- ─── Triggers ─────────────────────────────────────────────
-
-DROP TRIGGER IF EXISTS trg_deliveries_updated ON deliveries;
+do $$ begin if to_regclass('deliveries') is not null then execute 'drop trigger if exists trg_deliveries_updated on deliveries'; end if; end $$;
 CREATE TRIGGER trg_deliveries_updated BEFORE UPDATE ON deliveries
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_installations_updated ON installations;
+do $$ begin if to_regclass('installations') is not null then execute 'drop trigger if exists trg_installations_updated on installations'; end if; end $$;
 CREATE TRIGGER trg_installations_updated BEFORE UPDATE ON installations
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -2773,12 +2753,10 @@ CREATE POLICY "branches_workspace" ON branches
   USING (workspace_id IN (SELECT workspace_id FROM workspace_members WHERE user_id = auth.uid()));
 
 -- ─── Triggers ─────────────────────────────────────────────
-
-DROP TRIGGER IF EXISTS trg_cost_entries_updated ON cost_entries;
+do $$ begin if to_regclass('cost_entries') is not null then execute 'drop trigger if exists trg_cost_entries_updated on cost_entries'; end if; end $$;
 CREATE TRIGGER trg_cost_entries_updated BEFORE UPDATE ON cost_entries
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_branches_updated ON branches;
+do $$ begin if to_regclass('branches') is not null then execute 'drop trigger if exists trg_branches_updated on branches'; end if; end $$;
 CREATE TRIGGER trg_branches_updated BEFORE UPDATE ON branches
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -2907,16 +2885,13 @@ CREATE POLICY "employee_files_read" ON storage.objects
   FOR SELECT USING (bucket_id = 'employee-files');
 
 -- ─── Triggers ─────────────────────────────────────────────
-
-DROP TRIGGER IF EXISTS trg_employees_updated ON employees;
+do $$ begin if to_regclass('employees') is not null then execute 'drop trigger if exists trg_employees_updated on employees'; end if; end $$;
 CREATE TRIGGER trg_employees_updated BEFORE UPDATE ON employees
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_attendance_updated ON attendance;
+do $$ begin if to_regclass('attendance') is not null then execute 'drop trigger if exists trg_attendance_updated on attendance'; end if; end $$;
 CREATE TRIGGER trg_attendance_updated BEFORE UPDATE ON attendance
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-DROP TRIGGER IF EXISTS trg_leave_requests_updated ON leave_requests;
+do $$ begin if to_regclass('leave_requests') is not null then execute 'drop trigger if exists trg_leave_requests_updated on leave_requests'; end if; end $$;
 CREATE TRIGGER trg_leave_requests_updated BEFORE UPDATE ON leave_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
@@ -3735,7 +3710,7 @@ CREATE INDEX IF NOT EXISTS idx_shopify_entity_map_bumblebee
   ON shopify_entity_map(workspace_id, entity_type, thoth_id);
 
 ALTER TABLE shopify_entity_map ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "shopify_entity_map_workspace" ON shopify_entity_map;
+do $$ begin if to_regclass('shopify_entity_map') is not null then execute 'drop policy if exists "shopify_entity_map_workspace" on shopify_entity_map'; end if; end $$;
 CREATE POLICY "shopify_entity_map_workspace" ON shopify_entity_map
   USING (workspace_id IN (SELECT id FROM workspaces WHERE id = workspace_id))
   WITH CHECK (workspace_id IN (SELECT id FROM workspaces WHERE id = workspace_id));
@@ -3768,7 +3743,7 @@ CREATE INDEX IF NOT EXISTS idx_shopify_sync_runs_ws
   ON shopify_sync_runs(workspace_id, started_at DESC);
 
 ALTER TABLE shopify_sync_runs ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "shopify_sync_runs_workspace" ON shopify_sync_runs;
+do $$ begin if to_regclass('shopify_sync_runs') is not null then execute 'drop policy if exists "shopify_sync_runs_workspace" on shopify_sync_runs'; end if; end $$;
 CREATE POLICY "shopify_sync_runs_workspace" ON shopify_sync_runs
   USING (workspace_id IN (SELECT id FROM workspaces WHERE id = workspace_id))
   WITH CHECK (workspace_id IN (SELECT id FROM workspaces WHERE id = workspace_id));

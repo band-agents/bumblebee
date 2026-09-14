@@ -1,6 +1,6 @@
 /**
  * Production Executive Dashboard
- * High-level production overview with charts, stage analytics, furniture flow
+ * High-level production overview with charts, stage analytics, garment flow
  */
 
 import { useState, useMemo } from "react";
@@ -207,7 +207,7 @@ function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean 
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <h3 className="text-body-lg font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
-        {t(ar, "Furniture Production Pipeline", "خط إنتاج الأثاث")}
+        {t(ar, "Garment Production Pipeline", "خط إنتاج الملابس")}
       </h3>
 
       {/* Pipeline visual */}
@@ -268,12 +268,12 @@ function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean 
                 {/* Labels */}
                 <div className="absolute inset-0 flex items-center px-2 gap-2">
                   {counts.completed > 0 && <span className="text-micro font-medium text-emerald-700">{counts.completed}</span>}
-                  {counts.active > 0 && <span className="text-micro font-medium text-brand-ink">{counts.active} {t(ar, "جاري", "active")}</span>}
+                  {counts.active > 0 && <span className="text-micro font-medium text-brand-ink">{counts.active} {t(ar, "active", "جاري")}</span>}
                 </div>
               </div>
               {counts.stuck > 0 && (
                 <span className="text-micro text-rose-600 font-medium flex items-center gap-0.5 shrink-0">
-                  <AlertTriangle size={9} />{counts.stuck} {t(ar, "عائق", "stuck")}
+                  <AlertTriangle size={9} />{counts.stuck} {t(ar, "stuck", "عائق")}
                 </span>
               )}
             </div>
@@ -378,14 +378,14 @@ function OrderHealthTable({ orders, ar }: { orders: ProductionOrder[]; ar: boole
         <table className="w-full">
           <thead>
             <tr className="border-b border-border/30 text-micro text-muted-foreground">
-              <th className="text-left px-5 py-2.5 font-medium">{t(ar, "الطلب", "Order")}</th>
-              <th className="text-left px-3 py-2.5 font-medium">{t(ar, "المنتج", "Product")}</th>
-              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "التقدم", "Progress")}</th>
-              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "المعدل", "Rate")}</th>
-              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "الكفاءة", "Efficiency")}</th>
-              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "المرحلة", "Stage")}</th>
-              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "التسليم", "Due")}</th>
-              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "الحالة", "Status")}</th>
+              <th className="text-left px-5 py-2.5 font-medium">{t(ar, "Order", "الطلب")}</th>
+              <th className="text-left px-3 py-2.5 font-medium">{t(ar, "Product", "المنتج")}</th>
+              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "Progress", "التقدم")}</th>
+              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "Rate", "المعدل")}</th>
+              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "Efficiency", "الكفاءة")}</th>
+              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "Stage", "المرحلة")}</th>
+              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "Due", "التسليم")}</th>
+              <th className="text-center px-3 py-2.5 font-medium">{t(ar, "Status", "الحالة")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border/20">
@@ -441,7 +441,7 @@ function OrderHealthTable({ orders, ar }: { orders: ProductionOrder[]; ar: boole
                       order.status === "in_progress" ? "bg-blue-100 text-blue-700" :
                       "bg-zinc-100 text-zinc-600"
                     }`}>
-                      {isOverdue ? t(ar, "متأخر", "Delayed") : t(ar, order.status.replace("_", " "), order.status)}
+                      {isOverdue ? t(ar, "Delayed", "متأخر") : t(ar, order.status.replace("_", " "), order.status.replace("_", " "))}
                     </span>
                   </td>
                 </tr>
@@ -482,7 +482,7 @@ function TeamProductivity({ orders, ar }: { orders: ProductionOrder[]; ar: boole
         {t(ar, "Team Productivity", "إنتاجية الفرق")}
       </h3>
       <HorizontalBar items={teamStats.map(team => ({
-        label: `${team.name} (${team.orders} ${t(ar, "أوامر", "orders")})`,
+        label: `${team.name} (${team.orders} ${t(ar, "orders", "أوامر")})`,
         value: team.completedQty,
         color: team.avgEfficiency >= 85 ? "#10b981" : team.avgEfficiency >= 70 ? "#f59e0b" : "#ef4444",
       }))} />
@@ -506,9 +506,9 @@ function CostAnalysis({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }
   }, [orders]);
 
   const costSegments = [
-    { value: totals.material, color: "#3b82f6", label: t(ar, "المواد", "Material") },
-    { value: totals.labor, color: "#8b5cf6", label: t(ar, "العمالة", "Labor") },
-    { value: totals.waste, color: "#ef4444", label: t(ar, "الهالك", "Waste") },
+    { value: totals.material, color: "#3b82f6", label: t(ar, "Material", "المواد") },
+    { value: totals.labor, color: "#8b5cf6", label: t(ar, "Labor", "العمالة") },
+    { value: totals.waste, color: "#ef4444", label: t(ar, "Waste", "الهالك") },
   ];
 
   return (
@@ -528,17 +528,17 @@ function CostAnalysis({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }
           ))}
           <div className="pt-2 mt-2 border-t border-border/30">
             <div className="flex items-center justify-between">
-              <span className="text-micro text-muted-foreground">{t(ar, "المقدّر", "Estimated")}</span>
+              <span className="text-micro text-muted-foreground">{t(ar, "Estimated", "المقدّر")}</span>
               <span className="text-micro font-medium tabular-nums">${fmt(totals.estimated)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-micro text-muted-foreground">{t(ar, "الفعلي", "Actual")}</span>
+              <span className="text-micro text-muted-foreground">{t(ar, "Actual", "الفعلي")}</span>
               <span className={`text-micro font-medium tabular-nums ${totals.variance > 0 ? "text-rose-600" : "text-emerald-600"}`}>
                 ${fmt(totals.actual)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-micro text-muted-foreground">{t(ar, "الانحراف", "Variance")}</span>
+              <span className="text-micro text-muted-foreground">{t(ar, "Variance", "الانحراف")}</span>
               <span className={`text-micro font-semibold tabular-nums ${totals.variance > 0 ? "text-rose-600" : "text-emerald-600"}`}>
                 {totals.variance > 0 ? "+" : ""}${fmt(totals.variance)}
               </span>
@@ -580,7 +580,7 @@ export default function ProductionExecutiveDashboard() {
             {t(ar, "Production Overview", "نظرة عامة على الإنتاج")}
           </h1>
           <p className="text-caption text-muted-foreground mt-0.5">
-            {t(ar, "Executive dashboard — furniture manufacturing intelligence", "لوحة تحكم تنفيذية — ذكاء تصنيع الأثاث")}
+            {t(ar, "Executive dashboard — from fabric to packed order", "لوحة تنفيذية — من القماش حتى التغليف")}
           </p>
         </div>
         <div className="flex items-center gap-2 text-micro text-muted-foreground">
@@ -592,14 +592,14 @@ export default function ProductionExecutiveDashboard() {
       {/* KPI Row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
         {[
-          { label: t(ar, "_orders", " orders"), value: stats.activeOrders, icon: Factory, color: "text-blue-600", bg: "bg-blue-50", trend: +2 },
-          { label: t(ar, " متأخرة", " delayed"), value: stats.delayedOrders, icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50", trend: -1 },
-          { label: t(ar, " مكتملة", " done"), value: stats.completedOrders, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: +3 },
-          { label: t(ar, " قطعة/ساعة", " pcs/hr"), value: stats.avgProductionRate, icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10", trend: +5 },
-          { label: t(ar, " كفاءة", " efficiency"), value: `${stats.avgEfficiency}%`, icon: TrendingUp, color: "text-cyan-600", bg: "bg-cyan-50", trend: +3 },
-          { label: t(ar, " مواد", " material issues"), value: stats.waitingMaterials, icon: Package, color: "text-warning", bg: "bg-warning/10", trend: 0 },
-          { label: t(ar, " جودة", " QC pending"), value: stats.waitingQC, icon: ShieldCheck, color: "text-orange-600", bg: "bg-orange-50", trend: 0 },
-          { label: t(ar, " تنبيهات", " alerts"), value: alerts.length, icon: Bell, color: "text-rose-600", bg: "bg-rose-50", trend: 0 },
+          { label: t(ar, "Active orders", "أوامر نشطة"), value: stats.activeOrders, icon: Factory, color: "text-blue-600", bg: "bg-blue-50", trend: +2 },
+          { label: t(ar, "Delayed", "متأخرة"), value: stats.delayedOrders, icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50", trend: -1 },
+          { label: t(ar, "Completed", "مكتملة"), value: stats.completedOrders, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: +3 },
+          { label: t(ar, "Pieces / hour", "قطعة/ساعة"), value: stats.avgProductionRate, icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10", trend: +5 },
+          { label: t(ar, "Efficiency", "كفاءة"), value: `${stats.avgEfficiency}%`, icon: TrendingUp, color: "text-cyan-600", bg: "bg-cyan-50", trend: +3 },
+          { label: t(ar, "Material issues", "نواقص خامات"), value: stats.waitingMaterials, icon: Package, color: "text-warning", bg: "bg-warning/10", trend: 0 },
+          { label: t(ar, "QC pending", "بانتظار الجودة"), value: stats.waitingQC, icon: ShieldCheck, color: "text-orange-600", bg: "bg-orange-50", trend: 0 },
+          { label: t(ar, "Alerts", "تنبيهات"), value: alerts.length, icon: Bell, color: "text-rose-600", bg: "bg-rose-50", trend: 0 },
         ].map((kpi, i) => (
           <div key={i} className="bg-background border border-border/40 rounded-xl p-3.5 hover:shadow-sm transition-shadow">
             <div className="flex items-center justify-between mb-2">
@@ -657,7 +657,7 @@ export default function ProductionExecutiveDashboard() {
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-border/30 flex items-center justify-between">
-            <span className="text-micro text-muted-foreground">{t(ar, "متوسط", "Avg")}</span>
+            <span className="text-micro text-muted-foreground">{t(ar, "Avg", "متوسط")}</span>
             <span className="text-body font-semibold tabular-nums text-emerald-600">{Math.round(efficiencyTrend.reduce((s, v) => s + v, 0) / efficiencyTrend.length)}%</span>
           </div>
         </div>
@@ -741,7 +741,7 @@ export default function ProductionExecutiveDashboard() {
                 </div>
               ))}
               {alerts.length === 0 && (
-                <div className="py-4 text-center text-micro text-muted-foreground/50">{t(ar, "لا تنبيهات", "No alerts")}</div>
+                <div className="py-4 text-center text-micro text-muted-foreground/50">{t(ar, "No alerts", "لا تنبيهات")}</div>
               )}
             </div>
           </div>
@@ -760,11 +760,11 @@ export default function ProductionExecutiveDashboard() {
                   }`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-micro font-medium truncate">{ws.name}</p>
-                    <p className="text-micro text-muted-foreground">{ws.operator || t(ar, "خامل", "Idle")}</p>
+                    <p className="text-micro text-muted-foreground">{ws.operator || t(ar, "Idle", "خامل")}</p>
                   </div>
                   {ws.queue_count > 0 && (
                     <span className="text-micro bg-warning/15 text-warning px-1.5 py-0.5 rounded-full font-medium">
-                      {ws.queue_count} {t(ar, "في الطابور", "queued")}
+                      {ws.queue_count} {t(ar, "queued", "في الطابور")}
                     </span>
                   )}
                 </div>
