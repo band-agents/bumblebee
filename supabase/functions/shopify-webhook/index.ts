@@ -428,7 +428,7 @@ async function processCustomer(
       eventType: "customer_created",
       status: "success",
       shopifyCustomerId,
-      details: `New Shopify customer ${customer.first_name} ${customer.last_name} detected. No matching THOTH member — created pending match.`,
+      details: `New Shopify customer ${customer.first_name} ${customer.last_name} detected. No matching Bumblebee member — created pending match.`,
     });
   }
 }

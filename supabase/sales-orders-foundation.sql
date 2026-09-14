@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH ERP — Sales Orders Foundation Migration
+-- Bumblebee ERP — Sales Orders Foundation Migration
 -- ============================================================
 -- OPTIONAL. Currently sales orders are stored in the work_items
 -- table (type = 'sales_order') with items, payments, and

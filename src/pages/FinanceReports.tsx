@@ -30,7 +30,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div className="border border-border/40 rounded-xl bg-background overflow-hidden">
       <div className="px-6 py-4 border-b border-border/30">
-        <h3 className="text-[11px] font-semibold text-muted-foreground tracking-[0.08em] uppercase">{title}</h3>
+        <h3 className="text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase">{title}</h3>
       </div>
       {children}
     </div>
@@ -40,8 +40,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function RowItem({ label, amount, indent }: { label: string; amount: number; indent?: boolean }) {
   return (
     <div className={`flex items-center justify-between px-6 py-3 ${indent ? "ps-10" : ""}`}>
-      <span className="text-[13px] text-foreground">{label}</span>
-      <span className="text-[13px] font-mono tabular-nums text-foreground">{fmt(amount)}</span>
+      <span className="text-body text-foreground">{label}</span>
+      <span className="text-body font-mono tabular-nums text-foreground">{fmt(amount)}</span>
     </div>
   );
 }
@@ -50,8 +50,8 @@ function TotalRow({ label, amount, positive }: { label: string; amount: number; 
   const color = positive === true ? "text-emerald-600" : positive === false ? "text-rose-500" : "text-foreground";
   return (
     <div className="flex items-center justify-between px-6 py-3.5 bg-muted/20 border-t border-border/30">
-      <span className="text-[13px] font-semibold text-foreground">{label}</span>
-      <span className={`text-[14px] font-bold tabular-nums ${color}`}>{fmt(amount)}</span>
+      <span className="text-body font-semibold text-foreground">{label}</span>
+      <span className={`text-body-lg font-bold tabular-nums ${color}`}>{fmt(amount)}</span>
     </div>
   );
 }
@@ -60,8 +60,8 @@ function CashFlowRow({ label, amount }: { label: string; amount: number }) {
   const isNegative = amount < 0;
   return (
     <div className="flex items-center justify-between px-6 py-3">
-      <span className="text-[13px] text-foreground">{label}</span>
-      <span className={`text-[13px] font-mono tabular-nums ${isNegative ? "text-rose-500" : "text-emerald-600"}`}>
+      <span className="text-body text-foreground">{label}</span>
+      <span className={`text-body font-mono tabular-nums ${isNegative ? "text-rose-500" : "text-emerald-600"}`}>
         {isNegative ? `(${fmt(Math.abs(amount))})` : fmt(amount)}
       </span>
     </div>
@@ -70,7 +70,7 @@ function CashFlowRow({ label, amount }: { label: string; amount: number }) {
 
 const TAX_STATUS: Record<string, { en: string; ar: string; color: string; dot: string }> = {
   paid: { en: "Paid", ar: "مدفوع", color: "text-emerald-600", dot: "bg-emerald-500" },
-  pending: { en: "Pending", ar: "قيد الانتظار", color: "text-amber-600", dot: "bg-amber-500" },
+  pending: { en: "Pending", ar: "قيد الانتظار", color: "text-warning", dot: "bg-warning" },
   overdue: { en: "Overdue", ar: "متأخرة", color: "text-rose-500", dot: "bg-rose-500" },
   filed: { en: "Filed", ar: "مُقدّمة", color: "text-blue-500", dot: "bg-blue-500" },
 };
@@ -119,12 +119,12 @@ export default function FinanceReports() {
       <div className="relative border-b border-border/40" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.35) 0%, hsl(var(--background)) 65%)" }}>
         <div className="px-8 md:px-10 pt-6 pb-6 max-w-[960px]">
           <div className="flex items-center gap-3 mb-1">
-            <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center"><BarChart3 size={18} strokeWidth={1.75} className="text-primary" /></div>
+            <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center"><BarChart3 size={18} strokeWidth={1.75} className="text-brand-ink" /></div>
             <div>
-              <h1 className="text-[22px] md:text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>
+              <h1 className="text-heading md:text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>
                 {ar ? "التقارير المالية" : "Financial Reports"}
               </h1>
-              <p className="text-[12px] text-muted-foreground mt-0.5">
+              <p className="text-caption text-muted-foreground mt-0.5">
                 {ar ? "نظرة شاملة على المالية" : "Comprehensive financial overview for your business"}
               </p>
             </div>
@@ -135,7 +135,7 @@ export default function FinanceReports() {
             <div className="relative">
               <button
                 onClick={() => setPeriodOpen(!periodOpen)}
-                className="h-8 px-3.5 rounded-xl border border-border text-[12px] font-medium text-foreground hover:bg-muted flex items-center gap-2 transition-colors"
+                className="h-8 px-3.5 rounded-xl border border-border text-caption font-medium text-foreground hover:bg-muted flex items-center gap-2 transition-colors"
               >
                 <FileText size={13} strokeWidth={1.75} />
                 {period}
@@ -149,7 +149,7 @@ export default function FinanceReports() {
                       <button
                         key={p}
                         onClick={() => { setPeriod(p); setPeriodOpen(false); }}
-                        className={`w-full px-4 py-2 text-[12px] text-start transition-colors ${p === period ? "text-primary bg-primary/5 font-medium" : "text-foreground hover:bg-muted"}`}
+                        className={`w-full px-4 py-2 text-caption text-start transition-colors ${p === period ? "text-brand-ink bg-primary/5 font-medium" : "text-foreground hover:bg-muted"}`}
                       >
                         {p}
                       </button>
@@ -164,13 +164,13 @@ export default function FinanceReports() {
               {[
                 { label: ar ? "الإيرادات" : "Revenue", value: fmt(totalRevenue), icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-50" },
                 { label: ar ? "صافي الربح" : "Net Profit", value: fmt(netProfit), icon: DollarSign, color: netProfit >= 0 ? "text-emerald-600" : "text-rose-500", bg: netProfit >= 0 ? "bg-emerald-50" : "bg-rose-50" },
-                { label: ar ? "هامش الربح الصافي" : "Net Margin", value: `${netMargin}%`, icon: Calculator, color: "text-primary", bg: "bg-primary/8" },
+                { label: ar ? "هامش الربح الصافي" : "Net Margin", value: `${netMargin}%`, icon: Calculator, color: "text-brand-ink", bg: "bg-primary/8" },
               ].map((kpi) => (
                 <div key={kpi.label} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-background border border-border/40">
                   <div className={`w-7 h-7 rounded-lg ${kpi.bg} flex items-center justify-center`}><kpi.icon size={13} strokeWidth={1.75} className={kpi.color} /></div>
                   <div>
-                    <p className="text-[10px] text-muted-foreground/70">{kpi.label}</p>
-                    <p className="text-[13px] font-semibold text-foreground tabular-nums">{kpi.value}</p>
+                    <p className="text-micro text-muted-foreground/70">{kpi.label}</p>
+                    <p className="text-body font-semibold text-foreground tabular-nums">{kpi.value}</p>
                   </div>
                 </div>
               ))}
@@ -186,9 +186,9 @@ export default function FinanceReports() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 text-[12px] font-medium whitespace-nowrap border-b-2 transition-all ${
+              className={`px-4 py-3 text-caption font-medium whitespace-nowrap border-b-2 transition-all ${
                 activeTab === tab.id
-                  ? "border-primary text-primary"
+                  ? "border-primary text-brand-ink"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:border-border/60"
               }`}
             >
@@ -230,11 +230,11 @@ export default function FinanceReports() {
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"><TrendingUp size={14} strokeWidth={1.75} className="text-emerald-600" /></div>
                   <div>
-                    <p className="text-[13px] font-semibold text-foreground">{ar ? "صافي الربح الإجمالي" : "Gross Profit"}</p>
-                    <p className="text-[11px] text-muted-foreground/70">{ar ? `هامش ${grossMargin}%` : `${grossMargin}% margin`}</p>
+                    <p className="text-body font-semibold text-foreground">{ar ? "صافي الربح الإجمالي" : "Gross Profit"}</p>
+                    <p className="text-micro text-muted-foreground/70">{ar ? `هامش ${grossMargin}%` : `${grossMargin}% margin`}</p>
                   </div>
                 </div>
-                <span className="text-[18px] font-bold text-emerald-600 tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{fmt(grossProfit)}</span>
+                <span className="text-title font-bold text-emerald-600 tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{fmt(grossProfit)}</span>
               </div>
             </div>
 
@@ -256,11 +256,11 @@ export default function FinanceReports() {
                     <DollarSign size={16} strokeWidth={1.75} className={netProfit >= 0 ? "text-emerald-600" : "text-rose-500"} />
                   </div>
                   <div>
-                    <p className="text-[14px] font-semibold text-foreground">{ar ? "صافي الربح" : "Net Profit"}</p>
-                    <p className="text-[11px] text-muted-foreground/70">{ar ? `هامش صافي ${netMargin}%` : `Net margin ${netMargin}%`}</p>
+                    <p className="text-body-lg font-semibold text-foreground">{ar ? "صافي الربح" : "Net Profit"}</p>
+                    <p className="text-micro text-muted-foreground/70">{ar ? `هامش صافي ${netMargin}%` : `Net margin ${netMargin}%`}</p>
                   </div>
                 </div>
-                <span className={`text-[22px] font-bold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netProfit)}</span>
+                <span className={`text-heading font-bold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netProfit)}</span>
               </div>
             </div>
 
@@ -269,8 +269,8 @@ export default function FinanceReports() {
               <div className="px-6 py-5 space-y-5">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[12px] text-muted-foreground">{ar ? "الإيرادات" : "Revenue"}</span>
-                    <span className="text-[12px] font-mono tabular-nums text-emerald-600">{fmt(totalRevenue)}</span>
+                    <span className="text-caption text-muted-foreground">{ar ? "الإيرادات" : "Revenue"}</span>
+                    <span className="text-caption font-mono tabular-nums text-emerald-600">{fmt(totalRevenue)}</span>
                   </div>
                   <div className="h-4 rounded-full bg-muted/40 overflow-hidden">
                     <div className="h-full rounded-full bg-emerald-500 transition-all duration-700" style={{ width: "100%" }} />
@@ -278,8 +278,8 @@ export default function FinanceReports() {
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[12px] text-muted-foreground">{ar ? "المصروفات" : "Expenses"}</span>
-                    <span className="text-[12px] font-mono tabular-nums text-rose-500">{fmt(totalCOGS + totalOpex)}</span>
+                    <span className="text-caption text-muted-foreground">{ar ? "المصروفات" : "Expenses"}</span>
+                    <span className="text-caption font-mono tabular-nums text-rose-500">{fmt(totalCOGS + totalOpex)}</span>
                   </div>
                   <div className="h-4 rounded-full bg-muted/40 overflow-hidden">
                     <div className="h-full rounded-full bg-rose-400 transition-all duration-700" style={{ width: `${Math.round(((totalCOGS + totalOpex) / totalRevenue) * 100)}%` }} />
@@ -288,16 +288,16 @@ export default function FinanceReports() {
                 <div className="pt-3 border-t border-border/30">
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">{ar ? "الربح الإجمالي" : "Gross Profit"}</p>
-                      <p className="text-[14px] font-semibold text-foreground tabular-nums">{fmt(grossProfit)}</p>
+                      <p className="text-micro text-muted-foreground/60 uppercase tracking-wide">{ar ? "الربح الإجمالي" : "Gross Profit"}</p>
+                      <p className="text-body-lg font-semibold text-foreground tabular-nums">{fmt(grossProfit)}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">{ar ? "صافي الربح" : "Net Profit"}</p>
-                      <p className={`text-[14px] font-semibold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{fmt(netProfit)}</p>
+                      <p className="text-micro text-muted-foreground/60 uppercase tracking-wide">{ar ? "صافي الربح" : "Net Profit"}</p>
+                      <p className={`text-body-lg font-semibold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{fmt(netProfit)}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">{ar ? "هامش الربح" : "Margin"}</p>
-                      <p className={`text-[14px] font-semibold tabular-nums ${netMargin >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{netMargin}%</p>
+                      <p className="text-micro text-muted-foreground/60 uppercase tracking-wide">{ar ? "هامش الربح" : "Margin"}</p>
+                      <p className={`text-body-lg font-semibold tabular-nums ${netMargin >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{netMargin}%</p>
                     </div>
                   </div>
                 </div>
@@ -319,8 +319,8 @@ export default function FinanceReports() {
                 <div key={s.label} className="border border-border/40 rounded-xl bg-background p-4 flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-xl ${s.bg} flex items-center justify-center`}><s.icon size={15} strokeWidth={1.75} className={s.color} /></div>
                   <div>
-                    <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wide">{s.label}</p>
-                    <p className={`text-[15px] font-semibold tabular-nums ${s.color}`}>{fmtShort(s.value)}</p>
+                    <p className="text-micro text-muted-foreground/70 uppercase tracking-wide">{s.label}</p>
+                    <p className={`text-body-lg font-semibold tabular-nums ${s.color}`}>{fmtShort(s.value)}</p>
                   </div>
                 </div>
               ))}
@@ -364,11 +364,11 @@ export default function FinanceReports() {
                     <DollarSign size={16} strokeWidth={1.75} className={netCashFlow >= 0 ? "text-emerald-600" : "text-rose-500"} />
                   </div>
                   <div>
-                    <p className="text-[14px] font-semibold text-foreground">{ar ? "صافي التدفق النقدي" : "Net Cash Flow"}</p>
-                    <p className="text-[11px] text-muted-foreground/70">{ar ? "للفترة" : "for the period"}</p>
+                    <p className="text-body-lg font-semibold text-foreground">{ar ? "صافي التدفق النقدي" : "Net Cash Flow"}</p>
+                    <p className="text-micro text-muted-foreground/70">{ar ? "للفترة" : "for the period"}</p>
                   </div>
                 </div>
-                <span className={`text-[22px] font-bold tabular-nums ${netCashFlow >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netCashFlow)}</span>
+                <span className={`text-heading font-bold tabular-nums ${netCashFlow >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netCashFlow)}</span>
               </div>
             </div>
           </div>
@@ -380,16 +380,16 @@ export default function FinanceReports() {
             {/* Filing Status Overview */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: ar ? "إجمالي الضريبة" : "Total Tax", value: fmt(FIN_TAX_RECORDS.reduce((s, r) => s + r.amount, 0)), icon: Receipt, color: "text-primary", bg: "bg-primary/8" },
+                { label: ar ? "إجمالي الضريبة" : "Total Tax", value: fmt(FIN_TAX_RECORDS.reduce((s, r) => s + r.amount, 0)), icon: Receipt, color: "text-brand-ink", bg: "bg-primary/8" },
                 { label: ar ? "مدفوع" : "Paid", value: FIN_TAX_RECORDS.filter((r) => r.status === "paid").length.toString(), icon: Shield, color: "text-emerald-600", bg: "bg-emerald-50" },
-                { label: ar ? "قيد الانتظار" : "Pending", value: FIN_TAX_RECORDS.filter((r) => r.status === "pending").length.toString(), icon: FileText, color: "text-amber-600", bg: "bg-amber-50" },
+                { label: ar ? "قيد الانتظار" : "Pending", value: FIN_TAX_RECORDS.filter((r) => r.status === "pending").length.toString(), icon: FileText, color: "text-warning", bg: "bg-warning/10" },
                 { label: ar ? "متأخرة" : "Overdue", value: FIN_TAX_RECORDS.filter((r) => r.status === "overdue").length.toString(), icon: TrendingDown, color: "text-rose-500", bg: "bg-rose-50" },
               ].map((s) => (
                 <div key={s.label} className="border border-border/40 rounded-xl bg-background p-4 flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg ${s.bg} flex items-center justify-center`}><s.icon size={14} strokeWidth={1.75} className={s.color} /></div>
                   <div>
-                    <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wide">{s.label}</p>
-                    <p className="text-[14px] font-semibold text-foreground tabular-nums">{s.value}</p>
+                    <p className="text-micro text-muted-foreground/70 uppercase tracking-wide">{s.label}</p>
+                    <p className="text-body-lg font-semibold text-foreground tabular-nums">{s.value}</p>
                   </div>
                 </div>
               ))}
@@ -405,21 +405,21 @@ export default function FinanceReports() {
                       <div className="flex items-center gap-3">
                         <div className={`w-2 h-2 rounded-full ${st.dot}`} />
                         <div>
-                          <p className="text-[13px] font-medium text-foreground">{rec.period}</p>
-                          <p className="text-[11px] text-muted-foreground/60">{rec.reference}</p>
+                          <p className="text-body font-medium text-foreground">{rec.period}</p>
+                          <p className="text-micro text-muted-foreground/60">{rec.reference}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className={`text-[11px] font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
-                        <span className="text-[13px] font-mono tabular-nums text-foreground">{fmt(rec.amount)}</span>
+                        <span className={`text-micro font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
+                        <span className="text-body font-mono tabular-nums text-foreground">{fmt(rec.amount)}</span>
                       </div>
                     </div>
                   );
                 })}
               </div>
               <div className="flex items-center justify-between px-6 py-3.5 bg-muted/20 border-t border-border/30">
-                <span className="text-[13px] font-semibold text-foreground">{ar ? "إجمالي VAT" : "Total VAT"}</span>
-                <span className="text-[14px] font-bold text-foreground tabular-nums">{fmt(vatRecords.reduce((s, r) => s + r.amount, 0))}</span>
+                <span className="text-body font-semibold text-foreground">{ar ? "إجمالي VAT" : "Total VAT"}</span>
+                <span className="text-body-lg font-bold text-foreground tabular-nums">{fmt(vatRecords.reduce((s, r) => s + r.amount, 0))}</span>
               </div>
             </Section>
 
@@ -433,13 +433,13 @@ export default function FinanceReports() {
                       <div className="flex items-center gap-3">
                         <div className={`w-2 h-2 rounded-full ${st.dot}`} />
                         <div>
-                          <p className="text-[13px] font-medium text-foreground">{rec.period}</p>
-                          <p className="text-[11px] text-muted-foreground/60">{rec.reference}</p>
+                          <p className="text-body font-medium text-foreground">{rec.period}</p>
+                          <p className="text-micro text-muted-foreground/60">{rec.reference}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className={`text-[11px] font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
-                        <span className="text-[13px] font-mono tabular-nums text-foreground">{fmt(rec.amount)}</span>
+                        <span className={`text-micro font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
+                        <span className="text-body font-mono tabular-nums text-foreground">{fmt(rec.amount)}</span>
                       </div>
                     </div>
                   );
@@ -457,21 +457,21 @@ export default function FinanceReports() {
                       <div className="flex items-center gap-3">
                         <div className={`w-2 h-2 rounded-full ${st.dot}`} />
                         <div>
-                          <p className="text-[13px] font-medium text-foreground">{rec.period}</p>
-                          <p className="text-[11px] text-muted-foreground/60">{rec.reference}</p>
+                          <p className="text-body font-medium text-foreground">{rec.period}</p>
+                          <p className="text-micro text-muted-foreground/60">{rec.reference}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className={`text-[11px] font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
-                        <span className="text-[13px] font-mono tabular-nums text-foreground">{fmt(rec.amount)}</span>
+                        <span className={`text-micro font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
+                        <span className="text-body font-mono tabular-nums text-foreground">{fmt(rec.amount)}</span>
                       </div>
                     </div>
                   );
                 })}
               </div>
               <div className="flex items-center justify-between px-6 py-3.5 bg-muted/20 border-t border-border/30">
-                <span className="text-[13px] font-semibold text-foreground">{ar ? "إجمالي التأمينات" : "Total Social Insurance"}</span>
-                <span className="text-[14px] font-bold text-foreground tabular-nums">{fmt(socialRecords.reduce((s, r) => s + r.amount, 0))}</span>
+                <span className="text-body font-semibold text-foreground">{ar ? "إجمالي التأمينات" : "Total Social Insurance"}</span>
+                <span className="text-body-lg font-bold text-foreground tabular-nums">{fmt(socialRecords.reduce((s, r) => s + r.amount, 0))}</span>
               </div>
             </Section>
 
@@ -488,20 +488,20 @@ export default function FinanceReports() {
                           <div className={`w-2.5 h-2.5 rounded-full ${st.dot}`} />
                         </div>
                         <div>
-                          <p className="text-[13px] font-medium text-foreground">{ar ? type.ar : type.en}</p>
-                          <p className="text-[11px] text-muted-foreground/60">{rec.period}</p>
+                          <p className="text-body font-medium text-foreground">{ar ? type.ar : type.en}</p>
+                          <p className="text-micro text-muted-foreground/60">{rec.period}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-6">
                         <div className="text-end">
-                          <p className="text-[11px] text-muted-foreground/60">{ar ? "الاستحقاق" : "Due"}</p>
-                          <p className="text-[12px] font-mono tabular-nums text-foreground">{rec.due_date}</p>
+                          <p className="text-micro text-muted-foreground/60">{ar ? "الاستحقاق" : "Due"}</p>
+                          <p className="text-caption font-mono tabular-nums text-foreground">{rec.due_date}</p>
                         </div>
                         <div className="text-end">
-                          <p className="text-[11px] text-muted-foreground/60">{ar ? "المبلغ" : "Amount"}</p>
-                          <p className="text-[12px] font-mono tabular-nums text-foreground">{fmt(rec.amount)}</p>
+                          <p className="text-micro text-muted-foreground/60">{ar ? "المبلغ" : "Amount"}</p>
+                          <p className="text-caption font-mono tabular-nums text-foreground">{fmt(rec.amount)}</p>
                         </div>
-                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${st.color} ${st.dot}/10`}>{ar ? st.ar : st.en}</span>
+                        <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${st.color} ${st.dot}/10`}>{ar ? st.ar : st.en}</span>
                       </div>
                     </div>
                   );

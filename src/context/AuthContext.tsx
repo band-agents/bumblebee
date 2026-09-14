@@ -79,11 +79,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           settings: (ws.settings as Record<string, unknown>) ?? {},
         });
       } else {
-        if (error) console.error("[THOTH] Workspace fetch failed:", error);
+        if (error) console.error("[Bumblebee] Workspace fetch failed:", error);
         setWorkspace(null);
       }
     } catch (e) {
-      console.error("[THOTH] Workspace fetch threw:", e);
+      console.error("[Bumblebee] Workspace fetch threw:", e);
       setWorkspace(null);
     } finally {
       setWorkspaceLoading(false);
@@ -118,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // "User from sub claim in JWT does not exist" (403) on every request.
           const { error: verifyErr } = await sb.auth.getUser();
           if (verifyErr) {
-            console.warn("[THOTH] Stale session detected — signing out automatically.", verifyErr.message);
+            console.warn("[Bumblebee] Stale session detected — signing out automatically.", verifyErr.message);
             await sb.auth.signOut();
             workspaceLoadedFor.current = null;
             setUser(null);
@@ -167,7 +167,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (isDemoMode) {
       // Demo has no real session — clear the onboarding gate so the app resets,
       // then return to the public landing page.
-      localStorage.removeItem("thoth_onboarding");
+      localStorage.removeItem("bumblebee_onboarding");
     } else {
       setUser(null);
       setSession(null);

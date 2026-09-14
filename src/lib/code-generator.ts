@@ -153,8 +153,8 @@ export const ENTITY_LABELS: Record<EntityType, { en: string; ar: string }> = {
 
 // ─── Counter Storage ─────────────────────────────────────
 
-const STORAGE_KEY = "thoth_code_counters";
-const SETTINGS_KEY = "thoth_code_settings";
+const STORAGE_KEY = "bumblebee_code_counters";
+const SETTINGS_KEY = "bumblebee_code_settings";
 
 function loadCounters(): Record<EntityType, number> {
   try {

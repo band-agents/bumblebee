@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH ERP — Product Catalog + BOM Foundation Migration
+-- Bumblebee ERP — Product Catalog + BOM Foundation Migration
 -- ============================================================
 -- OPTIONAL. Currently products are stored in the resources
 -- table (type = 'product') with BOM, costing, and stages

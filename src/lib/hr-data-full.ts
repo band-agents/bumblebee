@@ -131,7 +131,7 @@ export const HR_BENEFITS: Benefit[] = [
   { id: "bn02", workspace_id: W, name: "Social Insurance", name_ar: "تأمين اجتماعي", description: "Government-mandated social insurance", description_ar: "التأمين الاجتماعي الإلزامي", type: "insurance", provider: "NOSI", cost_per_employee: 0, company_contribution: 0, employee_contribution: 0, eligibility: "All employees", eligibility_ar: "جميع الموظفين", status: "active" },
   { id: "bn03", workspace_id: W, name: "Annual Leave", name_ar: "إجازة سنوية", description: "21 days annual leave (increases with tenure)", description_ar: "٢١ يوم إجازة سنوية (تزيد مع الخدمة)", type: "leave", provider: "Internal", cost_per_employee: 0, company_contribution: 0, employee_contribution: 0, eligibility: "All employees after 6 months", eligibility_ar: "جميع الموظفين بعد ٦ أشهر", status: "active" },
   { id: "bn04", workspace_id: W, name: "Transportation", name_ar: "مواصلات", description: "Company bus service or transport allowance", description_ar: "خدمة حافلات الشركة أو بدل مواصلات", type: "perk", provider: "Internal", cost_per_employee: 6000, company_contribution: 6000, employee_contribution: 0, eligibility: "Employees at 10th Ramadan branch", eligibility_ar: "موظفو فرع العاشر من رمضان", status: "active" },
-  { id: "bn05", workspace_id: W, name: "Staff Discount", name_ar: "خصم موظفين", description: "30% discount on all THOTH products", description_ar: "خصم ٣٠٪ على جميع منتجات ثوت", type: "perk", provider: "Internal", cost_per_employee: 0, company_contribution: 0, employee_contribution: 0, eligibility: "All employees", eligibility_ar: "جميع الموظفين", status: "active" },
+  { id: "bn05", workspace_id: W, name: "Staff Discount", name_ar: "خصم موظفين", description: "30% discount on all Bumblebee products", description_ar: "خصم ٣٠٪ على جميع منتجات ثوت", type: "perk", provider: "Internal", cost_per_employee: 0, company_contribution: 0, employee_contribution: 0, eligibility: "All employees", eligibility_ar: "جميع الموظفين", status: "active" },
   { id: "bn06", workspace_id: W, name: "Training Budget", name_ar: "ميزانية التدريب", description: "Annual training budget per employee", description_ar: "ميزانية تدريب سنوية لكل موظف", type: "education", provider: "Internal", cost_per_employee: 5000, company_contribution: 5000, employee_contribution: 0, eligibility: "Grade 3+ employees", eligibility_ar: "موظفو المستوى ٣ فما فوق", status: "active" },
   { id: "bn07", workspace_id: W, name: "End of Service", name_ar: "مكافأة نهاية الخدمة", description: "Gratuity per Egyptian labor law", description_ar: "مكافأة وفقاً لقانون العمل المصري", type: "retirement", provider: "Internal", cost_per_employee: 0, company_contribution: 0, employee_contribution: 0, eligibility: "All employees after 1 year", eligibility_ar: "جميع الموظفين بعد سنة", status: "active" },
   { id: "bn08", workspace_id: W, name: "Life Insurance", name_ar: "تأمين على الحياة", description: "Group life insurance coverage", description_ar: "تغطية تأمين جماعي على الحياة", type: "insurance", provider: "MetLife Egypt", cost_per_employee: 2400, company_contribution: 2400, employee_contribution: 0, eligibility: "Grade 4+ employees", eligibility_ar: "موظفو المستوى ٤ فما فوق", status: "active" },
@@ -307,14 +307,14 @@ export const HR_PULSE_SURVEYS: PulseSurvey[] = [
     { question: "Do you feel valued by your manager?", question_ar: "هل تشعر بالتقدير من مديرك؟", category: "management" },
     { question: "How is the work-life balance?", question_ar: "كيف التوازن بين العمل والحياة؟", category: "wellbeing" },
     { question: "Do you have the tools to do your job well?", question_ar: "هل لديك الأدوات للقيام بعملك جيداً؟", category: "resources" },
-    { question: "Would you recommend THOTH as a workplace?", question_ar: "هل توصي بثوت ك مكان عمل؟", category: "engagement" },
+    { question: "Would you recommend Bumblebee as a workplace?", question_ar: "هل توصي بثوت ك مكان عمل؟", category: "engagement" },
   ], status: "closed", responses_count: 20, avg_satisfaction: 4.1, created_at: d(90), closed_at: d(80) },
   { id: "ps02", workspace_id: W, title: "Q2 2026 Employee Satisfaction", title_ar: "رضا الموظفين Q2 2026", questions: [
     { question: "How satisfied are you with your role?", question_ar: "ما مدى رضاك عن دورك؟", category: "satisfaction" },
     { question: "Do you feel valued by your manager?", question_ar: "هل تشعر بالتقدير من مديرك؟", category: "management" },
     { question: "How is the work-life balance?", question_ar: "كيف التوازن بين العمل والحياة؟", category: "wellbeing" },
     { question: "Do you have the tools to do your job well?", question_ar: "هل لديك الأدوات للقيام بعملك جيداً؟", category: "resources" },
-    { question: "Would you recommend THOTH as a workplace?", question_ar: "هل توصي بثوت ك مكان عمل؟", category: "engagement" },
+    { question: "Would you recommend Bumblebee as a workplace?", question_ar: "هل توصي بثوت ك مكان عمل؟", category: "engagement" },
   ], status: "active", responses_count: 12, avg_satisfaction: 4.3, created_at: d(5), closed_at: null },
 ];
 

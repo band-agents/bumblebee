@@ -21,8 +21,8 @@ export interface EntityMeta {
 
 const TYPE_COLORS: Record<EntityType, string> = {
   person:       "bg-blue-100 text-blue-700",
-  organization: "bg-violet-100 text-violet-700",
-  work:         "bg-amber-100 text-amber-700",
+  organization: "bg-chart-4/15 text-chart-4",
+  work:         "bg-warning/15 text-warning",
   deal:         "bg-emerald-100 text-emerald-700",
   invoice:      "bg-rose-100 text-rose-700",
   resource:     "bg-cyan-100 text-cyan-700",

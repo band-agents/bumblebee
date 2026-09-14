@@ -1,12 +1,12 @@
 /**
  * Landing — "The Joyful Operating System"
  *
- * A playful, tech-forward marketing page built on the real THOTH brand palette
+ * A playful, tech-forward marketing page built on the real Bumblebee brand palette
  * (cream + mint canvas, teal & purple as a duo, ink text) with Forum display +
  * Darker Grotesque body. Heavy on motion: floating module cards, count-up
  * stats, a brand marquee, scroll reveals, magnetic CTAs and a breathing ibis.
  *
- * Industry-agnostic copy: THOTH adapts to any business and speaks your words.
+ * Industry-agnostic copy: Bumblebee adapts to any business and speaks your words.
  */
 
 import { useRef, useState, useEffect } from "react";
@@ -127,7 +127,7 @@ function Magnetic({ children, className = "", onClick, primary }: {
       style={{ x: sx, y: sy }}
       whileTap={{ scale: 0.96 }}
       className={
-        "group relative inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 text-[19px] font-bold transition-shadow " +
+        "group relative inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 text-title font-bold transition-shadow " +
         (primary
           ? "text-[var(--cream)] shadow-[0_10px_30px_-8px_rgba(58,125,122,0.6)] hover:shadow-[0_16px_40px_-8px_rgba(58,125,122,0.7)]"
           : "text-[var(--ink)]") +
@@ -168,8 +168,8 @@ function HeroStage() {
         <motion.div animate={{ rotate: [0, 3, -3, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
           <Ibis size={48} />
         </motion.div>
-        <span className="mt-2 text-[var(--cream)] text-[15px] tracking-[0.32em]" style={display}>THOTH</span>
-        <span className="text-[var(--ink-soft)] text-[12px] tracking-[0.2em] mt-0.5" style={body}>YOUR OS</span>
+        <span className="mt-2 text-[var(--cream)] text-body-lg tracking-[0.32em]" style={display}>Bumblebee</span>
+        <span className="text-[var(--ink-soft)] text-caption tracking-[0.2em] mt-0.5" style={body}>YOUR OS</span>
       </motion.div>
 
       {/* orbit ring */}
@@ -198,7 +198,7 @@ function HeroStage() {
             <span className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: c.tint }}>
               <c.icon size={17} className="text-white" />
             </span>
-            <span className="text-[19px] font-bold text-[var(--ink)] leading-none" style={body}>{c.label}</span>
+            <span className="text-title font-bold text-[var(--ink)] leading-none" style={body}>{c.label}</span>
           </motion.div>
         </motion.div>
       ))}
@@ -245,7 +245,7 @@ function Marquee() {
         transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
       >
         {[...MARQUEE, ...MARQUEE].map((m, i) => (
-          <span key={i} className="inline-flex items-center gap-8 text-[26px] text-[var(--cream)]/80" style={display}>
+          <span key={i} className="inline-flex items-center gap-8 text-display text-[var(--cream)]/80" style={display}>
             {m}
             <Sparkles size={15} className="text-[var(--teal)]" />
           </span>
@@ -289,10 +289,10 @@ function MiniChart() {
         ))}
       </div>
       <div className="mt-2.5 flex items-baseline gap-1.5">
-        <span className="text-[26px] leading-none text-[var(--teal-deep)]" style={display}>
-          {inView && <Counter to={284} duration={1.4} />}<span className="text-[16px]">K</span>
+        <span className="text-display leading-none text-[var(--teal-deep)]" style={display}>
+          {inView && <Counter to={284} duration={1.4} />}<span className="text-title">K</span>
         </span>
-        <span className="text-[14px] font-bold text-emerald-600">▲ 18%</span>
+        <span className="text-body-lg font-bold text-emerald-600">▲ 18%</span>
       </div>
     </div>
   );
@@ -301,13 +301,13 @@ function MiniChart() {
 /** Quotation card with line items + a discount badge. */
 function MiniQuote() {
   return (
-    <div className="text-[14px]">
+    <div className="text-body-lg">
       <div className="flex items-center justify-between mb-2.5">
-        <span className="font-mono text-[13px] px-2 py-0.5 rounded-md bg-[var(--mint)] text-[var(--teal-deep)]">QT-00042</span>
+        <span className="font-mono text-body px-2 py-0.5 rounded-md bg-[var(--mint)] text-[var(--teal-deep)]">QT-00042</span>
         <motion.span
           initial={{ scale: 0, rotate: -12 }} whileInView={{ scale: 1, rotate: -8 }} viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 300, delay: 0.3 }}
-          className="text-[13px] font-bold px-2 py-0.5 rounded-md bg-[var(--purple)] text-white">−15% off</motion.span>
+          className="text-body font-bold px-2 py-0.5 rounded-md bg-[var(--purple)] text-white">−15% off</motion.span>
       </div>
       {[["3× Oak chair", "1,200"], ["1× Walnut table", "4,800"]].map(([a, b]) => (
         <div key={a} className="flex items-center justify-between py-1.5 border-b border-[var(--ink)]/6">
@@ -317,7 +317,7 @@ function MiniQuote() {
       ))}
       <div className="flex items-center justify-between pt-2.5">
         <span className="font-bold">Total</span>
-        <span className="text-[19px] font-bold text-[var(--teal-deep)]">EGP 5,100</span>
+        <span className="text-title font-bold text-[var(--teal-deep)]">EGP 5,100</span>
       </div>
     </div>
   );
@@ -334,12 +334,12 @@ function MiniKanban() {
     <div className="grid grid-cols-3 gap-2">
       {cols.map((col, ci) => (
         <div key={col.t}>
-          <p className="text-[12px] font-bold text-[var(--ink-soft)] mb-1.5">{col.t}</p>
+          <p className="text-caption font-bold text-[var(--ink-soft)] mb-1.5">{col.t}</p>
           <div className="space-y-1.5">
             {col.c.map((chip, i) => (
               <motion.div key={chip}
                 animate={{ y: [0, -3, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: ci * 0.3 + i * 0.4, ease: "easeInOut" }}
-                className="h-7 rounded-lg flex items-center px-2 text-[12px] font-bold text-white" style={{ background: col.tint }}>
+                className="h-7 rounded-lg flex items-center px-2 text-caption font-bold text-white" style={{ background: col.tint }}>
                 {chip}
               </motion.div>
             ))}
@@ -359,7 +359,7 @@ function MiniStock() {
     <div className="space-y-3" ref={ref}>
       {items.map(([name, pct, tint], i) => (
         <div key={name}>
-          <div className="flex items-center justify-between text-[13px] font-bold mb-1">
+          <div className="flex items-center justify-between text-body font-bold mb-1">
             <span>{name}</span><span className="text-[var(--ink-soft)]">{pct}%</span>
           </div>
           <div className="h-2.5 rounded-full bg-[var(--ink)]/8 overflow-hidden">
@@ -385,7 +385,7 @@ function Capabilities() {
     <section id="capabilities" className="py-24 sm:py-32 bg-[var(--cream)]">
       <div className="max-w-[1200px] mx-auto px-5">
         <Reveal>
-          <p className="text-[19px] font-bold text-[var(--purple)] mb-3">A PEEK INSIDE</p>
+          <p className="text-title font-bold text-[var(--purple)] mb-3">A PEEK INSIDE</p>
           <h2 className="text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.02] max-w-[20ch]" style={display}>
             Real tools, doing real work — and looking good doing it.
           </h2>
@@ -402,10 +402,10 @@ function Capabilities() {
                   <span className="w-11 h-11 rounded-2xl flex items-center justify-center" style={{ background: c.tint }}>
                     <c.icon size={19} className="text-white" />
                   </span>
-                  <h3 className="text-[26px] leading-none" style={display}>{c.label}</h3>
+                  <h3 className="text-display leading-none" style={display}>{c.label}</h3>
                 </div>
                 <div className="rounded-2xl bg-[var(--cream)] border border-[var(--ink)]/6 p-4 mb-4">{c.mock}</div>
-                <p className="text-[18px] leading-[1.25] text-[var(--ink-soft)] font-medium">{c.copy}</p>
+                <p className="text-title leading-[1.25] text-[var(--ink-soft)] font-medium">{c.copy}</p>
               </motion.div>
             </Reveal>
           ))}
@@ -416,7 +416,7 @@ function Capabilities() {
 }
 
 const STEPS = [
-  { n: "1", icon: Sparkles, tint: "var(--teal)", t: "Answer 6 questions", c: "Tell THOTH your trade and team. It pre-picks the right modules and names them your way." },
+  { n: "1", icon: Sparkles, tint: "var(--teal)", t: "Answer 6 questions", c: "Tell Bumblebee your trade and team. It pre-picks the right modules and names them your way." },
   { n: "2", icon: Boxes, tint: "var(--purple)", t: "Pour in your data", c: "Import from a spreadsheet or start from sample data. Your codes, your formats — instantly." },
   { n: "3", icon: Gauge, tint: "var(--ink)", t: "Run the whole show", c: "Sell, make, stock, pay, analyse — every corner of the business in one joyful place." },
 ];
@@ -426,7 +426,7 @@ function HowItWorks() {
     <section className="py-24 sm:py-32">
       <div className="max-w-[1100px] mx-auto px-5">
         <Reveal className="text-center mb-14">
-          <p className="text-[19px] font-bold text-[var(--teal)] mb-3">LIVE IN MINUTES</p>
+          <p className="text-title font-bold text-[var(--teal)] mb-3">LIVE IN MINUTES</p>
           <h2 className="text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.02]" style={display}>Three steps. No IT degree.</h2>
         </Reveal>
         <div className="grid md:grid-cols-3 gap-5 relative">
@@ -437,10 +437,10 @@ function HowItWorks() {
                   animate={{ rotate: [0, 6, -6, 0] }} transition={{ duration: 4, repeat: Infinity, delay: i * 0.5, ease: "easeInOut" }}
                   className="w-16 h-16 rounded-3xl mx-auto mb-5 flex items-center justify-center relative" style={{ background: s.tint }}>
                   <s.icon size={26} className="text-white" />
-                  <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[var(--cream)] border-2 border-[var(--ink)]/10 flex items-center justify-center text-[15px] font-bold" style={display}>{s.n}</span>
+                  <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[var(--cream)] border-2 border-[var(--ink)]/10 flex items-center justify-center text-body-lg font-bold" style={display}>{s.n}</span>
                 </motion.div>
-                <h3 className="text-[26px] leading-tight mb-2" style={display}>{s.t}</h3>
-                <p className="text-[18px] leading-[1.25] text-[var(--ink-soft)] font-medium">{s.c}</p>
+                <h3 className="text-display leading-tight mb-2" style={display}>{s.t}</h3>
+                <p className="text-title leading-[1.25] text-[var(--ink-soft)] font-medium">{s.c}</p>
               </motion.div>
             </Reveal>
           ))}
@@ -485,14 +485,14 @@ export default function Landing() {
           >
             <a href="/" className="flex items-center gap-2">
               <Ibis size={24} />
-              <span className="text-[22px] tracking-[0.14em] leading-none" style={display}>THOTH</span>
+              <span className="text-heading tracking-[0.14em] leading-none" style={display}>Bumblebee</span>
             </a>
-            <div className="hidden md:flex items-center gap-7 text-[18px] font-semibold text-[var(--ink-soft)]">
+            <div className="hidden md:flex items-center gap-7 text-title font-semibold text-[var(--ink-soft)]">
               {[["Powers", "powers"], ["Inside", "capabilities"], ["Product", "product"], ["Pricing", "pricing"]].map(([l, id]) => (
                 <a key={id} href={`#${id}`} className="hover:text-[var(--ink)] transition-colors">{l}</a>
               ))}
             </div>
-            <button onClick={goAuth} className="rounded-full bg-[var(--ink)] text-[var(--cream)] text-[17px] font-bold px-5 py-2.5 hover:bg-[var(--teal)] transition-colors">
+            <button onClick={goAuth} className="rounded-full bg-[var(--ink)] text-[var(--cream)] text-title font-bold px-5 py-2.5 hover:bg-[var(--teal)] transition-colors">
               Sign in
             </button>
           </motion.nav>
@@ -504,7 +504,7 @@ export default function Landing() {
         <Orbs />
         <div className="relative max-w-[1200px] mx-auto px-5 grid lg:grid-cols-2 gap-10 items-center">
           <motion.div variants={heroStagger} initial="hidden" animate="show">
-            <motion.div variants={heroItem} className="inline-flex items-center gap-2 rounded-full bg-[var(--mint)] text-[var(--teal-deep)] px-4 py-1.5 text-[16px] font-bold mb-6">
+            <motion.div variants={heroItem} className="inline-flex items-center gap-2 rounded-full bg-[var(--mint)] text-[var(--teal-deep)] px-4 py-1.5 text-title font-bold mb-6">
               <Zap size={14} /> One system for the whole business
             </motion.div>
             <motion.h1 variants={heroItem} className="text-[clamp(3rem,7vw,5.6rem)] leading-[0.95] tracking-[-0.01em]" style={display}>
@@ -520,8 +520,8 @@ export default function Landing() {
                 />
               </span>
             </motion.h1>
-            <motion.p variants={heroItem} className="mt-6 text-[22px] leading-[1.25] text-[var(--ink-soft)] max-w-[40ch] font-medium">
-              THOTH is the business operating system that shapes itself around <em className="text-[var(--purple)] not-italic font-bold">your</em> trade — your words, your codes, your workflow. Sales to production to payroll, in one playful place.
+            <motion.p variants={heroItem} className="mt-6 text-heading leading-[1.25] text-[var(--ink-soft)] max-w-[40ch] font-medium">
+              Bumblebee is the business operating system that shapes itself around <em className="text-[var(--purple)] not-italic font-bold">your</em> trade — your words, your codes, your workflow. Sales to production to payroll, in one playful place.
             </motion.p>
             <motion.div variants={heroItem} className="mt-9 flex flex-wrap items-center gap-3">
               <Magnetic primary onClick={goAuth} className="bg-[var(--teal)]">
@@ -531,7 +531,7 @@ export default function Landing() {
                 See it move
               </Magnetic>
             </motion.div>
-            <motion.div variants={heroItem} className="mt-8 flex items-center gap-2 text-[17px] font-semibold text-[var(--ink-soft)]">
+            <motion.div variants={heroItem} className="mt-8 flex items-center gap-2 text-title font-semibold text-[var(--ink-soft)]">
               <div className="flex -space-x-1.5">
                 {["var(--teal)", "var(--purple)", "var(--ink)"].map((c) => (
                   <span key={c} className="w-6 h-6 rounded-full border-2 border-[var(--cream)]" style={{ background: c }} />
@@ -551,7 +551,7 @@ export default function Landing() {
       <section id="powers" className="py-24 sm:py-32">
         <div className="max-w-[1200px] mx-auto px-5">
           <Reveal>
-            <p className="text-[19px] font-bold text-[var(--teal)] mb-3">THE THREE POWERS OF THOTH</p>
+            <p className="text-title font-bold text-[var(--teal)] mb-3">THE THREE POWERS OF Bumblebee</p>
             <h2 className="text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.02] max-w-[18ch]" style={display}>
               The scribe-god's job, rebuilt for your business.
             </h2>
@@ -568,10 +568,10 @@ export default function Landing() {
                     <p.icon size={24} className="text-white" />
                   </span>
                   <div className="flex items-baseline gap-2.5">
-                    <h3 className="text-[34px] leading-none" style={display}>{p.k}</h3>
-                    <span className="text-[16px] font-bold text-[var(--ink-soft)] uppercase tracking-wide">{p.sub}</span>
+                    <h3 className="text-display leading-none" style={display}>{p.k}</h3>
+                    <span className="text-title font-bold text-[var(--ink-soft)] uppercase tracking-wide">{p.sub}</span>
                   </div>
-                  <p className="mt-3 text-[19px] leading-[1.25] text-[var(--ink-soft)] font-medium">{p.copy}</p>
+                  <p className="mt-3 text-title leading-[1.25] text-[var(--ink-soft)] font-medium">{p.copy}</p>
                 </motion.div>
               </Reveal>
             ))}
@@ -585,14 +585,14 @@ export default function Landing() {
       <section id="product" className="py-24 sm:py-28 bg-[var(--ink)] text-[var(--cream)] relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center relative">
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--teal)]/20 text-[var(--mint)] px-4 py-1.5 text-[16px] font-bold mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--teal)]/20 text-[var(--mint)] px-4 py-1.5 text-title font-bold mb-6">
               <Globe size={14} /> Industry-agnostic by design
             </div>
             <h2 className="text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.02]" style={display}>
               It learns to speak your trade.
             </h2>
-            <p className="mt-5 text-[21px] leading-[1.3] text-[var(--cream)]/70 font-medium max-w-[44ch]">
-              Fashion atelier, furniture workshop, retail chain or a studio of one — onboarding tailors the modules, the vocabulary and the code formats to you. Call them garments or gadgets; THOTH adapts.
+            <p className="mt-5 text-heading leading-[1.3] text-[var(--cream)]/70 font-medium max-w-[44ch]">
+              Fashion atelier, furniture workshop, retail chain or a studio of one — onboarding tailors the modules, the vocabulary and the code formats to you. Call them garments or gadgets; Bumblebee adapts.
             </p>
             <div className="mt-8 grid grid-cols-2 gap-3 max-w-[440px]">
               {[
@@ -600,7 +600,7 @@ export default function Landing() {
                 "Your production stages", "Your starter data",
               ].map((f, i) => (
                 <Reveal key={f} delay={i * 0.08}>
-                  <div className="flex items-center gap-2.5 text-[18px] font-semibold">
+                  <div className="flex items-center gap-2.5 text-title font-semibold">
                     <span className="w-6 h-6 rounded-full bg-[var(--teal)] flex items-center justify-center shrink-0"><Check size={13} /></span>
                     {f}
                   </div>
@@ -612,7 +612,7 @@ export default function Landing() {
           {/* Code-format playground mock */}
           <Reveal delay={0.15}>
             <div className="rounded-[28px] border border-white/10 p-6 shadow-2xl" style={{ background: "#23262d" }}>
-              <p className="text-[15px] font-bold text-[var(--cream)]/50 mb-4 tracking-wide">YOUR CODE SYSTEM, LIVE</p>
+              <p className="text-body-lg font-bold text-[var(--cream)]/50 mb-4 tracking-wide">YOUR CODE SYSTEM, LIVE</p>
               {[
                 { label: "Quotation", code: "QA-12345", tint: "var(--teal)" },
                 { label: "Product", code: "FASH23400", tint: "var(--purple)" },
@@ -626,11 +626,11 @@ export default function Landing() {
                   transition={{ delay: 0.2 + i * 0.15, duration: 0.5, ease: EASE }}
                   className="flex items-center justify-between py-3.5 border-b border-white/8 last:border-0"
                 >
-                  <span className="text-[19px] font-semibold text-[var(--cream)]/80">{r.label}</span>
-                  <span className="font-mono text-[17px] px-3 py-1 rounded-lg" style={{ background: r.tint, color: r.dark ? "var(--ink)" : "white" }}>{r.code}</span>
+                  <span className="text-title font-semibold text-[var(--cream)]/80">{r.label}</span>
+                  <span className="font-mono text-title px-3 py-1 rounded-lg" style={{ background: r.tint, color: r.dark ? "var(--ink)" : "white" }}>{r.code}</span>
                 </motion.div>
               ))}
-              <p className="mt-4 text-[15px] text-[var(--cream)]/40 font-medium">Prefix · separator · digits · year · start — all yours.</p>
+              <p className="mt-4 text-body-lg text-[var(--cream)]/40 font-medium">Prefix · separator · digits · year · start — all yours.</p>
             </div>
           </Reveal>
         </div>
@@ -651,7 +651,7 @@ export default function Landing() {
               <div className="text-[clamp(2.6rem,5vw,4rem)] leading-none text-[var(--teal-deep)]" style={display}>
                 <Counter to={st.n} suffix={st.s} />
               </div>
-              <p className="mt-2 text-[18px] font-semibold text-[var(--ink-soft)]">{st.l}</p>
+              <p className="mt-2 text-title font-semibold text-[var(--ink-soft)]">{st.l}</p>
             </Reveal>
           ))}
         </div>
@@ -662,7 +662,7 @@ export default function Landing() {
         <div className="max-w-[1100px] mx-auto px-5">
           <Reveal className="text-center">
             <h2 className="text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.02]" style={display}>Pricing that grows with you.</h2>
-            <p className="mt-3 text-[20px] font-medium text-[var(--ink-soft)]">Start free. Upgrade when the workshop hums.</p>
+            <p className="mt-3 text-heading font-medium text-[var(--ink-soft)]">Start free. Upgrade when the workshop hums.</p>
           </Reveal>
           <div className="mt-14 grid md:grid-cols-3 gap-5 items-start">
             {PLANS.map((pl, i) => (
@@ -673,24 +673,24 @@ export default function Landing() {
                   className={"relative rounded-[28px] p-7 border " + (pl.pop ? "bg-[var(--ink)] text-[var(--cream)] border-transparent shadow-[0_24px_60px_-24px_rgba(45,49,57,0.6)]" : "bg-[var(--paper)] border-[var(--ink)]/8")}
                 >
                   {pl.pop && (
-                    <span className="absolute -top-3 left-7 rounded-full bg-[var(--teal)] text-white text-[14px] font-bold px-3 py-1 flex items-center gap-1">
+                    <span className="absolute -top-3 left-7 rounded-full bg-[var(--teal)] text-white text-body-lg font-bold px-3 py-1 flex items-center gap-1">
                       <Star size={12} /> Most loved
                     </span>
                   )}
-                  <h3 className="text-[28px]" style={display}>{pl.name}</h3>
+                  <h3 className="text-display" style={display}>{pl.name}</h3>
                   <div className="mt-3 flex items-baseline gap-1.5">
-                    <span className="text-[44px] leading-none" style={display}>{pl.price}</span>
-                    <span className={"text-[16px] font-semibold " + (pl.pop ? "text-[var(--cream)]/60" : "text-[var(--ink-soft)]")}>{pl.unit}</span>
+                    <span className="text-display leading-none" style={display}>{pl.price}</span>
+                    <span className={"text-title font-semibold " + (pl.pop ? "text-[var(--cream)]/60" : "text-[var(--ink-soft)]")}>{pl.unit}</span>
                   </div>
                   <ul className="mt-6 space-y-2.5">
                     {pl.feats.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-[18px] font-semibold">
+                      <li key={f} className="flex items-center gap-2.5 text-title font-semibold">
                         <span className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: pl.tint }}><Check size={12} className="text-white" /></span>
                         {f}
                       </li>
                     ))}
                   </ul>
-                  <button onClick={goAuth} className={"mt-7 w-full rounded-full py-3 text-[18px] font-bold transition-colors " + (pl.pop ? "bg-[var(--teal)] text-white hover:bg-[var(--teal-deep)]" : "bg-[var(--ink)] text-[var(--cream)] hover:bg-[var(--teal)]")}>
+                  <button onClick={goAuth} className={"mt-7 w-full rounded-full py-3 text-title font-bold transition-colors " + (pl.pop ? "bg-[var(--teal)] text-white hover:bg-[var(--teal-deep)]" : "bg-[var(--ink)] text-[var(--cream)] hover:bg-[var(--teal)]")}>
                     {pl.cta}
                   </button>
                 </motion.div>
@@ -716,7 +716,7 @@ export default function Landing() {
                   Your business, finally<br />in one joyful place.
                 </h2>
                 <div className="mt-8 flex justify-center">
-                  <Magnetic onClick={goAuth} className="bg-[var(--cream)] text-[var(--ink)] text-[21px]">
+                  <Magnetic onClick={goAuth} className="bg-[var(--cream)] text-[var(--ink)] text-heading">
                     Start free today <ArrowRight size={19} className="transition-transform group-hover:translate-x-1" />
                   </Magnetic>
                 </div>
@@ -731,9 +731,9 @@ export default function Landing() {
         <div className="max-w-[1200px] mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Ibis size={22} />
-            <span className="text-[20px] tracking-[0.14em]" style={display}>THOTH</span>
+            <span className="text-heading tracking-[0.14em]" style={display}>Bumblebee</span>
           </div>
-          <p className="text-[16px] font-semibold text-[var(--ink-soft)]">© 2026 THOTH · Cairo, Egypt · The god of records would approve.</p>
+          <p className="text-title font-semibold text-[var(--ink-soft)]">© 2026 Bumblebee · Cairo, Egypt · The god of records would approve.</p>
         </div>
       </footer>
     </div>

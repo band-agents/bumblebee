@@ -60,7 +60,7 @@ export interface Expense {
 
 export const INVOICE_STATUS_META: Record<InvoiceStatus, { en: string; ar: string; dot: string; pill: string }> = {
   draft:     { en: "Draft",     ar: "مسودة",    dot: "bg-stone-400",         pill: "bg-stone-100 text-stone-600 border border-stone-200" },
-  sent:      { en: "Sent",      ar: "مُرسلة",   dot: "bg-primary",           pill: "bg-primary/8 text-primary border border-primary/20" },
+  sent:      { en: "Sent",      ar: "مُرسلة",   dot: "bg-primary",           pill: "bg-primary/8 text-brand-ink border border-primary/20" },
   paid:      { en: "Paid",      ar: "مدفوعة",   dot: "bg-emerald-500",       pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   overdue:   { en: "Overdue",   ar: "متأخرة",   dot: "bg-rose-500",          pill: "bg-rose-50 text-rose-600 border border-rose-200" },
   cancelled: { en: "Cancelled", ar: "ملغاة",    dot: "bg-muted-foreground/40", pill: "bg-muted text-muted-foreground border border-border" },
@@ -75,15 +75,15 @@ export const PAYMENT_METHOD_META: Record<PaymentMethod, { en: string; ar: string
 
 export const EXPENSE_CATEGORY_META: Record<ExpenseCategory, { en: string; ar: string; pill: string }> = {
   operations: { en: "Operations", ar: "العمليات",  pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-  payroll:    { en: "Payroll",    ar: "الرواتب",   pill: "bg-violet-50 text-violet-700 border border-violet-200" },
-  marketing:  { en: "Marketing",  ar: "التسويق",   pill: "bg-amber-50 text-amber-700 border border-amber-200" },
+  payroll:    { en: "Payroll",    ar: "الرواتب",   pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  marketing:  { en: "Marketing",  ar: "التسويق",   pill: "bg-warning/10 text-warning border border-warning/30" },
   software:   { en: "Software",   ar: "البرمجيات", pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
   travel:     { en: "Travel",     ar: "السفر",     pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   other:      { en: "Other",      ar: "أخرى",      pill: "bg-muted text-muted-foreground border border-border" },
 };
 
 export const EXPENSE_STATUS_META: Record<ExpenseStatus, { en: string; ar: string; dot: string }> = {
-  pending:  { en: "Pending",  ar: "معلقة",    dot: "bg-amber-500" },
+  pending:  { en: "Pending",  ar: "معلقة",    dot: "bg-warning" },
   approved: { en: "Approved", ar: "معتمدة",   dot: "bg-primary" },
   paid:     { en: "Paid",     ar: "مدفوعة",   dot: "bg-emerald-500" },
   rejected: { en: "Rejected", ar: "مرفوضة",   dot: "bg-rose-500" },
@@ -204,9 +204,9 @@ const DEFAULT_EXPENSES: Expense[] = [
 
 import { getLiveInvoices, getLiveExpenses } from "../lib/dashboard-bridge";
 
-const INV_KEY = "thoth_invoices";
-const PAY_KEY = "thoth_payments";
-const EXP_KEY = "thoth_expenses";
+const INV_KEY = "bumblebee_invoices";
+const PAY_KEY = "bumblebee_payments";
+const EXP_KEY = "bumblebee_expenses";
 
 function loadArray<T>(key: string, defaults: T[]): T[] {
   try { const s = localStorage.getItem(key); if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length) return p; } } catch (_) {}

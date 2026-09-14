@@ -23,16 +23,16 @@ import { type ImportTemplate } from "../lib/csv-export";
 
 type Resource = Database["public"]["Tables"]["resources"]["Row"];
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
-const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-[11px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-micro font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
 
 const MATERIAL_CATEGORIES = [
   { value: "thread", en: "Thread & Yarn", ar: "خيوط", icon: Scissors, color: "bg-blue-100 text-blue-600" },
-  { value: "buttons", en: "Buttons & Snaps", ar: "أزرار", icon: Tag, color: "bg-amber-100 text-amber-700" },
-  { value: "zippers", en: "Zippers", ar: "سحابات", icon: Box, color: "bg-violet-100 text-violet-600" },
+  { value: "buttons", en: "Buttons & Snaps", ar: "أزرار", icon: Tag, color: "bg-warning/15 text-warning" },
+  { value: "zippers", en: "Zippers", ar: "سحابات", icon: Box, color: "bg-chart-4/15 text-chart-4" },
   { value: "lining", en: "Lining", ar: "بطانة", icon: Package, color: "bg-emerald-100 text-emerald-700" },
   { value: "elastic", en: "Elastic", ar: "مرونة", icon: Sparkles, color: "bg-rose-100 text-rose-600" },
   { value: "labels", en: "Labels & Tags", ar: "مُلصقات", icon: Tag, color: "bg-cyan-100 text-cyan-700" },
@@ -187,13 +187,13 @@ export default function InventoryMaterialsPage() {
               <ArrowLeft size={16} />
             </Link>
             <div>
-              <h1 className="text-[22px] font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h1 className="text-heading font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
                 <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center">
                   <Scissors size={16} className="text-blue-600" />
                 </div>
                 {ar ? "المواد" : "Materials"}
               </h1>
-              <p className="text-[13px] text-muted-foreground mt-1 ml-[46px]">
+              <p className="text-body text-muted-foreground mt-1 ml-[46px]">
                 {ar ? `${items.length} مادة` : `${items.length} material types`}
               </p>
             </div>
@@ -209,29 +209,29 @@ export default function InventoryMaterialsPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: ar ? "إجمالي" : "Total Items", value: stats.total, color: "bg-blue-100 text-blue-600" },
-            { label: ar ? "الفئات" : "Categories", value: stats.categories, color: "bg-violet-100 text-violet-600" },
-            { label: ar ? "كمية قليلة" : "Low Stock", value: stats.lowStock, color: "bg-amber-100 text-amber-700" },
+            { label: ar ? "الفئات" : "Categories", value: stats.categories, color: "bg-chart-4/15 text-chart-4" },
+            { label: ar ? "كمية قليلة" : "Low Stock", value: stats.lowStock, color: "bg-warning/15 text-warning" },
             { label: ar ? "القيمة" : "Total Value", value: stats.totalValue.toLocaleString(), color: "bg-emerald-100 text-emerald-700" },
           ].map((s, i) => (
             <div key={i} className="p-4 rounded-xl border border-border/40 bg-background">
               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${s.color} mb-2`}>
                 <Package size={13} />
               </div>
-              <p className="text-[11px] text-muted-foreground">{s.label}</p>
-              <p className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+              <p className="text-micro text-muted-foreground">{s.label}</p>
+              <p className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
             </div>
           ))}
         </div>
 
         {/* Category quick filters */}
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => setFilterCategory("")} className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${!filterCategory ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
+          <button onClick={() => setFilterCategory("")} className={`px-3 py-1.5 rounded-lg text-micro font-medium transition-colors ${!filterCategory ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
             {ar ? "الكل" : "All"}
           </button>
           {categoryStats.map(c => {
             const Icon = c.icon;
             return (
-              <button key={c.value} onClick={() => setFilterCategory(c.value === filterCategory ? "" : c.value)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${filterCategory === c.value ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
+              <button key={c.value} onClick={() => setFilterCategory(c.value === filterCategory ? "" : c.value)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-micro font-medium transition-colors ${filterCategory === c.value ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
                 <Icon size={11} />
                 {ar ? c.ar : c.en}
                 <span className="opacity-60">({c.count})</span>
@@ -243,7 +243,7 @@ export default function InventoryMaterialsPage() {
         {/* Search */}
         <div className="relative max-w-[300px]">
           <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث في المواد..." : "Search materials..."} className={inputCls + " h-9 pl-9 text-[12px]"} />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث في المواد..." : "Search materials..."} className={inputCls + " h-9 pl-9 text-caption"} />
         </div>
 
         {/* Materials List */}
@@ -252,11 +252,11 @@ export default function InventoryMaterialsPage() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <Package size={32} className="mx-auto text-muted-foreground/30 mb-3" />
-            <p className="text-[14px] text-muted-foreground">{ar ? "لا توجد مواد" : "No materials found"}</p>
+            <p className="text-body-lg text-muted-foreground">{ar ? "لا توجد مواد" : "No materials found"}</p>
           </div>
         ) : (
           <div className="bg-background border border-border/40 rounded-xl overflow-hidden">
-            <table className="w-full text-[12px]">
+            <table className="w-full text-caption">
               <thead>
                 <tr className="bg-muted/30">
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">{ar ? "الاسم" : "Name"}</th>
@@ -279,7 +279,7 @@ export default function InventoryMaterialsPage() {
                       <td className="px-4 py-3 font-medium">{r.name_en}</td>
                       <td className="px-4 py-3 font-mono text-muted-foreground">{m.sku || "-"}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${catDef?.color || "bg-slate-100 text-slate-600"}`}>
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-micro font-medium ${catDef?.color || "bg-slate-100 text-slate-600"}`}>
                           {catDef ? (ar ? catDef.ar : catDef.en) : m.category || "-"}
                         </span>
                       </td>
@@ -287,7 +287,7 @@ export default function InventoryMaterialsPage() {
                       <td className="px-4 py-3 text-right tabular-nums">{(m.unit_cost ?? 0).toLocaleString()}</td>
                       <td className="px-4 py-3 text-muted-foreground">{m.supplier || "-"}</td>
                       <td className="px-4 py-3 text-center">
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${status === "out_of_stock" ? "bg-rose-100 text-rose-600" : status === "low_stock" ? "bg-amber-100 text-amber-700" : "bg-emerald-100 text-emerald-700"}`}>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${status === "out_of_stock" ? "bg-rose-100 text-rose-600" : status === "low_stock" ? "bg-warning/15 text-warning" : "bg-emerald-100 text-emerald-700"}`}>
                           {status === "out_of_stock" ? (ar ? "نفذ" : "Out") : status === "low_stock" ? (ar ? "قليل" : "Low") : (ar ? "متوفر" : "OK")}
                         </span>
                       </td>
@@ -364,7 +364,7 @@ function MaterialModal({ initial, nextSku, ar, wid, onClose, onSaved }: {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-xl w-full max-w-[520px] max-h-[90vh] overflow-auto" onClick={e => e.stopPropagation()}>
         <div className="sticky top-0 bg-background/95 backdrop-blur px-6 py-4 border-b border-border/40 flex items-center justify-between">
-          <h2 className="text-[16px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{initial ? (ar ? "تعديل المادة" : "Edit Material") : (ar ? "إضافة مادة" : "Add Material")}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{initial ? (ar ? "تعديل المادة" : "Edit Material") : (ar ? "إضافة مادة" : "Add Material")}</h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={15} /></button>
         </div>
         <form onSubmit={submit} className="p-6 grid grid-cols-2 gap-3">

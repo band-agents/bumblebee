@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH — Clean Install Schema
+-- Bumblebee — Clean Install Schema
 -- supabase/schema-clean-install.sql
 --
 -- Safe to run on a completely empty Supabase project.

@@ -63,10 +63,10 @@ function OrgGraphView({ ar }: { ar: boolean }) {
         ].map((l) => (
           <div key={l.type} className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: l.color }} />
-            <span className="text-[11px] text-muted-foreground">{ar ? l.labelAr : l.labelEn}</span>
+            <span className="text-micro text-muted-foreground">{ar ? l.labelAr : l.labelEn}</span>
           </div>
         ))}
-        <span className="text-[10px] text-muted-foreground/40 ml-2">{ar ? "انقر على عقدة للتفاصيل" : "Click a node for details"}</span>
+        <span className="text-micro text-muted-foreground/40 ml-2">{ar ? "انقر على عقدة للتفاصيل" : "Click a node for details"}</span>
       </div>
 
       {/* SVG canvas */}
@@ -129,17 +129,17 @@ function OrgGraphView({ ar }: { ar: boolean }) {
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: selected.color }} />
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{ar ? NODE_TYPE_META[selected.type]?.labelAr : NODE_TYPE_META[selected.type]?.label}</p>
+                <p className="text-micro text-muted-foreground uppercase tracking-wide">{ar ? NODE_TYPE_META[selected.type]?.labelAr : NODE_TYPE_META[selected.type]?.label}</p>
               </div>
-              <button onClick={() => setSelected(null)} className="text-[10px] text-muted-foreground/50 hover:text-foreground px-2 py-0.5 rounded hover:bg-muted transition-colors">
+              <button onClick={() => setSelected(null)} className="text-micro text-muted-foreground/50 hover:text-foreground px-2 py-0.5 rounded hover:bg-muted transition-colors">
                 ✕
               </button>
             </div>
-            <p className="text-[14px] font-medium text-foreground mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+            <p className="text-body-lg font-medium text-foreground mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
               {ar ? selected.labelAr : selected.label}
             </p>
-            <p className="text-[11px] text-muted-foreground/60 capitalize">{ar ? selected.metaAr : selected.meta}</p>
-            <div className="mt-2 pt-2 border-t border-border/30 text-[10px] text-muted-foreground/50">
+            <p className="text-micro text-muted-foreground/60 capitalize">{ar ? selected.metaAr : selected.meta}</p>
+            <div className="mt-2 pt-2 border-t border-border/30 text-micro text-muted-foreground/50">
               {edges.filter((e) => e.source === selected.id || e.target === selected.id).length} {ar ? "اتصال" : "connection(s)"}
             </div>
           </div>
@@ -147,7 +147,7 @@ function OrgGraphView({ ar }: { ar: boolean }) {
       </div>
 
       {/* Node count summary */}
-      <div className="flex items-center gap-4 text-[11px] text-muted-foreground/60">
+      <div className="flex items-center gap-4 text-micro text-muted-foreground/60">
         {[
           { type: "org", labelEn: "orgs", labelAr: "منظمة" },
           { type: "person", labelEn: "people", labelAr: "شخص" },
@@ -180,19 +180,19 @@ function OverviewPanel({ ar }: { ar: boolean }) {
         <div className="flex items-start justify-between gap-5">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <Star size={13} strokeWidth={1.75} className="text-primary" />
-              <p className="text-[10px] text-muted-foreground/60 tracking-wide uppercase">{ar ? "الوضع التنفيذي" : "Executive Position"}</p>
-              <span className="text-[10px] text-muted-foreground/40">{briefing.dateEn}</span>
+              <Star size={13} strokeWidth={1.75} className="text-brand-ink" />
+              <p className="text-micro text-muted-foreground/60 tracking-wide uppercase">{ar ? "الوضع التنفيذي" : "Executive Position"}</p>
+              <span className="text-micro text-muted-foreground/40">{briefing.dateEn}</span>
             </div>
-            <p className="text-[13px] text-foreground/80 leading-relaxed mb-3">
+            <p className="text-body text-foreground/80 leading-relaxed mb-3">
               {ar ? briefing.summaryAr : briefing.summaryEn}
             </p>
             {briefing.topPriorities.length > 0 && (
               <div>
-                <p className="text-[10px] font-medium text-muted-foreground/60 mb-2">{ar ? "الأولويات القصوى:" : "Top priorities:"}</p>
+                <p className="text-micro font-medium text-muted-foreground/60 mb-2">{ar ? "الأولويات القصوى:" : "Top priorities:"}</p>
                 <div className="space-y-1">
                   {briefing.topPriorities.slice(0, 3).map((p, i) => (
-                    <div key={i} className="flex items-start gap-2 text-[11px] text-foreground/70">
+                    <div key={i} className="flex items-start gap-2 text-micro text-foreground/70">
                       <span className="text-muted-foreground/40 shrink-0">{i + 1}.</span>
                       <span>{ar ? p.ar : p.en}</span>
                     </div>
@@ -202,11 +202,11 @@ function OverviewPanel({ ar }: { ar: boolean }) {
             )}
           </div>
           <div className="shrink-0 text-center">
-            <p className="text-[44px] font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.04em" }}>
+            <p className="text-display font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.04em" }}>
               {overallScore}
             </p>
-            <p className="text-[10px] text-muted-foreground/50 mt-1">{ar ? "مؤشر التنفيذي" : "Exec Index"}</p>
-            <p className={`text-[11px] font-semibold mt-1 ${briefing.overallScore >= 70 ? "text-emerald-600" : briefing.overallScore >= 50 ? "text-amber-600" : "text-rose-600"}`}>
+            <p className="text-micro text-muted-foreground/50 mt-1">{ar ? "مؤشر التنفيذي" : "Exec Index"}</p>
+            <p className={`text-micro font-semibold mt-1 ${briefing.overallScore >= 70 ? "text-emerald-600" : briefing.overallScore >= 50 ? "text-warning" : "text-rose-600"}`}>
               {ar ? briefing.overallLabelAr : briefing.overallLabelEn}
             </p>
           </div>
@@ -215,14 +215,14 @@ function OverviewPanel({ ar }: { ar: boolean }) {
 
       {/* Outcome cards */}
       <div>
-        <h3 className="text-[13px] font-medium text-foreground mb-4">{ar ? "نتائج الأعمال" : "Business Outcomes"}</h3>
+        <h3 className="text-body font-medium text-foreground mb-4">{ar ? "نتائج الأعمال" : "Business Outcomes"}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {outcomes.map((o) => (
             <div key={o.id} className="border border-border/40 rounded-xl px-5 py-4 bg-background hover:shadow-sm transition-shadow">
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-muted-foreground/60 mb-1">{ar ? o.dimensionAr : o.dimensionEn}</p>
-                  <p className="text-[22px] font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em", color: o.color }}>
+                  <p className="text-micro text-muted-foreground/60 mb-1">{ar ? o.dimensionAr : o.dimensionEn}</p>
+                  <p className="text-heading font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em", color: o.color }}>
                     {ar ? o.valueAr : o.valueEn}
                   </p>
                 </div>
@@ -231,7 +231,7 @@ function OverviewPanel({ ar }: { ar: boolean }) {
               <div className="mb-2">
                 <ScoreBar score={o.score} color={o.color} />
               </div>
-              <p className="text-[11px] text-muted-foreground/60 leading-relaxed">{ar ? o.contextAr : o.contextEn}</p>
+              <p className="text-micro text-muted-foreground/60 leading-relaxed">{ar ? o.contextAr : o.contextEn}</p>
             </div>
           ))}
         </div>
@@ -240,10 +240,10 @@ function OverviewPanel({ ar }: { ar: boolean }) {
       {/* Key risks & opportunities */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <p className="text-[12px] font-medium text-foreground mb-3">{ar ? "المخاطر الرئيسية" : "Key Risks"}</p>
+          <p className="text-caption font-medium text-foreground mb-3">{ar ? "المخاطر الرئيسية" : "Key Risks"}</p>
           <div className="space-y-2">
             {briefing.keyRisks.map((r, i) => (
-              <div key={i} className="flex items-start gap-2 text-[11px] text-foreground/70 border border-rose-200/40 bg-rose-50/20 rounded-lg px-3 py-2.5">
+              <div key={i} className="flex items-start gap-2 text-micro text-foreground/70 border border-rose-200/40 bg-rose-50/20 rounded-lg px-3 py-2.5">
                 <span className="text-rose-400 shrink-0 mt-0.5">▸</span>
                 <span>{ar ? r.ar : r.en}</span>
               </div>
@@ -251,10 +251,10 @@ function OverviewPanel({ ar }: { ar: boolean }) {
           </div>
         </div>
         <div>
-          <p className="text-[12px] font-medium text-foreground mb-3">{ar ? "الفرص" : "Opportunities"}</p>
+          <p className="text-caption font-medium text-foreground mb-3">{ar ? "الفرص" : "Opportunities"}</p>
           <div className="space-y-2">
             {briefing.opportunities.map((o, i) => (
-              <div key={i} className="flex items-start gap-2 text-[11px] text-foreground/70 border border-emerald-200/40 bg-emerald-50/20 rounded-lg px-3 py-2.5">
+              <div key={i} className="flex items-start gap-2 text-micro text-foreground/70 border border-emerald-200/40 bg-emerald-50/20 rounded-lg px-3 py-2.5">
                 <span className="text-emerald-500 shrink-0 mt-0.5">▸</span>
                 <span>{ar ? o.ar : o.en}</span>
               </div>
@@ -290,14 +290,14 @@ export default function ExecutiveMode() {
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Star size={14} strokeWidth={1.75} className="text-amber-500" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "الوضع التنفيذي" : "Executive Mode"}</p>
-            <span className="text-[10px] text-muted-foreground/40 px-2 py-0.5 rounded-full bg-muted border border-border/40">{ar ? "نتائج وليس سجلات" : "Outcomes, not records"}</span>
+            <Star size={14} strokeWidth={1.75} className="text-warning" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "الوضع التنفيذي" : "Executive Mode"}</p>
+            <span className="text-micro text-muted-foreground/40 px-2 py-0.5 rounded-full bg-muted border border-border/40">{ar ? "نتائج وليس سجلات" : "Outcomes, not records"}</span>
           </div>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "المنظور التنفيذي" : "Executive Perspective"}
           </h1>
-          <p className="text-[12px] text-muted-foreground/60 mt-1">
+          <p className="text-caption text-muted-foreground/60 mt-1">
             {ar ? "ارتفع فوق السجلات — ركّز على النتائج الاستراتيجية" : "Rise above the records — focus on strategic outcomes"}
           </p>
         </div>
@@ -313,7 +313,7 @@ export default function ExecutiveMode() {
             const Icon = t.icon;
             return (
               <button key={t.id} onClick={() => setTab(t.id)}
-                className={`flex items-center gap-1.5 px-4 py-3.5 text-[12px] border-b-2 transition-all shrink-0 ${tab === t.id ? "border-primary text-primary font-medium" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+                className={`flex items-center gap-1.5 px-4 py-3.5 text-caption border-b-2 transition-all shrink-0 ${tab === t.id ? "border-primary text-brand-ink font-medium" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                 <Icon size={13} strokeWidth={tab === t.id ? 2 : 1.75} />
                 {ar ? t.labelAr : t.labelEn}
               </button>

@@ -13,8 +13,8 @@ export const TIER_META: Record<LoyaltyTierSlug, {
 }> = {
   bronze: {
     en: "Bronze", ar: "برونزي",
-    color: "#CD7F32", bg: "bg-amber-800/8", pill: "bg-amber-50 text-amber-700 border border-amber-200",
-    gradient: "from-amber-700/20 to-amber-900/5",
+    color: "#CD7F32", bg: "bg-warning/8", pill: "bg-warning/10 text-warning border border-warning/30",
+    gradient: "from-warning/20 to-warning/20",
     minSpend: 0, multiplier: 1.0,
   },
   silver: {
@@ -26,7 +26,7 @@ export const TIER_META: Record<LoyaltyTierSlug, {
   gold: {
     en: "Gold", ar: "ذهبي",
     color: "#D4A017", bg: "bg-yellow-500/8", pill: "bg-yellow-50 text-yellow-700 border border-yellow-200",
-    gradient: "from-yellow-500/20 to-amber-600/5",
+    gradient: "from-yellow-500/20 to-warning/20",
     minSpend: 15000, multiplier: 1.5,
   },
   vip: {
@@ -44,10 +44,10 @@ export const TX_TYPE_META: Record<TransactionType, {
 }> = {
   earned:   { en: "Earned",   ar: "مكتسبة",  dot: "bg-emerald-500", sign: "+" },
   redeemed: { en: "Redeemed", ar: "مستبدلة",  dot: "bg-primary",     sign: "-" },
-  adjusted: { en: "Adjusted", ar: "تعديل",    dot: "bg-amber-500",   sign: "±" },
+  adjusted: { en: "Adjusted", ar: "تعديل",    dot: "bg-warning",   sign: "±" },
   expired:  { en: "Expired",  ar: "منتهية",   dot: "bg-muted-foreground/40", sign: "-" },
   reversed: { en: "Reversed", ar: "معكوسة",   dot: "bg-rose-500",    sign: "-" },
-  bonus:    { en: "Bonus",    ar: "مكافأة",    dot: "bg-violet-500",  sign: "+" },
+  bonus:    { en: "Bonus",    ar: "مكافأة",    dot: "bg-chart-4",  sign: "+" },
 };
 
 export const SOURCE_META: Record<TransactionSource, { en: string; ar: string; icon: string }> = {
@@ -274,16 +274,16 @@ export interface LoyaltyRuleDemo {
 export const RULE_TYPE_META: Record<RuleType, { en: string; ar: string; pill: string; icon: string }> = {
   spend:          { en: "Spend",          ar: "إنفاق",      pill: "bg-emerald-50 text-emerald-700 border border-emerald-200", icon: "DollarSign" },
   category_bonus: { en: "Category",      ar: "فئة",         pill: "bg-blue-50 text-blue-700 border border-blue-200",         icon: "Tag" },
-  first_purchase: { en: "First Purchase", ar: "أول شراء",   pill: "bg-violet-50 text-violet-700 border border-violet-200",   icon: "Gift" },
+  first_purchase: { en: "First Purchase", ar: "أول شراء",   pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30",   icon: "Gift" },
   birthday:       { en: "Birthday",       ar: "عيد ميلاد",  pill: "bg-pink-50 text-pink-700 border border-pink-200",         icon: "Cake" },
-  campaign:       { en: "Campaign",       ar: "حملة",       pill: "bg-amber-50 text-amber-700 border border-amber-200",      icon: "Megaphone" },
+  campaign:       { en: "Campaign",       ar: "حملة",       pill: "bg-warning/10 text-warning border border-warning/30",      icon: "Megaphone" },
   referral:       { en: "Referral",       ar: "إحالة",      pill: "bg-cyan-50 text-cyan-700 border border-cyan-200",         icon: "UserPlus" },
   threshold:      { en: "Threshold",      ar: "حد إنفاق",   pill: "bg-orange-50 text-orange-700 border border-orange-200",   icon: "TrendingUp" },
 };
 
 export const RULE_STATUS_META: Record<RuleStatus, { en: string; ar: string; dot: string }> = {
   active:    { en: "Active",    ar: "نشط",    dot: "bg-emerald-500" },
-  scheduled: { en: "Scheduled", ar: "مجدول",   dot: "bg-amber-500" },
+  scheduled: { en: "Scheduled", ar: "مجدول",   dot: "bg-warning" },
   paused:    { en: "Paused",    ar: "متوقف",   dot: "bg-muted-foreground/40" },
   expired:   { en: "Expired",   ar: "منتهي",   dot: "bg-rose-400" },
 };
@@ -400,7 +400,7 @@ export const SYNC_EVENT_META: Record<SyncEventType, { en: string; ar: string; ic
 export const SYNC_STATUS_META: Record<SyncEventStatus, { en: string; ar: string; dot: string; pill: string }> = {
   success: { en: "Success", ar: "ناجح",    dot: "bg-emerald-500", pill: "bg-emerald-50 text-emerald-700" },
   failed:  { en: "Failed",  ar: "فشل",     dot: "bg-rose-500",    pill: "bg-rose-50 text-rose-700" },
-  skipped: { en: "Skipped", ar: "تم تخطيه", dot: "bg-amber-400",   pill: "bg-amber-50 text-amber-700" },
+  skipped: { en: "Skipped", ar: "تم تخطيه", dot: "bg-warning",   pill: "bg-warning/10 text-warning" },
   pending: { en: "Pending", ar: "قيد الانتظار", dot: "bg-blue-400", pill: "bg-blue-50 text-blue-700" },
 };
 
@@ -416,7 +416,7 @@ const SYNC_LOGS: ShopifySyncLogDemo[] = [
   { id: "sl-009", eventType: "order_created", status: "success", shopifyOrderId: "SHP-4525", shopifyCustomerId: "gid://shopify/Customer/7005", memberName: "Youssef Nabil", pointsDelta: 7500, details: "Order SHP-4525 processed. 7,500 pts awarded to Youssef Nabil (Gold, 1.5x multiplier).", createdAt: "2026-06-08T11:00:02Z" },
   { id: "sl-010", eventType: "order_refunded", status: "success", shopifyOrderId: "SHP-4488", memberName: "Nour El-Din", pointsDelta: -1200, details: "Refund on SHP-4488. 1,200 pts reversed from Nour El-Din.", createdAt: "2026-06-03T09:00:05Z" },
   { id: "sl-011", eventType: "points_reversed", status: "success", memberName: "Nour El-Din", pointsDelta: -1200, details: "Points balance updated: 18,500 → 17,300", createdAt: "2026-06-03T09:00:06Z" },
-  { id: "sl-012", eventType: "customer_created", status: "success", shopifyCustomerId: "gid://shopify/Customer/7010", details: "New Shopify customer detected. No matching THOTH member — created pending match.", createdAt: "2026-06-02T16:30:00Z" },
+  { id: "sl-012", eventType: "customer_created", status: "success", shopifyCustomerId: "gid://shopify/Customer/7010", details: "New Shopify customer detected. No matching Bumblebee member — created pending match.", createdAt: "2026-06-02T16:30:00Z" },
   { id: "sl-013", eventType: "webhook_received", status: "failed", details: "HMAC validation failed — request rejected", errorMessage: "Invalid HMAC signature. Expected sha256=abc... got sha256=xyz...", createdAt: "2026-06-01T03:15:00Z" },
   { id: "sl-014", eventType: "order_created", status: "skipped", shopifyOrderId: "SHP-4400", details: "Order total 0 EGP (free sample). Skipped — no points awarded for zero-value orders.", createdAt: "2026-05-28T14:20:00Z" },
   { id: "sl-015", eventType: "connection_test", status: "success", details: "Shopify API connection test passed. Store: my-store.myshopify.com, API version: 2024-01", createdAt: "2026-05-25T10:00:00Z" },

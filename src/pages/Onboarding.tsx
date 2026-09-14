@@ -56,13 +56,13 @@ function StepHeading({ title, sub }: { title: string; sub?: string }) {
   return (
     <div className="text-center mb-8">
       <h2
-        className="text-[22px] font-medium text-foreground leading-tight mb-2"
+        className="text-heading font-medium text-foreground leading-tight mb-2"
         style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}
       >
         {title}
       </h2>
       {sub && (
-        <p className="text-[13px] text-muted-foreground leading-relaxed">{sub}</p>
+        <p className="text-body text-muted-foreground leading-relaxed">{sub}</p>
       )}
     </div>
   );
@@ -84,7 +84,7 @@ function ContinueButton({
       className="
         w-full h-11 rounded-xl mt-6
         bg-primary text-primary-foreground
-        text-[13px] font-medium
+        text-body font-medium
         shadow-sm
         disabled:opacity-40 disabled:cursor-not-allowed
         hover:opacity-90 active:opacity-80
@@ -103,7 +103,7 @@ function BackButton({ label, onClick }: { label: string; onClick: () => void }) 
     <div className="flex justify-start mt-5">
       <button
         onClick={onClick}
-        className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+        className="text-body text-muted-foreground hover:text-foreground transition-colors"
       >
         {label}
       </button>
@@ -130,7 +130,7 @@ function SelectCard({
         py-4 px-3 rounded-xl border
         transition-all duration-150 gap-2
         ${selected
-          ? "thoth-primary-selected shadow-sm"
+          ? "bb-primary-selected shadow-sm"
           : "bg-card border-border hover:border-primary/30 hover:shadow-xs"
         }
       `}
@@ -180,12 +180,12 @@ function SummaryRow({
   return (
     <div className="flex items-start justify-between py-3.5 border-b border-border/40 last:border-0">
       <div className="min-w-0">
-        <p className="thoth-eyebrow mb-1">{label}</p>
-        <p className="text-[14px] font-medium text-foreground">{value}</p>
+        <p className="bb-eyebrow mb-1">{label}</p>
+        <p className="text-body-lg font-medium text-foreground">{value}</p>
       </div>
       <button
         onClick={onEdit}
-        className="text-[12px] text-primary hover:text-primary/70 transition-colors mt-0.5 shrink-0 ms-4"
+        className="text-caption text-brand-ink hover:text-brand-ink/70 transition-colors mt-0.5 shrink-0 ms-4"
       >
         Edit
       </button>
@@ -293,13 +293,13 @@ export default function Onboarding() {
                 </div>
 
                 <h1
-                  className="text-[30px] font-medium text-foreground leading-tight mb-3"
+                  className="text-display font-medium text-foreground leading-tight mb-3"
                   style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}
                 >
-                  {ar ? "مرحباً بك في ثوث" : "Welcome to THOTH"}
+                  {ar ? "مرحباً بك في بامبلبي" : "Welcome to Bumblebee"}
                 </h1>
 
-                <p className="text-[14px] text-muted-foreground leading-relaxed mb-10 max-w-[320px]">
+                <p className="text-body-lg text-muted-foreground leading-relaxed mb-10 max-w-[320px]">
                   {ar
                     ? "نظام تشغيل الأزياء. دعنا نُعدّ كل شيء في دقائق."
                     : "Your fashion operating system. From sketch to delivery, one system."}
@@ -308,7 +308,7 @@ export default function Onboarding() {
                 <button
                   onClick={next}
                   data-testid="button-get-started"
-                  className="h-11 px-10 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium shadow-sm hover:opacity-90 active:opacity-80 transition-opacity"
+                  className="h-11 px-10 rounded-xl bg-primary text-primary-foreground text-body font-medium shadow-sm hover:opacity-90 active:opacity-80 transition-opacity"
                 >
                   {ar ? "البدء" : "Get Started"}
                 </button>
@@ -339,7 +339,7 @@ export default function Onboarding() {
                   className="
                     w-full h-12 px-4 rounded-xl
                     border border-border/80 bg-card
-                    text-[15px] text-foreground placeholder:text-muted-foreground/60
+                    text-body-lg text-foreground placeholder:text-muted-foreground/60
                     focus:outline-none focus:border-primary/40 focus:bg-card
                     transition-colors duration-150
                   "
@@ -380,7 +380,7 @@ export default function Onboarding() {
                           relative flex items-center gap-3 px-4 py-3 rounded-xl border
                           transition-all duration-150 text-start
                           ${selected
-                            ? "thoth-primary-selected shadow-sm"
+                            ? "bb-primary-selected shadow-sm"
                             : "bg-card border-border hover:border-primary/30 hover:bg-card"
                           }
                         `}
@@ -388,9 +388,9 @@ export default function Onboarding() {
                         <Icon
                           size={15}
                           strokeWidth={1.75}
-                          className={selected ? "text-primary shrink-0" : "text-muted-foreground shrink-0"}
+                          className={selected ? "text-brand-ink shrink-0" : "text-muted-foreground shrink-0"}
                         />
-                        <span className={`text-[13px] leading-snug ${selected ? "text-primary font-medium" : "text-foreground"}`}>
+                        <span className={`text-body leading-snug ${selected ? "text-brand-ink font-medium" : "text-foreground"}`}>
                           {ar ? ind.ar : ind.en}
                         </span>
                         {selected && (
@@ -441,18 +441,18 @@ export default function Onboarding() {
                           py-5 rounded-xl border
                           transition-all duration-150
                           ${selected
-                            ? "thoth-primary-selected shadow-sm"
+                            ? "bb-primary-selected shadow-sm"
                             : "bg-card border-border hover:border-primary/30 hover:shadow-xs"
                           }
                         `}
                       >
                         <span
-                          className={`text-[20px] font-medium leading-tight ${selected ? "text-primary" : "text-foreground"}`}
+                          className={`text-heading font-medium leading-tight ${selected ? "text-brand-ink" : "text-foreground"}`}
                           style={{ fontFamily: "var(--app-font-serif)" }}
                         >
                           {ar ? s.ar : s.en}
                         </span>
-                        <span className="text-[11px] text-muted-foreground mt-1.5 text-center px-2 leading-snug">
+                        <span className="text-micro text-muted-foreground mt-1.5 text-center px-2 leading-snug">
                           {ar ? s.descAr : s.descEn}
                         </span>
                         {selected && (
@@ -498,18 +498,18 @@ export default function Onboarding() {
                           py-5 rounded-xl border
                           transition-all duration-150
                           ${selected
-                            ? "thoth-primary-selected shadow-sm"
+                            ? "bb-primary-selected shadow-sm"
                             : "bg-card border-border hover:border-primary/30 hover:shadow-xs"
                           }
                         `}
                       >
                         <span
-                          className={`text-[20px] font-medium leading-tight ${selected ? "text-primary" : "text-foreground"}`}
+                          className={`text-heading font-medium leading-tight ${selected ? "text-brand-ink" : "text-foreground"}`}
                           style={{ fontFamily: "var(--app-font-serif)" }}
                         >
                           {ar ? loc.ar : loc.en}
                         </span>
-                        <span className="text-[11px] text-muted-foreground mt-1.5 text-center px-2 leading-snug">
+                        <span className="text-micro text-muted-foreground mt-1.5 text-center px-2 leading-snug">
                           {ar ? loc.descAr : loc.descEn}
                         </span>
                         {selected && (
@@ -555,14 +555,14 @@ export default function Onboarding() {
                           px-5 py-4 rounded-xl border
                           transition-all duration-150 text-start
                           ${selected
-                            ? "thoth-primary-selected shadow-sm"
+                            ? "bb-primary-selected shadow-sm"
                             : "bg-card border-border hover:border-primary/30 hover:shadow-xs"
                           }
                         `}
                       >
                         <div>
-                          <div className="text-[15px] font-medium text-foreground">{opt.primary}</div>
-                          <div className="text-[12px] text-muted-foreground mt-0.5">{opt.secondary}</div>
+                          <div className="text-body-lg font-medium text-foreground">{opt.primary}</div>
+                          <div className="text-caption text-muted-foreground mt-0.5">{opt.secondary}</div>
                         </div>
                         <div className="flex items-center gap-2">
                           {selected && (
@@ -570,7 +570,7 @@ export default function Onboarding() {
                               <Check size={10} strokeWidth={2.5} className="text-primary-foreground" />
                             </span>
                           )}
-                          <span className="text-[11px] font-medium tracking-wider px-2.5 py-1 rounded-md bg-background border border-border text-muted-foreground">
+                          <span className="text-micro font-medium tracking-wider px-2.5 py-1 rounded-md bg-background border border-border text-muted-foreground">
                             {opt.badge}
                           </span>
                         </div>
@@ -598,7 +598,7 @@ export default function Onboarding() {
                     : "Review your details before we get started."}
                 />
 
-                <div className="thoth-card px-5 mb-2">
+                <div className="bb-card px-5 mb-2">
                   <SummaryRow
                     label={ar ? "اسم الشركة" : "Company Name"}
                     value={form.companyName}
@@ -632,13 +632,13 @@ export default function Onboarding() {
                   className="
                     w-full h-11 rounded-xl mt-4
                     bg-primary text-primary-foreground
-                    text-[13px] font-medium shadow-sm
+                    text-body font-medium shadow-sm
                     hover:opacity-90 active:opacity-80
                     transition-opacity duration-150
                     flex items-center justify-center gap-2
                   "
                 >
-                  {ar ? "انطلق إلى ثوث" : "Launch THOTH"}
+                  {ar ? "انطلق إلى بامبلبي" : "Launch Bumblebee"}
                   <ChevronRight size={14} strokeWidth={2} />
                 </button>
 
@@ -652,7 +652,7 @@ export default function Onboarding() {
 
       {/* Footer */}
       <div className="py-5 text-center shrink-0">
-        <span className="thoth-eyebrow opacity-60">THOTH</span>
+        <span className="bb-eyebrow opacity-60">Bumblebee</span>
       </div>
     </div>
   );

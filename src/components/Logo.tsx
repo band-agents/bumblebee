@@ -1,98 +1,133 @@
-import { memo } from "react";
+import { memo, useId } from "react";
 
 type LogoVariant = "mark" | "wordmark" | "full";
 type LogoTheme = "dark" | "light" | "gold";
 
 interface LogoProps {
   variant?: LogoVariant;
+  /** Omit to follow the app theme (graphite on light, warm-white on dark). */
   theme?: LogoTheme;
   size?: number;
   className?: string;
 }
 
-const colors: Record<LogoTheme, { primary: string; secondary: string; text: string }> = {
-  dark:  { primary: "#2E3036", secondary: "#8B72A7", text: "#2E3036" },
-  light: { primary: "#F9F8F4", secondary: "#8B72A7", text: "#F9F8F4" },
-  gold:  { primary: "#C9A96E", secondary: "#8B72A7", text: "#C9A96E" },
+/**
+ * Bumblebee mark — six shapes, no sharp corners, built to survive 16px.
+ *
+ * The three themes are duotones, not colourways:
+ *   dark   graphite bee for light surfaces  (the default, in-app)
+ *   light  warm-white bee for dark surfaces
+ *   gold   single-brand stamp — signature body, deep-honey detail. Use where
+ *          the mark appears without the interface around it: app icon,
+ *          invoices, favicon.
+ *
+ * Rule: on a light surface the mark and the wordmark never both carry yellow.
+ * The bee holds the colour; the wordmark stays graphite.
+ */
+const colors: Record<LogoTheme, { ink: string; accent: string; wing: number; text: string }> = {
+  dark:  { ink: "#2B2317", accent: "#F2C636", wing: 0.6,  text: "#2B2317" },
+  light: { ink: "#F8F6F2", accent: "#F7D964", wing: 0.42, text: "#F8F6F2" },
+  gold:  { ink: "#F5E484", accent: "#8A6A12", wing: 0.85, text: "#F5E484" },
 };
 
-function IbisMark({ size, theme }: { size: number; theme: LogoTheme }) {
-  const c = colors[theme];
-  const s = size;
-  const vb = "0 0 446 596";
+function BeeMark({ size, theme }: { size: number; theme?: LogoTheme }) {
+  // No theme prop -> follow the CSS vars, which flip under .dark
+  const { ink, accent, wing } = theme
+    ? colors[theme]
+    : { ink: "var(--logo-ink)", accent: "var(--logo-accent)", wing: "var(--logo-wing)" as unknown as number };
+  // Scoped so several marks can share a page without colliding clip ids.
+  const clipId = `bb-abd-${useId().replace(/:/g, "")}`;
 
   return (
     <svg
-      width={s}
-      height={Math.round(s * (596 / 446))}
-      viewBox={vb}
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="shrink-0"
       aria-hidden="true"
     >
-      <circle cx="248.743" cy="134.661" r="134.661" fill={c.primary} />
-      <circle
-        cx="26.5073"
-        cy="26.5073"
-        r="26.5073"
-        transform="matrix(1 0 0 -1 234.653 143.724)"
-        fill={theme === "light" ? "#2E3036" : "#F7F6F4"}
-      />
+      <defs>
+        <clipPath id={clipId}>
+          <path d="M32 29.2C38.3 29.2 41.2 35.4 41.2 42C41.2 51.5 37.3 61.5 32 61.5C26.7 61.5 22.8 51.5 22.8 42C22.8 35.4 25.7 29.2 32 29.2Z" />
+        </clipPath>
+      </defs>
+
+      {/* wings — swept, translucent, behind everything */}
+      <g fill={accent} opacity={wing}>
+        <path d="M35.4 27.2C38.4 21.6 45.6 13.8 52.8 10.2C57.4 7.9 61.6 8.4 62 12.4C62.4 16.8 57.6 24.4 51 28.4C46.2 31.3 40.6 32.3 37.4 31.4C34.7 30.6 34.2 29.4 35.4 27.2Z" />
+        <path d="M28.6 27.2C25.6 21.6 18.4 13.8 11.2 10.2C6.6 7.9 2.4 8.4 2 12.4C1.6 16.8 6.4 24.4 13 28.4C17.8 31.3 23.4 32.3 26.6 31.4C29.3 30.6 29.8 29.4 28.6 27.2Z" />
+      </g>
+
+      {/* antennae */}
+      <g stroke={ink} strokeWidth="2.2" strokeLinecap="round" fill="none">
+        <path d="M28.4 12.4C26.2 8.8 24.4 6.2 22.6 4.2" />
+        <path d="M35.6 12.4C37.8 8.8 39.6 6.2 41.4 4.2" />
+      </g>
+      <g fill={ink}>
+        <circle cx="22" cy="3.7" r="1.6" />
+        <circle cx="42" cy="3.7" r="1.6" />
+      </g>
+
+      {/* abdomen + stripes */}
       <path
-        d="M240.099 83.1536C262 69.1197 294.863 68.573 319.811 73.9713C383.905 85.0048 428.393 139.848 440.115 201.554C443.542 219.581 442.808 238.935 442.808 257.232L442.796 319.168L442.804 442.224C442.804 451.577 442.856 461.062 442.889 470.558H231.183L231.187 407.828L231.153 361.935C231.146 353.947 231.072 345.877 231.168 337.936C231.546 306.552 239.354 277.957 255.951 251.213C267.156 233.159 293.22 193.894 284.172 172.114C282.114 167.032 278.078 163.003 272.992 160.955C266.767 158.483 260.073 158.977 253.546 158.95C226.284 158.836 203.748 164.994 178.778 175.67C109.836 205.149 50.5593 252.94 15.9083 320.322C10.4219 330.991 6.86052 339.561 2.36035 350.612C3.66508 332.726 12.3456 309.584 19.6071 293.366C52.324 220.299 118.836 168.408 189.043 133.675C194.523 130.964 200.086 128.383 205.083 124.839C212.411 119.782 214.603 112.284 218.877 104.943C224.122 96.0992 231.397 88.6303 240.099 83.1536ZM279.398 108.857C272.82 108.909 261.083 108.492 255.133 109.046C248.561 111.447 243.996 118.843 238.978 124.105C244.235 124.129 258.542 124.492 263.009 123.722C270.139 119.939 273.986 114.834 279.398 108.857Z"
-        fill={c.secondary}
+        d="M32 29.2C38.3 29.2 41.2 35.4 41.2 42C41.2 51.5 37.3 61.5 32 61.5C26.7 61.5 22.8 51.5 22.8 42C22.8 35.4 25.7 29.2 32 29.2Z"
+        fill={ink}
       />
-      <path
-        d="M319.811 73.9714C383.905 85.0049 428.394 139.848 440.115 201.554C443.543 219.582 442.809 238.935 442.809 257.232L442.796 319.168L442.805 442.224C442.805 451.577 442.856 461.062 442.889 470.558H394.914C381.09 447.049 367.496 423.408 354.133 399.636C327.158 351.011 301.349 305.648 311.119 247.792C316.913 213.481 335.025 189.518 339.719 154.96C343.575 126.566 337.161 96.9714 319.811 73.9714Z"
-        fill={c.secondary}
-      />
-      <path
-        d="M219.291 540.563C224.019 538.532 229.506 540.686 231.606 545.391C233.698 550.096 231.621 555.614 226.947 557.775C223.866 559.2 220.257 558.848 217.498 556.863C214.739 554.886 213.268 551.568 213.636 548.196C214.011 544.816 216.165 541.904 219.291 540.563Z"
-        fill={c.secondary}
-      />
+      <g clipPath={`url(#${clipId})`} stroke={accent} fill="none" strokeLinecap="butt">
+        <path d="M19 36.4Q32 40.4 45 36.4" strokeWidth="6.2" />
+        <path d="M21 48.6Q32 52.2 43 48.6" strokeWidth="4.8" />
+      </g>
+
+      {/* thorax + head */}
+      <ellipse cx="32" cy="27.6" rx="8.6" ry="7" fill={accent} />
+      <circle cx="32" cy="18" r="8.1" fill={ink} />
+
+      {/* eyes, then the brows that make it mean business */}
+      <g fill={accent}>
+        <ellipse cx="27.9" cy="19" rx="2.6" ry="3.5" transform="rotate(-16 27.9 19)" />
+        <ellipse cx="36.1" cy="19" rx="2.6" ry="3.5" transform="rotate(16 36.1 19)" />
+      </g>
+      <g stroke={ink} strokeWidth="2.6" strokeLinecap="round">
+        <path d="M23.9 14.4L29.8 17.4" />
+        <path d="M40.1 14.4L34.2 17.4" />
+      </g>
     </svg>
   );
 }
 
-function _Logo({ variant = "mark", theme = "dark", size = 20, className = "" }: LogoProps) {
-  const c = colors[theme];
+function Wordmark({ size, theme, className = "" }: { size: number; theme?: LogoTheme; className?: string }) {
+  return (
+    <span
+      className={`leading-none ${className}`}
+      style={{
+        fontFamily: "'Fredoka', var(--app-font-serif)",
+        fontWeight: 600,
+        fontSize: size,
+        letterSpacing: "0.045em",
+        color: theme ? colors[theme].text : "var(--logo-ink)",
+      }}
+    >
+      Bumblebee
+    </span>
+  );
+}
 
+function _Logo({ variant = "mark", theme, size = 20, className = "" }: LogoProps) {
   if (variant === "mark") {
-    return (
-      <IbisMark size={size} theme={theme} />
-    );
+    return <BeeMark size={size} theme={theme} />;
   }
 
   if (variant === "wordmark") {
-    return (
-      <span
-        className={`tracking-[0.12em] font-medium leading-none ${className}`}
-        style={{
-          fontFamily: "var(--app-font-serif)",
-          fontSize: size,
-          color: c.text,
-        }}
-      >
-        THOTH
-      </span>
-    );
+    return <Wordmark size={size} theme={theme} className={className} />;
   }
 
-  // variant === "full"
+  // variant === "full" — gap is 0.28 x the mark
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <IbisMark size={size} theme={theme} />
-      <span
-        className="tracking-[0.12em] font-medium leading-none"
-        style={{
-          fontFamily: "var(--app-font-serif)",
-          fontSize: Math.round(size * 0.9),
-          color: c.text,
-        }}
-      >
-        THOTH
-      </span>
+    <div className={`flex items-center ${className}`} style={{ gap: Math.round(size * 0.28) }}>
+      <BeeMark size={size} theme={theme} />
+      <Wordmark size={Math.round(size * 0.82)} theme={theme} />
     </div>
   );
 }

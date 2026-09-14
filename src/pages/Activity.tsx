@@ -21,8 +21,8 @@ import {
 // ─── Kind visual metadata ─────────────────────────────────
 
 const KIND_META: Record<string, { Icon: LucideIcon; bg: string; color: string }> = {
-  customer_added:      { Icon: UserPlus,       bg: "bg-violet-50",    color: "text-violet-600" },
-  quotation_created:   { Icon: FileText,       bg: "bg-amber-50",     color: "text-amber-600" },
+  customer_added:      { Icon: UserPlus,       bg: "bg-chart-4/10",    color: "text-chart-4" },
+  quotation_created:   { Icon: FileText,       bg: "bg-warning/10",     color: "text-warning" },
   invoice_sent:        { Icon: Send,           bg: "bg-blue-50",      color: "text-blue-600" },
   invoice_paid:        { Icon: CheckCircle2,   bg: "bg-emerald-50",   color: "text-emerald-600" },
   payment_received:    { Icon: DollarSign,     bg: "bg-emerald-50",   color: "text-emerald-600" },
@@ -30,21 +30,21 @@ const KIND_META: Record<string, { Icon: LucideIcon; bg: string; color: string }>
   work_completed:      { Icon: CheckSquare,    bg: "bg-emerald-50",   color: "text-emerald-600" },
   employee_assigned:   { Icon: Users,          bg: "bg-cyan-50",      color: "text-cyan-600" },
   note_added:          { Icon: StickyNote,     bg: "bg-muted/70",     color: "text-muted-foreground" },
-  meeting_scheduled:   { Icon: Calendar,       bg: "bg-violet-50",    color: "text-violet-600" },
+  meeting_scheduled:   { Icon: Calendar,       bg: "bg-chart-4/10",    color: "text-chart-4" },
   contract_signed:     { Icon: FileCheck,      bg: "bg-blue-50",      color: "text-blue-600" },
   file_uploaded:       { Icon: Paperclip,      bg: "bg-muted/70",     color: "text-muted-foreground" },
   organization_added:  { Icon: Building2,      bg: "bg-cyan-50",      color: "text-cyan-600" },
   status_changed:      { Icon: RefreshCw,      bg: "bg-muted/70",     color: "text-muted-foreground" },
-  contact_updated:     { Icon: UserCheck,      bg: "bg-primary/8",    color: "text-primary" },
+  contact_updated:     { Icon: UserCheck,      bg: "bg-primary/8",    color: "text-brand-ink" },
   work_created:        { Icon: Briefcase,      bg: "bg-blue-50",      color: "text-blue-600" },
   work_assigned:       { Icon: Users,          bg: "bg-cyan-50",      color: "text-cyan-600" },
-  work_status_changed: { Icon: ArrowRightCircle, bg: "bg-amber-50",   color: "text-amber-500" },
-  deal_created:        { Icon: ShoppingBag,    bg: "bg-amber-50",     color: "text-amber-600" },
-  deal_stage_changed:  { Icon: ArrowRightCircle, bg: "bg-violet-50",  color: "text-violet-500" },
+  work_status_changed: { Icon: ArrowRightCircle, bg: "bg-warning/10",   color: "text-warning" },
+  deal_created:        { Icon: ShoppingBag,    bg: "bg-warning/10",     color: "text-warning" },
+  deal_stage_changed:  { Icon: ArrowRightCircle, bg: "bg-chart-4/10",  color: "text-chart-4" },
   deal_won:            { Icon: Trophy,         bg: "bg-emerald-50",   color: "text-emerald-600" },
   deal_lost:           { Icon: XCircle,        bg: "bg-rose-50",      color: "text-rose-500" },
-  person_added:        { Icon: UserPlus,       bg: "bg-violet-50",    color: "text-violet-600" },
-  contacted:           { Icon: Phone,          bg: "bg-primary/8",    color: "text-primary" },
+  person_added:        { Icon: UserPlus,       bg: "bg-chart-4/10",    color: "text-chart-4" },
+  contacted:           { Icon: Phone,          bg: "bg-primary/8",    color: "text-brand-ink" },
 };
 
 function getKindMeta(kind: string) {
@@ -88,7 +88,7 @@ function DetailDrawer({ event, lang, onClose, onNavigate }: {
       <div className="fixed inset-0 z-40 bg-foreground/10 backdrop-blur-[2px]" onClick={onClose} />
       <div className="fixed inset-y-0 end-0 z-50 w-full max-w-[420px] bg-background border-s border-border/40 shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-200">
         <div className="flex items-center justify-between px-6 py-4 border-b border-border/40 sticky top-0 bg-background z-10">
-          <h2 className="text-[14px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "تفاصيل النشاط" : "Activity Detail"}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -103,12 +103,12 @@ function DetailDrawer({ event, lang, onClose, onNavigate }: {
               <km.Icon size={18} strokeWidth={1.75} className={km.color} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-muted-foreground/60 tracking-wide uppercase mb-1">
+              <p className="text-micro text-muted-foreground/60 tracking-wide uppercase mb-1">
                 {kl ? (ar ? kl.ar : kl.en) : event.kind}
               </p>
-              <p className="text-[15px] font-medium text-foreground leading-snug" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-body-lg font-medium text-foreground leading-snug" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? event.titleAr : event.titleEn}
-                {event.entityNameEn && <span className="text-primary"> {ar ? event.entityNameAr : event.entityNameEn}</span>}
+                {event.entityNameEn && <span className="text-brand-ink"> {ar ? event.entityNameAr : event.entityNameEn}</span>}
               </p>
             </div>
           </div>
@@ -116,26 +116,26 @@ function DetailDrawer({ event, lang, onClose, onNavigate }: {
           {/* Details */}
           {(event.detailEn || event.valueEn) && (
             <div className="border border-border/40 rounded-xl px-5 py-4 bg-muted/10">
-              {event.valueEn && <p className="text-[14px] font-semibold text-foreground mb-1 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? event.valueAr : event.valueEn}</p>}
-              {event.detailEn && <p className="text-[13px] text-muted-foreground leading-relaxed">{ar ? event.detailAr : event.detailEn}</p>}
+              {event.valueEn && <p className="text-body-lg font-semibold text-foreground mb-1 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? event.valueAr : event.valueEn}</p>}
+              {event.detailEn && <p className="text-body text-muted-foreground leading-relaxed">{ar ? event.detailAr : event.detailEn}</p>}
             </div>
           )}
 
           {/* Actor */}
           <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[9px] font-bold ${event.authorColor}`}>
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-micro font-bold ${event.authorColor}`}>
               {authorInitials}
             </div>
             <div>
-              <p className="text-[13px] font-medium text-foreground">{ar ? event.authorAr : event.authorEn}</p>
-              <p className="text-[11px] text-muted-foreground">{ar ? event.timeAr : event.timeEn}</p>
+              <p className="text-body font-medium text-foreground">{ar ? event.authorAr : event.authorEn}</p>
+              <p className="text-micro text-muted-foreground">{ar ? event.timeAr : event.timeEn}</p>
             </div>
           </div>
 
           {/* Module badge */}
           <div className="flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${mm.dot}`} />
-            <span className={`text-[12px] font-medium ${mm.subtle}`}>{ar ? mm.ar : mm.en}</span>
+            <span className={`text-caption font-medium ${mm.subtle}`}>{ar ? mm.ar : mm.en}</span>
           </div>
 
           {/* Navigate to entity */}
@@ -146,11 +146,11 @@ function DetailDrawer({ event, lang, onClose, onNavigate }: {
             >
               <div className="flex items-center gap-2.5">
                 <Eye size={14} strokeWidth={1.75} className="text-muted-foreground" />
-                <span className="text-[12px] font-medium text-foreground group-hover:text-primary transition-colors">
+                <span className="text-caption font-medium text-foreground group-hover:text-brand-ink transition-colors">
                   {ar ? "عرض التفاصيل" : "View Full Details"}
                 </span>
               </div>
-              <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/40 group-hover:text-primary/50 transition-colors" />
+              <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/40 group-hover:text-brand-ink/50 transition-colors" />
             </button>
           )}
         </div>
@@ -181,13 +181,13 @@ function EventRow({ event, lang, isLast, onClick }: {
       </div>
 
       <div className="flex-1 min-w-0 pt-1">
-        <p className="text-[13.5px] text-foreground leading-snug group-hover:text-primary/90 transition-colors">
+        <p className="text-body text-foreground leading-snug group-hover:text-brand-ink/90 transition-colors">
           <span className="font-medium">{ar ? event.titleAr : event.titleEn}</span>
-          {event.entityNameEn && <span className="text-primary font-normal"> {ar ? event.entityNameAr : event.entityNameEn}</span>}
+          {event.entityNameEn && <span className="text-brand-ink font-normal"> {ar ? event.entityNameAr : event.entityNameEn}</span>}
         </p>
 
         {(event.valueEn || event.detailEn) && (
-          <p className="text-[12px] text-muted-foreground mt-0.5 flex items-center gap-1.5 flex-wrap">
+          <p className="text-caption text-muted-foreground mt-0.5 flex items-center gap-1.5 flex-wrap">
             {event.valueEn && <span className="font-medium text-foreground/75">{ar ? event.valueAr : event.valueEn}</span>}
             {event.valueEn && event.detailEn && <span className="text-border">·</span>}
             {event.detailEn && <span>{ar ? event.detailAr : event.detailEn}</span>}
@@ -195,17 +195,17 @@ function EventRow({ event, lang, isLast, onClick }: {
         )}
 
         <div className="flex items-center gap-2 mt-2.5">
-          <div className={`w-[18px] h-[18px] rounded-md flex items-center justify-center text-[8.5px] font-bold shrink-0 leading-none ${event.authorColor}`}>
+          <div className={`w-[18px] h-[18px] rounded-md flex items-center justify-center text-micro font-bold shrink-0 ${event.authorColor}`}>
             {authorInitials}
           </div>
-          <span className="text-[11.5px] text-muted-foreground">{ar ? event.authorAr : event.authorEn}</span>
+          <span className="text-micro text-muted-foreground">{ar ? event.authorAr : event.authorEn}</span>
           <span className="text-border/60">·</span>
           <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${mm.dot}`} />
-          <span className={`text-[11.5px] font-medium ${mm.subtle}`}>{ar ? mm.ar : mm.en}</span>
+          <span className={`text-micro font-medium ${mm.subtle}`}>{ar ? mm.ar : mm.en}</span>
         </div>
       </div>
 
-      <span className="text-[11.5px] text-muted-foreground shrink-0 pt-1 tabular-nums">
+      <span className="text-micro text-muted-foreground shrink-0 pt-1 tabular-nums">
         {ar ? event.timeAr : event.timeEn}
       </span>
     </div>
@@ -224,16 +224,16 @@ function DateSection({ groupEn, groupAr, events, lang, onEventClick }: {
   return (
     <div className="mb-10 last:mb-4">
       <div className="flex items-center gap-3 mb-5 sticky top-[57px] z-10 bg-background/95 backdrop-blur-sm py-2 -mx-1 px-1">
-        <h2 className="text-[11.5px] font-semibold text-muted-foreground tracking-[0.07em] uppercase whitespace-nowrap flex items-center gap-2">
+        <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.07em] uppercase whitespace-nowrap flex items-center gap-2">
           {ar ? groupAr : groupEn}
           {isToday && (
-            <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-emerald-600 normal-case tracking-normal">
+            <span className="inline-flex items-center gap-1 text-micro font-semibold text-emerald-600 normal-case tracking-normal">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />Live
             </span>
           )}
         </h2>
         <div className="flex-1 h-px bg-border/35" />
-        <span className="text-[11px] text-muted-foreground/60 tabular-nums shrink-0">{events.length}</span>
+        <span className="text-micro text-muted-foreground/60 tabular-nums shrink-0">{events.length}</span>
       </div>
 
       <div className="relative ps-2">
@@ -270,7 +270,7 @@ function IntelligencePanel({ allEvents, lang }: { allEvents: ActivityEvent[]; la
 
   const cards = [
     {
-      icon: Users, color: "text-violet-600", bg: "bg-violet-50",
+      icon: Users, color: "text-chart-4", bg: "bg-chart-4/10",
       titleEn: "Most Active Person", titleAr: "أكثر شخص نشاطاً",
       valueEn: topAuthor ? `${topAuthor[0]} — ${topAuthor[1]} activities` : "No data",
       valueAr: topAuthor ? `${topAuthor[0]} — ${topAuthor[1]} نشاط` : "لا بيانات",
@@ -287,8 +287,8 @@ function IntelligencePanel({ allEvents, lang }: { allEvents: ActivityEvent[]; la
     },
     {
       icon: stalledDeals > 2 ? AlertTriangle : Target,
-      color: stalledDeals > 2 ? "text-amber-600" : "text-primary",
-      bg: stalledDeals > 2 ? "bg-amber-50" : "bg-primary/8",
+      color: stalledDeals > 2 ? "text-warning" : "text-brand-ink",
+      bg: stalledDeals > 2 ? "bg-warning/10" : "bg-primary/8",
       titleEn: "Stalled Opportunities", titleAr: "الفرص المتوقفة",
       valueEn: `${stalledDeals} deal${stalledDeals !== 1 ? "s" : ""} in early stages`,
       valueAr: `${stalledDeals} صفقة في مراحل مبكرة`,
@@ -308,9 +308,9 @@ function IntelligencePanel({ allEvents, lang }: { allEvents: ActivityEvent[]; la
   return (
     <div className="border-t border-border/40 px-8 md:px-10 py-8 max-w-[820px]">
       <div className="flex items-center gap-2.5 mb-5">
-        <Sparkles size={14} strokeWidth={1.75} className="text-primary" />
-        <h3 className="text-[13px] font-medium text-foreground">{ar ? "ذكاء النشاط" : "Activity Intelligence"}</h3>
-        <span className="text-[10px] text-muted-foreground/50 px-2 py-0.5 rounded-full bg-muted border border-border/40">{ar ? "ذكاء اصطناعي" : "AI-powered"}</span>
+        <Sparkles size={14} strokeWidth={1.75} className="text-brand-ink" />
+        <h3 className="text-body font-medium text-foreground">{ar ? "ذكاء النشاط" : "Activity Intelligence"}</h3>
+        <span className="text-micro text-muted-foreground/50 px-2 py-0.5 rounded-full bg-muted border border-border/40">{ar ? "ذكاء اصطناعي" : "AI-powered"}</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {cards.map((card, i) => (
@@ -320,9 +320,9 @@ function IntelligencePanel({ allEvents, lang }: { allEvents: ActivityEvent[]; la
                 <card.icon size={16} strokeWidth={1.75} className={card.color} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] text-muted-foreground/60 tracking-wide uppercase mb-1">{ar ? card.titleAr : card.titleEn}</p>
-                <p className="text-[13px] font-medium text-foreground leading-snug mb-1.5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>{ar ? card.valueAr : card.valueEn}</p>
-                <p className="text-[11px] text-muted-foreground/70 leading-relaxed">{ar ? card.descAr : card.descEn}</p>
+                <p className="text-micro text-muted-foreground/60 tracking-wide uppercase mb-1">{ar ? card.titleAr : card.titleEn}</p>
+                <p className="text-body font-medium text-foreground leading-snug mb-1.5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>{ar ? card.valueAr : card.valueEn}</p>
+                <p className="text-micro text-muted-foreground/70 leading-relaxed">{ar ? card.descAr : card.descEn}</p>
               </div>
             </div>
           </div>
@@ -400,8 +400,8 @@ export default function ActivityFeed() {
     <div className="min-h-full flex items-center justify-center py-24">
       <div className="text-center max-w-[400px]">
         <div className="w-12 h-12 rounded-2xl bg-muted mx-auto flex items-center justify-center mb-4"><div className="w-4 h-4 rounded bg-border" /></div>
-        <h2 className="text-[16px] font-medium mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "سجل النشاط" : "Activity Feed"}</h2>
-        <p className="text-[13px] text-muted-foreground leading-relaxed">{ar ? "هتلاقي هنا كل التحديثات لما تضيف أو تعدّل أي حاجة في مساحة عملك." : "Events will appear here as you create and update records in your workspace."}</p>
+        <h2 className="text-title font-medium mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "سجل النشاط" : "Activity Feed"}</h2>
+        <p className="text-body text-muted-foreground leading-relaxed">{ar ? "هتلاقي هنا كل التحديثات لما تضيف أو تعدّل أي حاجة في مساحة عملك." : "Events will appear here as you create and update records in your workspace."}</p>
       </div>
     </div>
   );
@@ -412,35 +412,35 @@ export default function ActivityFeed() {
       {/* ── Dashboard Header ───────────────────────────────── */}
       <div className="border-b border-border/40 px-8 md:px-10 py-8" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[820px]">
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "مركز النشاط" : "Activity Hub"}</p>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "مركز النشاط" : "Activity Hub"}</p>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "رسم النشاط الموحد" : "Unified Activity Graph"}
             </h1>
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-600">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-              <span className="text-[10.5px] font-semibold tracking-wide">Live</span>
+              <span className="text-micro font-semibold tracking-wide">Live</span>
             </div>
           </div>
-          <p className="text-[13px] text-muted-foreground mb-6">
+          <p className="text-body text-muted-foreground mb-6">
             {ar ? `${allEvents.length} حدث من جميع الوحدات` : `${allEvents.length} events from all modules`}
           </p>
 
           {/* Metrics strip */}
           <div className="grid grid-cols-5 gap-3">
             {[
-              { value: todayCount, label: ar ? "اليوم" : "Today", icon: Calendar, color: "text-primary" },
-              { value: thisWeekCount, label: ar ? "هذا الأسبوع" : "This Week", icon: TrendingUp, color: "text-amber-500" },
-              { value: activeUsers, label: ar ? "مستخدمين نشطين" : "Active Users", icon: Users, color: "text-violet-500" },
+              { value: todayCount, label: ar ? "اليوم" : "Today", icon: Calendar, color: "text-brand-ink" },
+              { value: thisWeekCount, label: ar ? "هذا الأسبوع" : "This Week", icon: TrendingUp, color: "text-warning" },
+              { value: activeUsers, label: ar ? "مستخدمين نشطين" : "Active Users", icon: Users, color: "text-chart-4" },
               { value: openOpps, label: ar ? "فرص مفتوحة" : "Open Opps", icon: Target, color: "text-emerald-500" },
               { value: completedWork, label: ar ? "عمل مكتمل" : "Completed", icon: CheckSquare, color: "text-cyan-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <div className="flex items-center gap-2 mb-1.5">
                   <m.icon size={13} strokeWidth={1.75} className={m.color} />
-                  <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                  <p className="text-micro text-muted-foreground">{m.label}</p>
                 </div>
-                <p className="text-[20px] font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
+                <p className="text-heading font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
               </div>
             ))}
           </div>
@@ -454,7 +454,7 @@ export default function ActivityFeed() {
             <Search size={13} strokeWidth={1.75} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input type="search" value={search} onChange={(e) => setSearch(e.target.value)}
               placeholder={ar ? "بحث…" : "Search events…"}
-              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
+              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
           </div>
 
           <div className="h-5 w-px bg-border/60 hidden sm:block" />
@@ -462,9 +462,9 @@ export default function ActivityFeed() {
           <div className="flex items-center gap-1.5 flex-wrap">
             {MODULE_FILTERS.map((f) => (
               <button key={f.value} onClick={() => setModuleFilter(f.value as ActivityModule | "all")}
-                className={`h-7 px-3 rounded-lg text-[12px] font-medium border transition-all duration-150 ${moduleFilter === f.value ? "bg-primary/8 text-primary border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
+                className={`h-7 px-3 rounded-lg text-caption font-medium border transition-all duration-150 ${moduleFilter === f.value ? "bg-primary/8 text-brand-ink border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
                 {ar ? f.ar : f.en}
-                {f.value !== "all" && <span className="ms-1.5 text-[10.5px] text-muted-foreground/50">{allEvents.filter((e) => e.module === f.value).length}</span>}
+                {f.value !== "all" && <span className="ms-1.5 text-micro text-muted-foreground/50">{allEvents.filter((e) => e.module === f.value).length}</span>}
               </button>
             ))}
           </div>
@@ -473,7 +473,7 @@ export default function ActivityFeed() {
 
           <div className="relative">
             <select value={kindFilter} onChange={(e) => setKindFilter(e.target.value as ActivityKind | "all")}
-              className="h-7 ps-2.5 pe-7 rounded-lg border border-border bg-card text-[12px] text-muted-foreground focus:outline-none appearance-none cursor-pointer">
+              className="h-7 ps-2.5 pe-7 rounded-lg border border-border bg-card text-caption text-muted-foreground focus:outline-none appearance-none cursor-pointer">
               <option value="all">{ar ? "كل الأنواع" : "All types"}</option>
               {(Object.keys(KIND_LABELS) as ActivityKind[]).map((k) => (
                 <option key={k} value={k}>{ar ? KIND_LABELS[k].ar : KIND_LABELS[k].en}</option>
@@ -484,7 +484,7 @@ export default function ActivityFeed() {
 
           <div className="relative">
             <select value={authorFilter} onChange={(e) => setAuthorFilter(e.target.value)}
-              className="h-7 ps-2.5 pe-7 rounded-lg border border-border bg-card text-[12px] text-muted-foreground focus:outline-none appearance-none cursor-pointer">
+              className="h-7 ps-2.5 pe-7 rounded-lg border border-border bg-card text-caption text-muted-foreground focus:outline-none appearance-none cursor-pointer">
               <option value="all">{ar ? "كل الأعضاء" : "All authors"}</option>
               {allAuthors.map((a) => (<option key={a.en} value={a.en}>{ar ? a.ar : a.en}</option>))}
             </select>
@@ -492,13 +492,13 @@ export default function ActivityFeed() {
           </div>
 
           {hasFilters && (
-            <button onClick={clearFilters} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
+            <button onClick={clearFilters} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
               <X size={11} strokeWidth={2} />{ar ? "مسح" : "Clear"}
             </button>
           )}
 
           <div className="flex-1" />
-          <span className="text-[12px] text-muted-foreground whitespace-nowrap">
+          <span className="text-caption text-muted-foreground whitespace-nowrap">
             {filtered.length !== allEvents.length
               ? (ar ? `${filtered.length} من ${allEvents.length}` : `${filtered.length} of ${allEvents.length}`)
               : (ar ? `${filtered.length} حدث` : `${filtered.length} events`)
@@ -512,9 +512,9 @@ export default function ActivityFeed() {
         {grouped.length === 0 ? (
           <div className="border border-border/40 rounded-xl py-20 text-center bg-background">
             <div className="w-10 h-10 rounded-xl bg-muted mx-auto mb-4 flex items-center justify-center"><Filter size={16} className="text-muted-foreground" strokeWidth={1.5} /></div>
-            <p className="text-[13px] font-medium text-foreground mb-1">{ar ? "لا توجد أحداث" : "No events found"}</p>
-            <p className="text-[12px] text-muted-foreground">{ar ? "جرب تغيير الفلاتر" : "Try adjusting your filters"}</p>
-            {hasFilters && <button onClick={clearFilters} className="mt-4 text-[12px] text-primary hover:underline">{ar ? "مسح الفلاتر" : "Clear filters"}</button>}
+            <p className="text-body font-medium text-foreground mb-1">{ar ? "لا توجد أحداث" : "No events found"}</p>
+            <p className="text-caption text-muted-foreground">{ar ? "جرب تغيير الفلاتر" : "Try adjusting your filters"}</p>
+            {hasFilters && <button onClick={clearFilters} className="mt-4 text-caption text-brand-ink hover:underline">{ar ? "مسح الفلاتر" : "Clear filters"}</button>}
           </div>
         ) : (
           grouped.map((group) => (

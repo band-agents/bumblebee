@@ -32,7 +32,7 @@ export interface Relationship {
 
 // ─── Persistence ─────────────────────────────────────────
 
-const STORAGE_KEY = "thoth_relationships";
+const STORAGE_KEY = "bumblebee_relationships";
 
 export function loadRelationships(): Relationship[] {
   try {

@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 
 const RISK_TYPE_META: Record<RiskType, { icon: React.ElementType; labelEn: string; labelAr: string; color: string; bg: string; border: string }> = {
-  stalled:            { icon: Clock,         labelEn: "Stalled Project",      labelAr: "مشروع متوقف",    color: "text-amber-600",  bg: "bg-amber-50",  border: "border-amber-200/60" },
+  stalled:            { icon: Clock,         labelEn: "Stalled Project",      labelAr: "مشروع متوقف",    color: "text-warning",  bg: "bg-warning/10",  border: "border-warning/30" },
   missing_owner:      { icon: UserX,         labelEn: "Missing Owner",        labelAr: "بلا مالك",        color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-200/60" },
   delayed:            { icon: AlertTriangle,  labelEn: "Delayed Milestone",    labelAr: "إنجاز متأخر",    color: "text-rose-600",   bg: "bg-rose-50",   border: "border-rose-200/60" },
-  dependency_failure: { icon: Link2,          labelEn: "Dependency Failure",   labelAr: "فشل تبعية",       color: "text-violet-600", bg: "bg-violet-50", border: "border-violet-200/60" },
+  dependency_failure: { icon: Link2,          labelEn: "Dependency Failure",   labelAr: "فشل تبعية",       color: "text-chart-4", bg: "bg-chart-4/10", border: "border-chart-4/30" },
   overdue_invoice:    { icon: Landmark,       labelEn: "Overdue Invoice",      labelAr: "فاتورة متأخرة",  color: "text-rose-600",   bg: "bg-rose-50",   border: "border-rose-200/60" },
   at_risk_account:    { icon: Building2,      labelEn: "At-Risk Account",      labelAr: "حساب في خطر",    color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-200/60" },
 };
@@ -32,7 +32,7 @@ function SeverityRing({ score }: { score: number }) {
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-[13px] font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{score}</span>
+        <span className="text-body font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{score}</span>
       </div>
     </div>
   );
@@ -57,15 +57,15 @@ function RiskCard({ risk, ar, navigate }: { risk: RiskItem; ar: boolean; navigat
         <SeverityRing score={risk.severityScore} />
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1.5">
-            <p className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors leading-snug">{ar ? risk.titleAr : risk.titleEn}</p>
-            <span className={`inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${meta.bg} ${meta.color}`}>
+            <p className="text-body font-medium text-foreground group-hover:text-brand-ink transition-colors leading-snug">{ar ? risk.titleAr : risk.titleEn}</p>
+            <span className={`inline-flex items-center gap-1 text-micro font-medium px-1.5 py-0.5 rounded-full shrink-0 ${meta.bg} ${meta.color}`}>
               <Icon size={9} strokeWidth={2} />
               {ar ? meta.labelAr : meta.labelEn}
             </span>
           </div>
-          <p className="text-[11px] text-muted-foreground/70 leading-relaxed mb-2">{ar ? risk.descAr : risk.descEn}</p>
-          <div className="flex items-start gap-1.5 text-[10px] text-muted-foreground/60 bg-muted/30 rounded-lg px-3 py-2">
-            <Shield size={10} strokeWidth={1.75} className="shrink-0 mt-0.5 text-primary/60" />
+          <p className="text-micro text-muted-foreground/70 leading-relaxed mb-2">{ar ? risk.descAr : risk.descEn}</p>
+          <div className="flex items-start gap-1.5 text-micro text-muted-foreground/60 bg-muted/30 rounded-lg px-3 py-2">
+            <Shield size={10} strokeWidth={1.75} className="shrink-0 mt-0.5 text-brand-ink/60" />
             <span className="leading-relaxed">{ar ? risk.mitigationAr : risk.mitigationEn}</span>
           </div>
         </div>
@@ -115,9 +115,9 @@ export default function RiskRadar() {
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
             <AlertOctagon size={14} strokeWidth={1.75} className="text-rose-500" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "رادار المخاطر" : "Risk Radar"}</p>
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "رادار المخاطر" : "Risk Radar"}</p>
           </div>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "رصد المخاطر في الوقت الحقيقي" : "Real-Time Risk Detection"}
           </h1>
 
@@ -131,32 +131,32 @@ export default function RiskRadar() {
                     strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-1000" />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-[26px] font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>
+                  <span className="text-display font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>
                     {overallRiskScore}
                   </span>
-                  <span className="text-[9px] text-muted-foreground/50 mt-0.5">/100</span>
+                  <span className="text-micro text-muted-foreground/50 mt-0.5">/100</span>
                 </div>
               </div>
-              <p className="text-[10px] text-muted-foreground/60 mt-2">{ar ? "مؤشر المخاطر" : "Risk Index"}</p>
+              <p className="text-micro text-muted-foreground/60 mt-2">{ar ? "مؤشر المخاطر" : "Risk Index"}</p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 flex-1">
               <div className="bg-background border border-rose-200/40 rounded-xl px-4 py-3">
-                <p className="text-[9px] text-muted-foreground mb-1">{ar ? "مخاطر عالية" : "High Risks"}</p>
-                <p className="text-[26px] font-medium text-rose-600 tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{highRisks.length}</p>
+                <p className="text-micro text-muted-foreground mb-1">{ar ? "مخاطر عالية" : "High Risks"}</p>
+                <p className="text-display font-medium text-rose-600 tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{highRisks.length}</p>
               </div>
-              <div className="bg-background border border-amber-200/40 rounded-xl px-4 py-3">
-                <p className="text-[9px] text-muted-foreground mb-1">{ar ? "مخاطر متوسطة" : "Medium Risks"}</p>
-                <p className="text-[26px] font-medium text-amber-600 tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{medRisks.length}</p>
-              </div>
-              <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-                <p className="text-[9px] text-muted-foreground mb-1">{ar ? "المتوقف" : "Stalled"}</p>
-                <p className="text-[26px] font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{typeCounts.stalled || 0}</p>
+              <div className="bg-background border border-warning/30 rounded-xl px-4 py-3">
+                <p className="text-micro text-muted-foreground mb-1">{ar ? "مخاطر متوسطة" : "Medium Risks"}</p>
+                <p className="text-display font-medium text-warning tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{medRisks.length}</p>
               </div>
               <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-                <p className="text-[9px] text-muted-foreground mb-1">{ar ? "إجمالي" : "Total Risks"}</p>
-                <p className="text-[26px] font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{risks.length}</p>
+                <p className="text-micro text-muted-foreground mb-1">{ar ? "المتوقف" : "Stalled"}</p>
+                <p className="text-display font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{typeCounts.stalled || 0}</p>
+              </div>
+              <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
+                <p className="text-micro text-muted-foreground mb-1">{ar ? "إجمالي" : "Total Risks"}</p>
+                <p className="text-display font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{risks.length}</p>
               </div>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function RiskRadar() {
           {/* Type filters */}
           <div className="flex items-center gap-2 mt-5 flex-wrap">
             <button onClick={() => setFilterType("all")}
-              className={`text-[11px] px-3 py-1.5 rounded-full border transition-all ${filterType === "all" ? "bg-foreground text-background border-foreground" : "bg-background border-border/40 text-muted-foreground hover:text-foreground"}`}>
+              className={`text-micro px-3 py-1.5 rounded-full border transition-all ${filterType === "all" ? "bg-foreground text-background border-foreground" : "bg-background border-border/40 text-muted-foreground hover:text-foreground"}`}>
               {ar ? `الكل (${risks.length})` : `All (${risks.length})`}
             </button>
             {(Object.keys(RISK_TYPE_META) as RiskType[]).map((t) => {
@@ -173,7 +173,7 @@ export default function RiskRadar() {
               const meta = RISK_TYPE_META[t];
               return (
                 <button key={t} onClick={() => setFilterType(t)}
-                  className={`text-[11px] px-3 py-1.5 rounded-full border transition-all ${filterType === t ? "bg-foreground text-background border-foreground" : `bg-background border-border/40 ${meta.color} hover:border-current`}`}>
+                  className={`text-micro px-3 py-1.5 rounded-full border transition-all ${filterType === t ? "bg-foreground text-background border-foreground" : `bg-background border-border/40 ${meta.color} hover:border-current`}`}>
                   {ar ? `${meta.labelAr} (${count})` : `${meta.labelEn} (${count})`}
                 </button>
               );
@@ -187,7 +187,7 @@ export default function RiskRadar() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center py-16">
             <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-400 mb-3" />
-            <p className="text-[14px] text-muted-foreground">{ar ? "لا مخاطر مكتشفة" : "No risks detected"}</p>
+            <p className="text-body-lg text-muted-foreground">{ar ? "لا مخاطر مكتشفة" : "No risks detected"}</p>
           </div>
         ) : (
           <div className="space-y-3">

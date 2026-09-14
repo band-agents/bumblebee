@@ -13,8 +13,8 @@ import {
   Fingerprint, ShieldCheck, ShieldAlert, Ban, History, Settings,
 } from "lucide-react";
 
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11px] text-muted-foreground font-medium mb-1 block";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 interface Member {
   id: string;
@@ -112,12 +112,12 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
         <div className="shrink-0 px-5 py-4 border-b border-border/40">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-[14px] font-bold text-primary">
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-body-lg font-bold text-brand-ink">
                 {(member.display_name || "?").charAt(0).toUpperCase()}
               </div>
               <div>
-                <p className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{member.display_name}</p>
-                <p className="text-[11px] text-muted-foreground">{member.email}</p>
+                <p className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{member.display_name}</p>
+                <p className="text-micro text-muted-foreground">{member.email}</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5">
@@ -135,7 +135,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`flex-1 h-8 rounded-md text-[11px] font-medium flex items-center justify-center gap-1 transition-all ${
+                className={`flex-1 h-8 rounded-md text-micro font-medium flex items-center justify-center gap-1 transition-all ${
                   tab === t.id ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -183,7 +183,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                         onSave({ ...member, ...form });
                         setEditing(false);
                       }}
-                      className="w-full h-10 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity"
+                      className="w-full h-10 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity"
                     >
                       {ar ? "حفظ" : "Save Changes"}
                     </button>
@@ -195,30 +195,30 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                       <div className="p-3 rounded-xl bg-muted/30">
                         <div className="flex items-center gap-1.5 mb-1">
                           <Building2 size={11} className="text-muted-foreground/50" />
-                          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{ar ? "القسم" : "Department"}</span>
+                          <span className="text-micro text-muted-foreground uppercase tracking-wider">{ar ? "القسم" : "Department"}</span>
                         </div>
-                        <p className="text-[12px] font-medium">{dept ? (ar ? dept.ar : dept.en) : "—"}</p>
+                        <p className="text-caption font-medium">{dept ? (ar ? dept.ar : dept.en) : "—"}</p>
                       </div>
                       <div className="p-3 rounded-xl bg-muted/30">
                         <div className="flex items-center gap-1.5 mb-1">
                           <Briefcase size={11} className="text-muted-foreground/50" />
-                          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{ar ? "الدور" : "Role"}</span>
+                          <span className="text-micro text-muted-foreground uppercase tracking-wider">{ar ? "الدور" : "Role"}</span>
                         </div>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${tmpl.color}`}>{ar ? tmpl.ar : tmpl.en}</span>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${tmpl.color}`}>{ar ? tmpl.ar : tmpl.en}</span>
                       </div>
                       <div className="p-3 rounded-xl bg-muted/30">
                         <div className="flex items-center gap-1.5 mb-1">
                           <Clock size={11} className="text-muted-foreground/50" />
-                          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{ar ? "تاريخ الانضمام" : "Joined"}</span>
+                          <span className="text-micro text-muted-foreground uppercase tracking-wider">{ar ? "تاريخ الانضمام" : "Joined"}</span>
                         </div>
-                        <p className="text-[12px] font-medium">{member.joined_at?.slice(0, 10) || "—"}</p>
+                        <p className="text-caption font-medium">{member.joined_at?.slice(0, 10) || "—"}</p>
                       </div>
                       <div className="p-3 rounded-xl bg-muted/30">
                         <div className="flex items-center gap-1.5 mb-1">
                           <Activity size={11} className="text-muted-foreground/50" />
-                          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{ar ? "آخر نشاط" : "Last Active"}</span>
+                          <span className="text-micro text-muted-foreground uppercase tracking-wider">{ar ? "آخر نشاط" : "Last Active"}</span>
                         </div>
-                        <p className="text-[12px] font-medium">{member.last_active || "Unknown"}</p>
+                        <p className="text-caption font-medium">{member.last_active || "Unknown"}</p>
                       </div>
                     </div>
 
@@ -226,17 +226,17 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                     <div className="flex items-center justify-between p-3 rounded-xl border border-border/40">
                       <div className="flex items-center gap-2">
                         <div className={`w-2.5 h-2.5 rounded-full ${member.status === "active" ? "bg-emerald-500" : "bg-muted"}`} />
-                        <span className="text-[12px] font-medium">{ar ? (member.status === "active" ? "نشط" : "غير نشط") : (member.status === "active" ? "Active" : "Inactive")}</span>
+                        <span className="text-caption font-medium">{ar ? (member.status === "active" ? "نشط" : "غير نشط") : (member.status === "active" ? "Active" : "Inactive")}</span>
                       </div>
-                      <span className="text-[10px] text-muted-foreground">{member.login_count || 0} {ar ? "تسجيل دخول" : "logins"}</span>
+                      <span className="text-micro text-muted-foreground">{member.login_count || 0} {ar ? "تسجيل دخول" : "logins"}</span>
                     </div>
 
                     {/* Quick Permission Summary */}
                     <div>
-                      <h4 className="text-[12px] font-medium mb-2">{ar ? "ملخص الصلاحيات" : "Permission Summary"}</h4>
+                      <h4 className="text-caption font-medium mb-2">{ar ? "ملخص الصلاحيات" : "Permission Summary"}</h4>
                       <div className="flex flex-wrap gap-1.5">
                         {MODULES.filter(m => (permissions[m.key] || []).length > 0).slice(0, 8).map(m => (
-                          <span key={m.key} className="text-[10px] px-2 py-1 rounded-lg bg-primary/10 text-primary font-medium">
+                          <span key={m.key} className="text-micro px-2 py-1 rounded-lg bg-primary/10 text-brand-ink font-medium">
                             {ar ? m.ar : m.en}: {(permissions[m.key] || []).length}
                           </span>
                         ))}
@@ -258,8 +258,8 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
             {tab === "sessions" && (
               <motion.div key="sessions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-5 space-y-3">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-[12px] font-medium">{ar ? "الجلسات النشطة" : "Active Sessions"}</h4>
-                  <span className="text-[10px] text-muted-foreground">{MOCK_SESSIONS.length} {ar ? "جهاز" : "devices"}</span>
+                  <h4 className="text-caption font-medium">{ar ? "الجلسات النشطة" : "Active Sessions"}</h4>
+                  <span className="text-micro text-muted-foreground">{MOCK_SESSIONS.length} {ar ? "جهاز" : "devices"}</span>
                 </div>
                 {MOCK_SESSIONS.map(s => (
                   <div key={s.id} className={`p-3.5 rounded-xl border ${s.current ? "border-primary/30 bg-primary/5" : "border-border/40"}`}>
@@ -267,26 +267,26 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                       <div className="flex items-center gap-2.5">
                         {s.device.includes("iPhone") ? <Smartphone size={16} className="text-muted-foreground" /> : <Monitor size={16} className="text-muted-foreground" />}
                         <div>
-                          <p className="text-[12px] font-medium">{s.device}</p>
-                          <p className="text-[10px] text-muted-foreground">{s.browser}</p>
+                          <p className="text-caption font-medium">{s.device}</p>
+                          <p className="text-micro text-muted-foreground">{s.browser}</p>
                         </div>
                       </div>
                       {s.current ? (
-                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">{ar ? "الحالية" : "Current"}</span>
+                        <span className="text-micro px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">{ar ? "الحالية" : "Current"}</span>
                       ) : (
-                        <button className="text-[10px] text-rose-500 hover:underline flex items-center gap-1">
+                        <button className="text-micro text-rose-500 hover:underline flex items-center gap-1">
                           <LogOut size={10} /> {ar ? "إنهاء" : "Revoke"}
                         </button>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                    <div className="flex items-center gap-3 text-micro text-muted-foreground">
                       <span className="flex items-center gap-1"><Globe size={9} /> {s.ip}</span>
                       <span className="flex items-center gap-1"><Building2 size={9} /> {s.location}</span>
                       <span className="flex items-center gap-1"><Clock size={9} /> {s.last_active}</span>
                     </div>
                   </div>
                 ))}
-                <button className="w-full h-9 rounded-lg border border-rose-200 text-rose-500 text-[11px] font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5 mt-3">
+                <button className="w-full h-9 rounded-lg border border-rose-200 text-rose-500 text-micro font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5 mt-3">
                   <LogOut size={12} /> {ar ? "إنهاء جميع الجلسات الأخرى" : "Revoke All Other Sessions"}
                 </button>
               </motion.div>
@@ -295,7 +295,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
             {/* Activity Tab */}
             {tab === "activity" && (
               <motion.div key="activity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-5">
-                <h4 className="text-[12px] font-medium mb-3">{ar ? "سجل النشاط" : "Activity Log"}</h4>
+                <h4 className="text-caption font-medium mb-3">{ar ? "سجل النشاط" : "Activity Log"}</h4>
                 <div className="space-y-0">
                   {MOCK_ACTIVITY.map((entry, i) => {
                     const actionIcon = entry.action === "login" ? Key : entry.action === "view" ? Eye : entry.action === "edit" ? Edit3 : entry.action === "create" ? Star : entry.action === "delete" ? Trash2 : entry.action === "approve" ? ShieldCheck : entry.action === "export" ? Activity : Settings;
@@ -310,11 +310,11 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                         </div>
                         <div className="pb-4 flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-0.5">
-                            <span className="text-[11px] font-medium capitalize">{entry.action}</span>
-                            <span className="text-[9px] text-muted-foreground">{entry.timestamp}</span>
+                            <span className="text-micro font-medium capitalize">{entry.action}</span>
+                            <span className="text-micro text-muted-foreground">{entry.timestamp}</span>
                           </div>
-                          <p className="text-[11px] text-foreground">{entry.target}</p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5">{entry.details}</p>
+                          <p className="text-micro text-foreground">{entry.target}</p>
+                          <p className="text-micro text-muted-foreground mt-0.5">{entry.details}</p>
                         </div>
                       </div>
                     );
@@ -326,7 +326,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
             {/* Security Tab */}
             {tab === "security" && (
               <motion.div key="security" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-5 space-y-4">
-                <h4 className="text-[12px] font-medium">{ar ? "إعدادات الأمان" : "Security Settings"}</h4>
+                <h4 className="text-caption font-medium">{ar ? "إعدادات الأمان" : "Security Settings"}</h4>
 
                 {/* 2FA */}
                 <div className="p-3.5 rounded-xl border border-border/40 flex items-center justify-between">
@@ -335,8 +335,8 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                       <Fingerprint size={16} className={member.two_factor ? "text-emerald-600" : "text-muted-foreground"} />
                     </div>
                     <div>
-                      <p className="text-[12px] font-medium">{ar ? "المصادقة الثنائية" : "Two-Factor Auth"}</p>
-                      <p className="text-[10px] text-muted-foreground">{ar ? "طبقة حماية إضافية للحساب" : "Extra layer of account protection"}</p>
+                      <p className="text-caption font-medium">{ar ? "المصادقة الثنائية" : "Two-Factor Auth"}</p>
+                      <p className="text-micro text-muted-foreground">{ar ? "طبقة حماية إضافية للحساب" : "Extra layer of account protection"}</p>
                     </div>
                   </div>
                   <div className={`w-10 h-5 rounded-full transition-colors cursor-pointer ${member.two_factor ? "bg-emerald-500" : "bg-muted"}`}>
@@ -352,11 +352,11 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                         <Key size={16} className="text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="text-[12px] font-medium">{ar ? "كلمة المرور" : "Password"}</p>
-                        <p className="text-[10px] text-muted-foreground">{ar ? "آخر تغيير: منذ 30 يوم" : "Last changed: 30 days ago"}</p>
+                        <p className="text-caption font-medium">{ar ? "كلمة المرور" : "Password"}</p>
+                        <p className="text-micro text-muted-foreground">{ar ? "آخر تغيير: منذ 30 يوم" : "Last changed: 30 days ago"}</p>
                       </div>
                     </div>
-                    <button className="text-[10px] text-primary hover:underline">{ar ? "تغيير" : "Change"}</button>
+                    <button className="text-micro text-brand-ink hover:underline">{ar ? "تغيير" : "Change"}</button>
                   </div>
                 </div>
 
@@ -368,33 +368,33 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                         <Ban size={16} className="text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="text-[12px] font-medium">{ar ? "قيود تسجيل الدخول" : "Login Restrictions"}</p>
-                        <p className="text-[10px] text-muted-foreground">{ar ? "تحديد الأوقات والأجهزة" : "Limit devices and hours"}</p>
+                        <p className="text-caption font-medium">{ar ? "قيود تسجيل الدخول" : "Login Restrictions"}</p>
+                        <p className="text-micro text-muted-foreground">{ar ? "تحديد الأوقات والأجهزة" : "Limit devices and hours"}</p>
                       </div>
                     </div>
                   </div>
                   <div className="mt-2 space-y-2">
                     <div className="flex items-center gap-2">
                       <input type="checkbox" className="rounded border-border" defaultChecked />
-                      <span className="text-[11px] text-muted-foreground">{ar ? "سماح بالدخول من أجهزة فقط" : "Allow login from registered devices only"}</span>
+                      <span className="text-micro text-muted-foreground">{ar ? "سماح بالدخول من أجهزة فقط" : "Allow login from registered devices only"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <input type="checkbox" className="rounded border-border" />
-                      <span className="text-[11px] text-muted-foreground">{ar ? "تقييد ساعات العمل (8 صباحاً - 6 مساءً)" : "Restrict to business hours (8AM - 6PM)"}</span>
+                      <span className="text-micro text-muted-foreground">{ar ? "تقييد ساعات العمل (8 صباحاً - 6 مساءً)" : "Restrict to business hours (8AM - 6PM)"}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Danger Zone */}
                 <div className="p-3.5 rounded-xl border border-rose-200 bg-rose-50/50">
-                  <h5 className="text-[11px] font-semibold text-rose-600 mb-2 flex items-center gap-1.5">
+                  <h5 className="text-micro font-semibold text-rose-600 mb-2 flex items-center gap-1.5">
                     <AlertTriangle size={11} /> {ar ? "منطقة الخطر" : "Danger Zone"}
                   </h5>
                   <div className="space-y-2">
-                    <button className="w-full h-8 rounded-lg border border-rose-200 text-rose-600 text-[11px] font-medium hover:bg-rose-100 transition-colors">
+                    <button className="w-full h-8 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium hover:bg-rose-100 transition-colors">
                       {ar ? "إيقاف الحساب" : "Suspend Account"}
                     </button>
-                    <button className="w-full h-8 rounded-lg border border-rose-200 text-rose-600 text-[11px] font-medium hover:bg-rose-100 transition-colors">
+                    <button className="w-full h-8 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium hover:bg-rose-100 transition-colors">
                       {ar ? "حذف المستخدم" : "Delete User"}
                     </button>
                   </div>
@@ -435,10 +435,10 @@ function PermissionEditor({ permissions, onChange, ar }: {
     <div className="space-y-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <Shield size={13} className="text-primary" />
-          <span className="text-[12px] font-semibold">{ar ? "مصفوفة الصلاحيات" : "Permission Matrix"}</span>
+          <Shield size={13} className="text-brand-ink" />
+          <span className="text-caption font-semibold">{ar ? "مصفوفة الصلاحيات" : "Permission Matrix"}</span>
         </div>
-        <span className="text-[10px] text-muted-foreground">{countPermissions(permissions)} {ar ? "مفعّل" : "active"}</span>
+        <span className="text-micro text-muted-foreground">{countPermissions(permissions)} {ar ? "مفعّل" : "active"}</span>
       </div>
       <div className="divide-y divide-border/25 border border-border/40 rounded-xl overflow-hidden">
         {MODULES.map(mod => {
@@ -460,8 +460,8 @@ function PermissionEditor({ permissions, onChange, ar }: {
                 >
                   {(allChecked || someChecked) && <Check size={10} className="text-white" />}
                 </button>
-                <span className="text-[11px] font-medium flex-1">{ar ? mod.ar : mod.en}</span>
-                <span className="text-[9px] text-muted-foreground tabular-nums">{modPerms.length}/{mod.permissions.length}</span>
+                <span className="text-micro font-medium flex-1">{ar ? mod.ar : mod.en}</span>
+                <span className="text-micro text-muted-foreground tabular-nums">{modPerms.length}/{mod.permissions.length}</span>
                 <ChevronDown size={12} className={`text-muted-foreground/40 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
@@ -475,9 +475,9 @@ function PermissionEditor({ permissions, onChange, ar }: {
                           <button
                             key={action}
                             onClick={() => toggle(mod.key, action)}
-                            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-medium border transition-all ${
+                            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-micro font-medium border transition-all ${
                               checked
-                                ? isDangerous ? "border-rose-300 bg-rose-50 text-rose-700" : "border-primary/40 bg-primary/10 text-primary"
+                                ? isDangerous ? "border-rose-300 bg-rose-50 text-rose-700" : "border-primary/40 bg-primary/10 text-brand-ink"
                                 : "border-border/40 text-muted-foreground hover:border-border/80"
                             }`}
                           >

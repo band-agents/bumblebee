@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH — Fix: handle_new_user trigger + profiles RLS
+-- Bumblebee — Fix: handle_new_user trigger + profiles RLS
 --
 -- Run this in Supabase SQL Editor.
 --

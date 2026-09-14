@@ -85,14 +85,14 @@ function allModulesWithPerms(perms: PermissionAction[]): PermissionMap {
 export const ROLE_TEMPLATES: RoleTemplate[] = [
   {
     id: "owner", en: "Owner", ar: "مالك",
-    color: "bg-amber-100 text-amber-700",
+    color: "bg-warning/15 text-warning",
     description: "Full access to everything", descriptionAr: "صلاحيات كاملة لكل شيء",
     permissions: allModulesWithPerms(ALL_ACTIONS),
     risk: "high",
   },
   {
     id: "admin", en: "Admin", ar: "مسؤول النظام",
-    color: "bg-violet-100 text-violet-700",
+    color: "bg-chart-4/15 text-chart-4",
     description: "Full access, cannot delete workspace", descriptionAr: "صلاحيات كاملة، لا يمكنه حذف المساحة",
     permissions: allModulesWithPerms(ALL_ACTIONS),
     risk: "high",

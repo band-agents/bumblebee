@@ -30,7 +30,7 @@ type ProdOrder = Database["public"]["Tables"]["production_orders"]["Row"];
 
 const DELIVERY_STATUSES = [
   { value: "scheduled",   en: "Scheduled",   ar: "مجدول",       pill: "bg-blue-50 text-blue-600",      icon: Calendar },
-  { value: "loading",     en: "Loading",     ar: "جاري التحميل", pill: "bg-amber-50 text-amber-600",    icon: Package },
+  { value: "loading",     en: "Loading",     ar: "جاري التحميل", pill: "bg-warning/10 text-warning",    icon: Package },
   { value: "in_transit",  en: "In Transit",  ar: "في الطريق",   pill: "bg-indigo-50 text-indigo-600",  icon: Truck },
   { value: "delivered",   en: "Delivered",   ar: "تم التسليم",  pill: "bg-emerald-50 text-emerald-600", icon: CheckCircle2 },
   { value: "failed",      en: "Failed",      ar: "فشل التسليم", pill: "bg-rose-50 text-rose-600",      icon: XCircle },
@@ -39,7 +39,7 @@ const DELIVERY_STATUSES = [
 
 const INSTALL_STATUSES = [
   { value: "scheduled",    en: "Scheduled",    ar: "مجدول",       pill: "bg-blue-50 text-blue-600",      icon: Calendar },
-  { value: "in_progress",  en: "In Progress",  ar: "جاري التركيب", pill: "bg-amber-50 text-amber-600",   icon: Hammer },
+  { value: "in_progress",  en: "In Progress",  ar: "جاري التركيب", pill: "bg-warning/10 text-warning",   icon: Hammer },
   { value: "completed",    en: "Completed",    ar: "تم التركيب",  pill: "bg-emerald-50 text-emerald-600", icon: CheckCircle2 },
   { value: "on_hold",      en: "On Hold",      ar: "متوقف",       pill: "bg-zinc-100 text-zinc-500",     icon: Pause },
   { value: "cancelled",    en: "Cancelled",    ar: "ملغي",        pill: "bg-zinc-100 text-zinc-500",     icon: X },
@@ -58,9 +58,9 @@ const DEFAULT_INSTALL_CHECKLIST = [
   { id: "walkthrough",   label_en: "Customer walkthrough done",       label_ar: "تم شرح كل حاجة للعميل",     passed: null, notes: "" },
 ];
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function genNum(prefix: string): string {
   const d = new Date();
@@ -121,7 +121,7 @@ function DeliveryModal({ onClose, onSaved, prodOrders, ar, wid }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تسليم جديد" : "New Delivery"}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تسليم جديد" : "New Delivery"}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
@@ -166,7 +166,7 @@ function DeliveryModal({ onClose, onSaved, prodOrders, ar, wid }: {
           </div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "جدول التسليم" : "Schedule"}
           </button>
@@ -224,7 +224,7 @@ function InstallModal({ onClose, onSaved, deliveries, ar, wid }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تركيب جديد" : "New Installation"}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تركيب جديد" : "New Installation"}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
@@ -261,7 +261,7 @@ function InstallModal({ onClose, onSaved, deliveries, ar, wid }: {
             <input className={inputCls} value={members} onChange={e => setMembers(e.target.value)} placeholder={ar ? "أحمد, محمد, حسن" : "Ahmed, Mohamed, Hassan"} /></div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "جدول التركيب" : "Schedule"}
           </button>
@@ -295,20 +295,20 @@ function DeliveryDetail({ del, onBack, ar, wid, onRefresh }: {
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{del.delivery_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            <span className="text-micro font-mono text-muted-foreground">{del.delivery_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {del.customer_name || del.delivery_number}
           </h2>
         </div>
         <div className="flex gap-2 shrink-0 flex-wrap">
-          {del.status === "scheduled" && <button onClick={() => updateStatus("loading")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200"><Package size={11} /> {ar ? "بدأ التحميل" : "Start Loading"}</button>}
-          {del.status === "loading" && <button onClick={() => updateStatus("in_transit")} className="text-[11px] text-indigo-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-indigo-200"><Truck size={11} /> {ar ? "خرج للتسليم" : "Dispatch"}</button>}
+          {del.status === "scheduled" && <button onClick={() => updateStatus("loading")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><Package size={11} /> {ar ? "بدأ التحميل" : "Start Loading"}</button>}
+          {del.status === "loading" && <button onClick={() => updateStatus("in_transit")} className="text-micro text-indigo-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-indigo-200"><Truck size={11} /> {ar ? "خرج للتسليم" : "Dispatch"}</button>}
           {del.status === "in_transit" && (
             <>
-              <button onClick={() => updateStatus("delivered")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "تم التسليم" : "Delivered"}</button>
-              <button onClick={() => updateStatus("failed")} className="text-[11px] text-rose-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-rose-200"><XCircle size={11} /> {ar ? "فشل" : "Failed"}</button>
+              <button onClick={() => updateStatus("delivered")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "تم التسليم" : "Delivered"}</button>
+              <button onClick={() => updateStatus("failed")} className="text-micro text-rose-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-rose-200"><XCircle size={11} /> {ar ? "فشل" : "Failed"}</button>
             </>
           )}
         </div>
@@ -324,7 +324,7 @@ function DeliveryDetail({ del, onBack, ar, wid, onRefresh }: {
           return (
             <div key={s.value} className="flex items-center gap-1 flex-1">
               <div className={`h-1.5 flex-1 rounded-full ${done ? "bg-emerald-400" : active ? "bg-primary" : "bg-muted"}`} />
-              <span className={`text-[9px] font-medium ${done ? "text-emerald-600" : active ? "text-primary" : "text-muted-foreground/40"}`}>{ar ? s.ar : s.en}</span>
+              <span className={`text-micro font-medium ${done ? "text-emerald-600" : active ? "text-brand-ink" : "text-muted-foreground/40"}`}>{ar ? s.ar : s.en}</span>
             </div>
           );
         })}
@@ -345,8 +345,8 @@ function DeliveryDetail({ del, onBack, ar, wid, onRefresh }: {
           <div key={i} className="flex items-start gap-2.5 p-3 border border-border/30 rounded-xl">
             <f.icon size={13} className="text-muted-foreground mt-0.5 shrink-0" />
             <div>
-              <p className="text-[10px] text-muted-foreground">{f.label}</p>
-              <p className="text-[13px]">{f.value}</p>
+              <p className="text-micro text-muted-foreground">{f.label}</p>
+              <p className="text-body">{f.value}</p>
             </div>
           </div>
         ))}
@@ -356,9 +356,9 @@ function DeliveryDetail({ del, onBack, ar, wid, onRefresh }: {
         <div className="p-4 border border-emerald-200 bg-emerald-50/30 rounded-xl flex items-center gap-2">
           <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
           <div>
-            <p className="text-[12px] font-medium text-emerald-700">{ar ? "تم التسليم" : "Delivered"}</p>
-            <p className="text-[11px] text-emerald-600">{new Date(del.delivered_at).toLocaleString()}</p>
-            {del.recipient_name && <p className="text-[11px] text-emerald-600">{ar ? "المستلم:" : "Recipient:"} {del.recipient_name}</p>}
+            <p className="text-caption font-medium text-emerald-700">{ar ? "تم التسليم" : "Delivered"}</p>
+            <p className="text-micro text-emerald-600">{new Date(del.delivered_at).toLocaleString()}</p>
+            {del.recipient_name && <p className="text-micro text-emerald-600">{ar ? "المستلم:" : "Recipient:"} {del.recipient_name}</p>}
           </div>
         </div>
       )}
@@ -443,37 +443,37 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{inst.installation_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            <span className="text-micro font-mono text-muted-foreground">{inst.installation_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {inst.customer_name || inst.installation_number}
           </h2>
-          <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+          <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
             {inst.site_address && <span className="flex items-center gap-1"><MapPin size={10} />{inst.site_address}</span>}
             {inst.team_leader && <span className="flex items-center gap-1"><User size={10} />{inst.team_leader}</span>}
             {inst.scheduled_date && <span className="flex items-center gap-1"><Calendar size={10} />{inst.scheduled_date}</span>}
           </div>
         </div>
         <div className="flex gap-2 shrink-0 flex-wrap">
-          {inst.status === "scheduled" && <button onClick={() => updateStatus("in_progress")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200"><Play size={11} /> {ar ? "ابدأ التركيب" : "Start"}</button>}
+          {inst.status === "scheduled" && <button onClick={() => updateStatus("in_progress")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><Play size={11} /> {ar ? "ابدأ التركيب" : "Start"}</button>}
           {inst.status === "in_progress" && (
             <>
-              <button onClick={() => updateStatus("completed")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "تم التركيب" : "Complete"}</button>
-              <button onClick={() => updateStatus("on_hold")} className="text-[11px] text-zinc-500 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200"><Pause size={11} /> {ar ? "إيقاف" : "Hold"}</button>
+              <button onClick={() => updateStatus("completed")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "تم التركيب" : "Complete"}</button>
+              <button onClick={() => updateStatus("on_hold")} className="text-micro text-zinc-500 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200"><Pause size={11} /> {ar ? "إيقاف" : "Hold"}</button>
             </>
           )}
-          {inst.status === "on_hold" && <button onClick={() => updateStatus("in_progress")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200"><Play size={11} /> {ar ? "استأنف" : "Resume"}</button>}
+          {inst.status === "on_hold" && <button onClick={() => updateStatus("in_progress")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><Play size={11} /> {ar ? "استأنف" : "Resume"}</button>}
         </div>
       </div>
 
       {/* Summary chips */}
       <div className="flex gap-3 mb-5 flex-wrap">
-        <span className="text-[11px] bg-emerald-50 text-emerald-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><CheckCircle2 size={10} />{passedItems}/{checklist.length} {ar ? "بنود" : "items"}</span>
-        {openSnags > 0 && <span className="text-[11px] bg-amber-50 text-amber-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><AlertTriangle size={10} />{openSnags} {ar ? "ملاحظات مفتوحة" : "open snags"}</span>}
-        {photos.length > 0 && <span className="text-[11px] bg-blue-50 text-blue-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><Camera size={10} />{photos.length} {ar ? "صور" : "photos"}</span>}
+        <span className="text-micro bg-emerald-50 text-emerald-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><CheckCircle2 size={10} />{passedItems}/{checklist.length} {ar ? "بنود" : "items"}</span>
+        {openSnags > 0 && <span className="text-micro bg-warning/10 text-warning rounded-lg px-3 py-1.5 flex items-center gap-1"><AlertTriangle size={10} />{openSnags} {ar ? "ملاحظات مفتوحة" : "open snags"}</span>}
+        {photos.length > 0 && <span className="text-micro bg-blue-50 text-blue-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><Camera size={10} />{photos.length} {ar ? "صور" : "photos"}</span>}
         {inst.customer_rating && (
-          <span className="text-[11px] bg-amber-50 text-amber-600 rounded-lg px-3 py-1.5 flex items-center gap-1">
+          <span className="text-micro bg-warning/10 text-warning rounded-lg px-3 py-1.5 flex items-center gap-1">
             <Star size={10} />{inst.customer_rating}/5
           </span>
         )}
@@ -482,11 +482,11 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
       {/* Team */}
       {(inst.team_leader || (Array.isArray(inst.team_members) && (inst.team_members as string[]).length > 0)) && (
         <div className="mb-5 p-3 border border-border/30 rounded-xl">
-          <p className="text-[11px] text-muted-foreground mb-1">{ar ? "فريق التركيب" : "Installation Team"}</p>
+          <p className="text-micro text-muted-foreground mb-1">{ar ? "فريق التركيب" : "Installation Team"}</p>
           <div className="flex items-center gap-2 flex-wrap">
-            {inst.team_leader && <span className="text-[12px] bg-primary/10 text-primary px-2 py-0.5 rounded-full">{inst.team_leader} ({ar ? "رئيس" : "Lead"})</span>}
+            {inst.team_leader && <span className="text-caption bg-primary/10 text-brand-ink px-2 py-0.5 rounded-full">{inst.team_leader} ({ar ? "رئيس" : "Lead"})</span>}
             {Array.isArray(inst.team_members) && (inst.team_members as string[]).map((m, i) => (
-              <span key={i} className="text-[12px] bg-muted px-2 py-0.5 rounded-full">{m}</span>
+              <span key={i} className="text-caption bg-muted px-2 py-0.5 rounded-full">{m}</span>
             ))}
           </div>
         </div>
@@ -500,8 +500,8 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
           { id: "photos" as const, en: `Photos (${photos.length})`, ar: `صور (${photos.length})`, icon: Camera },
         ].map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5
-              ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+            className={`px-3 py-2 rounded-lg text-caption font-medium transition-colors flex items-center gap-1.5
+              ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <t.icon size={13} />{ar ? t.ar : t.en}
           </button>
         ))}
@@ -526,7 +526,7 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
                   <XCircle size={13} />
                 </button>
               </div>
-              <span className="text-[12.5px] flex-1">{ar ? item.label_ar : item.label_en}</span>
+              <span className="text-caption flex-1">{ar ? item.label_ar : item.label_en}</span>
             </div>
           ))}
         </div>
@@ -548,22 +548,22 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
           {snagList.length === 0 ? (
             <div className="py-12 text-center">
               <CheckCircle2 size={24} className="text-emerald-300 mx-auto mb-2" />
-              <p className="text-[13px] text-muted-foreground/50">{ar ? "مفيش ملاحظات — ممتاز!" : "No snags — excellent!"}</p>
+              <p className="text-body text-muted-foreground/50">{ar ? "مفيش ملاحظات — ممتاز!" : "No snags — excellent!"}</p>
             </div>
           ) : (
             <div className="space-y-2">
               {snagList.map((s: any) => (
-                <div key={s.id} className={`flex items-center gap-3 px-4 py-3 border rounded-xl ${s.status === "resolved" ? "border-emerald-200 bg-emerald-50/20" : "border-amber-200 bg-amber-50/20"}`}>
+                <div key={s.id} className={`flex items-center gap-3 px-4 py-3 border rounded-xl ${s.status === "resolved" ? "border-emerald-200 bg-emerald-50/20" : "border-warning/30 bg-warning/10"}`}>
                   <button onClick={() => resolveSnag(s.id)}
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${s.status === "resolved" ? "bg-emerald-100 text-emerald-600" : "bg-amber-100 text-amber-600"}`}>
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${s.status === "resolved" ? "bg-emerald-100 text-emerald-600" : "bg-warning/15 text-warning"}`}>
                     {s.status === "resolved" ? <Check size={13} /> : <AlertTriangle size={13} />}
                   </button>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-[13px] ${s.status === "resolved" ? "line-through text-muted-foreground" : ""}`}>{s.title}</p>
-                    <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${
+                    <p className={`text-body ${s.status === "resolved" ? "line-through text-muted-foreground" : ""}`}>{s.title}</p>
+                    <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${
                       s.severity === "critical" ? "bg-rose-100 text-rose-700" :
                       s.severity === "major" ? "bg-orange-100 text-orange-700" :
-                      "bg-amber-100 text-amber-700"
+                      "bg-warning/15 text-warning"
                     }`}>{s.severity}</span>
                   </div>
                 </div>
@@ -576,12 +576,12 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
       {/* ── Photos ── */}
       {tab === "photos" && (
         <div>
-          <label className="flex items-center gap-2 text-[12px] text-blue-600 font-medium cursor-pointer hover:opacity-70 px-3 py-2 rounded-lg border border-blue-200 w-fit mb-4">
+          <label className="flex items-center gap-2 text-caption text-blue-600 font-medium cursor-pointer hover:opacity-70 px-3 py-2 rounded-lg border border-blue-200 w-fit mb-4">
             <Camera size={13} /> {ar ? "رفع صورة" : "Upload Photo"}
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
           </label>
           {photos.length === 0 ? (
-            <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش صور لسه" : "No photos yet"}</div>
+            <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش صور لسه" : "No photos yet"}</div>
           ) : (
             <div className="grid grid-cols-3 gap-3">
               {photos.map((p: any, i: number) => (
@@ -597,11 +597,11 @@ function InstallDetail({ inst, onBack, ar, wid, onRefresh }: {
       {/* Customer Rating */}
       {inst.status === "completed" && (
         <div className="mt-6 p-4 border border-border/40 rounded-xl">
-          <p className="text-[12px] font-medium mb-2">{ar ? "تقييم العميل" : "Customer Rating"}</p>
+          <p className="text-caption font-medium mb-2">{ar ? "تقييم العميل" : "Customer Rating"}</p>
           <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map(n => (
               <button key={n} onClick={() => setRating(n)}
-                className={`p-1 ${(inst.customer_rating || 0) >= n ? "text-amber-400" : "text-muted-foreground/20"}`}>
+                className={`p-1 ${(inst.customer_rating || 0) >= n ? "text-warning" : "text-muted-foreground/20"}`}>
                 <Star size={20} fill={(inst.customer_rating || 0) >= n ? "currentColor" : "none"} />
               </button>
             ))}
@@ -696,12 +696,12 @@ export default function DeliveryInstallation() {
       exportCSV(deliveries.map(d => ({
         delivery_number: d.delivery_number, customer: d.customer_name, status: d.status,
         date: d.delivery_date, driver: d.driver_name, pieces: d.num_pieces,
-      })), `thoth-deliveries-${new Date().toISOString().slice(0, 10)}.csv`);
+      })), `bumblebee-deliveries-${new Date().toISOString().slice(0, 10)}.csv`);
     } else {
       exportCSV(installations.map(i => ({
         installation_number: i.installation_number, customer: i.customer_name, status: i.status,
         date: i.scheduled_date, team_leader: i.team_leader, rating: i.customer_rating,
-      })), `thoth-installations-${new Date().toISOString().slice(0, 10)}.csv`);
+      })), `bumblebee-installations-${new Date().toISOString().slice(0, 10)}.csv`);
     }
   }
 
@@ -725,10 +725,10 @@ export default function DeliveryInstallation() {
     <div className="max-w-4xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "التسليم والتركيب" : "Delivery & Installation"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "جدولة وتتبع التسليمات والتركيبات" : "Schedule & track deliveries and installations"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "جدولة وتتبع التسليمات والتركيبات" : "Schedule & track deliveries and installations"}</p>
         </div>
         <button onClick={() => topTab === "deliveries" ? setDelModal(true) : setInstModal(true)} className={btnPrimary + " h-10"}>
           <Plus size={14} /> {topTab === "deliveries" ? (ar ? "تسليم جديد" : "New Delivery") : (ar ? "تركيب جديد" : "New Installation")}
@@ -742,9 +742,9 @@ export default function DeliveryInstallation() {
           { id: "installations" as const, en: "Installations", ar: "التركيبات", icon: Hammer, count: installations.length },
         ].map(t => (
           <button key={t.id} onClick={() => { setTopTab(t.id); setFilterStatus("all"); }}
-            className={`px-4 py-2.5 rounded-xl text-[13px] font-medium transition-colors flex items-center gap-2
+            className={`px-4 py-2.5 rounded-xl text-body font-medium transition-colors flex items-center gap-2
               ${topTab === t.id ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
-            <t.icon size={15} />{ar ? t.ar : t.en} <span className="text-[10px] opacity-70">({t.count})</span>
+            <t.icon size={15} />{ar ? t.ar : t.en} <span className="text-micro opacity-70">({t.count})</span>
           </button>
         ))}
       </div>
@@ -758,13 +758,13 @@ export default function DeliveryInstallation() {
             { label: ar ? "تم التسليم" : "Delivered", value: delDelivered, color: "text-emerald-600" },
           ] : [
             { label: ar ? "مجدول" : "Scheduled", value: instScheduled, color: "text-blue-600" },
-            { label: ar ? "جاري التركيب" : "Active", value: instActive, color: "text-amber-600" },
+            { label: ar ? "جاري التركيب" : "Active", value: instActive, color: "text-warning" },
             { label: ar ? "تم التركيب" : "Completed", value: instCompleted, color: "text-emerald-600" },
           ];
           return statsArr.map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
-            <p className="text-[11px] text-muted-foreground mb-1">{s.label}</p>
-            <p className={`text-[20px] font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+            <p className="text-micro text-muted-foreground mb-1">{s.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
           </div>
         ));
         })()}
@@ -778,7 +778,7 @@ export default function DeliveryInstallation() {
         </div>
         <div className="flex gap-1">
           {[{ v: "all", en: "All", ar: "الكل" }, ...statuses.map(s => ({ v: s.value, en: s.en, ar: s.ar }))].map(g => (
-            <button key={g.v} onClick={() => setFilterStatus(g.v)} className={`px-2.5 py-2 rounded-lg text-[11px] font-medium ${filterStatus === g.v ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
+            <button key={g.v} onClick={() => setFilterStatus(g.v)} className={`px-2.5 py-2 rounded-lg text-micro font-medium ${filterStatus === g.v ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
           ))}
         </div>
         <button onClick={handleExport} className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground"><Download size={14} /></button>
@@ -792,7 +792,7 @@ export default function DeliveryInstallation() {
           <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
             {topTab === "deliveries" ? <Truck size={22} className="text-muted-foreground/30" /> : <Hammer size={22} className="text-muted-foreground/30" />}
           </div>
-          <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
             {topTab === "deliveries" ? (ar ? "مفيش تسليمات لسه" : "No deliveries yet") : (ar ? "مفيش تركيبات لسه" : "No installations yet")}
           </h3>
           <button onClick={() => topTab === "deliveries" ? setDelModal(true) : setInstModal(true)} className={btnPrimary + " h-10 mt-4"}>
@@ -800,7 +800,7 @@ export default function DeliveryInstallation() {
           </button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+        <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
       ) : (
         <div className="space-y-3">
           {filtered.map((item: any) => {
@@ -816,19 +816,19 @@ export default function DeliveryInstallation() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-[10.5px] font-mono text-muted-foreground">{num}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${sts.pill}`}>{ar ? sts.ar : sts.en}</span>
-                      {isDel && item.delivery_date && <span className="text-[10px] text-muted-foreground flex items-center gap-1"><Calendar size={9} />{item.delivery_date}</span>}
-                      {!isDel && item.scheduled_date && <span className="text-[10px] text-muted-foreground flex items-center gap-1"><Calendar size={9} />{item.scheduled_date}</span>}
+                      <span className="text-micro font-mono text-muted-foreground">{num}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${sts.pill}`}>{ar ? sts.ar : sts.en}</span>
+                      {isDel && item.delivery_date && <span className="text-micro text-muted-foreground flex items-center gap-1"><Calendar size={9} />{item.delivery_date}</span>}
+                      {!isDel && item.scheduled_date && <span className="text-micro text-muted-foreground flex items-center gap-1"><Calendar size={9} />{item.scheduled_date}</span>}
                     </div>
-                    <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {item.customer_name || num}
                     </p>
-                    <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+                    <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
                       {isDel && item.driver_name && <span className="flex items-center gap-1"><User size={9} />{item.driver_name}</span>}
                       {isDel && <span className="flex items-center gap-1"><Package size={9} />{item.num_pieces} {ar ? "قطعة" : "pcs"}</span>}
                       {!isDel && item.team_leader && <span className="flex items-center gap-1"><User size={9} />{item.team_leader}</span>}
-                      {!isDel && item.customer_rating && <span className="flex items-center gap-1"><Star size={9} fill="currentColor" className="text-amber-400" />{item.customer_rating}/5</span>}
+                      {!isDel && item.customer_rating && <span className="flex items-center gap-1"><Star size={9} fill="currentColor" className="text-warning" />{item.customer_rating}/5</span>}
                       {item.delivery_address || item.site_address ? <span className="flex items-center gap-1 truncate max-w-[200px]"><MapPin size={9} />{item.delivery_address || item.site_address}</span> : null}
                     </div>
                   </div>

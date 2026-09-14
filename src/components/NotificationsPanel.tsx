@@ -38,12 +38,12 @@ const TYPE_ICONS: Record<string, React.ElementType> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  approval_needed: "text-amber-500 bg-amber-50",
+  approval_needed: "text-warning bg-warning/10",
   stock_low: "text-rose-500 bg-rose-50",
   release_rejected: "text-rose-500 bg-rose-50",
   release_approved: "text-emerald-500 bg-emerald-50",
   payment_received: "text-emerald-500 bg-emerald-50",
-  default: "text-primary bg-primary/10",
+  default: "text-brand-ink bg-primary/10",
 };
 
 interface Props {
@@ -130,14 +130,14 @@ export function NotificationsPanel({ open, onClose }: Props) {
       <div className="px-4 py-3 border-b border-border/40 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <Bell size={14} className="text-muted-foreground" />
-          <span className="text-[13px] font-semibold">{isAr ? "الإشعارات" : "Notifications"}</span>
+          <span className="text-body font-semibold">{isAr ? "الإشعارات" : "Notifications"}</span>
           {unreadCount > 0 && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary text-white font-medium">{unreadCount}</span>
+            <span className="text-micro px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-medium">{unreadCount}</span>
           )}
         </div>
         <div className="flex items-center gap-1">
           {unreadCount > 0 && (
-            <button onClick={markAllRead} className="text-[10px] text-primary hover:underline px-2">
+            <button onClick={markAllRead} className="text-micro text-brand-ink hover:underline px-2">
               {isAr ? "قراءة الكل" : "Mark all read"}
             </button>
           )}
@@ -150,13 +150,13 @@ export function NotificationsPanel({ open, onClose }: Props) {
       {/* List */}
       <div className="flex-1 overflow-y-auto">
         {loading ? (
-          <div className="flex items-center justify-center py-12 text-[12px] text-muted-foreground">
+          <div className="flex items-center justify-center py-12 text-caption text-muted-foreground">
             <Clock size={13} className="animate-spin mr-2" /> {isAr ? "جاري التحميل…" : "Loading…"}
           </div>
         ) : notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <Bell size={20} className="mb-2 opacity-30" />
-            <p className="text-[12px]">{isAr ? "مفيش إشعارات" : "No notifications yet"}</p>
+            <p className="text-caption">{isAr ? "مفيش إشعارات" : "No notifications yet"}</p>
           </div>
         ) : (
           notifications.map(n => {
@@ -170,11 +170,11 @@ export function NotificationsPanel({ open, onClose }: Props) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className={`text-[12px] font-medium truncate ${n.status === "unread" ? "text-foreground" : "text-muted-foreground"}`}>{n.title}</p>
+                    <p className={`text-caption font-medium truncate ${n.status === "unread" ? "text-foreground" : "text-muted-foreground"}`}>{n.title}</p>
                     {n.status === "unread" && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
                   </div>
-                  <p className="text-[11px] text-muted-foreground/70 line-clamp-2 mt-0.5">{n.body}</p>
-                  <p className="text-[10px] text-muted-foreground/40 mt-1">{timeAgo(n.created_at)}</p>
+                  <p className="text-micro text-muted-foreground/70 line-clamp-2 mt-0.5">{n.body}</p>
+                  <p className="text-micro text-muted-foreground/40 mt-1">{timeAgo(n.created_at)}</p>
                 </div>
               </button>
             );

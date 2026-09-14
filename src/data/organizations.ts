@@ -66,27 +66,27 @@ export interface Organization {
 // ─── Label maps ───────────────────────────────────────────
 
 export const ORG_TYPE_META: Record<OrgType, { en: string; ar: string; pill: string }> = {
-  company:    { en: "Company",    ar: "شركة",    pill: "bg-primary/8 text-primary border border-primary/20" },
-  subsidiary: { en: "Subsidiary", ar: "شركة تابعة", pill: "bg-violet-50 text-violet-700 border border-violet-200" },
+  company:    { en: "Company",    ar: "شركة",    pill: "bg-primary/8 text-brand-ink border border-primary/20" },
+  subsidiary: { en: "Subsidiary", ar: "شركة تابعة", pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
   jv:         { en: "Joint Venture", ar: "مشروع مشترك", pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
 };
 
 export const ORG_STATUS_META: Record<OrgStatus, { en: string; ar: string; dot: string }> = {
   active:   { en: "Active",   ar: "نشطة",      dot: "bg-emerald-500" },
   inactive: { en: "Inactive", ar: "غير نشطة",  dot: "bg-muted-foreground/35" },
-  forming:  { en: "Forming",  ar: "قيد التأسيس", dot: "bg-amber-400" },
+  forming:  { en: "Forming",  ar: "قيد التأسيس", dot: "bg-warning" },
 };
 
 export const ORG_RELATIONSHIP_META: Record<OrgRelationship, { en: string; ar: string; pill: string }> = {
   customer: { en: "Customer", ar: "عميل",    pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
-  prospect: { en: "Prospect", ar: "محتمل",   pill: "bg-amber-50 text-amber-700 border border-amber-200" },
+  prospect: { en: "Prospect", ar: "محتمل",   pill: "bg-warning/10 text-warning border border-warning/30" },
   supplier: { en: "Supplier", ar: "مورد",    pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-  partner:  { en: "Partner",  ar: "شريك",    pill: "bg-violet-50 text-violet-700 border border-violet-200" },
+  partner:  { en: "Partner",  ar: "شريك",    pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
 };
 
 export const ORG_LIFECYCLE_META: Record<OrgLifecycle, { en: string; ar: string; dot: string }> = {
   new:        { en: "New",        ar: "جديد",       dot: "bg-primary" },
-  onboarding: { en: "Onboarding", ar: "قيد الإعداد", dot: "bg-amber-500" },
+  onboarding: { en: "Onboarding", ar: "قيد الإعداد", dot: "bg-warning" },
   active:     { en: "Active",     ar: "نشط",        dot: "bg-emerald-500" },
   at_risk:    { en: "At Risk",    ar: "في خطر",     dot: "bg-rose-500" },
   churned:    { en: "Churned",    ar: "مفقود",      dot: "bg-muted-foreground/40" },
@@ -113,10 +113,10 @@ export function loadOrganizations(): Organization[] {
 
 export const ORGANIZATIONS: Organization[] = [
 
-  // ── o01: THOTH (the user's own company) ──────────────
+  // ── o01: Bumblebee (the user's own company) ──────────────
   {
     id: "o01",
-    nameEn: "THOTH", nameAr: "ثوث",
+    nameEn: "Bumblebee", nameAr: "بامبلبي",
     type: "company",
     relationship: "partner",
     industryEn: "Technology & Business Solutions", industryAr: "التقنية وحلول الأعمال",
@@ -125,15 +125,15 @@ export const ORGANIZATIONS: Organization[] = [
     founded: "2021",
     headcount: 58,
     healthScore: 92,
-    website: "thoth.io",
-    email: "info@thoth.io",
+    website: "bumblebee.io",
+    email: "info@bumblebee.io",
     phone: "+971 4 555 0100",
     addressEn: "DIFC Gate Village, Building 5, Dubai, UAE",
     addressAr: "بوابة مركز دبي المالي العالمي، مبنى ٥، دبي، الإمارات",
     ownerEn: "Admin", ownerAr: "المدير",
-    descEn: "THOTH is a premium business operating system built to help founders and executives run their companies with clarity. Serving clients across the GCC and beyond, THOTH combines intelligent tools with elegant design.",
-    descAr: "ثوث هو نظام تشغيل أعمال متميز مصمم لمساعدة المؤسسين والمديرين التنفيذيين على إدارة شركاتهم بوضوح. يخدم العملاء عبر منطقة الخليج وما بعدها، ويجمع ثوث بين الأدوات الذكية والتصميم الأنيق.",
-    avatarColor: "bg-primary/10 text-primary",
+    descEn: "Bumblebee is a premium business operating system built to help founders and executives run their companies with clarity. Serving clients across the GCC and beyond, Bumblebee combines intelligent tools with elegant design.",
+    descAr: "بامبلبي هو نظام تشغيل أعمال متميز مصمم لمساعدة المؤسسين والمديرين التنفيذيين على إدارة شركاتهم بوضوح. يخدم العملاء عبر منطقة الخليج وما بعدها، ويجمع بامبلبي بين الأدوات الذكية والتصميم الأنيق.",
+    avatarColor: "bg-primary/10 text-brand-ink",
     branches: [
       {
         id: "b01", nameEn: "Dubai HQ", nameAr: "المقر الرئيسي دبي",
@@ -222,7 +222,7 @@ export const ORGANIZATIONS: Organization[] = [
     ownerEn: "Khalid Al-Mansouri", ownerAr: "خالد المنصوري",
     descEn: "Meridian Trading is a leading GCC distribution company specializing in office furniture, facilities equipment, and corporate interiors. Operating across the UAE and Saudi Arabia with a network of 40+ strategic suppliers.",
     descAr: "ميريديان للتجارة شركة توزيع رائدة في الخليج متخصصة في أثاث المكاتب ومعدات المرافق والتصميم الداخلي للشركات. تعمل عبر الإمارات والمملكة العربية السعودية بشبكة من أكثر من ٤٠ موردًا استراتيجيًا.",
-    avatarColor: "bg-violet-100 text-violet-700",
+    avatarColor: "bg-chart-4/15 text-chart-4",
     branches: [
       {
         id: "b03", nameEn: "Dubai HQ", nameAr: "المقر الرئيسي دبي",
@@ -311,7 +311,7 @@ export const ORGANIZATIONS: Organization[] = [
     ownerEn: "Sara Mahmoud", ownerAr: "سارة محمود",
     descEn: "Al-Noor Furniture is one of the largest furniture manufacturers in the Kingdom of Saudi Arabia, producing high-quality commercial and residential furniture for regional and export markets.",
     descAr: "النور للأثاث من أكبر مصنّعي الأثاث في المملكة العربية السعودية، وتنتج أثاثاً تجارياً وسكنياً عالي الجودة للأسواق الإقليمية وأسواق التصدير.",
-    avatarColor: "bg-amber-100 text-amber-700",
+    avatarColor: "bg-warning/15 text-warning",
     branches: [
       {
         id: "b05", nameEn: "Riyadh Plant", nameAr: "مصنع الرياض",

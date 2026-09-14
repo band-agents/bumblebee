@@ -32,9 +32,9 @@ const STAGE_META: Record<string, { icon: React.ElementType; color: string; bg: s
   cutting:      { icon: Scissors,       color: "#3B82F6", bg: "bg-blue-50" },
   cnc:          { icon: Cpu,            color: "#6366F1", bg: "bg-indigo-50" },
   edgebanding:  { icon: Layers,         color: "#06B6D4", bg: "bg-cyan-50" },
-  assembly:     { icon: Box,            color: "#F59E0B", bg: "bg-amber-50" },
+  assembly:     { icon: Box,            color: "#F59E0B", bg: "bg-warning/10" },
   painting:     { icon: Paintbrush,     color: "#F97316", bg: "bg-orange-50" },
-  drying:       { icon: Clock,          color: "#8B5CF6", bg: "bg-violet-50" },
+  drying:       { icon: Clock,          color: "#8B5CF6", bg: "bg-chart-4/10" },
   qc:           { icon: ClipboardCheck, color: "#10B981", bg: "bg-emerald-50" },
   packaging:    { icon: Package,        color: "#14B8A6", bg: "bg-teal-50" },
   delivery:     { icon: Truck,          color: "#2563EB", bg: "bg-blue-50" },
@@ -44,10 +44,10 @@ const STAGE_META: Record<string, { icon: React.ElementType; color: string; bg: s
 
 const STATUS_STYLES: Record<FlowStage["status"], { ring: string; badge: string; badgeText: string; icon: React.ElementType }> = {
   completed: { ring: "ring-emerald-500", badge: "bg-emerald-100 text-emerald-700", badgeText: "Done", icon: CheckCircle2 },
-  active:    { ring: "ring-primary",     badge: "bg-primary/15 text-primary",       badgeText: "Active", icon: Play },
+  active:    { ring: "ring-brand-ink",     badge: "bg-primary/15 text-brand-ink",       badgeText: "Active", icon: Play },
   pending:   { ring: "ring-border/40",   badge: "bg-muted text-muted-foreground",   badgeText: "Pending", icon: Clock },
   blocked:   { ring: "ring-rose-500",    badge: "bg-rose-100 text-rose-700",        badgeText: "Blocked", icon: Lock },
-  paused:    { ring: "ring-amber-500",   badge: "bg-amber-100 text-amber-700",      badgeText: "Paused", icon: Pause },
+  paused:    { ring: "ring-warning",   badge: "bg-warning/15 text-warning",      badgeText: "Paused", icon: Pause },
 };
 
 // ─── Component ────────────────────────────────────────────
@@ -141,18 +141,18 @@ export default function ProductionFlowMap({ stages, ar = false, compact = false,
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-[12px] font-semibold">{ar ? (stage.nameAr || stage.name) : stage.name}</span>
+                      <span className="text-caption font-semibold">{ar ? (stage.nameAr || stage.name) : stage.name}</span>
                       {stage.parallel && (
-                        <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-600 font-medium">
+                        <span className="text-micro px-1.5 py-0.5 rounded-full bg-chart-4/15 text-chart-4 font-medium">
                           {ar ? "متوازي" : "Parallel"}
                         </span>
                       )}
                     </div>
                     {stage.duration && (
-                      <span className="text-[10px] text-muted-foreground">{ar ? stage.durationAr || stage.duration : stage.duration}</span>
+                      <span className="text-micro text-muted-foreground">{ar ? stage.durationAr || stage.duration : stage.duration}</span>
                     )}
                     {stage.status === "blocked" && stage.blockerReason && (
-                      <p className="text-[10px] text-rose-600 mt-0.5 flex items-center gap-1">
+                      <p className="text-micro text-rose-600 mt-0.5 flex items-center gap-1">
                         <AlertTriangle size={9} />
                         {ar ? stage.blockerReasonAr || stage.blockerReason : stage.blockerReason}
                       </p>
@@ -160,7 +160,7 @@ export default function ProductionFlowMap({ stages, ar = false, compact = false,
                   </div>
 
                   {/* Status badge */}
-                  <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium ${statusStyle.badge}`}>
+                  <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-micro font-medium ${statusStyle.badge}`}>
                     <StatusIcon size={10} />
                     {stage.status === "active" && stage.progress !== undefined
                       ? `${stage.progress}%`

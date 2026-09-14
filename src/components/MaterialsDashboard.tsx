@@ -120,8 +120,8 @@ function MiniDonut({ segments, size = 120, centerValue, centerLabel }: {
         })}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <p className="text-[15px] font-medium leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{centerValue}</p>
-        <p className="text-[9px] text-muted-foreground mt-0.5">{centerLabel}</p>
+        <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{centerValue}</p>
+        <p className="text-micro text-muted-foreground mt-0.5">{centerLabel}</p>
       </div>
     </div>
   );
@@ -132,8 +132,8 @@ function Card({ title, sub, children, className, right }: { title: string; sub?:
     <div className={`bg-background border border-border/40 rounded-xl p-5 ${className ?? ""}`}>
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-[13px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h3>
-          {sub && <p className="text-[10.5px] text-muted-foreground/70 mt-0.5">{sub}</p>}
+          <h3 className="text-body font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h3>
+          {sub && <p className="text-micro text-muted-foreground/70 mt-0.5">{sub}</p>}
         </div>
         {right}
       </div>
@@ -195,11 +195,11 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
         <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/40 px-6 py-4 flex items-center gap-4">
           <Thumb src={img} size={44} rounded="rounded-xl" />
           <div className="flex-1 min-w-0">
-            <p className="text-[15px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? (product.name_ar || product.name_en) : product.name_en}</p>
-            <p className="text-[10.5px] text-muted-foreground font-mono">{m.sku || m.category || ""}</p>
+            <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? (product.name_ar || product.name_en) : product.name_en}</p>
+            <p className="text-micro text-muted-foreground font-mono">{m.sku || m.category || ""}</p>
           </div>
           {margin !== null && (
-            <span className={`text-[10px] px-2 py-1 rounded-full font-medium shrink-0 ${margin >= 30 ? "bg-emerald-100 text-emerald-700" : margin >= 10 ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-600"}`}>
+            <span className={`text-micro px-2 py-1 rounded-full font-medium shrink-0 ${margin >= 30 ? "bg-emerald-100 text-emerald-700" : margin >= 10 ? "bg-warning/15 text-warning" : "bg-rose-100 text-rose-600"}`}>
               {ar ? "هامش" : "Margin"} {margin.toFixed(0)}%
             </span>
           )}
@@ -210,13 +210,13 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
           {/* Quantity multiplier */}
           <div className="flex items-center justify-between gap-4 p-4 rounded-xl border border-border/40 bg-muted/20">
             <div>
-              <p className="text-[12px] font-medium">{ar ? "احسب لكمية" : "Calculate for quantity"}</p>
-              <p className="text-[10.5px] text-muted-foreground mt-0.5">{ar ? "الخامات والتكلفة بتتضاعف تلقائيًا" : "Materials & costs multiply live"}</p>
+              <p className="text-caption font-medium">{ar ? "احسب لكمية" : "Calculate for quantity"}</p>
+              <p className="text-micro text-muted-foreground mt-0.5">{ar ? "الخامات والتكلفة بتتضاعف تلقائيًا" : "Materials & costs multiply live"}</p>
             </div>
             <div className="flex items-center gap-2">
               <button onClick={() => setN((x) => Math.max(1, x - 1))} className="w-8 h-8 rounded-lg border border-border/60 flex items-center justify-center hover:bg-muted/50 transition-colors"><Minus size={13} /></button>
               <input type="number" min={1} value={n} onChange={(e) => setN(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-16 h-8 text-center rounded-lg border border-border/60 bg-background text-[14px] font-medium tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                className="w-16 h-8 text-center rounded-lg border border-border/60 bg-background text-body-lg font-medium tabular-nums focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
               <button onClick={() => setN((x) => x + 1)} className="w-8 h-8 rounded-lg border border-border/60 flex items-center justify-center hover:bg-muted/50 transition-colors"><Plus size={13} /></button>
             </div>
           </div>
@@ -224,16 +224,16 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
           {/* KPI row */}
           <div className="grid grid-cols-3 gap-3">
             <div className="p-3.5 rounded-xl border border-border/40">
-              <p className="text-[9.5px] text-muted-foreground mb-1">{ar ? `تكلفة الخامات ×${n}` : `Material cost ×${n}`}</p>
-              <p className="text-[16px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(matPerUnit * n)}</p>
+              <p className="text-micro text-muted-foreground mb-1">{ar ? `تكلفة الخامات ×${n}` : `Material cost ×${n}`}</p>
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(matPerUnit * n)}</p>
             </div>
             <div className="p-3.5 rounded-xl border border-border/40">
-              <p className="text-[9.5px] text-muted-foreground mb-1">{ar ? `تكلفة إجمالية ×${n}` : `Total cost ×${n}`}</p>
-              <p className="text-[16px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(totalPerUnit * n)}</p>
+              <p className="text-micro text-muted-foreground mb-1">{ar ? `تكلفة إجمالية ×${n}` : `Total cost ×${n}`}</p>
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(totalPerUnit * n)}</p>
             </div>
             <div className="p-3.5 rounded-xl border border-border/40">
-              <p className="text-[9.5px] text-muted-foreground mb-1">{ar ? "ممكن تتصنع من المخزون" : "Buildable from stock"}</p>
-              <p className={`text-[16px] font-medium tabular-nums ${buildable === Infinity ? "text-muted-foreground/50" : buildable >= n ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-micro text-muted-foreground mb-1">{ar ? "ممكن تتصنع من المخزون" : "Buildable from stock"}</p>
+              <p className={`text-title font-medium tabular-nums ${buildable === Infinity ? "text-muted-foreground/50" : buildable >= n ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                 {buildable === Infinity ? "—" : `${buildable} ${ar ? "وحدة" : "units"}`}
               </p>
             </div>
@@ -241,16 +241,16 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
 
           {/* Shortage warning */}
           {shortages.length > 0 && (
-            <div className="flex items-start gap-3 p-4 rounded-xl border border-amber-200/50 bg-amber-50/40">
-              <ShoppingCart size={15} className="text-amber-600 mt-0.5 shrink-0" />
+            <div className="flex items-start gap-3 p-4 rounded-xl border border-warning/30 bg-warning/10">
+              <ShoppingCart size={15} className="text-warning mt-0.5 shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-[12px] font-medium text-amber-800">
+                <p className="text-caption font-medium text-warning">
                   {ar ? `${shortages.length} خامة ناقصة لتصنيع ${n}` : `${shortages.length} material${shortages.length > 1 ? "s" : ""} short for building ${n}`}
                 </p>
-                <p className="text-[11px] text-amber-700/80 mt-0.5">
+                <p className="text-micro text-warning/80 mt-0.5">
                   {shortages.map((l) => `${l.line.material} (${ar ? "ناقص" : "need"} ${(l.need - (l.onHand ?? 0)).toLocaleString()} ${l.line.unit})`).join(" · ")}
                 </p>
-                <p className="text-[11px] font-medium text-amber-800 mt-1">{ar ? "تكلفة الشراء التقديرية:" : "Est. purchase cost:"} {fmtVal(shortageCost)}</p>
+                <p className="text-micro font-medium text-warning mt-1">{ar ? "تكلفة الشراء التقديرية:" : "Est. purchase cost:"} {fmtVal(shortageCost)}</p>
               </div>
             </div>
           )}
@@ -258,16 +258,16 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
           {/* BOM table */}
           <div>
             <div className="flex items-center justify-between mb-2.5">
-              <h4 className="text-[12.5px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مكونات الخامات" : "Bill of Materials"}</h4>
-              <p className="text-[10px] text-muted-foreground">{bom.length} {ar ? "خامة" : "lines"}</p>
+              <h4 className="text-caption font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مكونات الخامات" : "Bill of Materials"}</h4>
+              <p className="text-micro text-muted-foreground">{bom.length} {ar ? "خامة" : "lines"}</p>
             </div>
             {bom.length === 0 ? (
-              <p className="text-[11.5px] text-muted-foreground/60 py-8 text-center border border-dashed border-border/60 rounded-xl">
+              <p className="text-micro text-muted-foreground/60 py-8 text-center border border-dashed border-border/60 rounded-xl">
                 {ar ? "المنتج ده ملوش مكونات لسه — ضيفها من صفحة المنتجات" : "No BOM lines yet — add them from the Products page"}
               </p>
             ) : (
               <div className="border border-border/40 rounded-xl overflow-hidden">
-                <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-4 px-4 py-2 bg-muted/30 text-[9.5px] text-muted-foreground font-medium uppercase tracking-wide">
+                <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-4 px-4 py-2 bg-muted/30 text-micro text-muted-foreground font-medium uppercase tracking-wide">
                   <span>{ar ? "الخامة" : "Material"}</span>
                   <span className="text-end">{ar ? `كمية ×${n}` : `Qty ×${n}`}</span>
                   <span className="text-end">{ar ? "التكلفة" : "Cost"}</span>
@@ -281,21 +281,21 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
                         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: l.color }} />
                         <Thumb src={l.stock ? firstImage(sm!) : null} size={26} rounded="rounded-md" />
                         <div className="min-w-0">
-                          <p className="text-[11.5px] font-medium truncate">{l.line.material}</p>
-                          <p className="text-[9.5px] text-muted-foreground truncate">
+                          <p className="text-micro font-medium truncate">{l.line.material}</p>
+                          <p className="text-micro text-muted-foreground truncate">
                             {l.line.qty} {l.line.unit} {ar ? "للوحدة" : "/unit"} · {fmtVal(l.unitCost)}/{l.line.unit}
                           </p>
                         </div>
                       </div>
-                      <p className="text-[12px] font-medium tabular-nums text-end">{l.need.toLocaleString()} <span className="text-[9.5px] text-muted-foreground font-normal">{l.line.unit}</span></p>
-                      <p className="text-[12px] font-medium tabular-nums text-end">{fmtVal(l.lineCost * n)}</p>
+                      <p className="text-caption font-medium tabular-nums text-end">{l.need.toLocaleString()} <span className="text-micro text-muted-foreground font-normal">{l.line.unit}</span></p>
+                      <p className="text-caption font-medium tabular-nums text-end">{fmtVal(l.lineCost * n)}</p>
                       <div className="w-20">
                         {l.onHand === null ? (
-                          <p className="text-[9.5px] text-muted-foreground/50 text-end">{ar ? "غير مرتبط" : "unlinked"}</p>
+                          <p className="text-micro text-muted-foreground/50 text-end">{ar ? "غير مرتبط" : "unlinked"}</p>
                         ) : (
                           <div className="space-y-1">
                             <CoverageBar pct={l.coverage ?? 0} />
-                            <p className={`text-[9.5px] text-end tabular-nums ${l.onHand >= l.need ? "text-emerald-600" : "text-rose-500"}`}>{l.onHand} {ar ? "متاح" : "on hand"}</p>
+                            <p className={`text-micro text-end tabular-nums ${l.onHand >= l.need ? "text-emerald-600" : "text-rose-500"}`}>{l.onHand} {ar ? "متاح" : "on hand"}</p>
                           </div>
                         )}
                       </div>
@@ -315,25 +315,25 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
                   {costSegments.filter((s) => s.value > 0).map((s, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                      <p className="text-[10.5px] text-muted-foreground flex-1 truncate">{s.label}</p>
-                      <p className="text-[10.5px] font-medium tabular-nums">{((s.value / totalPerUnit) * 100).toFixed(0)}%</p>
+                      <p className="text-micro text-muted-foreground flex-1 truncate">{s.label}</p>
+                      <p className="text-micro font-medium tabular-nums">{((s.value / totalPerUnit) * 100).toFixed(0)}%</p>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="p-4 rounded-xl border border-border/40 flex flex-col justify-center gap-2.5">
                 <div className="flex items-center justify-between">
-                  <p className="text-[11px] text-muted-foreground">{ar ? "سعر البيع المقترح" : "Suggested price"}</p>
-                  <p className="text-[13px] font-medium tabular-nums">{price ? fmtVal(price) : "—"}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "سعر البيع المقترح" : "Suggested price"}</p>
+                  <p className="text-body font-medium tabular-nums">{price ? fmtVal(price) : "—"}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <p className="text-[11px] text-muted-foreground">{ar ? "تكلفة الوحدة" : "Unit cost"}</p>
-                  <p className="text-[13px] font-medium tabular-nums">{fmtVal(totalPerUnit)}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "تكلفة الوحدة" : "Unit cost"}</p>
+                  <p className="text-body font-medium tabular-nums">{fmtVal(totalPerUnit)}</p>
                 </div>
                 <div className="h-px bg-border/40" />
                 <div className="flex items-center justify-between">
-                  <p className="text-[11px] font-medium">{ar ? `ربح ×${n}` : `Profit ×${n}`}</p>
-                  <p className={`text-[14px] font-semibold tabular-nums ${price - totalPerUnit >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <p className="text-micro font-medium">{ar ? `ربح ×${n}` : `Profit ×${n}`}</p>
+                  <p className={`text-body-lg font-semibold tabular-nums ${price - totalPerUnit >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                     {price ? fmtVal((price - totalPerUnit) * n) : "—"}
                   </p>
                 </div>
@@ -460,8 +460,8 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
       <div className="flex flex-col items-center justify-center py-20 gap-5">
         <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center"><Boxes size={24} className="text-muted-foreground/40" /></div>
         <div className="text-center max-w-[420px]">
-          <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش منتجات لسه" : "No products yet"}</p>
-          <p className="text-[13px] text-muted-foreground leading-relaxed">
+          <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش منتجات لسه" : "No products yet"}</p>
+          <p className="text-body text-muted-foreground leading-relaxed">
             {ar ? "ضيف منتجات بمكوناتها من صفحة المنتجات، وهنا هتشوف تحليل الخامات والتكاليف لكل منتج." : "Create products with a bill of materials on the Products page — this dashboard then breaks down every product's raw materials, costs and stock coverage."}
           </p>
         </div>
@@ -474,17 +474,17 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
       {/* KPI strip */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {[
-          { icon: Boxes, value: `${products.length}`, label: ar ? "منتجات" : "Products", color: "text-violet-600" },
+          { icon: Boxes, value: `${products.length}`, label: ar ? "منتجات" : "Products", color: "text-chart-4" },
           { icon: Layers, value: `${withBom.length}`, label: ar ? "بمكونات خامات" : "With BOM", color: "text-blue-600" },
-          { icon: Hammer, value: `${materials.length}`, label: ar ? "خامات مستخدمة" : "Raw Materials", color: "text-amber-600" },
-          { icon: Wallet, value: fmtCompact(catalogMaterialCost), label: ar ? "تكلفة خامات الكتالوج" : "Catalog Material Cost", color: "text-primary" },
-          { icon: Percent, value: avgMargin === null ? "—" : `${avgMargin.toFixed(0)}%`, label: ar ? "متوسط الهامش" : "Avg Margin", color: avgMargin !== null && avgMargin >= 25 ? "text-emerald-600" : "text-amber-600" },
+          { icon: Hammer, value: `${materials.length}`, label: ar ? "خامات مستخدمة" : "Raw Materials", color: "text-warning" },
+          { icon: Wallet, value: fmtCompact(catalogMaterialCost), label: ar ? "تكلفة خامات الكتالوج" : "Catalog Material Cost", color: "text-brand-ink" },
+          { icon: Percent, value: avgMargin === null ? "—" : `${avgMargin.toFixed(0)}%`, label: ar ? "متوسط الهامش" : "Avg Margin", color: avgMargin !== null && avgMargin >= 25 ? "text-emerald-600" : "text-warning" },
           { icon: AlertTriangle, value: `${shortMaterials.length}`, label: ar ? "خامات تحت الطلب" : "Materials Short", color: shortMaterials.length > 0 ? "text-rose-500" : "text-slate-400" },
         ].map((k, i) => (
           <div key={i} className="bg-background border border-border/40 rounded-xl px-3.5 py-3">
             <k.icon size={13} strokeWidth={1.75} className={`${k.color} mb-1.5`} />
-            <p className="text-[15px] font-medium leading-none tabular-nums mb-0.5 truncate" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{k.value}</p>
-            <p className="text-[9px] text-muted-foreground">{k.label}</p>
+            <p className="text-body-lg font-medium tabular-nums mb-0.5 truncate" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{k.value}</p>
+            <p className="text-micro text-muted-foreground">{k.label}</p>
           </div>
         ))}
       </div>
@@ -492,15 +492,15 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
       {/* Charts row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <Card title={ar ? "توزيع تكلفة الخامات" : "Material Cost Share"} sub={ar ? "أعلى الخامات قيمة في الكتالوج" : "Top materials by catalog value"}>
-          {costShareSegments.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : (
+          {costShareSegments.length === 0 ? <p className="text-micro text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : (
             <div className="flex items-center gap-4">
               <MiniDonut segments={costShareSegments} centerValue={fmtCompact(catalogMaterialCost)} centerLabel={ar ? "كتالوج" : "catalog"} size={130} />
               <div className="space-y-1.5 flex-1 min-w-0">
                 {costShareSegments.map((s, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                    <p className="text-[10.5px] text-muted-foreground flex-1 truncate">{s.label}</p>
-                    <p className="text-[10.5px] font-medium tabular-nums shrink-0">{fmtCompact(s.value)}</p>
+                    <p className="text-micro text-muted-foreground flex-1 truncate">{s.label}</p>
+                    <p className="text-micro font-medium tabular-nums shrink-0">{fmtCompact(s.value)}</p>
                   </div>
                 ))}
               </div>
@@ -509,13 +509,13 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
         </Card>
 
         <Card title={ar ? "الطلب مقابل المخزون" : "Demand vs. Stock"} sub={ar ? "احتياج الكتالوج لكل وحدة مقابل المتاح" : "Catalog need (1× each product) vs. on hand"}>
-          {demandVsStock.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : (
+          {demandVsStock.length === 0 ? <p className="text-micro text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : (
             <div className="space-y-2.5">
               {demandVsStock.map((d, i) => (
                 <div key={i}>
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-[10.5px] text-foreground/80 truncate flex-1">{d.name}</p>
-                    <p className="text-[10px] tabular-nums text-muted-foreground shrink-0">
+                    <p className="text-micro text-foreground/80 truncate flex-1">{d.name}</p>
+                    <p className="text-micro tabular-nums text-muted-foreground shrink-0">
                       {d.demand.toLocaleString()} {ar ? "مطلوب" : "need"}{d.onHand !== null && <span className={d.onHand >= d.demand ? " text-emerald-600" : " text-rose-500"}> · {d.onHand} {ar ? "متاح" : "have"}</span>}
                     </p>
                   </div>
@@ -527,21 +527,21 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
                 </div>
               ))}
               <div className="flex items-center gap-4 pt-1">
-                <span className="flex items-center gap-1.5 text-[9.5px] text-muted-foreground"><span className="w-3 h-1.5 rounded-full bg-violet-300/50" />{ar ? "المطلوب" : "Demand"}</span>
-                <span className="flex items-center gap-1.5 text-[9.5px] text-muted-foreground"><span className="w-3 h-1.5 rounded-full bg-violet-500" />{ar ? "المتاح" : "On hand"}</span>
+                <span className="flex items-center gap-1.5 text-micro text-muted-foreground"><span className="w-3 h-1.5 rounded-full bg-chart-4/50" />{ar ? "المطلوب" : "Demand"}</span>
+                <span className="flex items-center gap-1.5 text-micro text-muted-foreground"><span className="w-3 h-1.5 rounded-full bg-chart-4" />{ar ? "المتاح" : "On hand"}</span>
               </div>
             </div>
           )}
         </Card>
 
         <Card title={ar ? "هيكل تكلفة المنتجات" : "Product Cost Structure"} sub={ar ? "خامات / عمالة / ماكينات / مصاريف" : "Materials / labor / machine / overhead"}>
-          {costStacks.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : (
+          {costStacks.length === 0 ? <p className="text-micro text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : (
             <div className="space-y-2.5">
               {costStacks.map((s, i) => (
                 <div key={i}>
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-[10.5px] text-foreground/80 truncate flex-1">{s.name}</p>
-                    <p className="text-[10px] font-medium tabular-nums shrink-0">{fmtCompact(s.total)}</p>
+                    <p className="text-micro text-foreground/80 truncate flex-1">{s.name}</p>
+                    <p className="text-micro font-medium tabular-nums shrink-0">{fmtCompact(s.total)}</p>
                   </div>
                   <div className="h-2.5 rounded-full overflow-hidden flex bg-muted/60">
                     {s.parts.filter((p) => p.v > 0).map((p, j) => (
@@ -552,7 +552,7 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
               ))}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
                 {[[ar ? "خامات" : "Materials", "#8b5cf6"], [ar ? "عمالة" : "Labor", "#3b82f6"], [ar ? "ماكينات" : "Machine", "#f59e0b"], [ar ? "مصاريف" : "Overhead", "#94a3b8"]].map(([l, c], i) => (
-                  <span key={i} className="flex items-center gap-1.5 text-[9.5px] text-muted-foreground"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: c as string }} />{l}</span>
+                  <span key={i} className="flex items-center gap-1.5 text-micro text-muted-foreground"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: c as string }} />{l}</span>
                 ))}
               </div>
             </div>
@@ -568,12 +568,12 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
           <div className="relative w-52">
             <Search size={12} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث في المنتجات..." : "Search products..."}
-              className="w-full h-8 ps-8 pe-3 rounded-lg border border-border/60 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+              className="w-full h-8 ps-8 pe-3 rounded-lg border border-border/60 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
           </div>
         }>
         <div className="border border-border/40 rounded-xl overflow-hidden overflow-x-auto">
           <div className="min-w-[760px]">
-            <div className="grid grid-cols-[minmax(220px,2fr)_repeat(5,minmax(80px,1fr))_70px_24px] gap-x-3 px-4 py-2 bg-muted/30 text-[9.5px] text-muted-foreground font-medium uppercase tracking-wide">
+            <div className="grid grid-cols-[minmax(220px,2fr)_repeat(5,minmax(80px,1fr))_70px_24px] gap-x-3 px-4 py-2 bg-muted/30 text-micro text-muted-foreground font-medium uppercase tracking-wide">
               <span>{ar ? "المنتج" : "Product"}</span>
               <span className="text-end">{ar ? "الخامات" : "BOM"}</span>
               <span className="text-end">{ar ? "تكلفة الخامات" : "Mat. Cost"}</span>
@@ -589,22 +589,22 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
                 <div className="flex items-center gap-3 min-w-0">
                   <Thumb src={firstImage(m)} size={34} />
                   <div className="min-w-0">
-                    <p className="text-[12px] font-medium truncate">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
-                    <p className="text-[9.5px] text-muted-foreground font-mono truncate">{m.sku || m.category || "—"}</p>
+                    <p className="text-caption font-medium truncate">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
+                    <p className="text-micro text-muted-foreground font-mono truncate">{m.sku || m.category || "—"}</p>
                   </div>
                 </div>
-                <p className={`text-[11.5px] tabular-nums text-end ${bomCount === 0 ? "text-muted-foreground/40" : ""}`}>{bomCount} {ar ? "خامة" : bomCount === 1 ? "line" : "lines"}</p>
-                <p className="text-[11.5px] font-medium tabular-nums text-end">{matCost ? fmtVal(matCost) : "—"}</p>
-                <p className="text-[11.5px] font-medium tabular-nums text-end">{total ? fmtVal(total) : "—"}</p>
-                <p className="text-[11.5px] tabular-nums text-end">{price ? fmtVal(price) : "—"}</p>
+                <p className={`text-micro tabular-nums text-end ${bomCount === 0 ? "text-muted-foreground/40" : ""}`}>{bomCount} {ar ? "خامة" : bomCount === 1 ? "line" : "lines"}</p>
+                <p className="text-micro font-medium tabular-nums text-end">{matCost ? fmtVal(matCost) : "—"}</p>
+                <p className="text-micro font-medium tabular-nums text-end">{total ? fmtVal(total) : "—"}</p>
+                <p className="text-micro tabular-nums text-end">{price ? fmtVal(price) : "—"}</p>
                 <div className="flex justify-end">
-                  {margin === null ? <span className="text-[10px] text-muted-foreground/40">—</span> : (
-                    <span className={`text-[9.5px] px-1.5 py-0.5 rounded-full font-medium ${margin >= 30 ? "bg-emerald-100 text-emerald-700" : margin >= 10 ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-600"}`}>{margin.toFixed(0)}%</span>
+                  {margin === null ? <span className="text-micro text-muted-foreground/40">—</span> : (
+                    <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${margin >= 30 ? "bg-emerald-100 text-emerald-700" : margin >= 10 ? "bg-warning/15 text-warning" : "bg-rose-100 text-rose-600"}`}>{margin.toFixed(0)}%</span>
                   )}
                 </div>
                 <div className="flex justify-end">
-                  {buildable === Infinity ? <span className="text-[10px] text-muted-foreground/40">—</span> : (
-                    <span className={`text-[9.5px] px-1.5 py-0.5 rounded-full font-medium tabular-nums ${buildable > 0 ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-600"}`}>{buildable}</span>
+                  {buildable === Infinity ? <span className="text-micro text-muted-foreground/40">—</span> : (
+                    <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium tabular-nums ${buildable > 0 ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-600"}`}>{buildable}</span>
                   )}
                 </div>
                 <ChevronRight size={13} className={`text-muted-foreground/30 ${ar ? "rotate-180" : ""}`} />
@@ -622,15 +622,15 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
           <div className="relative w-52">
             <Search size={12} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
             <input value={matSearch} onChange={(e) => setMatSearch(e.target.value)} placeholder={ar ? "ابحث في الخامات..." : "Search materials..."}
-              className="w-full h-8 ps-8 pe-3 rounded-lg border border-border/60 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+              className="w-full h-8 ps-8 pe-3 rounded-lg border border-border/60 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
           </div>
         }>
         {filteredMaterials.length === 0 ? (
-          <p className="text-[11.5px] text-muted-foreground/60 py-8 text-center">{ar ? "مفيش خامات — ضيف مكونات للمنتجات الأول" : "No materials yet — add BOM lines to your products first"}</p>
+          <p className="text-micro text-muted-foreground/60 py-8 text-center">{ar ? "مفيش خامات — ضيف مكونات للمنتجات الأول" : "No materials yet — add BOM lines to your products first"}</p>
         ) : (
           <div className="border border-border/40 rounded-xl overflow-hidden overflow-x-auto">
             <div className="min-w-[720px]">
-              <div className="grid grid-cols-[minmax(200px,2fr)_repeat(4,minmax(80px,1fr))_minmax(110px,1fr)] gap-x-3 px-4 py-2 bg-muted/30 text-[9.5px] text-muted-foreground font-medium uppercase tracking-wide">
+              <div className="grid grid-cols-[minmax(200px,2fr)_repeat(4,minmax(80px,1fr))_minmax(110px,1fr)] gap-x-3 px-4 py-2 bg-muted/30 text-micro text-muted-foreground font-medium uppercase tracking-wide">
                 <span>{ar ? "الخامة" : "Material"}</span>
                 <span className="text-end">{ar ? "في منتجات" : "Used In"}</span>
                 <span className="text-end">{ar ? "احتياج الكتالوج" : "Catalog Need"}</span>
@@ -647,23 +647,23 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
                     <div className="flex items-center gap-3 min-w-0">
                       <Thumb src={mt.stock ? firstImage(im!) : null} size={30} rounded="rounded-md" />
                       <div className="min-w-0">
-                        <p className="text-[11.5px] font-medium truncate">{mt.name}</p>
-                        <p className="text-[9.5px] text-muted-foreground truncate">
+                        <p className="text-micro font-medium truncate">{mt.name}</p>
+                        <p className="text-micro text-muted-foreground truncate">
                           {fmtVal(mt.avgCost)}/{mt.unit}{im?.vendor_name ? ` · ${im.vendor_name}` : ""}{!mt.stock && (ar ? " · غير مرتبط بالمخزون" : " · not linked to stock")}
                         </p>
                       </div>
                     </div>
-                    <p className="text-[11.5px] tabular-nums text-end">{mt.usedIn}</p>
-                    <p className="text-[11.5px] font-medium tabular-nums text-end">{mt.demandPerCatalog.toLocaleString()} <span className="text-[9.5px] text-muted-foreground font-normal">{mt.unit}</span></p>
-                    <p className={`text-[11.5px] tabular-nums text-end ${onHand === null ? "text-muted-foreground/40" : onHand >= mt.demandPerCatalog ? "text-emerald-600" : "text-rose-500"}`}>
+                    <p className="text-micro tabular-nums text-end">{mt.usedIn}</p>
+                    <p className="text-micro font-medium tabular-nums text-end">{mt.demandPerCatalog.toLocaleString()} <span className="text-micro text-muted-foreground font-normal">{mt.unit}</span></p>
+                    <p className={`text-micro tabular-nums text-end ${onHand === null ? "text-muted-foreground/40" : onHand >= mt.demandPerCatalog ? "text-emerald-600" : "text-rose-500"}`}>
                       {onHand === null ? "—" : onHand.toLocaleString()}
                     </p>
-                    <p className="text-[11.5px] font-medium tabular-nums text-end">{fmtVal(mt.demandValue)}</p>
+                    <p className="text-micro font-medium tabular-nums text-end">{fmtVal(mt.demandValue)}</p>
                     <div className="flex items-center gap-2">
-                      {coverage === null ? <p className="text-[9.5px] text-muted-foreground/40 w-full text-end">—</p> : (
+                      {coverage === null ? <p className="text-micro text-muted-foreground/40 w-full text-end">—</p> : (
                         <>
                           <CoverageBar pct={coverage} />
-                          <p className="text-[9.5px] tabular-nums text-muted-foreground shrink-0 w-9 text-end">{Math.round(coverage * 100)}%</p>
+                          <p className="text-micro tabular-nums text-muted-foreground shrink-0 w-9 text-end">{Math.round(coverage * 100)}%</p>
                         </>
                       )}
                     </div>

@@ -34,14 +34,14 @@ const TEMPLATE_META: Record<string, {
   estimatedLabor: string;
   estimatedWaste: string;
 }> = {
-  dress:          { icon: Shirt,     color: "#8C6FAE", gradient: "from-violet-500 to-purple-600", estimatedDays: "3–5 days", estimatedLabor: "2–4 workers", estimatedWaste: "5–8%" },
+  dress:          { icon: Shirt,     color: "#8C6FAE", gradient: "from-chart-4/20 to-chart-4/20", estimatedDays: "3–5 days", estimatedLabor: "2–4 workers", estimatedWaste: "5–8%" },
   suit:           { icon: Crown,     color: "#2D3139", gradient: "from-slate-600 to-zinc-800", estimatedDays: "5–8 days", estimatedLabor: "3–5 workers", estimatedWaste: "4–7%" },
   tshirt:         { icon: Shirt,     color: "#10B981", gradient: "from-emerald-500 to-teal-600", estimatedDays: "1–2 days", estimatedLabor: "1–2 workers", estimatedWaste: "4–6%" },
   trousers:       { icon: Scissors,  color: "#3B82F6", gradient: "from-blue-500 to-indigo-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "5–7%" },
   outerwear:      { icon: Heart,     color: "#F97316", gradient: "from-orange-500 to-red-600", estimatedDays: "4–6 days", estimatedLabor: "2–3 workers", estimatedWaste: "5–8%" },
   bridal:         { icon: Sparkles,  color: "#EC4899", gradient: "from-pink-500 to-rose-600", estimatedDays: "7–14 days", estimatedLabor: "3–5 workers", estimatedWaste: "6–10%" },
   activewear:     { icon: Zap,       color: "#0EA5E9", gradient: "from-sky-500 to-blue-600", estimatedDays: "1–2 days", estimatedLabor: "1–2 workers", estimatedWaste: "4–6%" },
-  accessories:    { icon: Gem,       color: "#F59E0B", gradient: "from-amber-500 to-orange-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "3–5%" },
+  accessories:    { icon: Gem,       color: "#F59E0B", gradient: "from-warning/20 to-orange-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "3–5%" },
   custom_garment: { icon: Wrench,    color: "#94A3B8", gradient: "from-slate-400 to-slate-600", estimatedDays: "Varies", estimatedLabor: "Varies", estimatedWaste: "Varies" },
 };
 
@@ -81,10 +81,10 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
         {/* Header */}
         <div className="px-7 py-5 border-b border-border/30 flex items-center justify-between shrink-0">
           <div>
-            <h2 className="text-[20px] font-bold tracking-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+            <h2 className="text-heading font-bold tracking-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
               {ar ? "استوديو القوالب" : "Product Templates Studio"}
             </h2>
-            <p className="text-[12px] text-muted-foreground mt-0.5">
+            <p className="text-caption text-muted-foreground mt-0.5">
               {ar ? "اختار قالب جاهز — كل قالب يحتوي على مكونات ومراحل تصنيع وتكاليف" : "Choose a template — each includes BOM, stages, and cost estimates"}
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
             {onScratch && (
               <button
                 onClick={onScratch}
-                className="flex items-center gap-1.5 h-9 px-4 rounded-xl border border-border/50 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 h-9 px-4 rounded-xl border border-border/50 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
                 <Package size={13} />
                 {ar ? "ابدأ من الصفر" : "Start from Scratch"}
@@ -135,11 +135,11 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                     <div className={`w-12 h-12 rounded-xl mb-3 flex items-center justify-center bg-gradient-to-br ${meta.gradient}`}>
                       <Icon size={22} className="text-white" />
                     </div>
-                    <p className="text-[13px] font-semibold mb-0.5">{ar ? tmpl.ar : tmpl.en}</p>
-                    <p className="text-[10px] text-muted-foreground">{tmpl.category}</p>
+                    <p className="text-body font-semibold mb-0.5">{ar ? tmpl.ar : tmpl.en}</p>
+                    <p className="text-micro text-muted-foreground">{tmpl.category}</p>
 
                     <div className="flex items-center gap-2 mt-2.5">
-                      <span className="text-[9px] text-muted-foreground/60 flex items-center gap-0.5">
+                      <span className="text-micro text-muted-foreground/60 flex items-center gap-0.5">
                         <Clock size={8} /> {meta.estimatedDays}
                       </span>
                     </div>
@@ -166,8 +166,8 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                       <previewMeta.icon size={26} className="text-white" />
                     </div>
                     <div>
-                      <h3 className="text-[16px] font-bold">{ar ? preview.ar : preview.en}</h3>
-                      <p className="text-[11px] text-muted-foreground">{preview.category}</p>
+                      <h3 className="text-title font-bold">{ar ? preview.ar : preview.en}</h3>
+                      <p className="text-micro text-muted-foreground">{preview.category}</p>
                     </div>
                   </div>
 
@@ -180,8 +180,8 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                     ].map((stat, i) => (
                       <div key={i} className="p-2.5 rounded-xl border border-border/30 text-center">
                         <stat.icon size={12} className="text-muted-foreground/40 mx-auto mb-1" />
-                        <p className="text-[10px] font-semibold">{stat.value}</p>
-                        <p className="text-[8px] text-muted-foreground">{stat.label}</p>
+                        <p className="text-micro font-semibold">{stat.value}</p>
+                        <p className="text-micro text-muted-foreground">{stat.label}</p>
                       </div>
                     ))}
                   </div>
@@ -189,12 +189,12 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                   {/* BOM Preview */}
                   {preview.suggestedBOM.length > 0 && (
                     <div>
-                      <p className="text-[10px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2 flex items-center gap-1">
+                      <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2 flex items-center gap-1">
                         <Layers size={9} /> {ar ? "المكونات الافتراضية" : "Default BOM"}
                       </p>
                       <div className="space-y-1.5">
                         {preview.suggestedBOM.map((bom, i) => (
-                          <div key={i} className="flex items-center justify-between text-[10.5px] px-2.5 py-1.5 rounded-lg bg-background border border-border/20">
+                          <div key={i} className="flex items-center justify-between text-micro px-2.5 py-1.5 rounded-lg bg-background border border-border/20">
                             <span className="text-muted-foreground truncate max-w-[160px]">{bom.material}</span>
                             <span className="font-medium tabular-nums">{bom.qty} {bom.unit}</span>
                           </div>
@@ -206,18 +206,18 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                   {/* Stages Preview */}
                   {previewStages.length > 0 && (
                     <div>
-                      <p className="text-[10px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2 flex items-center gap-1">
+                      <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2 flex items-center gap-1">
                         <Wrench size={9} /> {ar ? "مراحل التصنيع" : "Manufacturing Stages"}
                       </p>
                       <div className="space-y-0">
                         {previewStages.map((stage, i) => (
                           <div key={stage.id}>
                             <div className="flex items-center gap-2.5 py-1.5">
-                              <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-[9px] font-bold text-primary">
+                              <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-micro font-bold text-brand-ink">
                                 {i + 1}
                               </div>
-                              <span className="text-[10.5px] font-medium flex-1">{ar ? (stage.name_ar || stage.name) : stage.name}</span>
-                              <span className="text-[9px] text-muted-foreground">{stage.duration_hours}h</span>
+                              <span className="text-micro font-medium flex-1">{ar ? (stage.name_ar || stage.name) : stage.name}</span>
+                              <span className="text-micro text-muted-foreground">{stage.duration_hours}h</span>
                             </div>
                             {i < previewStages.length - 1 && (
                               <div className="ml-2.5 h-2 border-l border-dashed border-border/30" />
@@ -231,17 +231,17 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                   {/* Cost estimate */}
                   {previewCost && previewCost.total > 0 && (
                     <div className="p-3 rounded-xl border border-border/30 bg-background">
-                      <p className="text-[10px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2 flex items-center gap-1">
+                      <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2 flex items-center gap-1">
                         <DollarSign size={9} /> {ar ? "التكلفة التقديرية" : "Estimated Cost"}
                       </p>
-                      <div className="space-y-1 text-[10.5px]">
+                      <div className="space-y-1 text-micro">
                         <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "خامات" : "Materials"}</span><span className="font-medium tabular-nums">{previewCost.materialCost.toLocaleString()}</span></div>
                         <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "عمالة" : "Labor"}</span><span className="font-medium tabular-nums">{previewCost.laborCost.toLocaleString()}</span></div>
                         <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "ماكينات" : "Machine"}</span><span className="font-medium tabular-nums">{previewCost.machineCost.toLocaleString()}</span></div>
                         <div className="h-px bg-border/30 my-1" />
                         <div className="flex justify-between font-semibold">
                           <span>{ar ? "الإجمالي" : "Total"}</span>
-                          <span className="text-primary tabular-nums">{previewCost.total.toLocaleString()}</span>
+                          <span className="text-brand-ink tabular-nums">{previewCost.total.toLocaleString()}</span>
                         </div>
                       </div>
                     </div>
@@ -255,7 +255,7 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                       setSelectedKey(previewKey);
                       onSelect(preview);
                     }}
-                    className="w-full py-3 rounded-2xl bg-primary text-primary-foreground text-[13px] font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+                    className="w-full py-3 rounded-2xl bg-primary text-primary-foreground text-body font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
                   >
                     <Zap size={14} />
                     {ar ? `استخدم قالب ${preview.ar}` : `Use ${preview.en} Template`}
@@ -264,7 +264,7 @@ export default function ProductTemplatesStudio({ onSelect, onClose, onScratch }:
                   {/* Back on mobile */}
                   <button
                     onClick={() => setPreviewKey(null)}
-                    className="w-full md:hidden text-center text-[12px] text-muted-foreground hover:text-foreground py-2"
+                    className="w-full md:hidden text-center text-caption text-muted-foreground hover:text-foreground py-2"
                   >
                     {ar ? "← رجوع للمعرض" : "← Back to gallery"}
                   </button>

@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════
--- THOTH — Premium Auth + Onboarding + Notifications Migration
+-- Bumblebee — Premium Auth + Onboarding + Notifications Migration
 -- ═══════════════════════════════════════════════════════════
 
 -- ─── Notifications table ─────────────────────────────────

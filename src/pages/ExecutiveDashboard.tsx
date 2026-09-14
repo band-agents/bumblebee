@@ -43,10 +43,10 @@ import {
 const FEED_STYLE: Record<FeedItemType, { bg: string; border: string; iconCl: string; icon: React.ElementType; dot: string }> = {
   alert:       { bg: "bg-rose-50",    border: "border-rose-200/60",   iconCl: "text-rose-600",    icon: AlertTriangle, dot: "bg-rose-500" },
   win:         { bg: "bg-emerald-50", border: "border-emerald-200/60",iconCl: "text-emerald-600", icon: CheckCircle2,  dot: "bg-emerald-500" },
-  opportunity: { bg: "bg-amber-50",   border: "border-amber-200/60",  iconCl: "text-amber-600",   icon: Lightbulb,     dot: "bg-amber-500" },
-  insight:     { bg: "bg-primary/8",  border: "border-primary/20",    iconCl: "text-primary",     icon: Activity,      dot: "bg-primary" },
+  opportunity: { bg: "bg-warning/10",   border: "border-warning/30",  iconCl: "text-warning",   icon: Lightbulb,     dot: "bg-warning" },
+  insight:     { bg: "bg-primary/8",  border: "border-primary/20",    iconCl: "text-brand-ink",     icon: Activity,      dot: "bg-primary" },
   risk:        { bg: "bg-orange-50",  border: "border-orange-200/60", iconCl: "text-orange-600",  icon: Shield,        dot: "bg-orange-500" },
-  action:      { bg: "bg-violet-50",  border: "border-violet-200/60", iconCl: "text-violet-600",  icon: Zap,           dot: "bg-violet-500" },
+  action:      { bg: "bg-chart-4/10",  border: "border-chart-4/30", iconCl: "text-chart-4",  icon: Zap,           dot: "bg-chart-4" },
 };
 
 const MODULE_ICON: Record<string, React.ElementType> = {
@@ -92,10 +92,10 @@ function HealthRing({ score, size = 90 }: { score: number; size?: number }) {
           className="transition-all duration-1000" />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[18px] font-semibold text-foreground tabular-nums leading-none" style={{ ...serif, letterSpacing: "-0.03em" }}>
+        <span className="text-title font-semibold text-foreground tabular-nums leading-none" style={{ ...serif, letterSpacing: "-0.03em" }}>
           {score}
         </span>
-        <span className="text-[8px] text-muted-foreground/50 mt-0.5">/100</span>
+        <span className="text-micro text-muted-foreground/50 mt-0.5">/100</span>
       </div>
     </div>
   );
@@ -139,8 +139,8 @@ function DetailDrawer({ item, onClose, onFullView }: {
           >
             <div className="sticky top-0 bg-background/95 backdrop-blur-md border-b border-border/40 px-6 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-2">
-                <Eye size={14} className="text-primary" />
-                <span className="text-[12px] font-medium text-foreground">Detail View</span>
+                <Eye size={14} className="text-brand-ink" />
+                <span className="text-caption font-medium text-foreground">Detail View</span>
               </div>
               <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 <X size={15} />
@@ -148,21 +148,21 @@ function DetailDrawer({ item, onClose, onFullView }: {
             </div>
             <div className="px-6 py-5 space-y-5">
               {/* Type badge */}
-              <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1 rounded-full ${
+              <span className={`inline-flex items-center gap-1.5 text-micro font-semibold px-2.5 py-1 rounded-full ${
                 item.type === "alert" ? "bg-rose-50 text-rose-700 border border-rose-200" :
                 item.type === "win" ? "bg-emerald-50 text-emerald-700 border border-emerald-200" :
                 item.type === "risk" ? "bg-orange-50 text-orange-700 border border-orange-200" :
-                item.type === "opportunity" ? "bg-amber-50 text-amber-700 border border-amber-200" :
-                item.type === "action" ? "bg-violet-50 text-violet-700 border border-violet-200" :
-                "bg-primary/10 text-primary border border-primary/20"
+                item.type === "opportunity" ? "bg-warning/10 text-warning border border-warning/30" :
+                item.type === "action" ? "bg-chart-4/10 text-chart-4 border border-chart-4/30" :
+                "bg-primary/10 text-brand-ink border border-primary/20"
               }`}>
                 {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
               </span>
 
-              <h3 className="text-[20px] font-medium leading-snug" style={{ ...serif, letterSpacing: "-0.02em" }}>
+              <h3 className="text-heading font-medium leading-snug" style={{ ...serif, letterSpacing: "-0.02em" }}>
                 {item.title}
               </h3>
-              <p className="text-[13.5px] text-muted-foreground leading-relaxed">
+              <p className="text-body text-muted-foreground leading-relaxed">
                 {item.desc}
               </p>
 
@@ -171,8 +171,8 @@ function DetailDrawer({ item, onClose, onFullView }: {
                 <div className="border border-border/40 rounded-xl divide-y divide-border/25">
                   {Object.entries(item.meta).map(([k, v]) => (
                     <div key={k} className="flex items-center justify-between px-4 py-3">
-                      <span className="text-[11px] text-muted-foreground">{k}</span>
-                      <span className="text-[12px] font-medium text-foreground">{v}</span>
+                      <span className="text-micro text-muted-foreground">{k}</span>
+                      <span className="text-caption font-medium text-foreground">{v}</span>
                     </div>
                   ))}
                 </div>
@@ -182,14 +182,14 @@ function DetailDrawer({ item, onClose, onFullView }: {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={onFullView}
-                  className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-[12.5px] font-medium flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
+                  className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-caption font-medium flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
                 >
                   <ArrowUpRight size={13} />
                   View full page
                 </button>
                 <button
                   onClick={onClose}
-                  className="h-10 px-4 rounded-xl border border-border/60 text-[12.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+                  className="h-10 px-4 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
                 >
                   Dismiss
                 </button>
@@ -252,14 +252,14 @@ export default function ExecutiveDashboard() {
     return (
       <div className="flex items-center justify-center py-24">
         <div className="flex flex-col items-center gap-3">
-          <Eye size={20} className="text-primary animate-pulse" />
-          <p className="text-[11px] text-muted-foreground">Loading Sky Eye…</p>
+          <Eye size={20} className="text-brand-ink animate-pulse" />
+          <p className="text-micro text-muted-foreground">Loading Sky Eye…</p>
         </div>
       </div>
     );
   }
 
-  const companyName = onboardingData?.companyName || workspace?.name || "THOTH";
+  const companyName = onboardingData?.companyName || workspace?.name || "Bumblebee";
   const industry = onboardingData?.industry || "";
   const fmt = (v: number) => formatCurrency(v, "SAR");
 
@@ -280,12 +280,12 @@ export default function ExecutiveDashboard() {
 
   // Top metrics
   const topMetrics = [
-    { labelEn: "Pipeline", labelAr: "خط الأنابيب", value: fmt(pipeline), color: "text-amber-500", icon: ShoppingCart, trend: pipeline > 500000 ? "up" as const : "stable" as const },
+    { labelEn: "Pipeline", labelAr: "خط الأنابيب", value: fmt(pipeline), color: "text-warning", icon: ShoppingCart, trend: pipeline > 500000 ? "up" as const : "stable" as const },
     { labelEn: "Revenue", labelAr: "الإيرادات", value: fmt(totalRevenue), color: "text-emerald-600", icon: CircleDollarSign, trend: "up" as const },
     { labelEn: "In Progress", labelAr: "قيد التنفيذ", value: `${inFlightWork.length}`, color: "text-blue-500", icon: Factory, trend: "stable" as const },
     { labelEn: "Completion", labelAr: "الإنجاز", value: `${doneRate}%`, color: "text-emerald-600", icon: CheckCircle2, trend: doneRate >= 50 ? "up" as const : "down" as const },
     { labelEn: "Overdue Inv.", labelAr: "فواتير متأخرة", value: `${overdueInvoices.length}`, color: overdueInvoices.length > 0 ? "text-rose-500" : "text-emerald-600", icon: Clock, trend: overdueInvoices.length > 0 ? "down" as const : "up" as const },
-    { labelEn: "Health", labelAr: "الصحة", value: `${health.score}`, color: "text-primary", icon: Activity, trend: health.score >= 65 ? "up" as const : "stable" as const },
+    { labelEn: "Health", labelAr: "الصحة", value: `${health.score}`, color: "text-brand-ink", icon: Activity, trend: health.score >= 65 ? "up" as const : "stable" as const },
   ];
 
   // Sub-metrics for detailed cards
@@ -350,18 +350,18 @@ export default function ExecutiveDashboard() {
           <div className="flex items-start justify-between gap-4 mb-5">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <Eye size={13} strokeWidth={2} className="text-primary" />
-                <p className="text-[10px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "عين السماء" : "Sky Eye"}</p>
+                <Eye size={13} strokeWidth={2} className="text-brand-ink" />
+                <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "عين السماء" : "Sky Eye"}</p>
               </div>
-              <p className="text-[12px] text-muted-foreground/60 mb-0.5">{greeting}</p>
-              <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ ...serif, letterSpacing: "-0.025em" }}>
+              <p className="text-caption text-muted-foreground/60 mb-0.5">{greeting}</p>
+              <h1 className="text-display font-medium text-foreground leading-tight" style={{ ...serif, letterSpacing: "-0.025em" }}>
                 {companyName}
               </h1>
-              {industry && <p className="text-[12px] text-muted-foreground/60 mt-0.5">{industry}</p>}
+              {industry && <p className="text-caption text-muted-foreground/60 mt-0.5">{industry}</p>}
             </div>
             <div className="shrink-0 hidden md:flex flex-col items-center">
               <HealthRing score={health.score} />
-              <p className="text-[9px] text-muted-foreground/50 mt-1">{ar ? "الصحة" : "Health"}</p>
+              <p className="text-micro text-muted-foreground/50 mt-1">{ar ? "الصحة" : "Health"}</p>
             </div>
           </div>
 
@@ -370,10 +370,10 @@ export default function ExecutiveDashboard() {
             {topMetrics.map((m) => (
               <div key={m.labelEn} className="bg-background/70 border border-border/40 rounded-xl px-3.5 py-3">
                 <div className="flex items-center justify-between mb-1.5">
-                  <p className="text-[9px] text-muted-foreground/60 uppercase tracking-wide">{ar ? m.labelAr : m.labelEn}</p>
+                  <p className="text-micro text-muted-foreground/60 uppercase tracking-wide">{ar ? m.labelAr : m.labelEn}</p>
                   <TrendIcon trend={m.trend} />
                 </div>
-                <p className={`text-[18px] font-semibold tabular-nums leading-none ${m.color}`} style={{ ...serif, letterSpacing: "-0.02em" }}>
+                <p className={`text-title font-semibold tabular-nums leading-none ${m.color}`} style={{ ...serif, letterSpacing: "-0.02em" }}>
                   {m.value}
                 </p>
               </div>
@@ -392,18 +392,18 @@ export default function ExecutiveDashboard() {
             {/* Executive Briefing */}
             <div className="border border-primary/20 rounded-xl bg-primary/5 px-5 py-4">
               <div className="flex items-center gap-2 mb-2">
-                <Star size={13} strokeWidth={1.75} className="text-primary" />
-                <p className="text-[10px] text-muted-foreground/60 tracking-wide uppercase">{ar ? "الإحاطة اليومية" : "Daily Briefing"}</p>
-                <span className="text-[10px] text-muted-foreground/40">{briefing.dateEn}</span>
+                <Star size={13} strokeWidth={1.75} className="text-brand-ink" />
+                <p className="text-micro text-muted-foreground/60 tracking-wide uppercase">{ar ? "الإحاطة اليومية" : "Daily Briefing"}</p>
+                <span className="text-micro text-muted-foreground/40">{briefing.dateEn}</span>
               </div>
-              <p className="text-[12.5px] text-foreground/80 leading-relaxed">
+              <p className="text-caption text-foreground/80 leading-relaxed">
                 {ar ? briefing.summaryAr : briefing.summaryEn}
               </p>
               <div className="flex items-center gap-2 mt-2.5">
-                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${briefing.overallScore >= 70 ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : briefing.overallScore >= 50 ? "bg-amber-50 text-amber-700 border border-amber-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                <span className={`text-micro font-semibold px-2 py-0.5 rounded-full ${briefing.overallScore >= 70 ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : briefing.overallScore >= 50 ? "bg-warning/10 text-warning border border-warning/30" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
                   {ar ? briefing.overallLabelAr : briefing.overallLabelEn}
                 </span>
-                <span className="text-[10px] text-muted-foreground/50">{briefing.overallScore}/100</span>
+                <span className="text-micro text-muted-foreground/50">{briefing.overallScore}/100</span>
               </div>
             </div>
 
@@ -416,17 +416,17 @@ export default function ExecutiveDashboard() {
                     <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center">
                       <CircleDollarSign size={13} className="text-emerald-600" />
                     </div>
-                    <p className="text-[11px] font-medium text-foreground">{ar ? "الإيرادات" : "Revenue"}</p>
+                    <p className="text-micro font-medium text-foreground">{ar ? "الإيرادات" : "Revenue"}</p>
                   </div>
                   <TrendIcon trend="up" />
                 </div>
-                <p className="text-[22px] font-semibold tabular-nums" style={{ ...serif, letterSpacing: "-0.02em" }}>{fmt(totalRevenue)}</p>
-                <p className="text-[10px] text-muted-foreground/60 mt-1">{ar ? "من صفقات مبرمة" : "from closed deals"}</p>
+                <p className="text-heading font-semibold tabular-nums" style={{ ...serif, letterSpacing: "-0.02em" }}>{fmt(totalRevenue)}</p>
+                <p className="text-micro text-muted-foreground/60 mt-1">{ar ? "من صفقات مبرمة" : "from closed deals"}</p>
                 <div className="mt-3">
                   <MiniBarChart data={revenueTrend} color="bg-emerald-500" />
                   <div className="flex justify-between mt-1">
-                    <span className="text-[8px] text-muted-foreground/40">6m ago</span>
-                    <span className="text-[8px] text-muted-foreground/40">Now</span>
+                    <span className="text-micro text-muted-foreground/40">6m ago</span>
+                    <span className="text-micro text-muted-foreground/40">Now</span>
                   </div>
                 </div>
               </div>
@@ -438,22 +438,22 @@ export default function ExecutiveDashboard() {
                     <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
                       <TrendingUp size={13} className="text-blue-600" />
                     </div>
-                    <p className="text-[11px] font-medium text-foreground">{ar ? "التدفق النقدي" : "Cash Flow"}</p>
+                    <p className="text-micro font-medium text-foreground">{ar ? "التدفق النقدي" : "Cash Flow"}</p>
                   </div>
                   <TrendIcon trend={cashFlowTrend} />
                 </div>
-                <p className={`text-[22px] font-semibold tabular-nums ${cashFlow >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ ...serif, letterSpacing: "-0.02em" }}>
+                <p className={`text-heading font-semibold tabular-nums ${cashFlow >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ ...serif, letterSpacing: "-0.02em" }}>
                   {cashFlow >= 0 ? "+" : ""}{fmt(cashFlow)}
                 </p>
-                <p className="text-[10px] text-muted-foreground/60 mt-1">{ar ? "إيرادات ناقص مصروفات" : "revenue minus expenses"}</p>
+                <p className="text-micro text-muted-foreground/60 mt-1">{ar ? "إيرادات ناقص مصروفات" : "revenue minus expenses"}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <div className="bg-emerald-50/50 rounded-lg px-2.5 py-1.5">
-                    <p className="text-[9px] text-emerald-700">{ar ? "وارد" : "In"}</p>
-                    <p className="text-[12px] font-medium text-emerald-800 tabular-nums">{fmt(totalRevenue)}</p>
+                    <p className="text-micro text-emerald-700">{ar ? "وارد" : "In"}</p>
+                    <p className="text-caption font-medium text-emerald-800 tabular-nums">{fmt(totalRevenue)}</p>
                   </div>
                   <div className="bg-rose-50/50 rounded-lg px-2.5 py-1.5">
-                    <p className="text-[9px] text-rose-700">{ar ? "صادر" : "Out"}</p>
-                    <p className="text-[12px] font-medium text-rose-800 tabular-nums">{fmt(totalExpenses)}</p>
+                    <p className="text-micro text-rose-700">{ar ? "صادر" : "Out"}</p>
+                    <p className="text-caption font-medium text-rose-800 tabular-nums">{fmt(totalExpenses)}</p>
                   </div>
                 </div>
               </div>
@@ -464,21 +464,21 @@ export default function ExecutiveDashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Factory size={14} className="text-blue-500" />
-                  <h2 className="text-[13px] font-medium text-foreground">{ar ? "الطلبات والإنتاج" : "Orders & Production"}</h2>
+                  <h2 className="text-body font-medium text-foreground">{ar ? "الطلبات والإنتاج" : "Orders & Production"}</h2>
                 </div>
-                <button className="text-[11px] text-primary hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/orders")}>
+                <button className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/orders")}>
                   {ar ? "الكل" : "View all"} <ArrowRight size={11} />
                 </button>
               </div>
               <div className="grid grid-cols-3 gap-3 mb-4">
                 {[
-                  { labelEn: "Active Orders", labelAr: "طلبات نشطة", value: deals.filter(d => !["won", "lost"].includes(d.stage)).length, color: "bg-amber-50 text-amber-700", icon: ShoppingCart },
+                  { labelEn: "Active Orders", labelAr: "طلبات نشطة", value: deals.filter(d => !["won", "lost"].includes(d.stage)).length, color: "bg-warning/10 text-warning", icon: ShoppingCart },
                   { labelEn: "In Production", labelAr: "قيد الإنتاج", value: inFlightWork.length, color: "bg-blue-50 text-blue-700", icon: Factory },
                   { labelEn: "Completed", labelAr: "مكتمل", value: work.filter(w => w.status === "done").length, color: "bg-emerald-50 text-emerald-700", icon: CheckCircle2 },
                 ].map(s => (
                   <div key={s.labelEn} className={`${s.color} rounded-lg px-3 py-2.5 text-center`}>
-                    <p className="text-[18px] font-semibold tabular-nums" style={serif}>{s.value}</p>
-                    <p className="text-[9px] opacity-70">{ar ? s.labelAr : s.labelEn}</p>
+                    <p className="text-title font-semibold tabular-nums" style={serif}>{s.value}</p>
+                    <p className="text-micro opacity-70">{ar ? s.labelAr : s.labelEn}</p>
                   </div>
                 ))}
               </div>
@@ -496,7 +496,7 @@ export default function ExecutiveDashboard() {
                           transition={{ duration: 0.6, ease: EASE, delay: i * 0.06 }}
                         />
                       </div>
-                      <span className="text-[7px] text-muted-foreground/50">{stage}</span>
+                      <span className="text-micro text-muted-foreground/50">{stage}</span>
                     </div>
                   );
                 })}
@@ -507,12 +507,12 @@ export default function ExecutiveDashboard() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Radio size={13} strokeWidth={1.75} className="text-primary" />
-                  <h2 className="text-[14px] font-medium text-foreground" style={{ ...serif, letterSpacing: "-0.01em" }}>
+                  <Radio size={13} strokeWidth={1.75} className="text-brand-ink" />
+                  <h2 className="text-body-lg font-medium text-foreground" style={{ ...serif, letterSpacing: "-0.01em" }}>
                     {ar ? "البث الذكي" : "Intelligence Feed"}
                   </h2>
                 </div>
-                <button className="text-[11px] text-primary hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/intelligence")}>
+                <button className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/intelligence")}>
                   {ar ? "الكل" : "View all"} <ArrowRight size={11} />
                 </button>
               </div>
@@ -528,13 +528,13 @@ export default function ExecutiveDashboard() {
                         <Icon size={13} strokeWidth={1.75} className={s.iconCl} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12.5px] font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                        <p className="text-caption font-medium text-foreground group-hover:text-brand-ink transition-colors truncate">
                           {ar ? item.titleAr : item.titleEn}
                         </p>
-                        <p className="text-[11px] text-muted-foreground/70 truncate">{ar ? item.descAr : item.descEn}</p>
+                        <p className="text-micro text-muted-foreground/70 truncate">{ar ? item.descAr : item.descEn}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[10px] text-muted-foreground/40">{ar ? item.timeAgoAr : item.timeAgoEn}</span>
+                        <span className="text-micro text-muted-foreground/40">{ar ? item.timeAgoAr : item.timeAgoEn}</span>
                         <div className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
                       </div>
                     </div>
@@ -548,11 +548,11 @@ export default function ExecutiveDashboard() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Flame size={13} strokeWidth={1.75} className="text-orange-500" />
-                  <h2 className="text-[14px] font-medium text-foreground" style={{ ...serif, letterSpacing: "-0.01em" }}>
+                  <h2 className="text-body-lg font-medium text-foreground" style={{ ...serif, letterSpacing: "-0.01em" }}>
                     {ar ? "أولويات اليوم" : "Today's Priorities"}
                   </h2>
                 </div>
-                <button className="text-[11px] text-primary hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/queue")}>
+                <button className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/queue")}>
                   {ar ? "الكل" : "View all"} <ArrowRight size={11} />
                 </button>
               </div>
@@ -560,28 +560,28 @@ export default function ExecutiveDashboard() {
                 {queue.slice(0, 5).map((item, i) => {
                   const ModIcon = MODULE_ICON[item.module] || Briefcase;
                   const catColor: Record<string, string> = {
-                    revenue: "text-amber-600 bg-amber-50",
+                    revenue: "text-warning bg-warning/10",
                     operations: "text-blue-600 bg-blue-50",
-                    relationships: "text-violet-600 bg-violet-50",
+                    relationships: "text-chart-4 bg-chart-4/10",
                     risk: "text-rose-600 bg-rose-50",
                   };
                   return (
                     <div key={item.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-muted/10 cursor-pointer group transition-colors"
                       onClick={() => handleQueueClick(item)}>
-                      <span className="text-[10px] text-muted-foreground/30 tabular-nums w-4 shrink-0">{i + 1}</span>
+                      <span className="text-micro text-muted-foreground/30 tabular-nums w-4 shrink-0">{i + 1}</span>
                       <div className={`w-7 h-7 rounded-lg ${catColor[item.category]?.split(" ")[1] || "bg-muted"} flex items-center justify-center shrink-0`}>
                         <ModIcon size={13} strokeWidth={1.75} className={catColor[item.category]?.split(" ")[0] || "text-muted-foreground"} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12.5px] font-medium text-foreground group-hover:text-primary transition-colors truncate">{ar ? item.titleAr : item.titleEn}</p>
-                        <p className="text-[10px] text-muted-foreground/60 truncate">{ar ? item.actionAr : item.actionEn}</p>
+                        <p className="text-caption font-medium text-foreground group-hover:text-brand-ink transition-colors truncate">{ar ? item.titleAr : item.titleEn}</p>
+                        <p className="text-micro text-muted-foreground/60 truncate">{ar ? item.actionAr : item.actionEn}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <div className="w-14">
-                          <ScoreBar score={item.priorityScore} color={item.priorityScore >= 80 ? "bg-rose-500" : item.priorityScore >= 60 ? "bg-amber-500" : "bg-blue-500"} />
+                          <ScoreBar score={item.priorityScore} color={item.priorityScore >= 80 ? "bg-rose-500" : item.priorityScore >= 60 ? "bg-warning" : "bg-blue-500"} />
                         </div>
-                        <span className="text-[11px] font-semibold tabular-nums text-foreground w-5 text-right">{item.priorityScore}</span>
-                        <ChevronRight size={12} strokeWidth={1.75} className="text-muted-foreground/20 group-hover:text-primary/50 transition-colors" />
+                        <span className="text-micro font-semibold tabular-nums text-foreground w-5 text-right">{item.priorityScore}</span>
+                        <ChevronRight size={12} strokeWidth={1.75} className="text-muted-foreground/20 group-hover:text-brand-ink/50 transition-colors" />
                       </div>
                     </div>
                   );
@@ -595,17 +595,17 @@ export default function ExecutiveDashboard() {
 
             {/* Health Indicators */}
             <div className="border border-border/40 rounded-xl p-4 bg-background">
-              <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "مؤشرات الصحة" : "Health Indicators"}</p>
+              <p className="text-micro font-medium text-foreground mb-3">{ar ? "مؤشرات الصحة" : "Health Indicators"}</p>
               {[
-                { labelEn: "Sales",   labelAr: "المبيعات", score: health.salesScore,    color: "bg-amber-500" },
+                { labelEn: "Sales",   labelAr: "المبيعات", score: health.salesScore,    color: "bg-warning" },
                 { labelEn: "Work",    labelAr: "العمل",    score: health.workScore,     color: "bg-blue-500" },
                 { labelEn: "Finance", labelAr: "المالية",  score: health.financeScore,  color: "bg-emerald-500" },
-                { labelEn: "Assets",  labelAr: "الأصول",   score: health.resourceScore, color: "bg-violet-500" },
+                { labelEn: "Assets",  labelAr: "الأصول",   score: health.resourceScore, color: "bg-chart-4" },
               ].map((s) => (
                 <div key={s.labelEn} className="mb-2.5 last:mb-0">
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-[10px] text-muted-foreground">{ar ? s.labelAr : s.labelEn}</p>
-                    <p className="text-[11px] font-medium tabular-nums text-foreground">{s.score}</p>
+                    <p className="text-micro text-muted-foreground">{ar ? s.labelAr : s.labelEn}</p>
+                    <p className="text-micro font-medium tabular-nums text-foreground">{s.score}</p>
                   </div>
                   <ScoreBar score={s.score} color={s.score >= 70 ? "bg-emerald-500" : s.score >= 50 ? s.color : "bg-rose-500"} />
                 </div>
@@ -617,7 +617,7 @@ export default function ExecutiveDashboard() {
               <div className="border border-rose-200/60 bg-rose-50/30 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={13} className="text-rose-500" />
-                  <p className="text-[11px] font-medium text-foreground">{ar ? "فواتير متأخرة" : "Overdue Invoices"}</p>
+                  <p className="text-micro font-medium text-foreground">{ar ? "فواتير متأخرة" : "Overdue Invoices"}</p>
                 </div>
                 <div className="space-y-2">
                   {overdueInvoices.slice(0, 3).map((inv) => (
@@ -630,12 +630,12 @@ export default function ExecutiveDashboard() {
                         entityId: inv.id,
                         meta: { "Amount": fmt(inv.amount || 0), "Status": "Overdue", "Client": inv.orgNameEn },
                       })}>
-                      <span className="text-[11px] text-foreground truncate">{inv.orgNameEn || "Client"}</span>
-                      <span className="text-[11px] font-semibold text-rose-600 tabular-nums">{fmt(inv.amount || 0)}</span>
+                      <span className="text-micro text-foreground truncate">{inv.orgNameEn || "Client"}</span>
+                      <span className="text-micro font-semibold text-rose-600 tabular-nums">{fmt(inv.amount || 0)}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-[10px] text-rose-600/70 mt-2">{overdueInvoices.length} total · {fmt(overdueAmount)} outstanding</p>
+                <p className="text-micro text-rose-600/70 mt-2">{overdueInvoices.length} total · {fmt(overdueAmount)} outstanding</p>
               </div>
             )}
 
@@ -643,10 +643,10 @@ export default function ExecutiveDashboard() {
             <div className="border border-border/40 rounded-xl p-4 bg-background">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Warehouse size={13} className="text-amber-500" />
-                  <p className="text-[11px] font-medium text-foreground">{ar ? "تنبيهات المخزن" : "Inventory Alerts"}</p>
+                  <Warehouse size={13} className="text-warning" />
+                  <p className="text-micro font-medium text-foreground">{ar ? "تنبيهات المخزن" : "Inventory Alerts"}</p>
                 </div>
-                <button className="text-[10px] text-primary hover:opacity-70" onClick={() => navigate("/inventory")}>
+                <button className="text-micro text-brand-ink hover:opacity-70" onClick={() => navigate("/inventory")}>
                   {ar ? "الكل" : "All"}
                 </button>
               </div>
@@ -656,7 +656,7 @@ export default function ExecutiveDashboard() {
                   { name: "Cotton Twill", stock: 8, min: 15, unit: "meters" },
                   { name: "YKK Zippers", stock: 45, min: 100, unit: "pcs" },
                 ].map((item) => (
-                  <div key={item.name} className="flex items-center justify-between text-[11px]">
+                  <div key={item.name} className="flex items-center justify-between text-micro">
                     <span className="text-foreground truncate">{item.name}</span>
                     <div className="flex items-center gap-2">
                       <span className="text-rose-500 font-medium tabular-nums">{item.stock} {item.unit}</span>
@@ -672,9 +672,9 @@ export default function ExecutiveDashboard() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Shield size={13} strokeWidth={1.75} className="text-rose-500" />
-                  <h3 className="text-[13px] font-medium text-foreground">{ar ? "أبرز المخاطر" : "Top Risks"}</h3>
+                  <h3 className="text-body font-medium text-foreground">{ar ? "أبرز المخاطر" : "Top Risks"}</h3>
                 </div>
-                <button className="text-[11px] text-primary hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/risk")}>
+                <button className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/risk")}>
                   {ar ? "الكل" : "All"} <ArrowRight size={11} />
                 </button>
               </div>
@@ -688,12 +688,12 @@ export default function ExecutiveDashboard() {
                       meta: { "Severity": `${r.severityScore}/100`, "Type": r.type },
                     })}>
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <p className="text-[12px] font-medium text-foreground leading-snug">{ar ? r.titleAr : r.titleEn}</p>
-                      <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${r.severityScore >= 80 ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"}`}>
+                      <p className="text-caption font-medium text-foreground leading-snug">{ar ? r.titleAr : r.titleEn}</p>
+                      <span className={`text-micro font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${r.severityScore >= 80 ? "bg-rose-100 text-rose-700" : "bg-warning/15 text-warning"}`}>
                         {r.severityScore}
                       </span>
                     </div>
-                    <p className="text-[10px] text-muted-foreground/70 leading-relaxed">{ar ? r.mitigationAr : r.mitigationEn}</p>
+                    <p className="text-micro text-muted-foreground/70 leading-relaxed">{ar ? r.mitigationAr : r.mitigationEn}</p>
                   </div>
                 ))}
               </div>
@@ -702,18 +702,18 @@ export default function ExecutiveDashboard() {
             {/* Opportunities */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Lightbulb size={13} strokeWidth={1.75} className="text-amber-500" />
-                <h3 className="text-[13px] font-medium text-foreground">{ar ? "الفرص" : "Opportunities"}</h3>
+                <Lightbulb size={13} strokeWidth={1.75} className="text-warning" />
+                <h3 className="text-body font-medium text-foreground">{ar ? "الفرص" : "Opportunities"}</h3>
               </div>
               <div className="space-y-2">
                 {briefing.opportunities.slice(0, 3).map((opp, i) => (
-                  <div key={i} className="border border-amber-200/40 bg-amber-50/20 rounded-xl px-4 py-3 cursor-pointer hover:bg-amber-50/40 transition-colors"
+                  <div key={i} className="border border-warning/30 bg-warning/10 rounded-xl px-4 py-3 cursor-pointer hover:bg-warning/10 transition-colors"
                     onClick={() => openDrawer({
                       title: "Opportunity",
                       desc: ar ? opp.ar : opp.en,
                       type: "opportunity",
                     })}>
-                    <p className="text-[11px] text-foreground/80 leading-relaxed">{ar ? opp.ar : opp.en}</p>
+                    <p className="text-micro text-foreground/80 leading-relaxed">{ar ? opp.ar : opp.en}</p>
                   </div>
                 ))}
               </div>
@@ -721,15 +721,15 @@ export default function ExecutiveDashboard() {
 
             {/* Quick Nav */}
             <div className="border border-border/40 rounded-xl p-4 bg-background">
-              <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "التنقل السريع" : "Quick Navigation"}</p>
+              <p className="text-micro font-medium text-foreground mb-3">{ar ? "التنقل السريع" : "Quick Navigation"}</p>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { labelEn: "Work Queue", labelAr: "قائمة المهام", path: "/queue", icon: Target, color: "text-orange-500 bg-orange-50" },
                   { labelEn: "Risk Radar", labelAr: "رادار المخاطر", path: "/risk", icon: Shield, color: "text-rose-500 bg-rose-50" },
                   { labelEn: "Forecast", labelAr: "التوقعات", path: "/forecast", icon: TrendingUp, color: "text-blue-500 bg-blue-50" },
-                  { labelEn: "Analytics", labelAr: "التحليلات", path: "/analytics", icon: BarChart3, color: "text-violet-500 bg-violet-50" },
+                  { labelEn: "Analytics", labelAr: "التحليلات", path: "/analytics", icon: BarChart3, color: "text-chart-4 bg-chart-4/10" },
                   { labelEn: "Finance", labelAr: "المالية", path: "/finance", icon: Landmark, color: "text-emerald-500 bg-emerald-50" },
-                  { labelEn: "Inventory", labelAr: "المخزن", path: "/inventory", icon: Package, color: "text-amber-500 bg-amber-50" },
+                  { labelEn: "Inventory", labelAr: "المخزن", path: "/inventory", icon: Package, color: "text-warning bg-warning/10" },
                 ].map((t) => {
                   const Icon = t.icon;
                   const [iconCl, bgCl] = t.color.split(" ");
@@ -740,7 +740,7 @@ export default function ExecutiveDashboard() {
                       <div className={`w-6 h-6 rounded-md ${bgCl} flex items-center justify-center shrink-0`}>
                         <Icon size={12} strokeWidth={1.75} className={iconCl} />
                       </div>
-                      <span className="text-[11px] font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                      <span className="text-micro font-medium text-foreground group-hover:text-brand-ink transition-colors truncate">
                         {ar ? t.labelAr : t.labelEn}
                       </span>
                     </button>
@@ -752,8 +752,8 @@ export default function ExecutiveDashboard() {
             {/* Today's Schedule */}
             <div className="border border-border/40 rounded-xl p-4 bg-background">
               <div className="flex items-center gap-2 mb-3">
-                <CalendarDays size={13} className="text-primary" />
-                <p className="text-[11px] font-medium text-foreground">{ar ? "جدول اليوم" : "Today's Schedule"}</p>
+                <CalendarDays size={13} className="text-brand-ink" />
+                <p className="text-micro font-medium text-foreground">{ar ? "جدول اليوم" : "Today's Schedule"}</p>
               </div>
               <div className="space-y-2">
                 {[
@@ -761,9 +761,9 @@ export default function ExecutiveDashboard() {
                   { time: "11:30", title: "Client delivery — SO-1148", type: "delivery" },
                   { time: "14:00", title: "New quotation deadline", type: "deadline" },
                 ].map((evt, i) => (
-                  <div key={i} className="flex items-center gap-3 text-[11px]">
+                  <div key={i} className="flex items-center gap-3 text-micro">
                     <span className="text-muted-foreground/50 tabular-nums w-10 shrink-0">{evt.time}</span>
-                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${evt.type === "meeting" ? "bg-blue-400" : evt.type === "delivery" ? "bg-emerald-400" : "bg-amber-400"}`} />
+                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${evt.type === "meeting" ? "bg-blue-400" : evt.type === "delivery" ? "bg-emerald-400" : "bg-warning"}`} />
                     <span className="text-foreground truncate">{evt.title}</span>
                   </div>
                 ))}

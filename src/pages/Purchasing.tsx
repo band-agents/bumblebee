@@ -64,14 +64,14 @@ const PR_STATUSES: { value: string; en: string; ar: string; pill: string }[] = [
   { value: "submitted", en: "Submitted", ar: "تم التقديم",      pill: "bg-blue-100 text-blue-600" },
   { value: "approved",  en: "Approved",  ar: "تمت الموافقة",    pill: "bg-emerald-100 text-emerald-700" },
   { value: "rejected",  en: "Rejected",  ar: "مرفوض",           pill: "bg-rose-100 text-rose-600" },
-  { value: "ordered",   en: "Ordered",   ar: "تم الطلب",        pill: "bg-violet-100 text-violet-600" },
+  { value: "ordered",   en: "Ordered",   ar: "تم الطلب",        pill: "bg-chart-4/15 text-chart-4" },
   { value: "cancelled", en: "Cancelled", ar: "ملغي",            pill: "bg-muted text-muted-foreground" },
 ];
 
 const PO_STATUSES: { value: string; en: string; ar: string; pill: string }[] = [
   { value: "draft",              en: "Draft",              ar: "مسودة",         pill: "bg-slate-100 text-slate-600" },
   { value: "sent",               en: "Sent",               ar: "مُرسل",         pill: "bg-blue-100 text-blue-600" },
-  { value: "partially_received", en: "Partially Received", ar: "استلام جزئي",  pill: "bg-amber-100 text-amber-700" },
+  { value: "partially_received", en: "Partially Received", ar: "استلام جزئي",  pill: "bg-warning/15 text-warning" },
   { value: "received",           en: "Received",           ar: "تم الاستلام",  pill: "bg-emerald-100 text-emerald-700" },
   { value: "cancelled",          en: "Cancelled",          ar: "ملغي",          pill: "bg-muted text-muted-foreground" },
 ];
@@ -84,10 +84,10 @@ const VENDOR_CATEGORIES = [
 
 // ─── Shared UI ───────────────────────────────────────────
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
 
 function ModalShell({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
@@ -95,7 +95,7 @@ function ModalShell({ title, onClose, children }: { title: string; onClose: () =
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[500px] max-h-[85vh] overflow-auto">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40 sticky top-0 bg-background z-10">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h2>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
         </div>
         {children}
@@ -178,9 +178,9 @@ function AddVendorModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o
           <label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
           <textarea value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} className={inputCls + " h-16 py-2.5 resize-none"} placeholder={ar ? "اختياري" : "Optional"} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "ضيف" : "Add Vendor"}
           </button>
@@ -261,9 +261,9 @@ function AddPRModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
             <input type="date" value={form.neededBy} onChange={(e) => setForm((f) => ({ ...f, neededBy: e.target.value }))} className={inputCls} />
           </div>
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "أنشئ طلب" : "Create Request"}
           </button>
@@ -341,9 +341,9 @@ function AddPOModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
           <label className={labelCls}>{ar ? "تاريخ التسليم المتوقع" : "Expected Delivery"}</label>
           <input type="date" value={form.deliveryDate} onChange={(e) => setForm((f) => ({ ...f, deliveryDate: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.poNumber.trim() || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "أنشئ أمر" : "Create PO"}
           </button>
@@ -442,18 +442,18 @@ export default function Purchasing() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <ShoppingCart size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "المشتريات" : "Purchasing"}</p>
+            <ShoppingCart size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "المشتريات" : "Purchasing"}</p>
           </div>
           <div className="flex items-start justify-between gap-4 mb-5">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "المشتريات والموردين" : "Purchasing & Vendors"}
             </h1>
             <div className="flex items-center gap-2 shrink-0">
-              <button onClick={() => setVendorModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setVendorModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted/50 transition-colors">
                 <Building2 size={13} /> {ar ? "ضيف مورد" : "Add Vendor"}
               </button>
-              <button onClick={() => setPrModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setPrModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted/50 transition-colors">
                 <ClipboardList size={13} /> {ar ? "طلب شراء" : "New PR"}
               </button>
               <button onClick={() => setPoModal(true)} className={btnPrimary + " h-9"}>
@@ -464,19 +464,19 @@ export default function Purchasing() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { icon: Building2, value: vendors.length, label: ar ? "الموردين" : "Vendors", color: "text-violet-600" },
+              { icon: Building2, value: vendors.length, label: ar ? "الموردين" : "Vendors", color: "text-chart-4" },
               { icon: ClipboardList, value: openPRs.length, label: ar ? "طلبات مفتوحة" : "Open PRs", color: "text-blue-600" },
-              { icon: Clock, value: pendingApproval.length, label: ar ? "مستني موافقة" : "Pending Approval", color: "text-amber-600" },
+              { icon: Clock, value: pendingApproval.length, label: ar ? "مستني موافقة" : "Pending Approval", color: "text-warning" },
               { icon: CheckCircle2, value: approvedPRs.length, label: ar ? "تمت الموافقة" : "Approved", color: "text-emerald-600" },
-              { icon: FileText, value: openPOs.length, label: ar ? "أوامر مفتوحة" : "Open POs", color: "text-primary" },
+              { icon: FileText, value: openPOs.length, label: ar ? "أوامر مفتوحة" : "Open POs", color: "text-brand-ink" },
               { icon: DollarSign, value: fmtVal(totalPOValue), label: ar ? "قيمة الأوامر" : "PO Value", color: "text-foreground", isText: true },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <m.icon size={14} strokeWidth={1.75} className={m.color + " mb-2"} />
-                <p className="text-[17px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+                <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                   {typeof m.value === "number" ? m.value : m.value}
                 </p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -493,7 +493,7 @@ export default function Purchasing() {
             { id: "orders" as const, en: `Orders (${purchaseOrders.length})`, ar: `الأوامر (${purchaseOrders.length})` },
           ]).map((t) => (
             <button key={t.id} onClick={() => { setTab(t.id); setSearch(""); }}
-              className={`px-4 py-3 text-[12px] font-medium border-b-2 transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`px-4 py-3 text-caption font-medium border-b-2 transition-all ${tab === t.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               {ar ? t.ar : t.en}
             </button>
           ))}
@@ -509,10 +509,10 @@ export default function Purchasing() {
               <ShoppingCart size={24} className="text-muted-foreground/40" />
             </div>
             <div className="text-center max-w-[400px]">
-              <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "مفيش بيانات مشتريات لسه" : "No purchasing data yet"}
               </p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">
+              <p className="text-body text-muted-foreground leading-relaxed">
                 {ar ? "ضيف أول مورد أو أنشئ طلب شراء عشان تبدأ." : "Add your first vendor or create a purchase request to get started."}
               </p>
             </div>
@@ -520,7 +520,7 @@ export default function Purchasing() {
               <button onClick={() => setVendorModal(true)} className={btnPrimary + " h-10"}>
                 <Building2 size={14} /> {ar ? "ضيف مورد" : "Add Vendor"}
               </button>
-              <button onClick={() => setPrModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setPrModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
                 <ClipboardList size={14} /> {ar ? "طلب شراء" : "New PR"}
               </button>
             </div>
@@ -530,20 +530,20 @@ export default function Purchasing() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Pending approvals */}
             <div>
-              <h3 className="text-[13px] font-medium mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
-                {ar ? "مستني موافقة" : "Pending Approval"} <span className="text-amber-500 ml-1">{pendingApproval.length}</span>
+              <h3 className="text-body font-medium mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
+                {ar ? "مستني موافقة" : "Pending Approval"} <span className="text-warning ml-1">{pendingApproval.length}</span>
               </h3>
               {pendingApproval.length === 0 ? (
-                <p className="text-[12px] text-muted-foreground/50 py-8 text-center">{ar ? "مفيش طلبات معلقة" : "No pending requests"}</p>
+                <p className="text-caption text-muted-foreground/50 py-8 text-center">{ar ? "مفيش طلبات معلقة" : "No pending requests"}</p>
               ) : (
                 <div className="space-y-2">
                   {pendingApproval.slice(0, 5).map((pr) => {
                     const meta = getPRMeta(pr);
                     return (
-                      <div key={pr.id} className="flex items-center gap-3 p-3.5 rounded-xl border border-amber-200/40 bg-amber-50/20">
+                      <div key={pr.id} className="flex items-center gap-3 p-3.5 rounded-xl border border-warning/30 bg-warning/10">
                         <div className="flex-1 min-w-0">
-                          <p className="text-[13px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{pr.title_en}</p>
-                          <p className="text-[11px] text-muted-foreground mt-0.5">{meta.vendor_name || (ar ? "بدون مورد" : "No vendor")} · {meta.estimated_amount ? fmtVal(meta.estimated_amount) : ""}</p>
+                          <p className="text-body font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{pr.title_en}</p>
+                          <p className="text-micro text-muted-foreground mt-0.5">{meta.vendor_name || (ar ? "بدون مورد" : "No vendor")} · {meta.estimated_amount ? fmtVal(meta.estimated_amount) : ""}</p>
                         </div>
                         <div className="flex gap-1.5 shrink-0">
                           <button onClick={() => updateStatus(pr.id, "approved")} className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors" title={ar ? "موافقة" : "Approve"}>
@@ -562,11 +562,11 @@ export default function Purchasing() {
 
             {/* Recent POs */}
             <div>
-              <h3 className="text-[13px] font-medium mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
-                {ar ? "أوامر شراء حديثة" : "Recent Purchase Orders"} <span className="text-primary ml-1">{purchaseOrders.length}</span>
+              <h3 className="text-body font-medium mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
+                {ar ? "أوامر شراء حديثة" : "Recent Purchase Orders"} <span className="text-brand-ink ml-1">{purchaseOrders.length}</span>
               </h3>
               {purchaseOrders.length === 0 ? (
-                <p className="text-[12px] text-muted-foreground/50 py-8 text-center">{ar ? "مفيش أوامر شراء" : "No purchase orders"}</p>
+                <p className="text-caption text-muted-foreground/50 py-8 text-center">{ar ? "مفيش أوامر شراء" : "No purchase orders"}</p>
               ) : (
                 <div className="space-y-2">
                   {purchaseOrders.slice(0, 5).map((po) => {
@@ -576,12 +576,12 @@ export default function Purchasing() {
                       <div key={po.id} className="flex items-center gap-3 p-3.5 rounded-xl border border-border/40 bg-background hover:shadow-sm transition-all">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[10.5px] font-mono text-muted-foreground">{meta.po_number}</span>
-                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                            <span className="text-micro font-mono text-muted-foreground">{meta.po_number}</span>
+                            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
                           </div>
-                          <p className="text-[13px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title_en}</p>
+                          <p className="text-body font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title_en}</p>
                         </div>
-                        {meta.estimated_amount ? <p className="text-[13px] font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
+                        {meta.estimated_amount ? <p className="text-body font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
                       </div>
                     );
                   })}
@@ -595,17 +595,17 @@ export default function Purchasing() {
             <div className="flex items-center gap-3 mb-5">
               <div className="relative flex-1 max-w-[300px]">
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث في الموردين..." : "Search vendors..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث في الموردين..." : "Search vendors..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
               </div>
               <div className="flex-1" />
               {vendors.length > 0 && (
-                <button onClick={() => exportCSV(vendors, `thoth-vendors-${new Date().toISOString().slice(0,10)}.csv`)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => exportCSV(vendors, `bumblebee-vendors-${new Date().toISOString().slice(0,10)}.csv`)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
             </div>
             {filteredVendors.length === 0 ? (
-              <div className="py-16 text-center text-[13px] text-muted-foreground/50">{search ? (ar ? "مفيش نتائج" : "No results") : (ar ? "مفيش موردين لسه" : "No vendors yet")}</div>
+              <div className="py-16 text-center text-body text-muted-foreground/50">{search ? (ar ? "مفيش نتائج" : "No results") : (ar ? "مفيش موردين لسه" : "No vendors yet")}</div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {filteredVendors.map((v) => {
@@ -613,18 +613,18 @@ export default function Purchasing() {
                   return (
                     <div key={v.id} className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all">
                       <div className="flex items-start gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center text-[11px] font-semibold shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-chart-4/15 text-chart-4 flex items-center justify-center text-micro font-semibold shrink-0">
                           {v.name_en.split(" ").slice(0,2).map((w) => w[0]).join("").toUpperCase()}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{v.name_en}</p>
-                          {v.sector && <p className="text-[11.5px] text-muted-foreground truncate mt-0.5">{v.sector}</p>}
+                          <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{v.name_en}</p>
+                          {v.sector && <p className="text-micro text-muted-foreground truncate mt-0.5">{v.sector}</p>}
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-1.5">
-                        {meta.vendor_category && <span className="text-[10px] px-2 py-0.5 rounded-full bg-violet-50 text-violet-600 font-medium">{meta.vendor_category}</span>}
-                        {meta.payment_terms && <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{meta.payment_terms}</span>}
-                        {meta.country && <span className="text-[10px] text-muted-foreground">{[meta.city, meta.country].filter(Boolean).join(", ")}</span>}
+                        {meta.vendor_category && <span className="text-micro px-2 py-0.5 rounded-full bg-chart-4/10 text-chart-4 font-medium">{meta.vendor_category}</span>}
+                        {meta.payment_terms && <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{meta.payment_terms}</span>}
+                        {meta.country && <span className="text-micro text-muted-foreground">{[meta.city, meta.country].filter(Boolean).join(", ")}</span>}
                       </div>
                     </div>
                   );
@@ -638,13 +638,13 @@ export default function Purchasing() {
             <div className="flex items-center gap-3 mb-5">
               <div className="relative flex-1 max-w-[300px]">
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
               </div>
               <div className="flex-1" />
               <button onClick={() => setPrModal(true)} className={btnPrimary + " h-9"}><Plus size={14} /> {ar ? "طلب جديد" : "New Request"}</button>
             </div>
             {filteredPRs.length === 0 ? (
-              <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش طلبات شراء" : "No purchase requests"}</div>
+              <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش طلبات شراء" : "No purchase requests"}</div>
             ) : (
               <div className="space-y-2">
                 {filteredPRs.map((pr) => {
@@ -654,13 +654,13 @@ export default function Purchasing() {
                     <div key={pr.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/40 bg-background hover:shadow-sm transition-all">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                          <span className="text-[10.5px] text-muted-foreground">{meta.vendor_name || ""}</span>
+                          <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                          <span className="text-micro text-muted-foreground">{meta.vendor_name || ""}</span>
                         </div>
-                        <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? (pr.title_ar ?? pr.title_en) : pr.title_en}</p>
-                        {pr.due_date && <p className="text-[11px] text-muted-foreground mt-0.5">{ar ? "مطلوب بحلول" : "Needed by"} {pr.due_date.slice(0,10)}</p>}
+                        <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? (pr.title_ar ?? pr.title_en) : pr.title_en}</p>
+                        {pr.due_date && <p className="text-micro text-muted-foreground mt-0.5">{ar ? "مطلوب بحلول" : "Needed by"} {pr.due_date.slice(0,10)}</p>}
                       </div>
-                      {meta.estimated_amount ? <p className="text-[14px] font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
+                      {meta.estimated_amount ? <p className="text-body-lg font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
                       {pr.status === "submitted" && (
                         <div className="flex gap-1.5 shrink-0">
                           <button onClick={() => updateStatus(pr.id, "approved")} className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors"><CheckCircle2 size={14} /></button>
@@ -668,7 +668,7 @@ export default function Purchasing() {
                         </div>
                       )}
                       {pr.status === "draft" && (
-                        <button onClick={() => updateStatus(pr.id, "submitted")} className="text-[11px] text-primary font-medium hover:opacity-70">{ar ? "قدّم" : "Submit"}</button>
+                        <button onClick={() => updateStatus(pr.id, "submitted")} className="text-micro text-brand-ink font-medium hover:opacity-70">{ar ? "قدّم" : "Submit"}</button>
                       )}
                       <button onClick={() => setDeleteTarget(pr)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
                         <Trash2 size={12} />
@@ -685,19 +685,19 @@ export default function Purchasing() {
             <div className="flex items-center gap-3 mb-5">
               <div className="relative flex-1 max-w-[300px]">
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
               </div>
               <div className="flex-1" />
               {purchaseOrders.length > 0 && (
-                <button onClick={() => { const rows = purchaseOrders.map((p) => { const m = getPRMeta(p); return { po_number: m.po_number, title: p.title_en, vendor: m.vendor_name, amount: m.estimated_amount, status: p.status, delivery_date: m.delivery_date, created_at: p.created_at }; }); exportCSV(rows, `thoth-purchase-orders-${new Date().toISOString().slice(0,10)}.csv`); }}
-                  className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => { const rows = purchaseOrders.map((p) => { const m = getPRMeta(p); return { po_number: m.po_number, title: p.title_en, vendor: m.vendor_name, amount: m.estimated_amount, status: p.status, delivery_date: m.delivery_date, created_at: p.created_at }; }); exportCSV(rows, `bumblebee-purchase-orders-${new Date().toISOString().slice(0,10)}.csv`); }}
+                  className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
               <button onClick={() => setPoModal(true)} className={btnPrimary + " h-9"}><Plus size={14} /> {ar ? "أمر جديد" : "New PO"}</button>
             </div>
             {filteredPOs.length === 0 ? (
-              <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش أوامر شراء" : "No purchase orders"}</div>
+              <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش أوامر شراء" : "No purchase orders"}</div>
             ) : (
               <div className="space-y-2">
                 {filteredPOs.map((po) => {
@@ -707,18 +707,18 @@ export default function Purchasing() {
                     <div key={po.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/40 bg-background hover:shadow-sm transition-all">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[10.5px] font-mono text-muted-foreground">{meta.po_number}</span>
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                          <span className="text-micro font-mono text-muted-foreground">{meta.po_number}</span>
+                          <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
                         </div>
-                        <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title_en}</p>
-                        <p className="text-[11px] text-muted-foreground mt-0.5">{meta.vendor_name || ""}{meta.delivery_date ? ` · ${ar ? "تسليم" : "Delivery"} ${meta.delivery_date}` : ""}</p>
+                        <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title_en}</p>
+                        <p className="text-micro text-muted-foreground mt-0.5">{meta.vendor_name || ""}{meta.delivery_date ? ` · ${ar ? "تسليم" : "Delivery"} ${meta.delivery_date}` : ""}</p>
                       </div>
-                      {meta.estimated_amount ? <p className="text-[14px] font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
+                      {meta.estimated_amount ? <p className="text-body-lg font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
                       {po.status === "draft" && (
-                        <button onClick={() => updateStatus(po.id, "sent")} className="text-[11px] text-primary font-medium hover:opacity-70">{ar ? "أرسل" : "Send"}</button>
+                        <button onClick={() => updateStatus(po.id, "sent")} className="text-micro text-brand-ink font-medium hover:opacity-70">{ar ? "أرسل" : "Send"}</button>
                       )}
                       {po.status === "sent" && (
-                        <button onClick={() => updateStatus(po.id, "received")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70">{ar ? "تم الاستلام" : "Received"}</button>
+                        <button onClick={() => updateStatus(po.id, "received")} className="text-micro text-emerald-600 font-medium hover:opacity-70">{ar ? "تم الاستلام" : "Received"}</button>
                       )}
                       <button onClick={() => setDeleteTarget(po)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
                         <Trash2 size={12} />

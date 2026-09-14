@@ -162,9 +162,9 @@ function getTimelineEvents(item: WorkItem): TimelineEvent[] {
 }
 
 const TIMELINE_ICON_MAP: Record<TimelineEvent["kind"], { Icon: React.ElementType; color: string; bg: string }> = {
-  created:          { Icon: Plus,             color: "text-primary",        bg: "bg-primary/8" },
-  assigned:         { Icon: UserPlus,         color: "text-violet-500",     bg: "bg-violet-50" },
-  status_changed:   { Icon: ArrowRightCircle, color: "text-amber-500",      bg: "bg-amber-50" },
+  created:          { Icon: Plus,             color: "text-brand-ink",        bg: "bg-primary/8" },
+  assigned:         { Icon: UserPlus,         color: "text-chart-4",     bg: "bg-chart-4/10" },
+  status_changed:   { Icon: ArrowRightCircle, color: "text-warning",      bg: "bg-warning/10" },
   comment:          { Icon: MessageSquare,    color: "text-blue-500",       bg: "bg-blue-50" },
   file_uploaded:    { Icon: Upload,           color: "text-cyan-600",       bg: "bg-cyan-50" },
   completed:        { Icon: CheckCircle2,     color: "text-emerald-500",    bg: "bg-emerald-50" },
@@ -278,8 +278,8 @@ const FILE_ICON_MAP: Record<FileItem["kind"], { Icon: React.ElementType; color: 
   pdf: { Icon: FileText,      color: "text-rose-500",    bg: "bg-rose-50",    label: "PDF" },
   doc: { Icon: FileText,      color: "text-blue-500",    bg: "bg-blue-50",    label: "DOC" },
   xls: { Icon: Sheet,         color: "text-emerald-600", bg: "bg-emerald-50", label: "XLS" },
-  img: { Icon: Image,         color: "text-violet-500",  bg: "bg-violet-50",  label: "IMG" },
-  zip: { Icon: FolderArchive, color: "text-amber-500",   bg: "bg-amber-50",   label: "ZIP" },
+  img: { Icon: Image,         color: "text-chart-4",  bg: "bg-chart-4/10",  label: "IMG" },
+  zip: { Icon: FolderArchive, color: "text-warning",   bg: "bg-warning/10",   label: "ZIP" },
 };
 
 // ─── Sample activity events ───────────────────────────────
@@ -333,10 +333,10 @@ function getSampleActivity(item: WorkItem): ActivityEvent[] {
 }
 
 const ACTIVITY_ICON_MAP: Record<ActivityEvent["kind"], { Icon: React.ElementType; color: string; bg: string }> = {
-  email:   { Icon: MessageSquare, color: "text-primary",    bg: "bg-primary/8" },
-  call:    { Icon: Users,         color: "text-violet-500", bg: "bg-violet-50" },
+  email:   { Icon: MessageSquare, color: "text-brand-ink",    bg: "bg-primary/8" },
+  call:    { Icon: Users,         color: "text-chart-4", bg: "bg-chart-4/10" },
   meeting: { Icon: Calendar,      color: "text-cyan-600",   bg: "bg-cyan-50" },
-  update:  { Icon: ArrowRightCircle, color: "text-amber-500", bg: "bg-amber-50" },
+  update:  { Icon: ArrowRightCircle, color: "text-warning", bg: "bg-warning/10" },
   note:    { Icon: StickyNote,    color: "text-muted-foreground", bg: "bg-muted" },
 };
 
@@ -367,9 +367,9 @@ function StatusStepper({ current, lang }: { current: WorkStatus; lang: "en" | "a
               <Icon
                 size={12}
                 strokeWidth={isActive ? 2 : 1.75}
-                className={isActive ? "text-primary" : isPast ? "text-emerald-500" : "text-muted-foreground"}
+                className={isActive ? "text-brand-ink" : isPast ? "text-emerald-500" : "text-muted-foreground"}
               />
-              <span className={`text-[11px] font-medium whitespace-nowrap ${isActive ? "text-primary" : "text-muted-foreground"}`}>
+              <span className={`text-micro font-medium whitespace-nowrap ${isActive ? "text-brand-ink" : "text-muted-foreground"}`}>
                 {ar ? meta.ar : meta.en}
               </span>
             </div>
@@ -386,7 +386,7 @@ function Section({ title, children, action }: { title: string; children: React.R
   return (
     <div className="border border-border/40 rounded-xl bg-background overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/30">
-        <h3 className="text-[11px] font-semibold text-muted-foreground tracking-[0.08em] uppercase">{title}</h3>
+        <h3 className="text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase">{title}</h3>
         {action}
       </div>
       {children}
@@ -401,12 +401,12 @@ function PersonCard({ nameEn, nameAr, roleEn, roleAr, ar }: {
 }) {
   return (
     <div className="flex items-center gap-3.5 px-6 py-4 hover:bg-muted/15 transition-colors">
-      <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center text-[11px] font-semibold text-primary shrink-0">
+      <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center text-micro font-semibold text-brand-ink shrink-0">
         {initials(ar ? nameAr : nameEn)}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-medium text-foreground truncate">{ar ? nameAr : nameEn}</p>
-        <p className="text-[11px] text-muted-foreground">{ar ? roleAr : roleEn}</p>
+        <p className="text-body font-medium text-foreground truncate">{ar ? nameAr : nameEn}</p>
+        <p className="text-micro text-muted-foreground">{ar ? roleAr : roleEn}</p>
       </div>
     </div>
   );
@@ -419,12 +419,12 @@ function OrgCard({ nameEn, nameAr, roleEn, roleAr, ar }: {
 }) {
   return (
     <div className="flex items-center gap-3.5 px-6 py-4 hover:bg-muted/15 transition-colors">
-      <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-        <Building2 size={15} strokeWidth={1.75} className="text-amber-600" />
+      <div className="w-9 h-9 rounded-xl bg-warning/10 flex items-center justify-center shrink-0">
+        <Building2 size={15} strokeWidth={1.75} className="text-warning" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-medium text-foreground truncate">{ar ? nameAr : nameEn}</p>
-        <p className="text-[11px] text-muted-foreground">{ar ? roleAr : roleEn}</p>
+        <p className="text-body font-medium text-foreground truncate">{ar ? nameAr : nameEn}</p>
+        <p className="text-micro text-muted-foreground">{ar ? roleAr : roleEn}</p>
       </div>
     </div>
   );
@@ -445,7 +445,7 @@ function AddNoteModal({ open, onClose, onAdd, lang }: {
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[480px] overflow-hidden">
         <div className="flex items-center justify-between px-6 py-4 border-b border-border/40">
-          <h2 className="text-[15px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "إضافة ملاحظة" : "Add Note"}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -459,17 +459,17 @@ function AddNoteModal({ open, onClose, onAdd, lang }: {
             placeholder={ar ? "اكتب ملاحظتك…" : "Write your note…"}
             rows={4}
             autoFocus
-            className="w-full px-3 py-2.5 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 resize-none"
+            className="w-full px-3 py-2.5 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 resize-none"
           />
         </div>
         <div className="px-6 py-3 border-t border-border/40 flex justify-end gap-3">
-          <button onClick={onClose} className="h-8 px-4 rounded-xl border border-border text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          <button onClick={onClose} className="h-8 px-4 rounded-xl border border-border text-caption text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
             {ar ? "إلغاء" : "Cancel"}
           </button>
           <button
             onClick={() => { if (text.trim()) { onAdd(text.trim()); setText(""); onClose(); } }}
             disabled={!text.trim()}
-            className="h-8 px-4 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity disabled:opacity-40"
+            className="h-8 px-4 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity disabled:opacity-40"
           >
             {ar ? "إضافة" : "Add Note"}
           </button>
@@ -547,10 +547,10 @@ export default function WorkDetail() {
         <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
           <Briefcase size={20} className="text-muted-foreground" strokeWidth={1.5} />
         </div>
-        <p className="text-[15px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <p className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? "لم يُعثر على العمل" : "Work item not found"}
         </p>
-        <button onClick={() => navigate("/work")} className="flex items-center gap-1.5 text-[12px] text-primary hover:underline">
+        <button onClick={() => navigate("/work")} className="flex items-center gap-1.5 text-caption text-brand-ink hover:underline">
           <ArrowLeft size={12} strokeWidth={2} />
           {ar ? "العودة إلى العمل" : "Back to Work"}
         </button>
@@ -581,7 +581,7 @@ export default function WorkDetail() {
 
       {/* ── Action toast ── */}
       {actionToast && (
-        <div className="fixed top-4 start-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="fixed top-4 start-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
           <Check size={14} strokeWidth={2.5} />
           {actionToast}
         </div>
@@ -596,7 +596,7 @@ export default function WorkDetail() {
         <div className="px-8 md:px-10 pt-6">
           <button
             onClick={() => navigate("/work")}
-            className="inline-flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-foreground transition-colors group"
+            className="inline-flex items-center gap-1.5 text-caption text-muted-foreground hover:text-foreground transition-colors group"
           >
             <ArrowLeft size={12} strokeWidth={2} className="group-hover:-translate-x-0.5 transition-transform" />
             {ar ? "العمل" : "Work"}
@@ -609,13 +609,13 @@ export default function WorkDetail() {
         <div className="px-8 md:px-10 pt-5 pb-6 max-w-[960px]">
           {/* Pills */}
           <div className="flex items-center gap-2 flex-wrap mb-4">
-            <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${kindMeta.pill}`}>
+            <span className={`text-micro font-medium px-2.5 py-1 rounded-full ${kindMeta.pill}`}>
               {ar ? kindMeta.ar : kindMeta.en}
             </span>
-            <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${priorityMeta.pill}`}>
+            <span className={`text-micro font-medium px-2.5 py-1 rounded-full ${priorityMeta.pill}`}>
               {ar ? priorityMeta.ar : priorityMeta.en}
             </span>
-            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${statusMeta.pill}`}>
+            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-micro font-medium ${statusMeta.pill}`}>
               <div className={`w-1.5 h-1.5 rounded-full ${statusMeta.dot}`} />
               {ar ? statusMeta.ar : statusMeta.en}
             </div>
@@ -623,14 +623,14 @@ export default function WorkDetail() {
 
           {/* Title */}
           <h1
-            className="text-[26px] md:text-[30px] font-medium text-foreground leading-tight mb-3"
+            className="text-display md:text-display font-medium text-foreground leading-tight mb-3"
             style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}
           >
             {ar ? item.titleAr : item.titleEn}
           </h1>
 
           {/* Meta line */}
-          <p className="text-[13px] text-muted-foreground leading-snug">
+          <p className="text-body text-muted-foreground leading-snug">
             {ar ? item.assigneeAr : item.assigneeEn}
             {(item.relatedOrgNameEn || item.relatedPersonNameEn) && (
               <>
@@ -657,7 +657,7 @@ export default function WorkDetail() {
                   style={{ width: `${item.progress}%` }}
                 />
               </div>
-              <span className="text-[15px] font-medium text-foreground shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <span className="text-body-lg font-medium text-foreground shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {item.progress}%
               </span>
             </div>
@@ -674,7 +674,7 @@ export default function WorkDetail() {
             <div className="relative">
               <button
                 onClick={() => setStatusMenuOpen(!statusMenuOpen)}
-                className="h-8 px-3.5 rounded-xl border border-border text-[12px] font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"
+                className="h-8 px-3.5 rounded-xl border border-border text-caption font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"
               >
                 <ArrowRightCircle size={13} strokeWidth={1.75} />
                 {ar ? "تغيير الحالة" : "Change Status"}
@@ -691,11 +691,11 @@ export default function WorkDetail() {
                           key={s}
                           onClick={() => changeStatus(s)}
                           disabled={isCurrent}
-                          className={`w-full flex items-center gap-2.5 px-4 py-2 text-[12px] text-start transition-colors ${isCurrent ? "text-primary bg-primary/5 font-medium" : "text-foreground hover:bg-muted"}`}
+                          className={`w-full flex items-center gap-2.5 px-4 py-2 text-caption text-start transition-colors ${isCurrent ? "text-brand-ink bg-primary/5 font-medium" : "text-foreground hover:bg-muted"}`}
                         >
                           <div className={`w-2 h-2 rounded-full ${m.dot}`} />
                           {ar ? m.ar : m.en}
-                          {isCurrent && <Check size={12} strokeWidth={2.5} className="ms-auto text-primary" />}
+                          {isCurrent && <Check size={12} strokeWidth={2.5} className="ms-auto text-brand-ink" />}
                         </button>
                       );
                     })}
@@ -706,7 +706,7 @@ export default function WorkDetail() {
 
             <button
               onClick={() => setNoteModalOpen(true)}
-              className="h-8 px-3.5 rounded-xl border border-border text-[12px] font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"
+              className="h-8 px-3.5 rounded-xl border border-border text-caption font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"
             >
               <StickyNote size={13} strokeWidth={1.75} />
               {ar ? "إضافة ملاحظة" : "Add Note"}
@@ -714,7 +714,7 @@ export default function WorkDetail() {
 
             <button
               onClick={() => showToast(ar ? "جارٍ فتح منتقي الملفات…" : "Opening file picker…")}
-              className="h-8 px-3.5 rounded-xl border border-border text-[12px] font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"
+              className="h-8 px-3.5 rounded-xl border border-border text-caption font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"
             >
               <Paperclip size={13} strokeWidth={1.75} />
               {ar ? "إرفاق ملف" : "Attach File"}
@@ -723,7 +723,7 @@ export default function WorkDetail() {
             {item.status !== "done" && (
               <button
                 onClick={markDone}
-                className="h-8 px-3.5 rounded-xl bg-emerald-500 text-white text-[12px] font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors"
+                className="h-8 px-3.5 rounded-xl bg-emerald-500 text-white text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors"
               >
                 <CheckCircle2 size={13} strokeWidth={2} />
                 {ar ? "تم الإنجاز" : "Mark Done"}
@@ -732,7 +732,7 @@ export default function WorkDetail() {
 
             <button
               onClick={() => setContextPanelOpen(true)}
-              className="h-8 px-3.5 rounded-xl border border-border text-[12px] font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors ms-auto"
+              className="h-8 px-3.5 rounded-xl border border-border text-caption font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors ms-auto"
             >
               <Brain size={13} strokeWidth={1.75} />
               {ar ? "الاتصالات" : "Connections"}
@@ -749,9 +749,9 @@ export default function WorkDetail() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`
-                px-4 py-3 text-[12px] font-medium whitespace-nowrap border-b-2 transition-all
+                px-4 py-3 text-caption font-medium whitespace-nowrap border-b-2 transition-all
                 ${activeTab === tab.id
-                  ? "border-primary text-primary"
+                  ? "border-primary text-brand-ink"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:border-border/60"
                 }
               `}
@@ -772,7 +772,7 @@ export default function WorkDetail() {
             <Section title={ar ? "الوصف" : "Description"}>
               <div className="px-6 py-5">
                 <p
-                  className="text-[14px] text-foreground/85 leading-[1.8] max-w-[680px]"
+                  className="text-body-lg text-foreground/85 leading-[1.8] max-w-[680px]"
                   style={{ fontFamily: "var(--app-font-serif)" }}
                 >
                   {ar ? item.descAr : item.descEn}
@@ -785,11 +785,11 @@ export default function WorkDetail() {
               <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/25">
                 <div className="divide-y divide-border/25">
                   <DetailRow icon={Briefcase} label={ar ? "النوع" : "Type"} value={
-                    <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full ${kindMeta.pill}`}>{ar ? kindMeta.ar : kindMeta.en}</span>
+                    <span className={`text-micro font-medium px-2.5 py-0.5 rounded-full ${kindMeta.pill}`}>{ar ? kindMeta.ar : kindMeta.en}</span>
                   } />
                   <DetailRow icon={User} label={ar ? "المسؤول" : "Assignee"} value={
                     <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-[8px] font-semibold text-primary">{initials(ar ? item.assigneeAr : item.assigneeEn)}</div>
+                      <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-micro font-semibold text-brand-ink">{initials(ar ? item.assigneeAr : item.assigneeEn)}</div>
                       <span>{ar ? item.assigneeAr : item.assigneeEn}</span>
                     </div>
                   } />
@@ -827,10 +827,10 @@ export default function WorkDetail() {
                   { value: ar ? item.dueDateAr : item.dueDateEn, label: ar ? "الاستحقاق" : "Due" },
                 ].map((s, i) => (
                   <div key={i} className="bg-background px-6 py-5 flex flex-col gap-1.5">
-                    <p className="text-[20px] font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+                    <p className="text-heading font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
                       {s.value}
                     </p>
-                    <p className="text-[11px] text-muted-foreground">{s.label}</p>
+                    <p className="text-micro text-muted-foreground">{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -858,15 +858,15 @@ export default function WorkDetail() {
 
                     {/* Content */}
                     <div className={`flex-1 min-w-0 ${isLast ? "pb-4" : "pb-6"}`}>
-                      <p className="text-[13px] font-medium text-foreground leading-snug">
+                      <p className="text-body font-medium text-foreground leading-snug">
                         {ar ? event.titleAr : event.titleEn}
                       </p>
                       {event.descEn && (
-                        <p className="text-[12px] text-muted-foreground/80 mt-1 leading-relaxed">
+                        <p className="text-caption text-muted-foreground/80 mt-1 leading-relaxed">
                           {ar ? event.descAr : event.descEn}
                         </p>
                       )}
-                      <div className="flex items-center gap-2 mt-1.5 text-[11px] text-muted-foreground/60">
+                      <div className="flex items-center gap-2 mt-1.5 text-micro text-muted-foreground/60">
                         <span>{ar ? event.actorAr : event.actorEn}</span>
                         <span>·</span>
                         <span>{ar ? event.dateAr : event.dateEn}</span>
@@ -901,7 +901,7 @@ export default function WorkDetail() {
             </div>
             {!item.relatedPersonNameEn && (
               <div className="px-6 py-8 text-center border-t border-border/25">
-                <p className="text-[12px] text-muted-foreground/50">{ar ? "لا توجد جهات اتصال إضافية" : "No additional contacts linked"}</p>
+                <p className="text-caption text-muted-foreground/50">{ar ? "لا توجد جهات اتصال إضافية" : "No additional contacts linked"}</p>
               </div>
             )}
           </Section>
@@ -922,7 +922,7 @@ export default function WorkDetail() {
                 <div className="w-10 h-10 rounded-xl bg-muted mx-auto mb-3 flex items-center justify-center">
                   <Building2 size={16} className="text-muted-foreground/40" strokeWidth={1.5} />
                 </div>
-                <p className="text-[13px] text-muted-foreground/60">{ar ? "لا توجد منظمات مرتبطة" : "No organizations linked"}</p>
+                <p className="text-body text-muted-foreground/60">{ar ? "لا توجد منظمات مرتبطة" : "No organizations linked"}</p>
               </div>
             )}
           </Section>
@@ -935,7 +935,7 @@ export default function WorkDetail() {
             action={
               <button
                 onClick={() => setNoteModalOpen(true)}
-                className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:text-primary/80 transition-colors"
+                className="flex items-center gap-1.5 text-micro font-medium text-brand-ink hover:text-brand-ink/80 transition-colors"
               >
                 <Plus size={12} strokeWidth={2.5} />
                 {ar ? "إضافة" : "Add"}
@@ -946,13 +946,13 @@ export default function WorkDetail() {
               {allNotes.map((note) => (
                 <div key={note.id} className="px-6 py-4">
                   <div className="flex items-center gap-2.5 mb-2.5">
-                    <div className="w-6 h-6 rounded-md bg-primary/8 flex items-center justify-center text-[8px] font-semibold text-primary">
+                    <div className="w-6 h-6 rounded-md bg-primary/8 flex items-center justify-center text-micro font-semibold text-brand-ink">
                       {initials(ar ? note.authorAr : note.authorEn)}
                     </div>
-                    <span className="text-[12px] font-medium text-foreground">{ar ? note.authorAr : note.authorEn}</span>
-                    <span className="text-[10px] text-muted-foreground/50 ms-auto">{ar ? note.dateAr : note.dateEn}</span>
+                    <span className="text-caption font-medium text-foreground">{ar ? note.authorAr : note.authorEn}</span>
+                    <span className="text-micro text-muted-foreground/50 ms-auto">{ar ? note.dateAr : note.dateEn}</span>
                   </div>
-                  <p className="text-[13px] text-foreground/80 leading-[1.7] ps-8.5" style={{ paddingInlineStart: "2.125rem" }}>
+                  <p className="text-body text-foreground/80 leading-[1.7] ps-8.5" style={{ paddingInlineStart: "2.125rem" }}>
                     {ar ? note.contentAr : note.contentEn}
                   </p>
                 </div>
@@ -968,7 +968,7 @@ export default function WorkDetail() {
             action={
               <button
                 onClick={() => showToast(ar ? "جارٍ فتح منتقي الملفات…" : "Opening file picker…")}
-                className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:text-primary/80 transition-colors"
+                className="flex items-center gap-1.5 text-micro font-medium text-brand-ink hover:text-brand-ink/80 transition-colors"
               >
                 <Upload size={12} strokeWidth={2.5} />
                 {ar ? "رفع" : "Upload"}
@@ -984,8 +984,8 @@ export default function WorkDetail() {
                       <fm.Icon size={15} strokeWidth={1.75} className={fm.color} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium text-foreground truncate">{ar ? file.nameAr : file.nameEn}</p>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-body font-medium text-foreground truncate">{ar ? file.nameAr : file.nameEn}</p>
+                      <p className="text-micro text-muted-foreground">
                         {ar ? file.sizeAr : file.sizeEn} · {ar ? file.uploaderAr : file.uploaderEn} · {ar ? file.dateAr : file.dateEn}
                       </p>
                     </div>
@@ -1015,9 +1015,9 @@ export default function WorkDetail() {
                       {!isLast && <div className="w-px flex-1 bg-border/40 my-1" />}
                     </div>
                     <div className={`flex-1 min-w-0 ${isLast ? "pb-4" : "pb-6"}`}>
-                      <p className="text-[13px] font-medium text-foreground">{ar ? event.titleAr : event.titleEn}</p>
-                      <p className="text-[12px] text-muted-foreground/70 mt-0.5 leading-relaxed">{ar ? event.descAr : event.descEn}</p>
-                      <p className="text-[11px] text-muted-foreground/50 mt-1">{ar ? event.dateAr : event.dateEn}</p>
+                      <p className="text-body font-medium text-foreground">{ar ? event.titleAr : event.titleEn}</p>
+                      <p className="text-caption text-muted-foreground/70 mt-0.5 leading-relaxed">{ar ? event.descAr : event.descEn}</p>
+                      <p className="text-micro text-muted-foreground/50 mt-1">{ar ? event.dateAr : event.dateEn}</p>
                     </div>
                   </div>
                 );
@@ -1066,8 +1066,8 @@ function DetailRow({ icon: Icon, label, value }: {
         <Icon size={13} strokeWidth={1.75} className="text-muted-foreground" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] text-muted-foreground/70 mb-0.5">{label}</p>
-        <div className="text-[13px] text-foreground">{value}</div>
+        <p className="text-micro text-muted-foreground/70 mb-0.5">{label}</p>
+        <div className="text-body text-foreground">{value}</div>
       </div>
     </div>
   );

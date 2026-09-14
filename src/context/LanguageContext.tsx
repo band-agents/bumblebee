@@ -14,7 +14,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Language>("en");
 
   useEffect(() => {
-    const saved = localStorage.getItem("thoth_onboarding");
+    const saved = localStorage.getItem("bumblebee_onboarding");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);

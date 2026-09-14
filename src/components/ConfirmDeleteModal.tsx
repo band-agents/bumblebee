@@ -29,18 +29,18 @@ export function ConfirmDeleteModal({ open, ar, title, itemName, loading, onCance
                 <Trash2 size={18} className="text-rose-600" />
               </div>
               <div>
-                <h3 className="text-[15px] font-semibold">{title}</h3>
-                <p className="text-[12px] text-muted-foreground">{ar ? "هذا الإجراء لا يمكن التراجع عنه" : "This action cannot be undone"}</p>
+                <h3 className="text-body-lg font-semibold">{title}</h3>
+                <p className="text-caption text-muted-foreground">{ar ? "هذا الإجراء لا يمكن التراجع عنه" : "This action cannot be undone"}</p>
               </div>
             </div>
-            <p className="text-[13px] text-muted-foreground mb-6">
+            <p className="text-body text-muted-foreground mb-6">
               {ar ? `هل أنت متأكد من حذف "${itemName}"؟` : `Are you sure you want to delete "${itemName}"?`}
             </p>
             <div className="flex gap-3">
-              <button onClick={onCancel} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">
+              <button onClick={onCancel} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">
                 {ar ? "إلغاء" : "Cancel"}
               </button>
-              <button onClick={onConfirm} disabled={loading} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-[13px] font-medium hover:bg-rose-700 disabled:opacity-50 flex items-center justify-center gap-2">
+              <button onClick={onConfirm} disabled={loading} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-body font-medium hover:bg-rose-700 disabled:opacity-50 flex items-center justify-center gap-2">
                 {loading && <Loader2 size={12} className="animate-spin" />}
                 <Trash2 size={13} />
                 {ar ? "احذف" : "Delete"}

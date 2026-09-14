@@ -46,10 +46,10 @@ function getPM(r: Resource): ProductMeta {
 
 // ─── Shared CSS ──────────────────────────────────────────
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
-const smallInput = "w-full h-8 px-2.5 rounded-lg border border-border/50 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
+const smallInput = "w-full h-8 px-2.5 rounded-lg border border-border/50 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20";
 
 // ─── Wizard Steps ────────────────────────────────────────
 
@@ -205,14 +205,14 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
         <div className="px-6 pt-5 pb-4 border-b border-border/40 shrink-0">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <h2 className="text-[18px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "منتج جديد — ويزارد التصنيع" : "New Product — Manufacturing Wizard"}
               </h2>
               {fromTemplate && (
                 <motion.span
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-semibold"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-brand-ink text-micro font-semibold"
                 >
                   <Sparkles size={10} />
                   {ar ? "من قالب" : "From Template"}
@@ -229,7 +229,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
               const done = i < step;
               return (
                 <button key={i} onClick={() => { if (i < step || (i === step + 1 && canGoNext())) setStep(i); }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${active ? "bg-primary text-primary-foreground" : done ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-micro font-medium transition-all ${active ? "bg-primary text-primary-foreground" : done ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
                   {done ? <CheckCircle2 size={12} /> : <Icon size={12} />}
                   <span className="hidden md:inline">{ar ? s.ar : s.en}</span>
                 </button>
@@ -244,8 +244,8 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
               animate={{ opacity: 1, height: "auto" }}
               className="mt-3 flex items-center gap-4 px-4 py-2.5 rounded-xl bg-muted/30 border border-border/20 overflow-hidden"
             >
-              <DollarSign size={12} className="text-primary shrink-0" />
-              <div className="flex items-center gap-4 flex-1 text-[10.5px] overflow-x-auto">
+              <DollarSign size={12} className="text-brand-ink shrink-0" />
+              <div className="flex items-center gap-4 flex-1 text-micro overflow-x-auto">
                 {bomCost > 0 && (
                   <span className="text-muted-foreground whitespace-nowrap">
                     {ar ? "خامات" : "Materials"}: <span className="font-medium text-foreground tabular-nums">{Math.round(bomCost).toLocaleString()}</span>
@@ -263,20 +263,20 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                 )}
               </div>
               <div className="shrink-0 text-right">
-                <span className="text-[10px] text-muted-foreground">{ar ? "الإجمالي" : "Total"}</span>
+                <span className="text-micro text-muted-foreground">{ar ? "الإجمالي" : "Total"}</span>
                 <motion.p
                   key={costInfo.totalCost}
                   initial={{ scale: 1.15, color: "hsl(var(--primary))" }}
                   animate={{ scale: 1, color: "hsl(var(--foreground))" }}
-                  className="text-[13px] font-semibold tabular-nums leading-tight"
+                  className="text-body font-semibold tabular-nums leading-tight"
                 >
                   {Math.round(costInfo.totalCost).toLocaleString()} {currency}
                 </motion.p>
               </div>
               {parseFloat(suggestedPrice) > 0 && costInfo.totalCost > 0 && (
                 <div className="shrink-0 pl-3 border-l border-border/30 text-right">
-                  <span className="text-[10px] text-muted-foreground">{ar ? "هامش" : "Margin"}</span>
-                  <p className={`text-[13px] font-semibold tabular-nums leading-tight ${
+                  <span className="text-micro text-muted-foreground">{ar ? "هامش" : "Margin"}</span>
+                  <p className={`text-body font-semibold tabular-nums leading-tight ${
                     (parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"
                   }`}>
                     {Math.round(((parseFloat(suggestedPrice) - costInfo.totalCost) / parseFloat(suggestedPrice)) * 100)}%
@@ -300,13 +300,13 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 border border-primary/15 mb-2"
                 >
-                  <Sparkles size={14} className="text-primary shrink-0" />
-                  <p className="text-[12px] text-primary/80 flex-1">
+                  <Sparkles size={14} className="text-brand-ink shrink-0" />
+                  <p className="text-caption text-brand-ink/80 flex-1">
                     {ar
                       ? `تم تحميل القالب "${name}" — عدّل البيانات حسب احتياجك`
                       : `Loaded from "${name}" template — customize the details below`}
                   </p>
-                  <span className="text-[10px] text-primary/50 tabular-nums">
+                  <span className="text-micro text-brand-ink/50 tabular-nums">
                     {bom.length} BOM · {stages.length} stages
                   </span>
                 </motion.div>
@@ -350,7 +350,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
           {/* Step 1: Dimensions */}
           {step === 1 && (
             <>
-              <p className="text-[12px] text-muted-foreground">{ar ? "أبعاد المنتج النهائي (بالسنتيمتر)" : "Final product dimensions (cm)"}</p>
+              <p className="text-caption text-muted-foreground">{ar ? "أبعاد المنتج النهائي (بالسنتيمتر)" : "Final product dimensions (cm)"}</p>
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { val: width, set: setWidth, en: "Width (العرض)", ar: "العرض" },
@@ -374,7 +374,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                 </div>
               </div>
               {width && height && (
-                <div className="bg-muted/30 rounded-xl p-4 text-[12px] text-muted-foreground">
+                <div className="bg-muted/30 rounded-xl p-4 text-caption text-muted-foreground">
                   {ar ? "المساحة التقريبية:" : "Approx. area:"} {((parseFloat(width) || 0) * (parseFloat(height) || 0) / 10000).toFixed(2)} m²
                   {depth && ` · ${ar ? "الحجم:" : "Volume:"} ${((parseFloat(width) || 0) * (parseFloat(height) || 0) * (parseFloat(depth) || 0) / 1000000).toFixed(3)} m³`}
                 </div>
@@ -426,11 +426,11 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
               {/* BOM */}
               <div className="border-t border-border/30 pt-4 mt-4">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-[13px] font-medium">{ar ? "مكونات المنتج (BOM)" : "Bill of Materials (BOM)"}</p>
-                  <button type="button" onClick={addBOMLine} className="flex items-center gap-1 text-[11px] text-primary font-medium hover:opacity-70"><Plus size={12} /> {ar ? "خامة" : "Add Line"}</button>
+                  <p className="text-body font-medium">{ar ? "مكونات المنتج (BOM)" : "Bill of Materials (BOM)"}</p>
+                  <button type="button" onClick={addBOMLine} className="flex items-center gap-1 text-micro text-brand-ink font-medium hover:opacity-70"><Plus size={12} /> {ar ? "خامة" : "Add Line"}</button>
                 </div>
                 {bom.length === 0 ? (
-                  <div className="py-8 text-center text-[12px] text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
+                  <div className="py-8 text-center text-caption text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
                     {ar ? "مفيش مكونات لسه. ضيف أول خامة." : "No BOM lines yet. Add your first material."}
                   </div>
                 ) : (
@@ -438,21 +438,21 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                     {bom.map((line, i) => (
                       <div key={line.id} className="grid grid-cols-12 gap-2 items-end border border-border/30 rounded-lg p-2.5 bg-muted/10">
                         <div className="col-span-4">
-                          <span className="text-[9px] text-muted-foreground">{ar ? "الخامة" : "Material"}</span>
+                          <span className="text-micro text-muted-foreground">{ar ? "الخامة" : "Material"}</span>
                           <input value={line.material} onChange={e => updateBOM(i, { ...line, material: e.target.value })} className={smallInput} placeholder={ar ? "MDF 18mm" : "e.g. MDF 18mm"} />
                         </div>
                         <div className="col-span-2">
-                          <span className="text-[9px] text-muted-foreground">{ar ? "الكمية" : "Qty"}</span>
+                          <span className="text-micro text-muted-foreground">{ar ? "الكمية" : "Qty"}</span>
                           <input type="number" value={line.qty} onChange={e => updateBOM(i, { ...line, qty: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                         </div>
                         <div className="col-span-2">
-                          <span className="text-[9px] text-muted-foreground">{ar ? "الوحدة" : "Unit"}</span>
+                          <span className="text-micro text-muted-foreground">{ar ? "الوحدة" : "Unit"}</span>
                           <select value={line.unit} onChange={e => updateBOM(i, { ...line, unit: e.target.value })} className={smallInput + " appearance-none cursor-pointer"}>
                             {BOM_UNITS.map(u => <option key={u} value={u}>{u}</option>)}
                           </select>
                         </div>
                         <div className="col-span-3">
-                          <span className="text-[9px] text-muted-foreground">{ar ? "سعر الوحدة" : "Cost/Unit"}</span>
+                          <span className="text-micro text-muted-foreground">{ar ? "سعر الوحدة" : "Cost/Unit"}</span>
                           <input type="number" value={line.costPerUnit} onChange={e => updateBOM(i, { ...line, costPerUnit: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                         </div>
                         <div className="col-span-1 flex justify-end">
@@ -460,7 +460,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                         </div>
                       </div>
                     ))}
-                    <div className="flex justify-end text-[12px] font-medium pt-2">
+                    <div className="flex justify-end text-caption font-medium pt-2">
                       <span className="text-muted-foreground mr-2">{ar ? "تكلفة الخامات:" : "Material Cost:"}</span>
                       <span className="tabular-nums">{bomCost.toLocaleString()} {currency}</span>
                     </div>
@@ -474,15 +474,15 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
           {step === 3 && (
             <>
               <div className="flex items-center justify-between">
-                <p className="text-[13px] font-medium">{ar ? "مراحل التصنيع" : "Manufacturing Stages"}</p>
+                <p className="text-body font-medium">{ar ? "مراحل التصنيع" : "Manufacturing Stages"}</p>
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={loadDressTemplate} className="text-[10.5px] px-2.5 py-1 rounded-lg border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50">{ar ? "قالب فستان" : "Dress Template"}</button>
-                  <button type="button" onClick={loadGeneralTemplate} className="text-[10.5px] px-2.5 py-1 rounded-lg border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50">{ar ? "قالب عام" : "Garment Template"}</button>
-                  <button type="button" onClick={addStage} className="flex items-center gap-1 text-[11px] text-primary font-medium hover:opacity-70"><Plus size={12} /> {ar ? "مرحلة" : "Add Stage"}</button>
+                  <button type="button" onClick={loadDressTemplate} className="text-micro px-2.5 py-1 rounded-lg border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50">{ar ? "قالب فستان" : "Dress Template"}</button>
+                  <button type="button" onClick={loadGeneralTemplate} className="text-micro px-2.5 py-1 rounded-lg border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50">{ar ? "قالب عام" : "Garment Template"}</button>
+                  <button type="button" onClick={addStage} className="flex items-center gap-1 text-micro text-brand-ink font-medium hover:opacity-70"><Plus size={12} /> {ar ? "مرحلة" : "Add Stage"}</button>
                 </div>
               </div>
               {stages.length === 0 ? (
-                <div className="py-10 text-center text-[12px] text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
+                <div className="py-10 text-center text-caption text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
                   {ar ? "مفيش مراحل لسه. اختر قالب أو ضيف مرحلة." : "No stages yet. Choose a template or add manually."}
                 </div>
               ) : (
@@ -492,46 +492,46 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                     return (
                       <div key={s.id} className="border border-border/30 rounded-xl p-3 bg-muted/10">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] text-muted-foreground/50 tabular-nums w-5">{i + 1}</span>
+                          <span className="text-micro text-muted-foreground/50 tabular-nums w-5">{i + 1}</span>
                           <input value={s.name} onChange={e => updateStage(i, { ...s, name: e.target.value })} className={smallInput + " flex-1"} placeholder={ar ? "اسم المرحلة" : "Stage name"} />
                           <input value={s.name_ar || ""} onChange={e => updateStage(i, { ...s, name_ar: e.target.value })} className={smallInput + " w-[140px]"} placeholder={ar ? "بالعربي" : "Arabic name"} />
                           <button onClick={() => removeStage(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-500 hover:bg-rose-50"><Trash2 size={11} /></button>
                         </div>
                         <div className="grid grid-cols-4 gap-2">
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "القسم" : "Department"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "القسم" : "Department"}</span>
                             <select value={s.department} onChange={e => updateStage(i, { ...s, department: e.target.value })} className={smallInput + " appearance-none cursor-pointer"}>
                               {DEPARTMENTS.map(d => <option key={d.value} value={d.value}>{ar ? d.ar : d.en}</option>)}
                             </select>
                           </div>
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "المدة (ساعات)" : "Duration (hrs)"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "المدة (ساعات)" : "Duration (hrs)"}</span>
                             <input type="number" value={s.duration_hours} onChange={e => updateStage(i, { ...s, duration_hours: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                           </div>
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "تكلفة العمالة" : "Labor Cost"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "تكلفة العمالة" : "Labor Cost"}</span>
                             <input type="number" value={s.labor_cost} onChange={e => updateStage(i, { ...s, labor_cost: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                           </div>
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "تكلفة الماكينة" : "Machine Cost"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "تكلفة الماكينة" : "Machine Cost"}</span>
                             <input type="number" value={s.machine_cost} onChange={e => updateStage(i, { ...s, machine_cost: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                           </div>
                         </div>
                         <div className="grid grid-cols-4 gap-2 mt-2">
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "الفريق" : "Team"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "الفريق" : "Team"}</span>
                             <input value={s.team || ""} onChange={e => updateStage(i, { ...s, team: e.target.value })} className={smallInput} placeholder={ar ? "اختياري" : "Optional"} />
                           </div>
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "الماكينة" : "Machine"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "الماكينة" : "Machine"}</span>
                             <input value={s.machine || ""} onChange={e => updateStage(i, { ...s, machine: e.target.value })} className={smallInput} placeholder={ar ? "اختياري" : "Optional"} />
                           </div>
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "% هالك خامات" : "Waste %"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "% هالك خامات" : "Waste %"}</span>
                             <input type="number" value={s.material_waste_pct} onChange={e => updateStage(i, { ...s, material_waste_pct: parseFloat(e.target.value) || 0 })} min={0} max={50} className={smallInput} />
                           </div>
                           <div>
-                            <span className="text-[9px] text-muted-foreground">{ar ? "مصاريف غير مباشرة" : "Overhead"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "مصاريف غير مباشرة" : "Overhead"}</span>
                             <input type="number" value={s.overhead_cost} onChange={e => updateStage(i, { ...s, overhead_cost: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                           </div>
                         </div>
@@ -546,9 +546,9 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                               key={flag.key}
                               type="button"
                               onClick={() => updateStage(i, { ...s, [flag.key]: !flag.active })}
-                              className={`flex items-center gap-1 px-2 py-1 rounded-md text-[9px] font-medium border transition-all ${
+                              className={`flex items-center gap-1 px-2 py-1 rounded-md text-micro font-medium border transition-all ${
                                 flag.active
-                                  ? "border-primary/30 bg-primary/8 text-primary"
+                                  ? "border-primary/30 bg-primary/8 text-brand-ink"
                                   : "border-border/30 text-muted-foreground/50 hover:text-muted-foreground hover:border-border/50"
                               }`}
                             >
@@ -557,7 +557,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                             </button>
                           ))}
                           <div className="flex items-center gap-1 ml-auto">
-                            <span className="text-[8px] text-muted-foreground">{ar ? "طاقة/يوم" : "Capacity/day"}</span>
+                            <span className="text-micro text-muted-foreground">{ar ? "طاقة/يوم" : "Capacity/day"}</span>
                             <input
                               type="number"
                               value={s.capacity_units_per_day || ""}
@@ -579,11 +579,11 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
           {/* Step 4: Stage Dependencies */}
           {step === 4 && (
             <>
-              <p className="text-[12px] text-muted-foreground mb-2">
+              <p className="text-caption text-muted-foreground mb-2">
                 {ar ? "حدد علاقة كل مرحلة بالمراحل اللي قبلها (متتابعة / متوازية / حاجزة / اختيارية)" : "Define how each stage relates to previous stages (sequential / parallel / blocking / optional)"}
               </p>
               {stages.length === 0 ? (
-                <div className="py-10 text-center text-[12px] text-muted-foreground/50">
+                <div className="py-10 text-center text-caption text-muted-foreground/50">
                   {ar ? "ارجع للخطوة السابقة وضيف مراحل الأول" : "Go back and add stages first"}
                 </div>
               ) : (
@@ -591,14 +591,14 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                   {stages.map((s, i) => (
                     <div key={s.id} className="border border-border/30 rounded-xl p-3 bg-muted/10">
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="text-[10px] text-muted-foreground tabular-nums w-5">{i + 1}</span>
-                        <span className="text-[13px] font-medium flex-1">{s.name || `Stage ${i + 1}`}</span>
+                        <span className="text-micro text-muted-foreground tabular-nums w-5">{i + 1}</span>
+                        <span className="text-body font-medium flex-1">{s.name || `Stage ${i + 1}`}</span>
                         <Clock size={11} className="text-muted-foreground/50" />
-                        <span className="text-[10.5px] text-muted-foreground tabular-nums">{s.duration_hours}h</span>
+                        <span className="text-micro text-muted-foreground tabular-nums">{s.duration_hours}h</span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-[9px] text-muted-foreground">{ar ? "نوع التبعية" : "Dependency Type"}</span>
+                          <span className="text-micro text-muted-foreground">{ar ? "نوع التبعية" : "Dependency Type"}</span>
                           <select value={s.dependency_type} onChange={e => updateStage(i, { ...s, dependency_type: e.target.value as DependencyType })}
                             className={smallInput + " appearance-none cursor-pointer"}>
                             <option value="sequential">{ar ? "متتابعة — لازم اللي قبلها تخلص" : "Sequential — must finish previous"}</option>
@@ -608,7 +608,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                           </select>
                         </div>
                         <div>
-                          <span className="text-[9px] text-muted-foreground">{ar ? "تعتمد على" : "Depends On"}</span>
+                          <span className="text-micro text-muted-foreground">{ar ? "تعتمد على" : "Depends On"}</span>
                           <select
                             multiple
                             value={s.depends_on}
@@ -630,21 +630,21 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                   {stages.length > 1 && (
                     <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mt-3">
                       <div className="flex items-center gap-2 mb-2">
-                        <Clock size={13} className="text-primary" />
-                        <span className="text-[13px] font-medium">{ar ? "ملخص الجدول الزمني" : "Timeline Summary"}</span>
+                        <Clock size={13} className="text-brand-ink" />
+                        <span className="text-body font-medium">{ar ? "ملخص الجدول الزمني" : "Timeline Summary"}</span>
                       </div>
-                      <div className="grid grid-cols-3 gap-3 text-[12px]">
+                      <div className="grid grid-cols-3 gap-3 text-caption">
                         <div>
                           <span className="text-muted-foreground">{ar ? "إجمالي أيام العمل" : "Total Work Days"}</span>
-                          <p className="text-[16px] font-medium tabular-nums">{timeInfo.totalDays}</p>
+                          <p className="text-title font-medium tabular-nums">{timeInfo.totalDays}</p>
                         </div>
                         <div>
                           <span className="text-muted-foreground">{ar ? "توفير من التوازي" : "Parallel Savings"}</span>
-                          <p className="text-[16px] font-medium tabular-nums text-emerald-600">{timeInfo.parallelSavings > 0 ? `-${timeInfo.parallelSavings} days` : "—"}</p>
+                          <p className="text-title font-medium tabular-nums text-emerald-600">{timeInfo.parallelSavings > 0 ? `-${timeInfo.parallelSavings} days` : "—"}</p>
                         </div>
                         <div>
                           <span className="text-muted-foreground">{ar ? "المراحل الحرجة" : "Critical Path"}</span>
-                          <p className="text-[16px] font-medium tabular-nums">{timeInfo.criticalPath.length} {ar ? "مرحلة" : "stages"}</p>
+                          <p className="text-title font-medium tabular-nums">{timeInfo.criticalPath.length} {ar ? "مرحلة" : "stages"}</p>
                         </div>
                       </div>
                     </div>
@@ -660,7 +660,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
               {/* Cost breakdown */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <p className="text-[13px] font-medium mb-2">{ar ? "تحليل التكلفة" : "Cost Breakdown"}</p>
+                  <p className="text-body font-medium mb-2">{ar ? "تحليل التكلفة" : "Cost Breakdown"}</p>
                   {[
                     { label: ar ? "تكلفة الخامات (BOM)" : "Material Cost (BOM)", value: costInfo.materialCost },
                     { label: ar ? "تكلفة العمالة" : "Labor Cost", value: costInfo.stageCosts.laborTotal },
@@ -668,12 +668,12 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                     { label: ar ? "هالك الخامات" : "Material Waste", value: costInfo.stageCosts.wasteTotal },
                     { label: ar ? "تكاليف غير مباشرة" : "Overhead", value: costInfo.stageCosts.overheadTotal },
                   ].map(row => (
-                    <div key={row.label} className="flex justify-between text-[12px] bg-muted/20 rounded-lg px-3 py-2">
+                    <div key={row.label} className="flex justify-between text-caption bg-muted/20 rounded-lg px-3 py-2">
                       <span className="text-muted-foreground">{row.label}</span>
                       <span className="font-medium tabular-nums">{Math.round(row.value).toLocaleString()} {currency}</span>
                     </div>
                   ))}
-                  <div className="flex justify-between text-[13px] font-medium border-t border-border/40 pt-2 px-3">
+                  <div className="flex justify-between text-body font-medium border-t border-border/40 pt-2 px-3">
                     <span>{ar ? "إجمالي التكلفة" : "Total Cost"}</span>
                     <span className="tabular-nums">{Math.round(costInfo.totalCost).toLocaleString()} {currency}</span>
                   </div>
@@ -686,11 +686,11 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                   </div>
                   {parseFloat(suggestedPrice) > 0 && (
                     <div className="bg-muted/30 rounded-xl p-4">
-                      <p className="text-[11px] text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
-                      <p className={`text-[22px] font-medium tabular-nums ${(parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                      <p className="text-micro text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
+                      <p className={`text-heading font-medium tabular-nums ${(parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
                         {costInfo.totalCost > 0 ? Math.round(((parseFloat(suggestedPrice) - costInfo.totalCost) / parseFloat(suggestedPrice)) * 100) : 0}%
                       </p>
-                      <p className="text-[11px] text-muted-foreground mt-1">
+                      <p className="text-micro text-muted-foreground mt-1">
                         {ar ? "صافي الربح:" : "Profit:"} {Math.round(parseFloat(suggestedPrice) - costInfo.totalCost).toLocaleString()} {currency}
                       </p>
                     </div>
@@ -698,10 +698,10 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
 
                   {/* Timeline */}
                   <div className="bg-muted/30 rounded-xl p-4">
-                    <p className="text-[11px] text-muted-foreground mb-1">{ar ? "مدة التصنيع المتوقعة" : "Estimated Manufacturing Time"}</p>
-                    <p className="text-[22px] font-medium tabular-nums">{timeInfo.totalDays} {ar ? "يوم عمل" : "work days"}</p>
+                    <p className="text-micro text-muted-foreground mb-1">{ar ? "مدة التصنيع المتوقعة" : "Estimated Manufacturing Time"}</p>
+                    <p className="text-heading font-medium tabular-nums">{timeInfo.totalDays} {ar ? "يوم عمل" : "work days"}</p>
                     {timeInfo.parallelSavings > 0 && (
-                      <p className="text-[10.5px] text-emerald-600 mt-1">
+                      <p className="text-micro text-emerald-600 mt-1">
                         {ar ? `وفرت ${timeInfo.parallelSavings} يوم من التوازي` : `Saved ${timeInfo.parallelSavings} days from parallel stages`}
                       </p>
                     )}
@@ -712,10 +712,10 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
               {/* Warnings */}
               {warnings.length > 0 && (
                 <div className="border-t border-border/30 pt-4 mt-3">
-                  <p className="text-[12px] font-medium mb-2 flex items-center gap-1.5"><AlertTriangle size={12} className="text-amber-500" /> {ar ? "تنبيهات" : "Warnings"}</p>
+                  <p className="text-caption font-medium mb-2 flex items-center gap-1.5"><AlertTriangle size={12} className="text-warning" /> {ar ? "تنبيهات" : "Warnings"}</p>
                   <div className="space-y-1.5">
                     {warnings.map((w, i) => (
-                      <div key={i} className={`flex items-start gap-2 text-[11.5px] px-3 py-2 rounded-lg ${w.type === "error" ? "bg-rose-50 text-rose-700" : w.type === "warning" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
+                      <div key={i} className={`flex items-start gap-2 text-micro px-3 py-2 rounded-lg ${w.type === "error" ? "bg-rose-50 text-rose-700" : w.type === "warning" ? "bg-warning/10 text-warning" : "bg-blue-50 text-blue-700"}`}>
                         {w.type === "error" ? <AlertCircle size={12} className="mt-0.5 shrink-0" /> : <Info size={12} className="mt-0.5 shrink-0" />}
                         <span>{ar ? w.ar : w.en}</span>
                       </div>
@@ -727,10 +727,10 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
               {/* Per-stage cost breakdown */}
               {costInfo.stageCosts.perStage.length > 0 && (
                 <div className="border-t border-border/30 pt-4 mt-3">
-                  <p className="text-[12px] font-medium mb-2">{ar ? "تكلفة كل مرحلة" : "Per-Stage Cost"}</p>
+                  <p className="text-caption font-medium mb-2">{ar ? "تكلفة كل مرحلة" : "Per-Stage Cost"}</p>
                   <div className="space-y-1">
                     {costInfo.stageCosts.perStage.map((ps, i) => (
-                      <div key={ps.id} className="flex justify-between text-[11px] px-3 py-1.5 rounded bg-muted/10">
+                      <div key={ps.id} className="flex justify-between text-micro px-3 py-1.5 rounded bg-muted/10">
                         <span className="text-muted-foreground">{i + 1}. {ps.name}</span>
                         <span className="tabular-nums font-medium">{Math.round(ps.total).toLocaleString()} {currency}</span>
                       </div>
@@ -741,18 +741,18 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
             </>
           )}
 
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex items-center gap-3">
           {step > 0 && (
-            <button type="button" onClick={() => setStep(s => s - 1)} className="flex items-center gap-1.5 h-10 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">
+            <button type="button" onClick={() => setStep(s => s - 1)} className="flex items-center gap-1.5 h-10 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">
               <ChevronLeft size={14} /> {ar ? "السابق" : "Back"}
             </button>
           )}
           <div className="flex-1" />
-          <button type="button" onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           {step < 5 ? (
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -802,40 +802,40 @@ function ProductCard({ product, ar, currency, onDuplicate, onDelete }: {
       <div className="flex items-start justify-between mb-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1.5">
-            {m.sku && <span className="text-[10px] font-mono text-muted-foreground">{m.sku}</span>}
-            {cat && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/8 text-primary font-medium">{ar ? cat.ar : cat.en}</span>}
-            {pri && <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
-            {m.active === false && <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">{ar ? "غير نشط" : "Inactive"}</span>}
+            {m.sku && <span className="text-micro font-mono text-muted-foreground">{m.sku}</span>}
+            {cat && <span className="text-micro px-2 py-0.5 rounded-full bg-primary/8 text-brand-ink font-medium">{ar ? cat.ar : cat.en}</span>}
+            {pri && <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
+            {m.active === false && <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">{ar ? "غير نشط" : "Inactive"}</span>}
           </div>
-          <p className="text-[15px] font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? (product.name_ar ?? product.name_en) : product.name_en}
           </p>
-          {m.description && <p className="text-[11.5px] text-muted-foreground truncate mt-0.5">{m.description}</p>}
+          {m.description && <p className="text-micro text-muted-foreground truncate mt-0.5">{m.description}</p>}
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-3 text-[10.5px] text-muted-foreground mb-3">
+      <div className="flex flex-wrap items-center gap-3 text-micro text-muted-foreground mb-3">
         {m.main_material && <span className="flex items-center gap-1"><Package size={10} />{m.main_material}</span>}
         {m.width && m.height && <span className="flex items-center gap-1"><Ruler size={10} />{m.width}×{m.height}{m.depth ? `×${m.depth}` : ""}</span>}
         {m.finish && <span>{m.finish}</span>}
         {timeInfo && <span className="flex items-center gap-1"><Clock size={10} />{timeInfo.totalDays} {ar ? "يوم" : "days"}</span>}
       </div>
       <div className="flex items-center gap-3 pt-3 border-t border-border/30">
-        <div className="flex items-center gap-1.5 text-[10.5px]">
+        <div className="flex items-center gap-1.5 text-micro">
           <ListTree size={10} className="text-muted-foreground/50" />
-          <span className={bomCount > 0 ? "text-foreground" : "text-amber-500"}>{bomCount} {ar ? "مكون" : "BOM"}</span>
+          <span className={bomCount > 0 ? "text-foreground" : "text-warning"}>{bomCount} {ar ? "مكون" : "BOM"}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-[10.5px]">
+        <div className="flex items-center gap-1.5 text-micro">
           <Wrench size={10} className="text-muted-foreground/50" />
-          <span className={stageCount > 0 ? "text-foreground" : "text-amber-500"}>{stageCount} {ar ? "مرحلة" : "stages"}</span>
+          <span className={stageCount > 0 ? "text-foreground" : "text-warning"}>{stageCount} {ar ? "مرحلة" : "stages"}</span>
         </div>
         {cost > 0 && (
-          <div className="flex items-center gap-1.5 text-[10.5px]">
+          <div className="flex items-center gap-1.5 text-micro">
             <DollarSign size={10} className="text-muted-foreground/50" />
             <span className="tabular-nums">{Math.round(cost).toLocaleString()} {currency}</span>
           </div>
         )}
         {m.suggested_price && m.suggested_price > 0 && cost > 0 && (
-          <span className={`text-[10.5px] font-medium tabular-nums ${(m.suggested_price - cost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+          <span className={`text-micro font-medium tabular-nums ${(m.suggested_price - cost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
             {Math.round(((m.suggested_price - cost) / m.suggested_price) * 100)}% {ar ? "ربح" : "margin"}
           </span>
         )}
@@ -843,14 +843,14 @@ function ProductCard({ product, ar, currency, onDuplicate, onDelete }: {
         <div className="ml-auto flex items-center gap-1">
           <button
             onClick={e => { e.stopPropagation(); navigate(`/products/${product.id}`); }}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-primary hover:bg-primary/5 transition-colors"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-brand-ink hover:bg-primary/5 transition-colors"
             title={ar ? "تعديل" : "Edit"}
           >
             <Edit3 size={12} />
           </button>
           <button
             onClick={e => { e.stopPropagation(); onDuplicate(product); }}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-primary hover:bg-primary/5 transition-colors"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-brand-ink hover:bg-primary/5 transition-colors"
             title={ar ? "نسخ" : "Duplicate"}
           >
             <Copy size={12} />
@@ -969,15 +969,15 @@ function DuplicateProductModal({ product, ar, currency, onClose, onDuplicate }: 
         {/* Header */}
         <div className="px-6 pt-5 pb-4 border-b border-border/40">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="text-[17px] font-medium flex items-center gap-2" style={{ fontFamily: "var(--app-font-serif)" }}>
-              <Copy size={16} className="text-primary" />
+            <h2 className="text-title font-medium flex items-center gap-2" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <Copy size={16} className="text-brand-ink" />
               {ar ? "نسخ منتج" : "Duplicate Product"}
             </h2>
             <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted">
               <X size={16} />
             </button>
           </div>
-          <p className="text-[12px] text-muted-foreground">
+          <p className="text-caption text-muted-foreground">
             {ar ? `نسخ "${product.name_en}" مع اختيار البيانات المطلوبة` : `Duplicating "${product.name_en}" — choose what to copy`}
           </p>
         </div>
@@ -991,7 +991,7 @@ function DuplicateProductModal({ product, ar, currency, onClose, onDuplicate }: 
 
           {/* Options */}
           <div className="space-y-2">
-            <p className="text-[11px] font-medium text-muted-foreground tracking-[0.06em] uppercase">
+            <p className="text-micro font-medium text-muted-foreground tracking-[0.06em] uppercase">
               {ar ? "ماذا تنسخ؟" : "What to copy"}
             </p>
             {DUPLICATE_OPTIONS.map(opt => {
@@ -1010,13 +1010,13 @@ function DuplicateProductModal({ product, ar, currency, onClose, onDuplicate }: 
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                    active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground/40"
+                    active ? "bg-primary/15 text-brand-ink" : "bg-muted text-muted-foreground/40"
                   }`}>
                     <Icon size={14} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12.5px] font-medium">{ar ? opt.ar : opt.en}</p>
-                    <p className="text-[10px] text-muted-foreground truncate">{ar ? opt.description_ar : opt.description_en}</p>
+                    <p className="text-caption font-medium">{ar ? opt.ar : opt.en}</p>
+                    <p className="text-micro text-muted-foreground truncate">{ar ? opt.description_ar : opt.description_en}</p>
                   </div>
                   <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
                     active ? "border-primary bg-primary" : "border-border/50"
@@ -1031,11 +1031,11 @@ function DuplicateProductModal({ product, ar, currency, onClose, onDuplicate }: 
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-border/40 flex items-center justify-between">
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-micro text-muted-foreground">
             {selectedCount} {ar ? "عنصر محدد" : "items selected"}
           </span>
           <div className="flex items-center gap-2">
-            <button onClick={onClose} className="h-9 px-4 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted/50">
+            <button onClick={onClose} className="h-9 px-4 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted/50">
               {ar ? "إلغاء" : "Cancel"}
             </button>
             <motion.button
@@ -1139,23 +1139,23 @@ export default function Products() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Package size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "الملابس" : "Garments"}</p>
+            <Package size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "الملابس" : "Garments"}</p>
           </div>
           <div className="flex items-start justify-between gap-4 mb-5">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "كتالوج الملابس" : "Garment Catalog"}
             </h1>
             <div className="flex items-center gap-2 shrink-0">
               {products.length > 0 && (
                 <button onClick={() => {
                   const rows = products.map(p => { const m = getPM(p); return { name: p.name_en, sku: m.sku, category: m.category, main_material: m.main_material, finish: m.finish, width: m.width, height: m.height, depth: m.depth, bom_count: (m.bom||[]).length, cost: m.total_cost, price: m.suggested_price, stages: (m.stages||[]).length, priority: m.priority }; });
-                  exportCSV(rows, `thoth-products-${new Date().toISOString().slice(0,10)}.csv`);
-                }} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                  exportCSV(rows, `bumblebee-products-${new Date().toISOString().slice(0,10)}.csv`);
+                }} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
-              <button onClick={() => setShowImport(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+              <button onClick={() => setShowImport(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 <Upload size={13} /> {ar ? "استورد" : "Import"}
               </button>
               <button onClick={openCreateFlow} className={btnPrimary + " h-9"}>
@@ -1166,24 +1166,24 @@ export default function Products() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <Package size={14} className="text-primary mb-2" />
-              <p className="text-[20px] font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{products.length}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "إجمالي المنتجات" : "Total Products"}</p>
+              <Package size={14} className="text-brand-ink mb-2" />
+              <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{products.length}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "إجمالي المنتجات" : "Total Products"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
               <CheckCircle2 size={14} className="text-emerald-500 mb-2" />
-              <p className="text-[20px] font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{activeProducts.length}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "نشط" : "Active"}</p>
+              <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{activeProducts.length}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "نشط" : "Active"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <AlertTriangle size={14} className={missingBOM.length > 0 ? "text-amber-500 mb-2" : "text-emerald-500 mb-2"} />
-              <p className="text-[20px] font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{missingBOM.length}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "بدون مكونات" : "Missing BOM"}</p>
+              <AlertTriangle size={14} className={missingBOM.length > 0 ? "text-warning mb-2" : "text-emerald-500 mb-2"} />
+              <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{missingBOM.length}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "بدون مكونات" : "Missing BOM"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <Wrench size={14} className={missingStages.length > 0 ? "text-amber-500 mb-2" : "text-emerald-500 mb-2"} />
-              <p className="text-[20px] font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{missingStages.length}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "بدون مراحل" : "Missing Stages"}</p>
+              <Wrench size={14} className={missingStages.length > 0 ? "text-warning mb-2" : "text-emerald-500 mb-2"} />
+              <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{missingStages.length}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "بدون مراحل" : "Missing Stages"}</p>
             </div>
           </div>
         </div>
@@ -1194,9 +1194,9 @@ export default function Products() {
         <div className="max-w-[1100px] flex items-center gap-3">
           <div className="relative flex-1 max-w-[300px]">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "ابحث بالاسم أو الكود..." : "Search products..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "ابحث بالاسم أو الكود..." : "Search products..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
           </div>
-          <select value={filterCat} onChange={e => setFilterCat(e.target.value)} className="h-9 px-3 rounded-xl border border-border/60 bg-background text-[12px] appearance-none cursor-pointer">
+          <select value={filterCat} onChange={e => setFilterCat(e.target.value)} className="h-9 px-3 rounded-xl border border-border/60 bg-background text-caption appearance-none cursor-pointer">
             <option value="all">{ar ? "كل الفئات" : "All Categories"}</option>
             {PRODUCT_CATEGORIES.map(c => <option key={c.en} value={c.en}>{ar ? c.ar : c.en}</option>)}
           </select>
@@ -1211,10 +1211,10 @@ export default function Products() {
               <Package size={24} className="text-muted-foreground/40" />
             </div>
             <div className="text-center max-w-[400px]">
-              <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "مفيش منتجات لسه" : "No products yet"}
               </p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">
+              <p className="text-body text-muted-foreground leading-relaxed">
                 {ar ? "أنشئ أول منتج باستخدام ويزارد التصنيع الذكي." : "Create your first product with the smart manufacturing wizard."}
               </p>
             </div>
@@ -1223,7 +1223,7 @@ export default function Products() {
             </button>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results found"}</div>
+          <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results found"}</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filtered.map(p => <ProductCard key={p.id} product={p} ar={ar} currency={currency} onDuplicate={setDuplicateTarget} onDelete={setDeleteTarget} />)}
@@ -1283,18 +1283,18 @@ export default function Products() {
                   <Trash2 size={18} className="text-rose-600" />
                 </div>
                 <div>
-                  <h3 className="text-[15px] font-semibold">{ar ? "حذف المنتج" : "Delete Product"}</h3>
-                  <p className="text-[12px] text-muted-foreground">{ar ? "هذا الإجراء لا يمكن التراجع عنه" : "This action cannot be undone"}</p>
+                  <h3 className="text-body-lg font-semibold">{ar ? "حذف المنتج" : "Delete Product"}</h3>
+                  <p className="text-caption text-muted-foreground">{ar ? "هذا الإجراء لا يمكن التراجع عنه" : "This action cannot be undone"}</p>
                 </div>
               </div>
-              <p className="text-[13px] text-muted-foreground mb-6">
+              <p className="text-body text-muted-foreground mb-6">
                 {ar ? `هل أنت متأكد من حذف "${deleteTarget.name_en}"؟` : `Are you sure you want to delete "${deleteTarget.name_en}"?`}
               </p>
               <div className="flex gap-3">
-                <button onClick={() => setDeleteTarget(null)} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">
+                <button onClick={() => setDeleteTarget(null)} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">
                   {ar ? "إلغاء" : "Cancel"}
                 </button>
-                <button onClick={handleDeleteProduct} disabled={deleteLoading} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-[13px] font-medium hover:bg-rose-700 disabled:opacity-50 flex items-center justify-center gap-2">
+                <button onClick={handleDeleteProduct} disabled={deleteLoading} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-body font-medium hover:bg-rose-700 disabled:opacity-50 flex items-center justify-center gap-2">
                   {deleteLoading && <Loader2 size={12} className="animate-spin" />}
                   <Trash2 size={13} />
                   {ar ? "احذف" : "Delete"}

@@ -12,8 +12,8 @@ type ForecastTab = "forecasts" | "dependencies";
 
 const TREND_STYLE: Record<string, { border: string; bg: string; iconCl: string; labelEn: string; labelAr: string }> = {
   ahead:    { border: "border-emerald-200/60", bg: "bg-emerald-50/30", iconCl: "text-emerald-600", labelEn: "Ahead",    labelAr: "قبل الموعد" },
-  on_track: { border: "border-primary/20",     bg: "bg-primary/5",     iconCl: "text-primary",    labelEn: "On Track", labelAr: "على المسار" },
-  delayed:  { border: "border-amber-200/60",   bg: "bg-amber-50/30",   iconCl: "text-amber-600",  labelEn: "Delayed",  labelAr: "متأخر" },
+  on_track: { border: "border-primary/20",     bg: "bg-primary/5",     iconCl: "text-brand-ink",    labelEn: "On Track", labelAr: "على المسار" },
+  delayed:  { border: "border-warning/30",   bg: "bg-warning/10",   iconCl: "text-warning",  labelEn: "Delayed",  labelAr: "متأخر" },
   at_risk:  { border: "border-rose-200/60",    bg: "bg-rose-50/30",    iconCl: "text-rose-600",   labelEn: "At Risk",  labelAr: "في خطر" },
 };
 
@@ -21,7 +21,7 @@ function TrendBadge({ trend, ar }: { trend: string; ar: boolean }) {
   const s = TREND_STYLE[trend] || TREND_STYLE.on_track;
   const Icon = trend === "ahead" ? TrendingUp : trend === "at_risk" ? TrendingDown : trend === "delayed" ? AlertTriangle : Minus;
   return (
-    <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${s.border} ${s.bg} ${s.iconCl}`}>
+    <span className={`inline-flex items-center gap-1 text-micro font-medium px-2 py-0.5 rounded-full border ${s.border} ${s.bg} ${s.iconCl}`}>
       <Icon size={10} strokeWidth={2} />
       {ar ? TREND_STYLE[trend]?.labelAr : TREND_STYLE[trend]?.labelEn}
     </span>
@@ -29,13 +29,13 @@ function TrendBadge({ trend, ar }: { trend: string; ar: boolean }) {
 }
 
 function ConfidenceBar({ score }: { score: number }) {
-  const color = score >= 70 ? "bg-emerald-500" : score >= 45 ? "bg-amber-500" : "bg-rose-500";
+  const color = score >= 70 ? "bg-emerald-500" : score >= 45 ? "bg-warning" : "bg-rose-500";
   return (
     <div className="flex items-center gap-2">
       <div className="flex-1 h-1.5 bg-muted/50 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color} transition-all duration-700`} style={{ width: `${score}%` }} />
       </div>
-      <span className="text-[10px] tabular-nums text-muted-foreground/60 w-7">{score}%</span>
+      <span className="text-micro tabular-nums text-muted-foreground/60 w-7">{score}%</span>
     </div>
   );
 }
@@ -58,23 +58,23 @@ function ForecastCard({ item, ar, navigate }: { item: ForecastItem; ar: boolean;
       onClick={() => navigate(`/work/${item.id}`)}>
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors leading-snug mb-1">
+          <p className="text-body font-medium text-foreground group-hover:text-brand-ink transition-colors leading-snug mb-1">
             {ar ? item.titleAr : item.titleEn}
           </p>
           <div className="flex items-center gap-2 flex-wrap">
             <TrendBadge trend={item.trend} ar={ar} />
-            <span className="text-[10px] text-muted-foreground/60">{ar ? item.statusAr : item.statusEn}</span>
-            <span className="text-[10px] text-muted-foreground/40">· {item.assigneeEn}</span>
+            <span className="text-micro text-muted-foreground/60">{ar ? item.statusAr : item.statusEn}</span>
+            <span className="text-micro text-muted-foreground/40">· {item.assigneeEn}</span>
           </div>
         </div>
-        <ChevronRight size={13} strokeWidth={1.75} className="text-muted-foreground/20 group-hover:text-primary/50 transition-colors shrink-0" />
+        <ChevronRight size={13} strokeWidth={1.75} className="text-muted-foreground/20 group-hover:text-brand-ink/50 transition-colors shrink-0" />
       </div>
 
       {/* Progress */}
       <div className="mb-3">
         <div className="flex justify-between mb-1">
-          <p className="text-[9px] text-muted-foreground/50">{ar ? "التقدم الحالي" : "Current Progress"}</p>
-          <p className="text-[9px] text-muted-foreground/70 tabular-nums">{item.currentProgress}%</p>
+          <p className="text-micro text-muted-foreground/50">{ar ? "التقدم الحالي" : "Current Progress"}</p>
+          <p className="text-micro text-muted-foreground/70 tabular-nums">{item.currentProgress}%</p>
         </div>
         <ProgressBar score={item.currentProgress} />
       </div>
@@ -82,26 +82,26 @@ function ForecastCard({ item, ar, navigate }: { item: ForecastItem; ar: boolean;
       {/* Date info */}
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div>
-          <p className="text-[9px] text-muted-foreground/50 mb-0.5">{ar ? "الموعد المجدول" : "Scheduled Due"}</p>
-          <p className="text-[11px] font-medium text-foreground">{item.scheduledDateEn}</p>
+          <p className="text-micro text-muted-foreground/50 mb-0.5">{ar ? "الموعد المجدول" : "Scheduled Due"}</p>
+          <p className="text-micro font-medium text-foreground">{item.scheduledDateEn}</p>
         </div>
         <div>
-          <p className="text-[9px] text-muted-foreground/50 mb-0.5">{ar ? "الاكتمال المتوقع" : "Predicted Completion"}</p>
-          <p className={`text-[11px] font-medium ${item.daysOverSchedule > 0 ? "text-rose-600" : "text-emerald-600"}`}>
+          <p className="text-micro text-muted-foreground/50 mb-0.5">{ar ? "الاكتمال المتوقع" : "Predicted Completion"}</p>
+          <p className={`text-micro font-medium ${item.daysOverSchedule > 0 ? "text-rose-600" : "text-emerald-600"}`}>
             {item.predictedCompletionEn}
           </p>
         </div>
       </div>
 
       {item.daysOverSchedule > 0 && (
-        <p className="text-[10px] text-rose-600/80 mb-2.5">
+        <p className="text-micro text-rose-600/80 mb-2.5">
           {ar ? `${item.daysOverSchedule} أيام بعد الموعد` : `${item.daysOverSchedule} days past schedule`}
         </p>
       )}
 
       {/* Confidence */}
       <div>
-        <p className="text-[9px] text-muted-foreground/50 mb-1">{ar ? "ثقة التوقع" : "Forecast Confidence"}</p>
+        <p className="text-micro text-muted-foreground/50 mb-1">{ar ? "ثقة التوقع" : "Forecast Confidence"}</p>
         <ConfidenceBar score={item.confidenceScore} />
       </div>
     </div>
@@ -113,9 +113,9 @@ function ForecastCard({ item, ar, navigate }: { item: ForecastItem; ar: boolean;
 function DepNodeCard({ node, ar }: { node: DependencyNode; ar: boolean }) {
   const statusColors: Record<string, string> = {
     backlog: "bg-stone-100 text-stone-600",
-    planned: "bg-primary/8 text-primary",
-    in_progress: "bg-amber-100 text-amber-700",
-    review: "bg-violet-100 text-violet-700",
+    planned: "bg-primary/8 text-brand-ink",
+    in_progress: "bg-warning/15 text-warning",
+    review: "bg-chart-4/15 text-chart-4",
     done: "bg-emerald-100 text-emerald-700",
   };
 
@@ -129,33 +129,33 @@ function DepNodeCard({ node, ar }: { node: DependencyNode; ar: boolean }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             {isCritical && <div className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />}
-            <p className="text-[12.5px] font-medium text-foreground leading-snug truncate">{ar ? node.titleAr : node.titleEn}</p>
+            <p className="text-caption font-medium text-foreground leading-snug truncate">{ar ? node.titleAr : node.titleEn}</p>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${statusColors[node.status] || "bg-muted text-muted-foreground"}`}>
+            <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${statusColors[node.status] || "bg-muted text-muted-foreground"}`}>
               {ar ? node.statusAr : node.statusEn}
             </span>
-            <span className="text-[9px] text-muted-foreground/40 capitalize">{node.entityType}</span>
+            <span className="text-micro text-muted-foreground/40 capitalize">{node.entityType}</span>
           </div>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-[18px] font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{node.progress}%</p>
-          <p className="text-[9px] text-muted-foreground/40">{ar ? "تقدم" : "progress"}</p>
+          <p className="text-title font-medium text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{node.progress}%</p>
+          <p className="text-micro text-muted-foreground/40">{ar ? "تقدم" : "progress"}</p>
         </div>
       </div>
 
       {node.isBlocking.length > 0 && (
         <div className="mt-2">
-          <p className="text-[9px] text-muted-foreground/50 mb-1">{ar ? "تحجب:" : "Blocking:"}</p>
+          <p className="text-micro text-muted-foreground/50 mb-1">{ar ? "تحجب:" : "Blocking:"}</p>
           <div className="space-y-1">
             {node.isBlocking.slice(0, 2).map((b) => (
-              <div key={b.id} className="flex items-center gap-1.5 text-[10px] text-rose-600">
+              <div key={b.id} className="flex items-center gap-1.5 text-micro text-rose-600">
                 <ArrowRight size={9} strokeWidth={2} />
                 <span className="truncate">{ar ? b.titleAr : b.titleEn}</span>
               </div>
             ))}
             {node.isBlocking.length > 2 && (
-              <p className="text-[10px] text-muted-foreground/50">+{node.isBlocking.length - 2} more</p>
+              <p className="text-micro text-muted-foreground/50">+{node.isBlocking.length - 2} more</p>
             )}
           </div>
         </div>
@@ -163,10 +163,10 @@ function DepNodeCard({ node, ar }: { node: DependencyNode; ar: boolean }) {
 
       {node.blockedBy.length > 0 && (
         <div className="mt-2">
-          <p className="text-[9px] text-muted-foreground/50 mb-1">{ar ? "محجوب بواسطة:" : "Blocked by:"}</p>
+          <p className="text-micro text-muted-foreground/50 mb-1">{ar ? "محجوب بواسطة:" : "Blocked by:"}</p>
           <div className="space-y-1">
             {node.blockedBy.slice(0, 2).map((b) => (
-              <div key={b.id} className="flex items-center gap-1.5 text-[10px] text-amber-600">
+              <div key={b.id} className="flex items-center gap-1.5 text-micro text-warning">
                 <ArrowRight size={9} strokeWidth={2} className="rotate-180" />
                 <span className="truncate">{ar ? b.titleAr : b.titleEn}</span>
               </div>
@@ -224,21 +224,21 @@ export default function ForecastEngine() {
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
             <TrendingUp size={14} strokeWidth={1.75} className="text-blue-500" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "محرك التوقعات" : "Forecast Engine"}</p>
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "محرك التوقعات" : "Forecast Engine"}</p>
           </div>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "التوقعات وتبعيات المشاريع" : "Forecasts & Dependency Intelligence"}
           </h1>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { labelEn: "Avg Confidence", labelAr: "متوسط الثقة", value: `${avgConfidence}%`, color: avgConfidence >= 60 ? "text-emerald-600" : "text-amber-600" },
+              { labelEn: "Avg Confidence", labelAr: "متوسط الثقة", value: `${avgConfidence}%`, color: avgConfidence >= 60 ? "text-emerald-600" : "text-warning" },
               { labelEn: "At Risk", labelAr: "في خطر", value: trendCounts.at_risk, color: "text-rose-500" },
-              { labelEn: "Delayed", labelAr: "متأخر", value: trendCounts.delayed, color: "text-amber-600" },
-              { labelEn: "Critical Dependencies", labelAr: "تبعيات حرجة", value: criticalDeps, color: "text-violet-600" },
+              { labelEn: "Delayed", labelAr: "متأخر", value: trendCounts.delayed, color: "text-warning" },
+              { labelEn: "Critical Dependencies", labelAr: "تبعيات حرجة", value: criticalDeps, color: "text-chart-4" },
             ].map((m) => (
               <div key={m.labelEn} className="bg-background border border-border/40 rounded-xl px-4 py-3">
-                <p className="text-[9px] text-muted-foreground mb-1.5">{ar ? m.labelAr : m.labelEn}</p>
-                <p className={`text-[22px] font-medium tabular-nums leading-none ${m.color}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+                <p className="text-micro text-muted-foreground mb-1.5">{ar ? m.labelAr : m.labelEn}</p>
+                <p className={`text-heading font-medium tabular-nums leading-none ${m.color}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                   {m.value}
                 </p>
               </div>
@@ -258,7 +258,7 @@ export default function ForecastEngine() {
               const Icon = t.icon;
               return (
                 <button key={t.id} onClick={() => setTab(t.id)}
-                  className={`flex items-center gap-1.5 px-4 py-3.5 text-[12px] border-b-2 transition-all shrink-0 ${tab === t.id ? "border-primary text-primary font-medium" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+                  className={`flex items-center gap-1.5 px-4 py-3.5 text-caption border-b-2 transition-all shrink-0 ${tab === t.id ? "border-primary text-brand-ink font-medium" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                   <Icon size={13} strokeWidth={tab === t.id ? 2 : 1.75} />
                   {ar ? t.labelAr : t.labelEn}
                 </button>
@@ -269,7 +269,7 @@ export default function ForecastEngine() {
             <div className="flex items-center gap-1.5 flex-wrap">
               {(["all", "at_risk", "delayed", "on_track", "ahead"] as const).map((f) => (
                 <button key={f} onClick={() => setFilterTrend(f)}
-                  className={`text-[10px] px-2.5 py-1 rounded-full border transition-all ${filterTrend === f ? "bg-foreground text-background border-foreground" : "border-border/40 text-muted-foreground hover:text-foreground"}`}>
+                  className={`text-micro px-2.5 py-1 rounded-full border transition-all ${filterTrend === f ? "bg-foreground text-background border-foreground" : "border-border/40 text-muted-foreground hover:text-foreground"}`}>
                   {f === "all" ? (ar ? "الكل" : "All") : (ar ? TREND_STYLE[f]?.labelAr : TREND_STYLE[f]?.labelEn)} ({trendCounts[f]})
                 </button>
               ))}
@@ -284,7 +284,7 @@ export default function ForecastEngine() {
           filtered.length === 0 ? (
             <div className="flex flex-col items-center py-16">
               <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-400 mb-3" />
-              <p className="text-[14px] text-muted-foreground">{ar ? "جميع المشاريع مكتملة" : "All projects completed"}</p>
+              <p className="text-body-lg text-muted-foreground">{ar ? "جميع المشاريع مكتملة" : "All projects completed"}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -299,8 +299,8 @@ export default function ForecastEngine() {
           deps.length === 0 ? (
             <div className="flex flex-col items-center py-16">
               <Layers size={28} strokeWidth={1.5} className="text-muted-foreground/30 mb-3" />
-              <p className="text-[14px] text-muted-foreground">{ar ? "لا تبعيات مكتشفة" : "No dependencies detected"}</p>
-              <p className="text-[12px] text-muted-foreground/50 mt-1 text-center max-w-xs">
+              <p className="text-body-lg text-muted-foreground">{ar ? "لا تبعيات مكتشفة" : "No dependencies detected"}</p>
+              <p className="text-caption text-muted-foreground/50 mt-1 text-center max-w-xs">
                 {ar ? "أضف علاقات بين العناصر في صفحة الذاكرة لكشف التبعيات" : "Add relationships between items in the Memory page to reveal dependencies"}
               </p>
             </div>
@@ -310,8 +310,8 @@ export default function ForecastEngine() {
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-2 h-2 rounded-full bg-rose-500" />
-                    <h3 className="text-[13px] font-medium text-foreground">{ar ? "المسار الحرج" : "Critical Path"}</h3>
-                    <span className="text-[10px] bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-full">{deps.filter((d) => d.criticalPath).length}</span>
+                    <h3 className="text-body font-medium text-foreground">{ar ? "المسار الحرج" : "Critical Path"}</h3>
+                    <span className="text-micro bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-full">{deps.filter((d) => d.criticalPath).length}</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {deps.filter((d) => d.criticalPath).map((node) => (
@@ -323,7 +323,7 @@ export default function ForecastEngine() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <Network size={14} strokeWidth={1.75} className="text-muted-foreground/60" />
-                  <h3 className="text-[13px] font-medium text-foreground">{ar ? "جميع التبعيات" : "All Dependencies"}</h3>
+                  <h3 className="text-body font-medium text-foreground">{ar ? "جميع التبعيات" : "All Dependencies"}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {deps.filter((d) => !d.criticalPath).map((node) => (

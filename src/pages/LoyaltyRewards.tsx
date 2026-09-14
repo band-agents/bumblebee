@@ -37,9 +37,9 @@ interface RewardItem {
 
 const REWARD_TYPE_META: Record<RewardType, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   discount:      { en: "Discount",      ar: "خصم",         icon: Percent,     color: "text-emerald-600",  bg: "bg-emerald-50" },
-  free_product:  { en: "Free Product",  ar: "منتج مجاني",  icon: Package,     color: "text-violet-600",   bg: "bg-violet-50" },
+  free_product:  { en: "Free Product",  ar: "منتج مجاني",  icon: Package,     color: "text-chart-4",   bg: "bg-chart-4/10" },
   free_shipping: { en: "Free Shipping", ar: "شحن مجاني",   icon: Truck,       color: "text-blue-600",     bg: "bg-blue-50" },
-  experience:    { en: "Experience",    ar: "تجربة",       icon: Sparkles,    color: "text-amber-600",    bg: "bg-amber-50" },
+  experience:    { en: "Experience",    ar: "تجربة",       icon: Sparkles,    color: "text-warning",    bg: "bg-warning/10" },
   upgrade:       { en: "Tier Upgrade",  ar: "ترقية مستوى", icon: Crown,       color: "text-pink-600",     bg: "bg-pink-50" },
 };
 
@@ -118,8 +118,8 @@ function RewardModal({ reward, ar, onClose, onSave }: {
   const [minTier, setMinTier] = useState<LoyaltyTierSlug>(reward?.minTier || "bronze");
   const [stock, setStock] = useState(String(reward?.stock ?? ""));
 
-  const inputCls = "w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
-  const labelCls = "block text-[11px] font-medium text-muted-foreground mb-1.5";
+  const inputCls = "w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
+  const labelCls = "block text-micro font-medium text-muted-foreground mb-1.5";
 
   function handleSave() {
     if (!nameEn.trim() || !pointsCost) return;
@@ -143,7 +143,7 @@ function RewardModal({ reward, ar, onClose, onSave }: {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[520px] max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border/40 flex items-center justify-between sticky top-0 bg-background z-10">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {isEdit ? (ar ? "تعديل المكافأة" : "Edit Reward") : (ar ? "مكافأة جديدة" : "New Reward")}
           </h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={16} /></button>
@@ -159,7 +159,7 @@ function RewardModal({ reward, ar, onClose, onSave }: {
                 const Icon = meta.icon;
                 return (
                   <button key={t} onClick={() => setType(t)}
-                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-[10.5px] font-medium transition-all ${type === t ? "border-primary bg-primary/5 text-primary" : "border-border/60 bg-card text-muted-foreground hover:border-border"}`}>
+                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-micro font-medium transition-all ${type === t ? "border-primary bg-primary/5 text-brand-ink" : "border-border/60 bg-card text-muted-foreground hover:border-border"}`}>
                     <Icon size={11} />{ar ? meta.ar : meta.en}
                   </button>
                 );
@@ -171,7 +171,7 @@ function RewardModal({ reward, ar, onClose, onSave }: {
                 const Icon = meta.icon;
                 return (
                   <button key={t} onClick={() => setType(t)}
-                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-[10.5px] font-medium transition-all ${type === t ? "border-primary bg-primary/5 text-primary" : "border-border/60 bg-card text-muted-foreground hover:border-border"}`}>
+                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-micro font-medium transition-all ${type === t ? "border-primary bg-primary/5 text-brand-ink" : "border-border/60 bg-card text-muted-foreground hover:border-border"}`}>
                     <Icon size={11} />{ar ? meta.ar : meta.en}
                   </button>
                 );
@@ -237,7 +237,7 @@ function RewardModal({ reward, ar, onClose, onSave }: {
                 const tm = TIER_META[t];
                 return (
                   <button key={t} onClick={() => setMinTier(t)}
-                    className={`flex items-center justify-center gap-1 px-2 py-2 rounded-xl border text-[10px] font-medium transition-all ${minTier === t ? `border-2 ${tm.pill}` : "border-border/60 bg-card text-muted-foreground"}`}>
+                    className={`flex items-center justify-center gap-1 px-2 py-2 rounded-xl border text-micro font-medium transition-all ${minTier === t ? `border-2 ${tm.pill}` : "border-border/60 bg-card text-muted-foreground"}`}>
                     {ar ? tm.ar : tm.en}
                   </button>
                 );
@@ -247,11 +247,11 @@ function RewardModal({ reward, ar, onClose, onSave }: {
         </div>
 
         <div className="px-6 py-4 border-t border-border/40 flex justify-end gap-3 sticky bottom-0 bg-background">
-          <button onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          <button onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-caption text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
             {ar ? "إلغاء" : "Cancel"}
           </button>
           <button onClick={handleSave} disabled={!nameEn.trim() || !pointsCost}
-            className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity disabled:opacity-40">
+            className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity disabled:opacity-40">
             {isEdit ? (ar ? "حفظ" : "Save") : (ar ? "إنشاء" : "Create")}
           </button>
         </div>
@@ -322,7 +322,7 @@ export default function LoyaltyRewardsPage() {
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[960px] mx-auto">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
@@ -330,13 +330,13 @@ export default function LoyaltyRewardsPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "كتالوج المكافآت" : "Rewards Catalog"}
           </h1>
         </div>
         <button onClick={() => { setEditingReward(undefined); setShowModal(true); }}
-          className="inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium hover:opacity-90 transition-opacity">
+          className="inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-body font-medium hover:opacity-90 transition-opacity">
           <Plus size={14} />{ar ? "مكافأة جديدة" : "New Reward"}
         </button>
       </div>
@@ -344,19 +344,19 @@ export default function LoyaltyRewardsPage() {
       {/* Summary */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <Gift size={14} className="text-primary mb-2" />
-          <p className="text-[20px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{rewards.length}</p>
-          <p className="text-[10px] text-muted-foreground">{ar ? "إجمالي المكافآت" : "Total Rewards"}</p>
+          <Gift size={14} className="text-brand-ink mb-2" />
+          <p className="text-heading font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{rewards.length}</p>
+          <p className="text-micro text-muted-foreground">{ar ? "إجمالي المكافآت" : "Total Rewards"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
           <Star size={14} className="text-emerald-500 mb-2" />
-          <p className="text-[20px] font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{activeRewards}</p>
-          <p className="text-[10px] text-muted-foreground">{ar ? "نشطة" : "Active"}</p>
+          <p className="text-heading font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{activeRewards}</p>
+          <p className="text-micro text-muted-foreground">{ar ? "نشطة" : "Active"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <Tag size={14} className="text-violet-500 mb-2" />
-          <p className="text-[20px] font-medium tabular-nums text-violet-600" style={{ fontFamily: "var(--app-font-serif)" }}>{totalRedeemed}</p>
-          <p className="text-[10px] text-muted-foreground">{ar ? "مرات الاستبدال" : "Times Redeemed"}</p>
+          <Tag size={14} className="text-chart-4 mb-2" />
+          <p className="text-heading font-medium tabular-nums text-chart-4" style={{ fontFamily: "var(--app-font-serif)" }}>{totalRedeemed}</p>
+          <p className="text-micro text-muted-foreground">{ar ? "مرات الاستبدال" : "Times Redeemed"}</p>
         </div>
       </div>
 
@@ -366,16 +366,16 @@ export default function LoyaltyRewardsPage() {
           <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder={ar ? "بحث..." : "Search rewards..."}
-            className="w-full h-9 pl-8 pr-3 rounded-xl border border-border/60 bg-card text-[12px] focus:outline-none focus:ring-2 focus:ring-primary/20" />
+            className="w-full h-9 pl-8 pr-3 rounded-xl border border-border/60 bg-card text-caption focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
         </div>
         <select value={filterType} onChange={e => setFilterType(e.target.value)}
-          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption focus:outline-none focus:ring-2 focus:ring-brand-ink/20 cursor-pointer">
           <option value="all">{ar ? "كل الأنواع" : "All Types"}</option>
           {(Object.keys(REWARD_TYPE_META) as RewardType[]).map(t => (
             <option key={t} value={t}>{ar ? REWARD_TYPE_META[t].ar : REWARD_TYPE_META[t].en}</option>
           ))}
         </select>
-        <span className="text-[11px] text-muted-foreground ms-auto">{filtered.length} {ar ? "مكافأة" : "rewards"}</span>
+        <span className="text-micro text-muted-foreground ms-auto">{filtered.length} {ar ? "مكافأة" : "rewards"}</span>
       </div>
 
       {/* Rewards Grid */}
@@ -383,7 +383,7 @@ export default function LoyaltyRewardsPage() {
         {filtered.length === 0 ? (
           <div className="col-span-2 py-14 text-center border border-border/40 rounded-xl">
             <Gift size={22} className="mx-auto mb-3 text-muted-foreground/30" />
-            <p className="text-[13px] text-muted-foreground">{ar ? "لا توجد مكافآت" : "No rewards found"}</p>
+            <p className="text-body text-muted-foreground">{ar ? "لا توجد مكافآت" : "No rewards found"}</p>
           </div>
         ) : filtered.map(rw => {
           const tm = REWARD_TYPE_META[rw.type];
@@ -398,18 +398,18 @@ export default function LoyaltyRewardsPage() {
               {/* Header strip */}
               <div className={`px-5 py-3 ${tm.bg} flex items-center justify-between`}>
                 <div className="flex items-center gap-2">
-                  <span className="text-[20px]">{rw.imageEmoji}</span>
+                  <span className="text-heading">{rw.imageEmoji}</span>
                   <div>
-                    <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? rw.nameAr : rw.nameEn}
                     </h3>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${tm.bg} ${tm.color}`}>
+                      <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${tm.bg} ${tm.color}`}>
                         {ar ? tm.ar : tm.en}
                       </span>
                       <span className="flex items-center gap-1">
                         <span className={`w-1.5 h-1.5 rounded-full ${sm.dot}`} />
-                        <span className="text-[9px] text-muted-foreground">{ar ? sm.ar : sm.en}</span>
+                        <span className="text-micro text-muted-foreground">{ar ? sm.ar : sm.en}</span>
                       </span>
                     </div>
                   </div>
@@ -430,33 +430,33 @@ export default function LoyaltyRewardsPage() {
 
               {/* Body */}
               <div className="px-5 py-3.5">
-                <p className="text-[11px] text-muted-foreground mb-3 line-clamp-2">{ar ? rw.descAr : rw.descEn}</p>
+                <p className="text-micro text-muted-foreground mb-3 line-clamp-2">{ar ? rw.descAr : rw.descEn}</p>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div>
-                      <p className="text-[18px] font-medium text-primary tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtPts(rw.pointsCost)}</p>
-                      <p className="text-[9px] text-muted-foreground">{ar ? "نقطة" : "points"}</p>
+                      <p className="text-title font-medium text-brand-ink tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtPts(rw.pointsCost)}</p>
+                      <p className="text-micro text-muted-foreground">{ar ? "نقطة" : "points"}</p>
                     </div>
                     {rw.discountValue && (
                       <div className="text-center px-2 border-l border-border/30">
-                        <p className="text-[14px] font-medium text-emerald-600 tabular-nums">{fmtCurrency(rw.discountValue)}</p>
-                        <p className="text-[9px] text-muted-foreground">{ar ? "خصم" : "off"}</p>
+                        <p className="text-body-lg font-medium text-emerald-600 tabular-nums">{fmtCurrency(rw.discountValue)}</p>
+                        <p className="text-micro text-muted-foreground">{ar ? "خصم" : "off"}</p>
                       </div>
                     )}
                     {rw.discountPct && (
                       <div className="text-center px-2 border-l border-border/30">
-                        <p className="text-[14px] font-medium text-emerald-600 tabular-nums">{rw.discountPct}%</p>
-                        <p className="text-[9px] text-muted-foreground">{ar ? "خصم" : "off"}</p>
+                        <p className="text-body-lg font-medium text-emerald-600 tabular-nums">{rw.discountPct}%</p>
+                        <p className="text-micro text-muted-foreground">{ar ? "خصم" : "off"}</p>
                       </div>
                     )}
                   </div>
 
                   <div className="text-end">
                     <div className="flex items-center gap-2">
-                      <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${tierMeta.pill}`}>{ar ? tierMeta.ar : tierMeta.en}+</span>
+                      <span className={`text-micro font-semibold px-2 py-0.5 rounded-full ${tierMeta.pill}`}>{ar ? tierMeta.ar : tierMeta.en}+</span>
                     </div>
-                    <div className="flex items-center gap-2 mt-1 text-[9.5px] text-muted-foreground">
+                    <div className="flex items-center gap-2 mt-1 text-micro text-muted-foreground">
                       {rw.stock !== undefined && <span>{rw.stock} {ar ? "متبقي" : "left"}</span>}
                       <span>{rw.totalRedeemed} {ar ? "مستبدل" : "redeemed"}</span>
                     </div>

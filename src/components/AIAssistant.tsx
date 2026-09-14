@@ -9,6 +9,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, X, Sparkles, Bot, User, Loader2, ChevronDown } from "lucide-react";
+import { BuzzLauncher } from "./BuzzLauncher";
+import { Link, useLocation } from "wouter";
+import { resolveIntent, runTool, type ToolRow } from "../lib/buzz-tools";
 import { useLanguage } from "../context/LanguageContext";
 import { getSupabaseClient } from "../lib/supabase";
 
@@ -18,48 +21,51 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: number;
+  /** Rows returned by a tool — rendered as links, not prose. */
+  rows?: ToolRow[];
+  hint?: string;
 }
 
 // ─── Local knowledge fallback ────────────────────────────
 
-const THOTH_KB: Record<string, { en: string; ar: string }> = {
-  "what is thoth": {
-    en: "THOTH is a comprehensive business operating system named after the ancient Egyptian god of writing and accounting. It includes 34 modules covering sales, production, inventory, finance, CRM, Shopify sync, loyalty, HR, quality control, delivery, and executive analytics — all bilingual in Arabic and English.",
-    ar: "ثوث هو نظام تشغيل أعمال شامل سُمي تيمنا بالإله المصري القديم تحوت، إله الكتابة والحساب. يحتوي على 34 وحدة تشمل المبيعات والإنتاج والمخزن والمالية و إدارة علاقات العملاء والمزامنة مع شوبيفي وبرنامج الولاء والموارد البشرية ومراقبة الجودة والتسليم والتحليلات التنفيذية — بالعربية والإنجليزية.",
+const Bumblebee_KB: Record<string, { en: string; ar: string }> = {
+  "what is bumblebee": {
+    en: "Bumblebee is a comprehensive business operating system named after the ancient Egyptian god of writing and accounting. It includes 34 modules covering sales, production, inventory, finance, CRM, Shopify sync, loyalty, HR, quality control, delivery, and executive analytics — all bilingual in Arabic and English.",
+    ar: "بامبلبي هو نظام تشغيل أعمال شامل سُمي تيمنا بالإله المصري القديم تحوت، إله الكتابة والحساب. يحتوي على 34 وحدة تشمل المبيعات والإنتاج والمخزن والمالية و إدارة علاقات العملاء والمزامنة مع شوبيفي وبرنامج الولاء والموارد البشرية ومراقبة الجودة والتسليم والتحليلات التنفيذية — بالعربية والإنجليزية.",
   },
   "pricing": {
-    en: "THOTH has 4 plans:\n\n• **Apprentice** — Free forever, 1 user\n• **Scribe** — 900 EGP/mo + 299 EGP/user/mo (sales, inventory, production)\n• **Temple** — 4,999 EGP/mo + 499 EGP/user/mo (everything + Shopify, loyalty, HR, priority support)\n• **Dynasty** — Custom pricing (unlimited users, dedicated engineer, on-premise option)\n\nAll plans are bilingual (AR/EN). Start free, upgrade anytime.",
-    ar: "ثوث لديه 4 خطط:\n\n• **المتبرع** — مجاني للأبد، مستخدم واحد\n• **الكاتب** — 900 جنيه/شهر + 299 جنيه/مستخدم/شهر (مبيعات، مخزن، إنتاج)\n• **المعبد** — 4,999 جنيه/شهر + 499 جنيه/مستخدم/شهر (كل شيء + شوبيفي، ولاء، موارد بشرية، دعم أولوي)\n• **السلالة** — سعر مخصص (مستخدمون غير محدودين، مهندس مخصص)\n\nجميع الخطط ثنائية اللغة. ابدأ مجاناً وترقِ في أي وقت.",
+    en: "Bumblebee has 4 plans:\n\n• **Apprentice** — Free forever, 1 user\n• **Scribe** — 900 EGP/mo + 299 EGP/user/mo (sales, inventory, production)\n• **Temple** — 4,999 EGP/mo + 499 EGP/user/mo (everything + Shopify, loyalty, HR, priority support)\n• **Dynasty** — Custom pricing (unlimited users, dedicated engineer, on-premise option)\n\nAll plans are bilingual (AR/EN). Start free, upgrade anytime.",
+    ar: "بامبلبي لديه 4 خطط:\n\n• **المتبرع** — مجاني للأبد، مستخدم واحد\n• **الكاتب** — 900 جنيه/شهر + 299 جنيه/مستخدم/شهر (مبيعات، مخزن، إنتاج)\n• **المعبد** — 4,999 جنيه/شهر + 499 جنيه/مستخدم/شهر (كل شيء + شوبيفي، ولاء، موارد بشرية، دعم أولوي)\n• **السلالة** — سعر مخصص (مستخدمون غير محدودين، مهندس مخصص)\n\nجميع الخطط ثنائية اللغة. ابدأ مجاناً وترقِ في أي وقت.",
   },
   "how to create quotation": {
-    en: "To create a quotation in THOTH:\n\n1. Go to **Quotations** from the sidebar\n2. Click **New Quotation**\n3. Select the customer (organization)\n4. Add line items with products, dimensions, materials, and pricing\n5. THOTH auto-calculates totals\n6. Send the quotation directly from the system\n7. When accepted, convert it to a **Sales Order** with one click\n\nAll quotations are saved with full version history and can be exported as PDF.",
-    ar: "لإنشاء عرض سعر في ثوث:\n\n1. اذهب إلى **عروض الأسعار** من الشريط الجانبي\n2. اضغط **عرض سعر جديد**\n3. اختر العميل (المؤسسة)\n4. أضف البنود مع المنتجات والأبعاد والخامات والتسعير\n5. ثوث يحسب المجاميع تلقائياً\n6. أرسل عرض السعر مباشرة من النظام\n7. عند القبول، حوّله إلى **طلب بيع** بنقرة واحدة\n\nجميع عروض الأسعار محفوظة مع سجل إصدارات كامل وقابلة للتصدير كـ PDF.",
+    en: "To create a quotation in Bumblebee:\n\n1. Go to **Quotations** from the sidebar\n2. Click **New Quotation**\n3. Select the customer (organization)\n4. Add line items with products, dimensions, materials, and pricing\n5. Bumblebee auto-calculates totals\n6. Send the quotation directly from the system\n7. When accepted, convert it to a **Sales Order** with one click\n\nAll quotations are saved with full version history and can be exported as PDF.",
+    ar: "لإنشاء عرض سعر في بامبلبي:\n\n1. اذهب إلى **عروض الأسعار** من الشريط الجانبي\n2. اضغط **عرض سعر جديد**\n3. اختر العميل (المؤسسة)\n4. أضف البنود مع المنتجات والأبعاد والخامات والتسعير\n5. بامبلبي يحسب المجاميع تلقائياً\n6. أرسل عرض السعر مباشرة من النظام\n7. عند القبول، حوّله إلى **طلب بيع** بنقرة واحدة\n\nجميع عروض الأسعار محفوظة مع سجل إصدارات كامل وقابلة للتصدير كـ PDF.",
   },
   "production stages": {
-    en: "THOTH tracks production through 7 stages:\n\n1. **Cutting** — Cut lists from approved designs\n2. **Edge Banding** — Edge application\n3. **Drilling** — CNC and manual drilling\n4. **Assembly** — Putting pieces together\n5. **Finishing** — Surface treatment and coating\n6. **Quality Check** — 10-point bilingual checklist\n7. **Packing** — Final preparation for delivery\n\nEach stage has start/done controls, time tracking, station assignment, and priority levels. Progress is auto-calculated.",
+    en: "Bumblebee tracks production through 7 stages:\n\n1. **Cutting** — Cut lists from approved designs\n2. **Edge Banding** — Edge application\n3. **Drilling** — CNC and manual drilling\n4. **Assembly** — Putting pieces together\n5. **Finishing** — Surface treatment and coating\n6. **Quality Check** — 10-point bilingual checklist\n7. **Packing** — Final preparation for delivery\n\nEach stage has start/done controls, time tracking, station assignment, and priority levels. Progress is auto-calculated.",
     ar: "ثوت يتبع الإنتاج عبر 7 مراحل:\n\n1. **القص** — قوائم القص من التصاميم المعتمدة\n2. **الشريط الحدي** — تطبيق الأطراف\n3. **الثقب** — CNC والثقب اليدوي\n4. **التجميع** — تجميع القطع\n5. **التشطيب** — المعالجة السطحية والتغطية\n6. **فحص الجودة** — قائمة معايرة ثنائية اللغة من 10 نقاط\n7. **التعبئة** — التحضير النهائي للتسليم\n\nكل مرحلة لها أدوات بدء/انتهاء وتتبع الوقت وتحديد المحطة والأولويات.",
   },
   "shopify integration": {
-    en: "THOTH offers two-way Shopify sync:\n\n• **Products** — Sync product catalog with SKUs, prices, and images\n• **Orders** — Import Shopify orders as sales orders in THOTH\n• **Customers** — Sync customer data and contact info\n• **Stock Levels** — Match inventory by SKU, push updates nightly\n\nYou can choose per data type: one-way import, one-way export, two-way sync, or off. Setup takes about 5 minutes with no developer needed.",
-    ar: "ثوث يوفر مزامنة ثنائية مع شوبيفي:\n\n• **المنتجات** — مزامنة كتالوج المنتجات مع أكواد الأسعار والصور\n• **الطلبات** — استيراد طلبات شوبيفي كطلبات بيع في ثوث\n• **العملاء** — مزامنة بيانات العملاء ومعلومات الاتصال\n• **مستويات المخزون** — مطابقة المخزون بالرمز الشريطي، تحديث ليلي\n\nيمكنك الاختيار لكل نوع بيانات: استيراد أحادي، تصدير أحادي، مزامنة ثنائية، أو إيقاف. الإعداد يستغرق 5 دقائق.",
+    en: "Bumblebee offers two-way Shopify sync:\n\n• **Products** — Sync product catalog with SKUs, prices, and images\n• **Orders** — Import Shopify orders as sales orders in Bumblebee\n• **Customers** — Sync customer data and contact info\n• **Stock Levels** — Match inventory by SKU, push updates nightly\n\nYou can choose per data type: one-way import, one-way export, two-way sync, or off. Setup takes about 5 minutes with no developer needed.",
+    ar: "بامبلبي يوفر مزامنة ثنائية مع شوبيفي:\n\n• **المنتجات** — مزامنة كتالوج المنتجات مع أكواد الأسعار والصور\n• **الطلبات** — استيراد طلبات شوبيفي كطلبات بيع في بامبلبي\n• **العملاء** — مزامنة بيانات العملاء ومعلومات الاتصال\n• **مستويات المخزون** — مطابقة المخزون بالرمز الشريطي، تحديث ليلي\n\nيمكنك الاختيار لكل نوع بيانات: استيراد أحادي، تصدير أحادي، مزامنة ثنائية، أو إيقاف. الإعداد يستغرق 5 دقائق.",
   },
   "inventory abc analysis": {
-    en: "THOTH includes ABC analysis for inventory:\n\n• **A items** — High-value, low-quantity (tightest control)\n• **B items** — Medium value and quantity\n• **C items** — Low-value, high-quantity (simplest control)\n\nThis helps you focus management attention where it matters most. Combined with reorder alerts and depreciation tracking for assets.",
-    ar: "ثوث يشمل تحليل ABC للمخزون:\n\n• **المجموعة أ** — قيمة عالية، كمية منخفضة (تحكم أشد)\n• **المجموعة ب** — قيمة وكمية متوسطة\n• **المجموعة ج** — قيمة منخفضة، كمية عالية (تحكم أبسط)\n\nهذا يساعدك على تركيز الاهتمام حيث يهم أكثر. مع تنبي إعادة الطلب وتتبع الإهلاك للأصول.",
+    en: "Bumblebee includes ABC analysis for inventory:\n\n• **A items** — High-value, low-quantity (tightest control)\n• **B items** — Medium value and quantity\n• **C items** — Low-value, high-quantity (simplest control)\n\nThis helps you focus management attention where it matters most. Combined with reorder alerts and depreciation tracking for assets.",
+    ar: "بامبلبي يشمل تحليل ABC للمخزون:\n\n• **المجموعة أ** — قيمة عالية، كمية منخفضة (تحكم أشد)\n• **المجموعة ب** — قيمة وكمية متوسطة\n• **المجموعة ج** — قيمة منخفضة، كمية عالية (تحكم أبسط)\n\nهذا يساعدك على تركيز الاهتمام حيث يهم أكثر. مع تنبي إعادة الطلب وتتبع الإهلاك للأصول.",
   },
   "demo mode": {
-    en: "THOTH runs in **Demo Mode** when no Supabase credentials are configured. This gives you sample data to explore all 34 modules without any setup. To connect real data, add your Supabase URL and anon key to `.env.local`.\n\nIn demo mode, you can test: quotations, sales orders, production tracking, inventory, finance, CRM, and all intelligence features.",
-    ar: "ثوث يعمل في **وضع العرض التجريبي** عندما لا تكون بيانات اعتماد Supabase مكونة. هذا يمنحك بيانات نموذجية لاستكشاف جميع الوحدات الـ 34 دون إعداد. للاتصال ببيانات حقيقية، أضف رابط Supabase ومفتاح العميل إلى `.env.local`.\n\nفي الوضع التجريبي، يمكنك اختبار: عروض الأسعار، طلبات البيع، تتبع الإنتاج، المخزون، المالية، إدارة العلاقات، وجميع ميزات الذكاء.",
+    en: "Bumblebee runs in **Demo Mode** when no Supabase credentials are configured. This gives you sample data to explore all 34 modules without any setup. To connect real data, add your Supabase URL and anon key to `.env.local`.\n\nIn demo mode, you can test: quotations, sales orders, production tracking, inventory, finance, CRM, and all intelligence features.",
+    ar: "بامبلبي يعمل في **وضع العرض التجريبي** عندما لا تكون بيانات اعتماد Supabase مكونة. هذا يمنحك بيانات نموذجية لاستكشاف جميع الوحدات الـ 34 دون إعداد. للاتصال ببيانات حقيقية، أضف رابط Supabase ومفتاح العميل إلى `.env.local`.\n\nفي الوضع التجريبي، يمكنك اختبار: عروض الأسعار، طلبات البيع، تتبع الإنتاج، المخزون، المالية، إدارة العلاقات، وجميع ميزات الذكاء.",
   },
   "custom builds": {
-    en: "**Custom builds in one day** — that's our promise.\n\nTell us what your business does differently: a field, a workflow, a report, a whole module. Our engineers reshape THOTH around it and ship it to your workspace within one working day.\n\nTemple plans include one custom-build day every month. For anything beyond that, contact us at hello@thoth.app.",
-    ar: "**تخصيصات في يوم واحد** — هذه وعودتنا.\n\nأخبرنا بما يختلف في عملك: حقل، سير عمل، تقرير، وحدة كاملة. مهندسونا يعيدون تشكيل ثوث حوله ويسلمونه في مكتبك خلال يوم عمل واحد.\n\nخطط المعبد تشمل يوم تخصيص واحد كل شهر. لأي شيء أكثر من ذلك، تواصل معنا على hello@thoth.app.",
+    en: "**Custom builds in one day** — that's our promise.\n\nTell us what your business does differently: a field, a workflow, a report, a whole module. Our engineers reshape Bumblebee around it and ship it to your workspace within one working day.\n\nTemple plans include one custom-build day every month. For anything beyond that, contact us at hello@bumblebee.app.",
+    ar: "**تخصيصات في يوم واحد** — هذه وعودتنا.\n\nأخبرنا بما يختلف في عملك: حقل، سير عمل، تقرير، وحدة كاملة. مهندسونا يعيدون تشكيل بامبلبي حوله ويسلمونه في مكتبك خلال يوم عمل واحد.\n\nخطط المعبد تشمل يوم تخصيص واحد كل شهر. لأي شيء أكثر من ذلك، تواصل معنا على hello@bumblebee.app.",
   },
 };
 
 function getLocalResponse(msg: string, lang: string): string | null {
   const lower = msg.toLowerCase().trim();
-  for (const [key, val] of Object.entries(THOTH_KB)) {
+  for (const [key, val] of Object.entries(Bumblebee_KB)) {
     if (lower.includes(key) || lower.includes(key.replace(/\s+/g, ""))) {
       return lang === "ar" ? val.ar : val.en;
     }
@@ -80,15 +86,35 @@ function MessageBubble({ msg, isLatest }: { msg: Message; isLatest: boolean }) {
     >
       {!isUser && (
         <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-          <Bot size={14} className="text-primary" />
+          <Bot size={14} className="text-brand-ink" />
         </div>
       )}
-      <div className={`max-w-[82%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed ${
+      <div className={`max-w-[82%] rounded-2xl px-4 py-3 text-body leading-relaxed ${
         isUser
           ? "bg-primary text-primary-foreground rounded-br-md"
           : "bg-muted/50 text-foreground border border-border/40 rounded-bl-md"
       }`}>
         <div className="whitespace-pre-wrap break-words" dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.content) }} />
+        {msg.rows && msg.rows.length > 0 && (
+          <div className="mt-2.5 flex flex-col gap-1 border-t border-border/40 pt-2.5">
+            {msg.rows.map((r) =>
+              r.href ? (
+                <Link key={r.id} href={r.href}
+                  className="group flex items-baseline justify-between gap-3 rounded-lg px-2 py-1.5 -mx-1
+                             hover:bg-brand-wash transition-colors">
+                  <span className="text-body font-medium text-foreground group-hover:text-brand-ink truncate">{r.label}</span>
+                  {r.meta && <span className="text-micro text-muted-foreground shrink-0 tabular-nums">{r.meta}</span>}
+                </Link>
+              ) : (
+                <div key={r.id} className="flex items-baseline justify-between gap-3 px-2 py-1.5 -mx-1">
+                  <span className="text-body font-medium text-foreground truncate">{r.label}</span>
+                  {r.meta && <span className="text-micro text-muted-foreground shrink-0 tabular-nums">{r.meta}</span>}
+                </div>
+              )
+            )}
+          </div>
+        )}
+        {msg.hint && <p className="mt-2 text-micro text-muted-foreground">{msg.hint}</p>}
       </div>
       {isUser && (
         <div className="w-7 h-7 rounded-lg bg-foreground/10 flex items-center justify-center shrink-0 mt-0.5">
@@ -103,11 +129,11 @@ function formatMarkdown(text: string): string {
   return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code class="text-[12px] bg-muted/60 px-1.5 py-0.5 rounded">$1</code>')
-    .replace(/^### (.+)$/gm, '<span class="block text-[14px] font-semibold mt-3 mb-1">$1</span>')
-    .replace(/^## (.+)$/gm, '<span class="block text-[15px] font-semibold mt-4 mb-1.5">$1</span>')
-    .replace(/^- (.+)$/gm, '<span class="block pl-3 before:content-[\"•\"] before:mr-1.5 before:text-primary/60">$1</span>')
-    .replace(/^(\d+)\. (.+)$/gm, '<span class="block pl-3"><span class="text-primary font-medium mr-1.5">$1.</span>$2</span>');
+    .replace(/`(.+?)`/g, '<code class="text-caption bg-muted/60 px-1.5 py-0.5 rounded">$1</code>')
+    .replace(/^### (.+)$/gm, '<span class="block text-body-lg font-semibold mt-3 mb-1">$1</span>')
+    .replace(/^## (.+)$/gm, '<span class="block text-body-lg font-semibold mt-4 mb-1.5">$1</span>')
+    .replace(/^- (.+)$/gm, '<span class="block pl-3 before:content-[\"•\"] before:mr-1.5 before:text-brand-ink/60">$1</span>')
+    .replace(/^(\d+)\. (.+)$/gm, '<span class="block pl-3"><span class="text-brand-ink font-medium mr-1.5">$1.</span>$2</span>');
 }
 
 // ─── Typing Indicator ────────────────────────────────────
@@ -116,7 +142,7 @@ function TypingIndicator() {
   return (
     <div className="flex gap-2.5">
       <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-        <Bot size={14} className="text-primary" />
+        <Bot size={14} className="text-brand-ink" />
       </div>
       <div className="bg-muted/50 border border-border/40 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
         {[0, 1, 2].map((i) => (
@@ -135,6 +161,7 @@ function TypingIndicator() {
 // ─── Main Component ──────────────────────────────────────
 
 export default function AIAssistant() {
+  const [, navigate] = useLocation();
   const { lang } = useLanguage();
   const ar = lang === "ar";
   const [isOpen, setIsOpen] = useState(false);
@@ -163,8 +190,8 @@ export default function AIAssistant() {
       setMessages([{
         role: "assistant",
         content: ar
-          ? "أنا ThothAI، مساعدك الذكي في ثوث. اسألني عن أي شيء — الميزات، التسعير، كيفية استخدام النظام، أو تحليل بيانات أعمالك. كيف أقدر أساعدك؟"
-          : "I'm ThothAI, your intelligent assistant in THOTH. Ask me anything — features, pricing, how to use the system, or analyze your business data. How can I help you?",
+          ? "أنا باز، مساعدك الذكي في بامبلبي. اسألني عن أي شيء — الميزات، التسعير، كيفية استخدام النظام، أو تحليل بيانات أعمالك. كيف أقدر أساعدك؟"
+          : "I'm Buzz, your intelligent assistant in Bumblebee. Ask me anything — features, pricing, how to use the system, or analyze your business data. How can I help you?",
         timestamp: Date.now(),
       }]);
     }
@@ -178,6 +205,27 @@ export default function AIAssistant() {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
+
+    // ── Tools first ────────────────────────────────────────
+    // Lookups are answered from the live data layer before any model is
+    // consulted: instant, free, offline-capable, and — the reason that
+    // matters most in an ERP — the numbers cannot be hallucinated.
+    const intent = resolveIntent(text);
+    if (intent) {
+      const result = await runTool(intent.name, intent.args);
+      setMessages((prev) => [...prev, {
+        role: "assistant",
+        content: result.summary,
+        rows: result.rows,
+        hint: result.empty,
+        timestamp: Date.now(),
+      }]);
+      setIsLoading(false);
+      if (result.navigateTo && intent.name === "navigate_to") {
+        setTimeout(() => navigate(result.navigateTo!), 350);
+      }
+      return;
+    }
 
     // Try local knowledge first
     const localResponse = getLocalResponse(text, lang);
@@ -196,11 +244,12 @@ export default function AIAssistant() {
     // Try OpenAI via Edge Function
     const sb = getSupabaseClient();
     if (!sb) {
+      // No model configured. Buzz still works for anything the tools cover.
       setMessages((prev) => [...prev, {
         role: "assistant",
         content: ar
-          ? "الاتصال بـ AI غير متاح حالياً. يرجى التأكد من تكوين Supabase. في هذه الأثناء، جرب أسئلة حول: ميزات THOTH، التسعير، إنشاء عروض الأسعار، مراحل الإنتاج، أو مزامنة شوبيفي."
-          : "AI connection is not available right now. Please ensure Supabase is configured. In the meantime, try asking about: THOTH features, pricing, creating quotations, production stages, or Shopify sync.",
+          ? "لا يوجد نموذج لغوي مُهيأ، لكن يمكنني الإجابة من بياناتك مباشرة. جرّب: الفواتير المتأخرة، العملاء المعرضون للمغادرة، ملخص المالية، أو افتح الرواتب."
+          : "No language model is configured, but I can still answer straight from your data. Try: **overdue invoices**, **customers at risk**, **finance summary**, **how many employees**, or **open payroll**.",
         timestamp: Date.now(),
       }]);
       setIsLoading(false);
@@ -360,28 +409,8 @@ export default function AIAssistant() {
 
   return (
     <>
-      {/* ── Floating Button ────────────────────────────── */}
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-2xl bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
-        whileHover={{ scale: 1.05, y: -2 }}
-        whileTap={{ scale: 0.95 }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <X size={22} />
-            </motion.div>
-          ) : (
-            <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <Sparkles size={22} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
+      {/* ── Floating Button: Buzz ─────────────────────── */}
+      <BuzzLauncher isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} ar={ar} />
 
       {/* ── Chat Panel ─────────────────────────────────── */}
       <AnimatePresence>
@@ -397,16 +426,16 @@ export default function AIAssistant() {
             <div className="border-b border-border/40 px-5 py-3.5 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Sparkles size={15} className="text-primary" />
+                  <Sparkles size={15} className="text-brand-ink" />
                 </div>
                 <div>
-                  <p className="text-[13px] font-medium text-foreground leading-none">ThothAI</p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-0.5">{ar ? "مساعد ذكي" : "Intelligent assistant"}</p>
+                  <p className="text-body font-medium text-foreground leading-none">Buzz</p>
+                  <p className="text-micro text-muted-foreground/60 mt-0.5">{ar ? "مساعد ذكي" : "Intelligent assistant"}</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] text-emerald-600">{ar ? "متصل" : "Online"}</span>
+                <span className="text-micro text-emerald-600">{ar ? "متصل" : "Online"}</span>
               </div>
             </div>
 
@@ -428,12 +457,12 @@ export default function AIAssistant() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <p className="text-[10px] text-muted-foreground/50 text-center">{ar ? "اقتراحات" : "Suggested"}</p>
+                  <p className="text-micro text-muted-foreground/50 text-center">{ar ? "اقتراحات" : "Suggested"}</p>
                   {suggestedQuestions.map((q) => (
                     <button
                       key={q}
                       onClick={() => { setInput(q); }}
-                      className="w-full text-left text-[12px] text-muted-foreground px-3 py-2 rounded-lg border border-border/40 hover:bg-muted/30 hover:text-foreground transition-colors"
+                      className="w-full text-left text-caption text-muted-foreground px-3 py-2 rounded-lg border border-border/40 hover:bg-muted/30 hover:text-foreground transition-colors"
                     >
                       {q}
                     </button>
@@ -451,8 +480,8 @@ export default function AIAssistant() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={ar ? "اسأل ثوث…" : "Ask ThothAI…"}
-                  className="flex-1 h-10 rounded-xl bg-muted/30 border border-border/40 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/40"
+                  placeholder={ar ? "اسأل باز…" : "Ask Buzz…"}
+                  className="flex-1 h-10 rounded-xl bg-muted/30 border border-border/40 px-4 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/40"
                   disabled={isLoading}
                 />
                 <motion.button
@@ -469,8 +498,8 @@ export default function AIAssistant() {
                   )}
                 </motion.button>
               </div>
-              <p className="text-[9px] text-muted-foreground/40 text-center mt-2">
-                {ar ? "مدعوم oleh THOTH · بياناتك آمنة" : "Powered by THOTH · Your data stays private"}
+              <p className="text-micro text-muted-foreground/40 text-center mt-2">
+                {ar ? "مدعوم oleh Bumblebee · بياناتك آمنة" : "Powered by Bumblebee · Your data stays private"}
               </p>
             </div>
           </motion.div>

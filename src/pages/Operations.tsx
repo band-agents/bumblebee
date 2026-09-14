@@ -35,7 +35,7 @@ const PRIORITY_LABELS: Record<string, { en: string; ar: string; color: string }>
   critical: { en: "Critical", ar: "حرجة", color: "bg-red-100 text-red-700" },
   urgent: { en: "Urgent", ar: "عاجلة", color: "bg-rose-100 text-rose-600" },
   high: { en: "High", ar: "عالية", color: "bg-orange-100 text-orange-600" },
-  medium: { en: "Medium", ar: "متوسطة", color: "bg-amber-100 text-amber-700" },
+  medium: { en: "Medium", ar: "متوسطة", color: "bg-warning/15 text-warning" },
   low: { en: "Low", ar: "منخفضة", color: "bg-slate-100 text-slate-500" },
 };
 
@@ -123,12 +123,12 @@ export default function Operations() {
       <div className="min-h-full py-8 px-7 md:px-10 max-w-[960px] mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-2.5 mb-3">
-            <BarChart3 size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">
+            <BarChart3 size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">
               {ar ? "العمليات" : "Operations"}
             </p>
           </div>
-          <h1 className="text-[28px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "لوحة العمليات" : "Operations Dashboard"}
           </h1>
         </div>
@@ -137,10 +137,10 @@ export default function Operations() {
             <Briefcase size={24} className="text-muted-foreground/40" />
           </div>
           <div className="text-center max-w-[400px]">
-            <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "مفيش شغل لسه" : "No work items yet"}
             </p>
-            <p className="text-[13px] text-muted-foreground leading-relaxed">
+            <p className="text-body text-muted-foreground leading-relaxed">
               {ar
                 ? "أنشئ أول مهمة أو مشروع عشان تبدأ تتابع شغلك. ممكن كمان تستورد بياناتك من ملف CSV."
                 : "Create your first task or project to start tracking your operations. You can also import data from a CSV file."}
@@ -148,11 +148,11 @@ export default function Operations() {
           </div>
           <div className="flex gap-3">
             <button onClick={() => navigate("/work")}
-              className="flex items-center gap-2 h-10 px-5 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity">
+              className="flex items-center gap-2 h-10 px-5 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity">
               <Plus size={14} /> {ar ? "أنشئ مهمة" : "Create Work Item"}
             </button>
             <button onClick={() => navigate("/data")}
-              className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+              className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
               {ar ? "استورد بيانات" : "Import Data"}
             </button>
           </div>
@@ -167,12 +167,12 @@ export default function Operations() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <BarChart3 size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">
+            <BarChart3 size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">
               {ar ? "العمليات" : "Operations"}
             </p>
           </div>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "نظرة تشغيلية" : "Operations Overview"}
           </h1>
 
@@ -180,17 +180,17 @@ export default function Operations() {
             {[
               { icon: Layers, value: open.length, label: ar ? "مفتوح" : "Open", color: "text-slate-600" },
               { icon: CircleDot, value: inProgress.length, label: ar ? "شغال عليها" : "In Progress", color: "text-blue-600" },
-              { icon: Timer, value: inReview.length, label: ar ? "مراجعة" : "In Review", color: "text-violet-600" },
+              { icon: Timer, value: inReview.length, label: ar ? "مراجعة" : "In Review", color: "text-chart-4" },
               { icon: AlertTriangle, value: overdue.length, label: ar ? "متأخرة" : "Overdue", color: overdue.length > 0 ? "text-rose-500" : "text-emerald-600" },
               { icon: CheckCircle2, value: completedWeek.length, label: ar ? "خلصت الأسبوع ده" : "Done This Week", color: "text-emerald-600" },
-              { icon: Target, value: blocked.length, label: ar ? "متوقفة" : "Blocked", color: blocked.length > 0 ? "text-amber-600" : "text-slate-400" },
+              { icon: Target, value: blocked.length, label: ar ? "متوقفة" : "Blocked", color: blocked.length > 0 ? "text-warning" : "text-slate-400" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <m.icon size={14} strokeWidth={1.75} className={m.color + " mb-2"} />
-                <p className="text-[20px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+                <p className="text-heading font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                   {m.value}
                 </p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -209,7 +209,7 @@ export default function Operations() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={14} className="text-rose-500" />
-                  <h2 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {ar ? "متأخرة" : "Overdue"} <span className="text-rose-500 ml-1">{overdue.length}</span>
                   </h2>
                 </div>
@@ -225,9 +225,9 @@ export default function Operations() {
             {dueToday.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <Clock size={14} className="text-amber-500" />
-                  <h2 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-                    {ar ? "مستحقة النهاردة" : "Due Today"} <span className="text-amber-500 ml-1">{dueToday.length}</span>
+                  <Clock size={14} className="text-warning" />
+                  <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    {ar ? "مستحقة النهاردة" : "Due Today"} <span className="text-warning ml-1">{dueToday.length}</span>
                   </h2>
                 </div>
                 <div className="space-y-2">
@@ -244,11 +244,11 @@ export default function Operations() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <CircleDot size={14} className="text-blue-500" />
-                    <h2 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? "شغال عليها" : "In Progress"} <span className="text-blue-500 ml-1">{inProgress.length}</span>
                     </h2>
                   </div>
-                  <button onClick={() => navigate("/work")} className="text-[11px] text-primary hover:opacity-70 flex items-center gap-1">
+                  <button onClick={() => navigate("/work")} className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1">
                     {ar ? "شوف الكل" : "View all"} <ArrowRight size={11} />
                   </button>
                 </div>
@@ -265,7 +265,7 @@ export default function Operations() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <CheckCircle2 size={14} className="text-emerald-500" />
-                  <h2 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {ar ? "خلصت الأسبوع ده" : "Completed This Week"} <span className="text-emerald-500 ml-1">{completedWeek.length}</span>
                   </h2>
                 </div>
@@ -283,30 +283,30 @@ export default function Operations() {
 
             {/* By type */}
             <div className="border border-border/40 rounded-xl p-4 bg-background">
-              <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "حسب النوع" : "By Type"}</p>
+              <p className="text-micro font-medium text-foreground mb-3">{ar ? "حسب النوع" : "By Type"}</p>
               {byType.map(([type, count]) => {
                 const lbl = TYPE_LABELS[type] ?? { en: type, ar: type };
                 return (
                   <div key={type} className="flex items-center justify-between py-1.5">
-                    <span className="text-[12px] text-muted-foreground">{ar ? lbl.ar : lbl.en}</span>
-                    <span className="text-[12px] font-medium tabular-nums">{count}</span>
+                    <span className="text-caption text-muted-foreground">{ar ? lbl.ar : lbl.en}</span>
+                    <span className="text-caption font-medium tabular-nums">{count}</span>
                   </div>
                 );
               })}
-              {byType.length === 0 && <p className="text-[11px] text-muted-foreground/50">{ar ? "لا توجد بيانات" : "No data"}</p>}
+              {byType.length === 0 && <p className="text-micro text-muted-foreground/50">{ar ? "لا توجد بيانات" : "No data"}</p>}
             </div>
 
             {/* By priority */}
             <div className="border border-border/40 rounded-xl p-4 bg-background">
-              <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "حسب الأولوية" : "By Priority"}</p>
+              <p className="text-micro font-medium text-foreground mb-3">{ar ? "حسب الأولوية" : "By Priority"}</p>
               {byPriority.map(([prio, count]) => {
                 const lbl = PRIORITY_LABELS[prio] ?? { en: prio, ar: prio, color: "bg-muted text-muted-foreground" };
                 return (
                   <div key={prio} className="flex items-center justify-between py-1.5">
-                    <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full ${lbl.color}`}>
+                    <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${lbl.color}`}>
                       {ar ? lbl.ar : lbl.en}
                     </span>
-                    <span className="text-[12px] font-medium tabular-nums">{count}</span>
+                    <span className="text-caption font-medium tabular-nums">{count}</span>
                   </div>
                 );
               })}
@@ -314,15 +314,15 @@ export default function Operations() {
 
             {/* Quick nav */}
             <div className="border border-border/40 rounded-xl p-4 bg-background">
-              <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "إجراءات سريعة" : "Quick Actions"}</p>
+              <p className="text-micro font-medium text-foreground mb-3">{ar ? "إجراءات سريعة" : "Quick Actions"}</p>
               <div className="space-y-2">
                 <button onClick={() => navigate("/work")} className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/40 hover:bg-muted/20 transition-colors text-left group">
-                  <Briefcase size={13} className="text-primary shrink-0" />
-                  <span className="text-[11.5px] font-medium text-foreground group-hover:text-primary">{ar ? "كل المهام" : "All Work Items"}</span>
+                  <Briefcase size={13} className="text-brand-ink shrink-0" />
+                  <span className="text-micro font-medium text-foreground group-hover:text-brand-ink">{ar ? "كل المهام" : "All Work Items"}</span>
                 </button>
                 <button onClick={() => navigate("/data")} className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/40 hover:bg-muted/20 transition-colors text-left group">
-                  <TrendingUp size={13} className="text-primary shrink-0" />
-                  <span className="text-[11.5px] font-medium text-foreground group-hover:text-primary">{ar ? "إدارة البيانات" : "Data Management"}</span>
+                  <TrendingUp size={13} className="text-brand-ink shrink-0" />
+                  <span className="text-micro font-medium text-foreground group-hover:text-brand-ink">{ar ? "إدارة البيانات" : "Data Management"}</span>
                 </button>
               </div>
             </div>
@@ -341,7 +341,7 @@ function WorkRow({ item, ar, highlight }: { item: WorkItem; ar: boolean; highlig
   const status = STATUS_LABELS[item.status] ?? { en: item.status, ar: item.status };
 
   const borderCls = highlight === "rose" ? "border-rose-200/50 bg-rose-50/20"
-    : highlight === "amber" ? "border-amber-200/50 bg-amber-50/20"
+    : highlight === "amber" ? "border-warning/30 bg-warning/10"
     : highlight === "emerald" ? "border-emerald-200/50 bg-emerald-50/20"
     : "border-border/40 bg-background";
 
@@ -349,17 +349,17 @@ function WorkRow({ item, ar, highlight }: { item: WorkItem; ar: boolean; highlig
     <div className={`flex items-center gap-4 px-4 py-3.5 rounded-xl border ${borderCls} hover:shadow-sm transition-all`}>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium capitalize">
+          <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium capitalize">
             {ar ? type.ar : type.en}
           </span>
-          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${prio.color}`}>
+          <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${prio.color}`}>
             {ar ? prio.ar : prio.en}
           </span>
         </div>
-        <p className="text-[13px] font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <p className="text-body font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? (item.title_ar ?? item.title_en) : item.title_en}
         </p>
-        <div className="flex items-center gap-3 mt-1 text-[10.5px] text-muted-foreground">
+        <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
           <span>{ar ? status.ar : status.en}</span>
           {item.due_date && (
             <>

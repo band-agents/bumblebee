@@ -1,5 +1,5 @@
 /**
- * THOTH Sprint 22 — Autonomous Intelligence & Operating System Layer
+ * Bumblebee Sprint 22 — Autonomous Intelligence & Operating System Layer
  *
  * All engines are deterministic pure functions derived from real system data.
  * No placeholder intelligence. No AI API calls.

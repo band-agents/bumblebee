@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH ERP — Quotations Foundation Migration
+-- Bumblebee ERP — Quotations Foundation Migration
 -- ============================================================
 -- This migration is OPTIONAL. The quotations module currently
 -- stores data in the work_items table (type = 'quotation' or

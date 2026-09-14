@@ -41,8 +41,8 @@ type ProdOrder = Database["public"]["Tables"]["production_orders"]["Row"];
 
 // ─── Helpers ─────────────────────────────────────────────
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium px-3.5 py-1.5 hover:opacity-90 transition-opacity";
-const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-[11px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-caption font-medium px-3.5 py-1.5 hover:opacity-90 transition-opacity";
+const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-micro font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
 
 function initials(name: string) { return name.split(" ").filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase(); }
 function fmt(n: number) { return n.toLocaleString("en", { maximumFractionDigits: 0 }); }
@@ -72,15 +72,15 @@ function EditModal({ org, ar, onClose, onSave }: { org: Org; ar: boolean; onClos
   const [address, setAddress] = useState((org.metadata as any)?.address || "");
   const [website, setWebsite] = useState((org.metadata as any)?.website || "");
 
-  const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-  const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+  const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+  const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[500px]" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border/40 flex items-center justify-between">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "تعديل بيانات العميل" : "Edit Customer"}
           </h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={16} /></button>
@@ -124,9 +124,9 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
     return (
       <div className="py-14 text-center border border-dashed border-border/40 rounded-xl">
         <Gift size={22} className="mx-auto mb-3 text-muted-foreground/30" />
-        <p className="text-[13px] font-medium text-muted-foreground mb-1">{ar ? "لا يوجد عضوية ولاء" : "No Loyalty Membership"}</p>
-        <p className="text-[11px] text-muted-foreground/60 mb-4">{ar ? "هذا العميل غير مسجل في برنامج الولاء" : "This customer is not enrolled in the loyalty program"}</p>
-        <button onClick={() => navigate("/loyalty/lookup")} className="inline-flex items-center gap-1.5 h-8 px-4 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity">
+        <p className="text-body font-medium text-muted-foreground mb-1">{ar ? "لا يوجد عضوية ولاء" : "No Loyalty Membership"}</p>
+        <p className="text-micro text-muted-foreground/60 mb-4">{ar ? "هذا العميل غير مسجل في برنامج الولاء" : "This customer is not enrolled in the loyalty program"}</p>
+        <button onClick={() => navigate("/loyalty/lookup")} className="inline-flex items-center gap-1.5 h-8 px-4 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity">
           <Plus size={13} />{ar ? "تسجيل في الولاء" : "Enroll in Loyalty"}
         </button>
       </div>
@@ -147,27 +147,27 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
               <div className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[13px] font-semibold text-white" style={{ background: member.avatarColor }}>
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-body font-semibold text-white" style={{ background: member.avatarColor }}>
                       {member.nameEn.split(" ").map(w => w[0]).join("").toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? member.nameAr : member.nameEn}</p>
-                      <p className="text-[10.5px] text-muted-foreground">{member.memberNumber}</p>
+                      <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? member.nameAr : member.nameEn}</p>
+                      <p className="text-micro text-muted-foreground">{member.memberNumber}</p>
                     </div>
                   </div>
-                  <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${tier.pill}`}>{ar ? tier.ar : tier.en}</span>
+                  <span className={`text-micro font-semibold px-2.5 py-1 rounded-full ${tier.pill}`}>{ar ? tier.ar : tier.en}</span>
                 </div>
 
                 {/* Points */}
                 <div className="flex items-baseline gap-1.5 mb-3">
-                  <span className="text-[32px] font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtPts(member.currentPoints)}</span>
-                  <span className="text-[11px] text-muted-foreground">{ar ? "نقطة" : "pts"}</span>
+                  <span className="text-display font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtPts(member.currentPoints)}</span>
+                  <span className="text-micro text-muted-foreground">{ar ? "نقطة" : "pts"}</span>
                 </div>
 
                 {/* Tier Progress */}
                 {progress.next && (
                   <div className="mb-3">
-                    <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
+                    <div className="flex justify-between text-micro text-muted-foreground mb-1">
                       <span>{ar ? tier.ar : tier.en}</span>
                       <span>{ar ? TIER_META[progress.next].ar : TIER_META[progress.next].en} — {fmtPts(progress.remaining)} {ar ? "متبقي" : "remaining"}</span>
                     </div>
@@ -186,8 +186,8 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
                     { v: `${fmt(member.totalSpend)}`, l: ar ? "إنفاق" : "Spend" },
                   ].map((s, i) => (
                     <div key={i} className="text-center pt-2">
-                      <p className="text-[14px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{s.v}</p>
-                      <p className="text-[9.5px] text-muted-foreground mt-0.5">{s.l}</p>
+                      <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{s.v}</p>
+                      <p className="text-micro text-muted-foreground mt-0.5">{s.l}</p>
                     </div>
                   ))}
                 </div>
@@ -198,8 +198,8 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
             {memberTx.length > 0 && (
               <div className="border border-border/40 rounded-xl overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-border/30">
-                  <p className="text-[11px] font-semibold text-muted-foreground tracking-[0.06em] uppercase">{ar ? "آخر المعاملات" : "Recent Transactions"}</p>
-                  <button onClick={() => navigate(`/loyalty/members/${member.id}`)} className="text-[10.5px] text-primary hover:underline">{ar ? "عرض الكل" : "View all"}</button>
+                  <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase">{ar ? "آخر المعاملات" : "Recent Transactions"}</p>
+                  <button onClick={() => navigate(`/loyalty/members/${member.id}`)} className="text-micro text-brand-ink hover:underline">{ar ? "عرض الكل" : "View all"}</button>
                 </div>
                 <div className="divide-y divide-border/30">
                   {memberTx.map(tx => {
@@ -209,10 +209,10 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
                       <div key={tx.id} className="flex items-center gap-3 px-4 py-2.5">
                         <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${txMeta.dot}`} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[12px]">{ar ? txMeta.ar : txMeta.en}{tx.orderId ? ` · ${tx.orderId}` : ""}</p>
-                          <p className="text-[10px] text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</p>
+                          <p className="text-caption">{ar ? txMeta.ar : txMeta.en}{tx.orderId ? ` · ${tx.orderId}` : ""}</p>
+                          <p className="text-micro text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</p>
                         </div>
-                        <span className={`text-[12px] font-medium tabular-nums ${isPositive ? "text-emerald-600" : "text-rose-500"}`}>
+                        <span className={`text-caption font-medium tabular-nums ${isPositive ? "text-emerald-600" : "text-rose-500"}`}>
                           {txMeta.sign}{fmtPts(Math.abs(tx.points))}
                         </span>
                       </div>
@@ -224,10 +224,10 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
 
             {/* Actions */}
             <div className="flex gap-2">
-              <button onClick={() => navigate(`/loyalty/members/${member.id}`)} className="flex-1 h-9 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+              <button onClick={() => navigate(`/loyalty/members/${member.id}`)} className="flex-1 h-9 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 {ar ? "صفحة العضوية" : "Full Profile"}
               </button>
-              <button onClick={() => navigate("/loyalty/lookup")} className="flex-1 h-9 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity">
+              <button onClick={() => navigate("/loyalty/lookup")} className="flex-1 h-9 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity">
                 {ar ? "بحث سريع" : "Staff Lookup"}
               </button>
             </div>
@@ -330,8 +330,8 @@ export default function Customer360() {
     return (
       <div className="min-h-full flex flex-col items-center justify-center gap-4 p-8">
         <Building2 size={24} className="text-muted-foreground/40" />
-        <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "العميل مش موجود" : "Customer not found"}</p>
-        <button onClick={() => navigate("/organizations")} className="flex items-center gap-1.5 text-[12px] text-primary hover:underline"><ArrowLeft size={12} />{ar ? "العودة" : "Back"}</button>
+        <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "العميل مش موجود" : "Customer not found"}</p>
+        <button onClick={() => navigate("/organizations")} className="flex items-center gap-1.5 text-caption text-brand-ink hover:underline"><ArrowLeft size={12} />{ar ? "العودة" : "Back"}</button>
       </div>
     );
   }
@@ -342,7 +342,7 @@ export default function Customer360() {
     <div className="min-h-full">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
@@ -362,20 +362,20 @@ export default function Customer360() {
 
         <div className="px-8 md:px-10 pt-4 pb-6 max-w-[960px]">
           <div className="flex items-start gap-5 mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-[16px] font-semibold text-primary shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-title font-semibold text-brand-ink shrink-0">
               {initials(ar ? (org.name_ar || org.name_en) : org.name_en)}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                {isVendor && <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-700 font-medium">{ar ? "مورّد" : "Vendor"}</span>}
+                {isVendor && <span className="text-micro px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-700 font-medium">{ar ? "مورّد" : "Vendor"}</span>}
                 {(org.tags ?? []).filter(t => t !== "vendor").map(t => (
-                  <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-primary/8 text-primary font-medium">{t}</span>
+                  <span key={t} className="text-micro px-2 py-0.5 rounded-full bg-primary/8 text-brand-ink font-medium">{t}</span>
                 ))}
               </div>
-              <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+              <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
                 {ar ? (org.name_ar || org.name_en) : org.name_en}
               </h1>
-              <div className="flex items-center gap-3 mt-1.5 text-[12px] text-muted-foreground flex-wrap">
+              <div className="flex items-center gap-3 mt-1.5 text-caption text-muted-foreground flex-wrap">
                 {org.phone && <span className="flex items-center gap-1"><Phone size={10} />{org.phone}</span>}
                 {org.email && <span className="flex items-center gap-1"><Mail size={10} />{org.email}</span>}
                 {meta.address && <span className="flex items-center gap-1"><MapPin size={10} />{meta.address}</span>}
@@ -395,16 +395,16 @@ export default function Customer360() {
           {/* Quick stats */}
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
             {[
-              { value: totalOrders, label: ar ? "إجمالي الطلبات" : "Total Orders", color: "text-primary" },
-              { value: activeOrders, label: ar ? "طلبات نشطة" : "Active", color: "text-violet-600" },
+              { value: totalOrders, label: ar ? "إجمالي الطلبات" : "Total Orders", color: "text-brand-ink" },
+              { value: activeOrders, label: ar ? "طلبات نشطة" : "Active", color: "text-chart-4" },
               { value: fmt(totalRevenue), label: ar ? "الإيراد" : "Revenue", color: "text-foreground" },
               { value: fmt(unpaid), label: ar ? "غير مدفوع" : "Unpaid", color: unpaid > 0 ? "text-rose-500" : "text-emerald-600" },
-              { value: openQuotations, label: ar ? "عروض مفتوحة" : "Open Quotes", color: "text-amber-600" },
+              { value: openQuotations, label: ar ? "عروض مفتوحة" : "Open Quotes", color: "text-warning" },
               { value: delayedOrders, label: ar ? "متأخر" : "Delayed", color: delayedOrders > 0 ? "text-rose-500" : "text-emerald-600" },
             ].map((s, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-3 py-3">
-                <p className={`text-[17px] font-medium tabular-nums mb-0.5 ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
-                <p className="text-[9.5px] text-muted-foreground">{s.label}</p>
+                <p className={`text-title font-medium tabular-nums mb-0.5 ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+                <p className="text-micro text-muted-foreground">{s.label}</p>
               </div>
             ))}
           </div>
@@ -416,7 +416,7 @@ export default function Customer360() {
         <div className="px-8 md:px-10 flex items-center gap-0 overflow-x-auto">
           {TABS.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-4 py-3 text-[12px] font-medium whitespace-nowrap border-b-2 transition-all ${activeTab === tab.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`flex items-center gap-1.5 px-4 py-3 text-caption font-medium whitespace-nowrap border-b-2 transition-all ${activeTab === tab.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               <tab.icon size={12} />
               {ar ? tab.ar : tab.en}
             </button>
@@ -435,26 +435,26 @@ export default function Customer360() {
               <div className="flex items-start gap-3 px-4 py-3 rounded-xl border bg-rose-50 border-rose-200 text-rose-700">
                 <AlertTriangle size={14} className="mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-[12px] font-medium">{ar ? `${delayedOrders} طلبات متأخرة!` : `${delayedOrders} overdue order(s)!`}</p>
-                  <p className="text-[11px] opacity-70">{ar ? "راجع الطلبات المتأخرة فوراً" : "Review overdue orders immediately"}</p>
+                  <p className="text-caption font-medium">{ar ? `${delayedOrders} طلبات متأخرة!` : `${delayedOrders} overdue order(s)!`}</p>
+                  <p className="text-micro opacity-70">{ar ? "راجع الطلبات المتأخرة فوراً" : "Review overdue orders immediately"}</p>
                 </div>
               </div>
             )}
             {unpaid > totalRevenue * 0.5 && totalRevenue > 0 && (
-              <div className="flex items-start gap-3 px-4 py-3 rounded-xl border bg-amber-50 border-amber-200 text-amber-700">
+              <div className="flex items-start gap-3 px-4 py-3 rounded-xl border bg-warning/10 border-warning/30 text-warning">
                 <DollarSign size={14} className="mt-0.5 shrink-0" />
-                <p className="text-[12px] font-medium">{ar ? `العميل عليه ${fmt(unpaid)} ${currency} غير مدفوع (${Math.round((unpaid / totalRevenue) * 100)}%)` : `${fmt(unpaid)} ${currency} unpaid (${Math.round((unpaid / totalRevenue) * 100)}%)`}</p>
+                <p className="text-caption font-medium">{ar ? `العميل عليه ${fmt(unpaid)} ${currency} غير مدفوع (${Math.round((unpaid / totalRevenue) * 100)}%)` : `${fmt(unpaid)} ${currency} unpaid (${Math.round((unpaid / totalRevenue) * 100)}%)`}</p>
               </div>
             )}
 
             {/* Recent orders */}
             <div className="border border-border/40 rounded-xl overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-border/30">
-                <h3 className="text-[11px] font-semibold text-muted-foreground tracking-[0.08em] uppercase">{ar ? "آخر الطلبات" : "Recent Orders"}</h3>
-                <button onClick={() => setActiveTab("orders")} className="text-[11px] text-primary hover:underline">{ar ? "عرض الكل" : "View all"}</button>
+                <h3 className="text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase">{ar ? "آخر الطلبات" : "Recent Orders"}</h3>
+                <button onClick={() => setActiveTab("orders")} className="text-micro text-brand-ink hover:underline">{ar ? "عرض الكل" : "View all"}</button>
               </div>
               {orders.length === 0 ? (
-                <div className="px-5 py-10 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش طلبات لسه" : "No orders yet"}</div>
+                <div className="px-5 py-10 text-center text-caption text-muted-foreground/50">{ar ? "مفيش طلبات لسه" : "No orders yet"}</div>
               ) : (
                 <div className="divide-y divide-border/25">
                   {orders.slice(0, 5).map(o => {
@@ -463,10 +463,10 @@ export default function Customer360() {
                       <div key={o.id} onClick={() => navigate("/orders")} className="flex items-center gap-3 px-5 py-3 hover:bg-muted/15 cursor-pointer">
                         <ClipboardCheck size={13} className="text-muted-foreground/50 shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[12px] font-medium truncate">{m?.so_number || o.title_en}</p>
-                          <p className="text-[10px] text-muted-foreground">{m?.project_name}</p>
+                          <p className="text-caption font-medium truncate">{m?.so_number || o.title_en}</p>
+                          <p className="text-micro text-muted-foreground">{m?.project_name}</p>
                         </div>
-                        <span className="text-[12px] font-medium tabular-nums">{fmt(m?.total_amount || o.total_amount || 0)} {currency}</span>
+                        <span className="text-caption font-medium tabular-nums">{fmt(m?.total_amount || o.total_amount || 0)} {currency}</span>
                         <ChevronRight size={12} className="text-muted-foreground/30" />
                       </div>
                     );
@@ -478,19 +478,19 @@ export default function Customer360() {
             {/* Contacts */}
             <div className="border border-border/40 rounded-xl overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-border/30">
-                <h3 className="text-[11px] font-semibold text-muted-foreground tracking-[0.08em] uppercase">{ar ? "جهات الاتصال" : "Contacts"}</h3>
-                <span className="text-[10px] text-muted-foreground">{contacts.length}</span>
+                <h3 className="text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase">{ar ? "جهات الاتصال" : "Contacts"}</h3>
+                <span className="text-micro text-muted-foreground">{contacts.length}</span>
               </div>
               {contacts.length === 0 ? (
-                <div className="px-5 py-8 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش جهات اتصال" : "No contacts"}</div>
+                <div className="px-5 py-8 text-center text-caption text-muted-foreground/50">{ar ? "مفيش جهات اتصال" : "No contacts"}</div>
               ) : (
                 <div className="divide-y divide-border/25">
                   {contacts.slice(0, 5).map(p => (
                     <div key={p.id} className="flex items-center gap-3 px-5 py-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-[10px] font-semibold text-primary">{initials(p.name_en)}</div>
+                      <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-micro font-semibold text-brand-ink">{initials(p.name_en)}</div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12px] font-medium">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
-                        <p className="text-[10px] text-muted-foreground">{p.role_en}{p.phone ? ` · ${p.phone}` : ""}</p>
+                        <p className="text-caption font-medium">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
+                        <p className="text-micro text-muted-foreground">{p.role_en}{p.phone ? ` · ${p.phone}` : ""}</p>
                       </div>
                     </div>
                   ))}
@@ -504,7 +504,7 @@ export default function Customer360() {
         {activeTab === "orders" && (
           <div className="space-y-3">
             {orders.length === 0 ? (
-              <div className="py-14 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش طلبات" : "No orders"}</div>
+              <div className="py-14 text-center text-caption text-muted-foreground/50">{ar ? "مفيش طلبات" : "No orders"}</div>
             ) : orders.map(o => {
               const m = o.metadata as SOMeta;
               const pri = PRIORITIES.find(p => p.value === m.priority);
@@ -516,19 +516,19 @@ export default function Customer360() {
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-mono text-muted-foreground">{m.so_number}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted font-medium">{o.status}</span>
-                        {pri && <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
-                        {isOverdue && <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
+                        <span className="text-micro font-mono text-muted-foreground">{m.so_number}</span>
+                        <span className="text-micro px-2 py-0.5 rounded-full bg-muted font-medium">{o.status}</span>
+                        {pri && <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
+                        {isOverdue && <span className="text-micro px-2 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
                       </div>
-                      <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{m.project_name || o.title_en}</p>
+                      <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{m.project_name || o.title_en}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[15px] font-semibold tabular-nums">{fmt(total)} {currency}</p>
-                      {paid > 0 && <p className="text-[10px] text-emerald-600">{fmt(paid)} {ar ? "مدفوع" : "paid"}</p>}
+                      <p className="text-body-lg font-semibold tabular-nums">{fmt(total)} {currency}</p>
+                      {paid > 0 && <p className="text-micro text-emerald-600">{fmt(paid)} {ar ? "مدفوع" : "paid"}</p>}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-[10.5px] text-muted-foreground">
+                  <div className="flex items-center gap-3 text-micro text-muted-foreground">
                     <span>{(m.items || []).length} {ar ? "صنف" : "items"}</span>
                     {o.due_date && <span><Calendar size={9} className="inline mr-0.5" />{o.due_date}</span>}
                     {m.estimated_days && <span><Clock size={9} className="inline mr-0.5" />{m.estimated_days}d</span>}
@@ -543,16 +543,16 @@ export default function Customer360() {
         {activeTab === "quotations" && (
           <div className="space-y-3">
             {quotations.length === 0 ? (
-              <div className="py-14 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش عروض أسعار" : "No quotations"}</div>
+              <div className="py-14 text-center text-caption text-muted-foreground/50">{ar ? "مفيش عروض أسعار" : "No quotations"}</div>
             ) : quotations.map(q => {
               const m = q.metadata as any;
               return (
                 <div key={q.id} className="border border-border/40 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-muted-foreground">{m?.quotation_number}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted font-medium">{q.status}</span>
+                    <span className="text-micro font-mono text-muted-foreground">{m?.quotation_number}</span>
+                    <span className="text-micro px-2 py-0.5 rounded-full bg-muted font-medium">{q.status}</span>
                   </div>
-                  <p className="text-[13px] font-medium">{m?.project_name || q.title_en}</p>
+                  <p className="text-body font-medium">{m?.project_name || q.title_en}</p>
                 </div>
               );
             })}
@@ -563,17 +563,17 @@ export default function Customer360() {
         {activeTab === "products" && (
           <div className="space-y-3">
             {products.length === 0 ? (
-              <div className="py-14 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش منتجات مرتبطة" : "No linked products"}</div>
+              <div className="py-14 text-center text-caption text-muted-foreground/50">{ar ? "مفيش منتجات مرتبطة" : "No linked products"}</div>
             ) : products.map(p => {
               const pm = (p.metadata ?? {}) as ProductMeta;
               return (
                 <div key={p.id} onClick={() => navigate("/products")} className="border border-border/40 rounded-xl p-4 hover:shadow-sm cursor-pointer">
                   <div className="flex items-center gap-2 mb-1">
-                    {pm.sku && <span className="text-[10px] font-mono text-muted-foreground">{pm.sku}</span>}
-                    {pm.category && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/8 text-primary font-medium">{pm.category}</span>}
+                    {pm.sku && <span className="text-micro font-mono text-muted-foreground">{pm.sku}</span>}
+                    {pm.category && <span className="text-micro px-2 py-0.5 rounded-full bg-primary/8 text-brand-ink font-medium">{pm.category}</span>}
                   </div>
-                  <p className="text-[13px] font-medium">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
-                  <div className="flex items-center gap-3 mt-1 text-[10.5px] text-muted-foreground">
+                  <p className="text-body font-medium">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
+                  <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
                     {pm.main_material && <span>{pm.main_material}</span>}
                     {pm.total_cost && <span>{fmt(pm.total_cost)} {currency} {ar ? "تكلفة" : "cost"}</span>}
                     {pm.suggested_price && <span>{fmt(pm.suggested_price)} {currency} {ar ? "سعر" : "price"}</span>}
@@ -588,15 +588,15 @@ export default function Customer360() {
         {activeTab === "production" && (
           <div className="space-y-3">
             {linkedProdOrders.length === 0 ? (
-              <div className="py-14 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش أوامر تشغيل" : "No production orders"}</div>
+              <div className="py-14 text-center text-caption text-muted-foreground/50">{ar ? "مفيش أوامر تشغيل" : "No production orders"}</div>
             ) : linkedProdOrders.map(po => (
               <div key={po.id} onClick={() => navigate("/production")} className="border border-border/40 rounded-xl p-4 hover:shadow-sm cursor-pointer">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono text-muted-foreground">{po.po_number}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted font-medium">{po.current_stage}</span>
+                  <span className="text-micro font-mono text-muted-foreground">{po.po_number}</span>
+                  <span className="text-micro px-2 py-0.5 rounded-full bg-muted font-medium">{po.current_stage}</span>
                 </div>
-                <p className="text-[13px] font-medium">{po.title}</p>
-                {po.customer_name && <p className="text-[10.5px] text-muted-foreground mt-0.5">{po.customer_name}</p>}
+                <p className="text-body font-medium">{po.title}</p>
+                {po.customer_name && <p className="text-micro text-muted-foreground mt-0.5">{po.customer_name}</p>}
               </div>
             ))}
           </div>
@@ -606,16 +606,16 @@ export default function Customer360() {
         {activeTab === "purchasing" && (
           <div className="space-y-3">
             {purchaseOrders.length === 0 ? (
-              <div className="py-14 text-center text-[12px] text-muted-foreground/50">{ar ? (isVendor ? "مفيش أوامر شراء" : "العميل مش مورّد") : (isVendor ? "No purchase orders" : "Customer is not a vendor")}</div>
+              <div className="py-14 text-center text-caption text-muted-foreground/50">{ar ? (isVendor ? "مفيش أوامر شراء" : "العميل مش مورّد") : (isVendor ? "No purchase orders" : "Customer is not a vendor")}</div>
             ) : purchaseOrders.map(po => {
               const m = po.metadata as any;
               return (
                 <div key={po.id} className="border border-border/40 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-muted-foreground">{m?.po_number}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted font-medium">{po.status}</span>
+                    <span className="text-micro font-mono text-muted-foreground">{m?.po_number}</span>
+                    <span className="text-micro px-2 py-0.5 rounded-full bg-muted font-medium">{po.status}</span>
                   </div>
-                  <p className="text-[13px] font-medium">{po.title_en}</p>
+                  <p className="text-body font-medium">{po.title_en}</p>
                 </div>
               );
             })}
@@ -626,14 +626,14 @@ export default function Customer360() {
         {activeTab === "contacts" && (
           <div className="space-y-3">
             {contacts.length === 0 ? (
-              <div className="py-14 text-center text-[12px] text-muted-foreground/50">{ar ? "مفيش جهات اتصال" : "No contacts linked"}</div>
+              <div className="py-14 text-center text-caption text-muted-foreground/50">{ar ? "مفيش جهات اتصال" : "No contacts linked"}</div>
             ) : contacts.map(p => (
               <div key={p.id} className="border border-border/40 rounded-xl p-4 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center text-[12px] font-semibold text-primary">{initials(p.name_en)}</div>
+                <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center text-caption font-semibold text-brand-ink">{initials(p.name_en)}</div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-medium">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
-                  <p className="text-[11px] text-muted-foreground">{ar ? (p.role_ar || p.role_en) : p.role_en}</p>
-                  <div className="flex items-center gap-3 mt-0.5 text-[10.5px] text-muted-foreground">
+                  <p className="text-body font-medium">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? (p.role_ar || p.role_en) : p.role_en}</p>
+                  <div className="flex items-center gap-3 mt-0.5 text-micro text-muted-foreground">
                     {p.phone && <span><Phone size={9} className="inline mr-0.5" />{p.phone}</span>}
                     {p.email && <span><Mail size={9} className="inline mr-0.5" />{p.email}</span>}
                   </div>
@@ -648,10 +648,10 @@ export default function Customer360() {
 
         {/* ACTIVITY */}
         {activeTab === "activity" && (
-          <div className="py-8 text-center text-[12px] text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
+          <div className="py-8 text-center text-caption text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
             <Activity size={20} className="mx-auto mb-2 opacity-30" />
             <p>{ar ? "سجل الحركة — قريباً" : "Activity log — coming with live events"}</p>
-            <p className="text-[10.5px] mt-1">{ar ? "كل تعديل وحركة هتتسجل هنا تلقائي" : "All changes and actions will be logged here automatically"}</p>
+            <p className="text-micro mt-1">{ar ? "كل تعديل وحركة هتتسجل هنا تلقائي" : "All changes and actions will be logged here automatically"}</p>
           </div>
         )}
 
@@ -660,27 +660,27 @@ export default function Customer360() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { value: totalOrders, label: ar ? "إجمالي الطلبات" : "Total Orders", icon: ClipboardCheck, color: "text-primary" },
+                { value: totalOrders, label: ar ? "إجمالي الطلبات" : "Total Orders", icon: ClipboardCheck, color: "text-brand-ink" },
                 { value: fmt(totalRevenue), label: ar ? "إجمالي الإيراد" : "Total Revenue", icon: DollarSign, color: "text-foreground" },
                 { value: fmt(totalPaid), label: ar ? "المدفوع" : "Total Paid", icon: CheckCircle2, color: "text-emerald-600" },
                 { value: fmt(unpaid), label: ar ? "المتبقي" : "Outstanding", icon: AlertTriangle, color: unpaid > 0 ? "text-rose-500" : "text-emerald-600" },
               ].map((m, i) => (
                 <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
                   <m.icon size={14} className={`${m.color} mb-2`} />
-                  <p className={`text-[20px] font-medium tabular-nums ${m.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{m.value}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{m.label}</p>
+                  <p className={`text-heading font-medium tabular-nums ${m.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{m.value}</p>
+                  <p className="text-micro text-muted-foreground mt-0.5">{m.label}</p>
                 </div>
               ))}
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="border border-border/40 rounded-xl p-4">
-                <p className="text-[11px] text-muted-foreground mb-2">{ar ? "حالة الطلبات" : "Order Status"}</p>
+                <p className="text-micro text-muted-foreground mb-2">{ar ? "حالة الطلبات" : "Order Status"}</p>
                 {["draft", "approved", "in_progress", "review", "sent", "done", "cancelled"].map(status => {
                   const count = orders.filter(o => o.status === status).length;
                   if (!count) return null;
                   return (
-                    <div key={status} className="flex justify-between text-[11px] py-1">
+                    <div key={status} className="flex justify-between text-micro py-1">
                       <span className="text-muted-foreground capitalize">{status.replace("_", " ")}</span>
                       <span className="font-medium tabular-nums">{count}</span>
                     </div>
@@ -688,9 +688,9 @@ export default function Customer360() {
                 })}
               </div>
               <div className="border border-border/40 rounded-xl p-4">
-                <p className="text-[11px] text-muted-foreground mb-2">{ar ? "ملخص الدفع" : "Payment Summary"}</p>
+                <p className="text-micro text-muted-foreground mb-2">{ar ? "ملخص الدفع" : "Payment Summary"}</p>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-[12px]">
+                  <div className="flex justify-between text-caption">
                     <span className="text-muted-foreground">{ar ? "نسبة التحصيل" : "Collection Rate"}</span>
                     <span className={`font-medium ${totalRevenue > 0 && (totalPaid / totalRevenue) < 0.5 ? "text-rose-500" : "text-emerald-600"}`}>
                       {totalRevenue > 0 ? Math.round((totalPaid / totalRevenue) * 100) : 0}%
@@ -706,9 +706,9 @@ export default function Customer360() {
             {/* Most requested products */}
             {products.length > 0 && (
               <div className="border border-border/40 rounded-xl p-4">
-                <p className="text-[11px] text-muted-foreground mb-2">{ar ? "المنتجات المطلوبة" : "Requested Products"}</p>
+                <p className="text-micro text-muted-foreground mb-2">{ar ? "المنتجات المطلوبة" : "Requested Products"}</p>
                 {products.map(p => (
-                  <div key={p.id} className="flex justify-between text-[11px] py-1.5">
+                  <div key={p.id} className="flex justify-between text-micro py-1.5">
                     <span>{ar ? (p.name_ar || p.name_en) : p.name_en}</span>
                     <span className="text-muted-foreground">{((p.metadata as any)?.sku)}</span>
                   </div>

@@ -17,8 +17,8 @@ function formatEGP(n: number) {
 }
 
 const VIP_COLORS: Record<string, string> = {
-  platinum: "bg-violet-100 text-violet-700 border-violet-200",
-  gold: "bg-amber-100 text-amber-700 border-amber-200",
+  platinum: "bg-chart-4/15 text-chart-4 border-chart-4/30",
+  gold: "bg-warning/15 text-warning border-warning/30",
   silver: "bg-slate-100 text-slate-600 border-slate-200",
   none: "",
 };
@@ -28,22 +28,22 @@ const TIMELINE_ICONS: Record<string, { icon: React.ElementType; color: string; b
   pos_order: { icon: ShoppingCart, color: "text-emerald-600", bg: "bg-emerald-100" },
   shopify_order: { icon: ShoppingCart, color: "text-emerald-600", bg: "bg-emerald-100" },
   invoice: { icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },
-  payment: { icon: CreditCard, color: "text-violet-600", bg: "bg-violet-100" },
+  payment: { icon: CreditCard, color: "text-chart-4", bg: "bg-chart-4/15" },
   quotation: { icon: FileText, color: "text-cyan-600", bg: "bg-cyan-100" },
   whatsapp: { icon: MessageSquare, color: "text-emerald-600", bg: "bg-emerald-100" },
   email: { icon: Mail, color: "text-blue-600", bg: "bg-blue-100" },
-  call: { icon: Phone, color: "text-amber-600", bg: "bg-amber-100" },
+  call: { icon: Phone, color: "text-warning", bg: "bg-warning/15" },
   note: { icon: Edit3, color: "text-slate-600", bg: "bg-slate-100" },
-  loyalty_points: { icon: Gift, color: "text-primary", bg: "bg-primary/10" },
+  loyalty_points: { icon: Gift, color: "text-brand-ink", bg: "bg-primary/10" },
   loyalty_redeem: { icon: Gift, color: "text-rose-600", bg: "bg-rose-100" },
   delivery: { icon: Truck, color: "text-emerald-600", bg: "bg-emerald-100" },
   return: { icon: Repeat, color: "text-rose-600", bg: "bg-rose-100" },
-  follow_up: { icon: Clock, color: "text-amber-600", bg: "bg-amber-100" },
+  follow_up: { icon: Clock, color: "text-warning", bg: "bg-warning/15" },
 };
 
 const AI_SUMMARIES: Record<string, string> = {
   c01: "Nora has been a loyal customer since 2022. She purchases every 3-4 months, prefers WhatsApp communication, and is interested in bridal collections. She recently ordered a full bridal package worth 12,000 EGP. She always pays on time and has a high lifetime value of 185,000 EGP. Recommended: Send her the new bridal collection preview.",
-  c02: "Layla is a regular online shopper who discovered THOTH through Shopify. She buys evening wear and prefers home delivery. She has an overdue invoice of 4,500 EGP. Recommended: Send a friendly payment reminder via WhatsApp.",
+  c02: "Layla is a regular online shopper who discovered Bumblebee through Shopify. She buys evening wear and prefers home delivery. She has an overdue invoice of 4,500 EGP. Recommended: Send a friendly payment reminder via WhatsApp.",
   c03: "Sara manages corporate uniform orders. She places bulk orders every 2-3 months and prefers email communication. She has 2 overdue invoices totaling 28,000 EGP. Recommended: Call her procurement manager to arrange payment.",
   c04: "Khalid is our top international wholesale buyer from Saudi Arabia. He places large orders (85K+) quarterly. He's a platinum VIP with 320K lifetime spend. He prefers WhatsApp and always pays on time. Recommended: Send him the new collection lookbook before public launch.",
   c05: "Fatima is an inactive VIP customer who hasn't ordered in 45 days. She previously complained about a 3-day delivery delay for her bridal fitting. She has high churn risk. Recommended: Call her personally to address the complaint and offer a complimentary alteration.",
@@ -79,7 +79,7 @@ export default function CRMCustomerProfile() {
   if (!customer) {
     return (
       <div className="min-h-full flex items-center justify-center">
-        <p className="text-[13px] text-muted-foreground">{ar ? "العميل غير موجود" : "Customer not found"}</p>
+        <p className="text-body text-muted-foreground">{ar ? "العميل غير موجود" : "Customer not found"}</p>
       </div>
     );
   }
@@ -94,15 +94,15 @@ export default function CRMCustomerProfile() {
           <button onClick={() => history.back()} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
             <ArrowLeft size={16} />
           </button>
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-[16px] font-bold text-white shrink-0" style={{ backgroundColor: customer.avatar_color }}>
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-title font-bold text-white shrink-0" style={{ backgroundColor: customer.avatar_color }}>
             {customer.name.split(" ").map(w => w[0]).join("")}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h1 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{customer.name}</h1>
-              {customer.vip_level !== "none" && <span className={`text-[9px] px-2 py-0.5 rounded-full font-semibold uppercase border ${VIP_COLORS[customer.vip_level]}`}>{customer.vip_level}</span>}
+              <h1 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{customer.name}</h1>
+              {customer.vip_level !== "none" && <span className={`text-micro px-2 py-0.5 rounded-full font-semibold uppercase border ${VIP_COLORS[customer.vip_level]}`}>{customer.vip_level}</span>}
             </div>
-            <div className="flex items-center gap-3 text-[11px] text-muted-foreground mt-1">
+            <div className="flex items-center gap-3 text-micro text-muted-foreground mt-1">
               <span className="flex items-center gap-1"><Phone size={10} />{customer.phone}</span>
               <span className="flex items-center gap-1"><Mail size={10} />{customer.email}</span>
               <span className="flex items-center gap-1"><MapPin size={10} />{customer.city}</span>
@@ -110,9 +110,9 @@ export default function CRMCustomerProfile() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
-            <button onClick={() => setShowLogModal("call")} className="h-8 px-3 rounded-lg bg-emerald-500 text-white text-[11px] font-medium flex items-center gap-1.5 hover:bg-emerald-600 transition-colors"><Phone size={11} />{ar ? "اتصال" : "Call"}</button>
-            <button onClick={() => setShowLogModal("whatsapp")} className="h-8 px-3 rounded-lg bg-emerald-600 text-white text-[11px] font-medium flex items-center gap-1.5 hover:bg-emerald-700 transition-colors"><MessageSquare size={11} />WhatsApp</button>
-            <button onClick={() => setShowLogModal("email")} className="h-8 px-3 rounded-lg bg-blue-500 text-white text-[11px] font-medium flex items-center gap-1.5 hover:bg-blue-600 transition-colors"><Mail size={11} />{ar ? "بريد" : "Email"}</button>
+            <button onClick={() => setShowLogModal("call")} className="h-8 px-3 rounded-lg bg-emerald-500 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-600 transition-colors"><Phone size={11} />{ar ? "اتصال" : "Call"}</button>
+            <button onClick={() => setShowLogModal("whatsapp")} className="h-8 px-3 rounded-lg bg-emerald-600 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-700 transition-colors"><MessageSquare size={11} />WhatsApp</button>
+            <button onClick={() => setShowLogModal("email")} className="h-8 px-3 rounded-lg bg-blue-500 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-blue-600 transition-colors"><Mail size={11} />{ar ? "بريد" : "Email"}</button>
           </div>
         </div>
 
@@ -127,7 +127,7 @@ export default function CRMCustomerProfile() {
             { id: "ai" as const, en: "AI Summary", ar: "ملخص ذكي", icon: Sparkles },
           ]).map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] font-medium whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-micro font-medium whitespace-nowrap transition-all ${
                 activeTab === tab.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted/50"
               }`}>
               <tab.icon size={12} />{ar ? tab.ar : tab.en}
@@ -146,7 +146,7 @@ export default function CRMCustomerProfile() {
                 {timeline.length === 0 ? (
                   <div className="text-center py-12">
                     <Clock size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-                    <p className="text-[12px] text-muted-foreground">{ar ? "لا يوجد نشاط" : "No activity yet"}</p>
+                    <p className="text-caption text-muted-foreground">{ar ? "لا يوجد نشاط" : "No activity yet"}</p>
                   </div>
                 ) : (
                   timeline.map((event, i) => {
@@ -162,13 +162,13 @@ export default function CRMCustomerProfile() {
                         </div>
                         <div className="pb-5 flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-0.5">
-                            <p className="text-[12px] font-medium text-foreground">{ar ? event.title_ar : event.title}</p>
-                            <span className="text-[9px] text-muted-foreground shrink-0">{event.timestamp}</span>
+                            <p className="text-caption font-medium text-foreground">{ar ? event.title_ar : event.title}</p>
+                            <span className="text-micro text-muted-foreground shrink-0">{event.timestamp}</span>
                           </div>
-                          <p className="text-[11px] text-muted-foreground">{ar ? event.details_ar : event.details}</p>
+                          <p className="text-micro text-muted-foreground">{ar ? event.details_ar : event.details}</p>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[9px] text-muted-foreground/60">{event.staff}</span>
-                            {event.amount && <span className="text-[10px] font-medium text-foreground">{formatEGP(event.amount)}</span>}
+                            <span className="text-micro text-muted-foreground/60">{event.staff}</span>
+                            {event.amount && <span className="text-micro font-medium text-foreground">{formatEGP(event.amount)}</span>}
                           </div>
                         </div>
                       </div>
@@ -182,19 +182,19 @@ export default function CRMCustomerProfile() {
             {activeTab === "notes" && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-[13px] font-semibold">{ar ? "الملاحظات" : "Notes"}</h3>
-                  <button onClick={() => setShowAddNote(true)} className="h-7 px-3 rounded-lg bg-primary/10 text-primary text-[11px] font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors">
+                  <h3 className="text-body font-semibold">{ar ? "الملاحظات" : "Notes"}</h3>
+                  <button onClick={() => setShowAddNote(true)} className="h-7 px-3 rounded-lg bg-primary/10 text-brand-ink text-micro font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors">
                     <Plus size={11} /> {ar ? "إضافة" : "Add"}
                   </button>
                 </div>
                 {showAddNote && (
                   <div className="p-3 rounded-xl border border-primary/30 bg-primary/5 space-y-2">
                     <textarea value={newNote} onChange={e => setNewNote(e.target.value)} rows={3}
-                      className="w-full px-3 py-2 rounded-lg border border-border bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/30 resize-none"
+                      className="w-full px-3 py-2 rounded-lg border border-border bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/30 resize-none"
                       placeholder={ar ? "اكتب ملاحظة..." : "Write a note..."} autoFocus />
                     <div className="flex justify-end gap-2">
-                      <button onClick={() => { setShowAddNote(false); setNewNote(""); }} className="h-7 px-3 rounded-lg border border-border text-[11px] hover:bg-muted transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-                      <button className="h-7 px-3 rounded-lg bg-primary text-primary-foreground text-[11px] font-medium hover:opacity-90 transition-opacity">{ar ? "حفظ" : "Save"}</button>
+                      <button onClick={() => { setShowAddNote(false); setNewNote(""); }} className="h-7 px-3 rounded-lg border border-border text-micro hover:bg-muted transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+                      <button className="h-7 px-3 rounded-lg bg-primary text-primary-foreground text-micro font-medium hover:opacity-90 transition-opacity">{ar ? "حفظ" : "Save"}</button>
                     </div>
                   </div>
                 )}
@@ -202,24 +202,24 @@ export default function CRMCustomerProfile() {
                   <div key={note.id} className="p-3.5 rounded-xl border border-border/40 bg-background">
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-medium text-primary">{note.author}</span>
-                        <span className={`text-[8px] px-1.5 py-0.5 rounded-full ${note.type === "internal" ? "bg-amber-100 text-amber-700" : note.type === "call_log" ? "bg-blue-100 text-blue-600" : "bg-emerald-100 text-emerald-700"}`}>
+                        <span className="text-micro font-medium text-brand-ink">{note.author}</span>
+                        <span className={`text-micro px-1.5 py-0.5 rounded-full ${note.type === "internal" ? "bg-warning/15 text-warning" : note.type === "call_log" ? "bg-blue-100 text-blue-600" : "bg-emerald-100 text-emerald-700"}`}>
                           {note.type === "internal" ? (ar ? "داخلي" : "Internal") : note.type === "call_log" ? (ar ? "مكالمة" : "Call") : (ar ? "للعميل" : "Customer")}
                         </span>
                         {note.priority === "high" && (
-                          <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">{ar ? "مهم" : "High"}</span>
+                          <span className="text-micro px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">{ar ? "مهم" : "High"}</span>
                         )}
                       </div>
-                      <span className="text-[9px] text-muted-foreground">{note.created_at}</span>
+                      <span className="text-micro text-muted-foreground">{note.created_at}</span>
                     </div>
-                    <p className="text-[12px] text-foreground leading-relaxed">{ar ? note.content_ar : note.content}</p>
+                    <p className="text-caption text-foreground leading-relaxed">{ar ? note.content_ar : note.content}</p>
                     
                     {/* Mentions */}
                     {note.mentions && note.mentions.length > 0 && (
                       <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-                        <span className="text-[9px] text-muted-foreground">{ar ? "إشارة إلى:" : "Mentions:"}</span>
+                        <span className="text-micro text-muted-foreground">{ar ? "إشارة إلى:" : "Mentions:"}</span>
                         {note.mentions.map(mention => (
-                          <span key={mention} className="text-[9px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">@{mention}</span>
+                          <span key={mention} className="text-micro px-1.5 py-0.5 rounded-full bg-primary/10 text-brand-ink font-medium">@{mention}</span>
                         ))}
                       </div>
                     )}
@@ -235,8 +235,8 @@ export default function CRMCustomerProfile() {
                           return (
                             <div key={i} className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-muted/50 border border-border/30">
                               <AttIcon size={10} className="text-muted-foreground" />
-                              <span className="text-[9px] text-foreground font-medium">{att.name}</span>
-                              <span className="text-[8px] text-muted-foreground">{att.size}</span>
+                              <span className="text-micro text-foreground font-medium">{att.name}</span>
+                              <span className="text-micro text-muted-foreground">{att.size}</span>
                             </div>
                           );
                         })}
@@ -246,8 +246,8 @@ export default function CRMCustomerProfile() {
                     {/* Follow-up date */}
                     {note.follow_up_date && (
                       <div className="flex items-center gap-1.5 mt-2">
-                        <Clock size={10} className={note.is_completed ? "text-emerald-500" : "text-amber-500"} />
-                        <span className={`text-[9px] font-medium ${note.is_completed ? "text-emerald-500" : "text-amber-500"}`}>
+                        <Clock size={10} className={note.is_completed ? "text-emerald-500" : "text-warning"} />
+                        <span className={`text-micro font-medium ${note.is_completed ? "text-emerald-500" : "text-warning"}`}>
                           {ar ? "متابعة:" : "Follow-up:"} {note.follow_up_date}
                           {note.is_completed && (ar ? " (مكتمل)" : " (Completed)")}
                         </span>
@@ -264,20 +264,20 @@ export default function CRMCustomerProfile() {
                 {tasks.length === 0 ? (
                   <div className="text-center py-12">
                     <CheckCircle2 size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-                    <p className="text-[12px] text-muted-foreground">{ar ? "لا توجد مهام" : "No tasks"}</p>
+                    <p className="text-caption text-muted-foreground">{ar ? "لا توجد مهام" : "No tasks"}</p>
                   </div>
                 ) : tasks.map(task => (
                   <div key={task.id} className={`flex items-center gap-3 p-3.5 rounded-xl border transition-all ${task.status === "overdue" ? "border-rose-200 bg-rose-50/30" : "border-border/40"}`}>
                     <button className="w-5 h-5 rounded-full border-2 border-border/60 hover:border-primary shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-medium">{ar ? task.title_ar : task.title}</p>
+                      <p className="text-caption font-medium">{ar ? task.title_ar : task.title}</p>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${task.priority === "urgent" ? "bg-rose-100 text-rose-600" : task.priority === "high" ? "bg-amber-100 text-amber-700" : "bg-muted text-muted-foreground"}`}>{task.priority}</span>
-                        <span className="text-[9px] text-muted-foreground">{task.due_date}</span>
-                        {task.status === "overdue" && <span className="text-[9px] text-rose-500 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
+                        <span className={`text-micro px-1.5 py-0.5 rounded-full ${task.priority === "urgent" ? "bg-rose-100 text-rose-600" : task.priority === "high" ? "bg-warning/15 text-warning" : "bg-muted text-muted-foreground"}`}>{task.priority}</span>
+                        <span className="text-micro text-muted-foreground">{task.due_date}</span>
+                        {task.status === "overdue" && <span className="text-micro text-rose-500 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
                       </div>
                     </div>
-                    <span className="text-[10px] text-muted-foreground shrink-0">{task.assigned_to}</span>
+                    <span className="text-micro text-muted-foreground shrink-0">{task.assigned_to}</span>
                   </div>
                 ))}
               </div>
@@ -289,40 +289,40 @@ export default function CRMCustomerProfile() {
                 {/* Loyalty Stats */}
                 <div className="grid grid-cols-3 gap-3">
                   <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 text-center">
-                    <p className="text-[22px] font-bold text-primary" style={{ fontFamily: "var(--app-font-serif)" }}>{customer.loyalty_points.toLocaleString()}</p>
-                    <p className="text-[10px] text-muted-foreground mt-1">{ar ? "نقاط متاحة" : "Available Points"}</p>
+                    <p className="text-heading font-bold text-brand-ink" style={{ fontFamily: "var(--app-font-serif)" }}>{customer.loyalty_points.toLocaleString()}</p>
+                    <p className="text-micro text-muted-foreground mt-1">{ar ? "نقاط متاحة" : "Available Points"}</p>
                   </div>
                   <div className="p-4 rounded-xl border border-border/40 text-center">
-                    <p className="text-[22px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{customer.lifetime_points.toLocaleString()}</p>
-                    <p className="text-[10px] text-muted-foreground mt-1">{ar ? "إجمالي النقاط" : "Lifetime Points"}</p>
+                    <p className="text-heading font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{customer.lifetime_points.toLocaleString()}</p>
+                    <p className="text-micro text-muted-foreground mt-1">{ar ? "إجمالي النقاط" : "Lifetime Points"}</p>
                   </div>
                   <div className="p-4 rounded-xl border border-border/40 text-center">
-                    <p className="text-[22px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(customer.total_spend * 0.01)}</p>
-                    <p className="text-[10px] text-muted-foreground mt-1">{ar ? "قيمة النقاط" : "Points Value"}</p>
+                    <p className="text-heading font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(customer.total_spend * 0.01)}</p>
+                    <p className="text-micro text-muted-foreground mt-1">{ar ? "قيمة النقاط" : "Points Value"}</p>
                   </div>
                 </div>
 
                 {/* Available Rewards */}
                 <div>
-                  <h4 className="text-[12px] font-semibold mb-2">{ar ? "المكافآت المتاحة" : "Available Rewards"}</h4>
+                  <h4 className="text-caption font-semibold mb-2">{ar ? "المكافآت المتاحة" : "Available Rewards"}</h4>
                   <div className="space-y-2">
                     {LOYALTY_REWARDS.filter(r => r.active && customer.loyalty_points >= r.points_cost).map(reward => (
                       <div key={reward.id} className="flex items-center gap-3 p-3 rounded-xl border border-primary/20 bg-primary/5">
                         <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                          <Gift size={16} className="text-primary" />
+                          <Gift size={16} className="text-brand-ink" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[12px] font-medium">{ar ? reward.name_ar : reward.name}</p>
-                          <p className="text-[10px] text-muted-foreground">{ar ? reward.description_ar : reward.description}</p>
+                          <p className="text-caption font-medium">{ar ? reward.name_ar : reward.name}</p>
+                          <p className="text-micro text-muted-foreground">{ar ? reward.description_ar : reward.description}</p>
                         </div>
                         <div className="text-right shrink-0">
-                          <p className="text-[11px] font-medium text-primary">{reward.points_cost} {ar ? "نقطة" : "pts"}</p>
-                          <button className="text-[9px] text-primary hover:underline mt-0.5">{ar ? "استبدال" : "Redeem"}</button>
+                          <p className="text-micro font-medium text-brand-ink">{reward.points_cost} {ar ? "نقطة" : "pts"}</p>
+                          <button className="text-micro text-brand-ink hover:underline mt-0.5">{ar ? "استبدال" : "Redeem"}</button>
                         </div>
                       </div>
                     ))}
                     {LOYALTY_REWARDS.filter(r => r.active && customer.loyalty_points >= r.points_cost).length === 0 && (
-                      <p className="text-[11px] text-muted-foreground text-center py-4">{ar ? "لا توجد مكافآت متاحة بعد" : "No rewards available yet"}</p>
+                      <p className="text-micro text-muted-foreground text-center py-4">{ar ? "لا توجد مكافآت متاحة بعد" : "No rewards available yet"}</p>
                     )}
                   </div>
                 </div>
@@ -333,8 +333,8 @@ export default function CRMCustomerProfile() {
             {activeTab === "relationships" && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-[13px] font-semibold">{ar ? "العلاقات" : "Relationships"}</h3>
-                  <button className="h-7 px-3 rounded-lg bg-primary/10 text-primary text-[11px] font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors">
+                  <h3 className="text-body font-semibold">{ar ? "العلاقات" : "Relationships"}</h3>
+                  <button className="h-7 px-3 rounded-lg bg-primary/10 text-brand-ink text-micro font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors">
                     <Plus size={11} /> {ar ? "إضافة" : "Add"}
                   </button>
                 </div>
@@ -342,7 +342,7 @@ export default function CRMCustomerProfile() {
                 {relationships.length === 0 ? (
                   <div className="text-center py-12">
                     <Link2 size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-                    <p className="text-[12px] text-muted-foreground">{ar ? "لا توجد علاقات" : "No relationships yet"}</p>
+                    <p className="text-caption text-muted-foreground">{ar ? "لا توجد علاقات" : "No relationships yet"}</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -371,16 +371,16 @@ export default function CRMCustomerProfile() {
                         <div key={rel.id} className="p-4 rounded-xl border border-border/40 bg-background hover:shadow-sm transition-shadow">
                           <div className="flex items-start gap-3">
                             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                              <Icon size={16} className="text-primary" />
+                              <Icon size={16} className="text-brand-ink" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
-                                <p className="text-[12px] font-medium text-foreground">{ar ? rel.related_name_ar : rel.related_name}</p>
-                                <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                                <p className="text-caption font-medium text-foreground">{ar ? rel.related_name_ar : rel.related_name}</p>
+                                <span className="text-micro px-1.5 py-0.5 rounded-full bg-primary/10 text-brand-ink font-medium">
                                   {ar ? typeLabel.ar : typeLabel.en}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-3 text-[10px] text-muted-foreground mb-1.5">
+                              <div className="flex items-center gap-3 text-micro text-muted-foreground mb-1.5">
                                 {rel.related_phone && (
                                   <span className="flex items-center gap-1"><Phone size={9} />{rel.related_phone}</span>
                                 )}
@@ -388,9 +388,9 @@ export default function CRMCustomerProfile() {
                                   <span className="flex items-center gap-1"><Mail size={9} />{rel.related_email}</span>
                                 )}
                               </div>
-                              <p className="text-[11px] text-muted-foreground">{ar ? rel.notes_ar : rel.notes}</p>
+                              <p className="text-micro text-muted-foreground">{ar ? rel.notes_ar : rel.notes}</p>
                               {rel.related_customer_id && (
-                                <button className="text-[10px] text-primary hover:underline mt-1.5 flex items-center gap-1">
+                                <button className="text-micro text-brand-ink hover:underline mt-1.5 flex items-center gap-1">
                                   <ExternalLink size={9} /> {ar ? "عرض ملف العميل" : "View Customer Profile"}
                                 </button>
                               )}
@@ -405,21 +405,21 @@ export default function CRMCustomerProfile() {
                 {/* Relationship Graph Preview */}
                 {relationships.length > 0 && (
                   <div className="p-4 rounded-xl border border-border/40 bg-muted/20">
-                    <h4 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">{ar ? "الشبكة" : "Network"}</h4>
+                    <h4 className="text-micro font-semibold text-muted-foreground uppercase tracking-wider mb-3">{ar ? "الشبكة" : "Network"}</h4>
                     <div className="flex items-center justify-center gap-2 flex-wrap">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-[11px] font-bold text-white border-2 border-primary" style={{ backgroundColor: customer.avatar_color }}>
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-micro font-bold text-white border-2 border-primary" style={{ backgroundColor: customer.avatar_color }}>
                         {customer.name.split(" ").map(w => w[0]).join("")}
                       </div>
                       {relationships.slice(0, 4).map((rel, i) => (
                         <div key={rel.id} className="flex items-center gap-2">
                           <div className="w-px h-4 bg-border/60" />
-                          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold text-muted-foreground border border-border/40">
+                          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-micro font-bold text-muted-foreground border border-border/40">
                             {rel.related_name.split(" ").map(w => w[0]).join("").slice(0, 2)}
                           </div>
                         </div>
                       ))}
                       {relationships.length > 4 && (
-                        <span className="text-[10px] text-muted-foreground">+{relationships.length - 4}</span>
+                        <span className="text-micro text-muted-foreground">+{relationships.length - 4}</span>
                       )}
                     </div>
                   </div>
@@ -432,25 +432,25 @@ export default function CRMCustomerProfile() {
               <div className="space-y-4">
                 <div className="p-5 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
                   <div className="flex items-center gap-2 mb-3">
-                    <Sparkles size={16} className="text-primary" />
-                    <h3 className="text-[13px] font-semibold text-primary">{ar ? "ملخص ذكي" : "AI Summary"}</h3>
+                    <Sparkles size={16} className="text-brand-ink" />
+                    <h3 className="text-body font-semibold text-brand-ink">{ar ? "ملخص ذكي" : "AI Summary"}</h3>
                   </div>
-                  <p className="text-[12px] text-foreground leading-relaxed">{aiSummary}</p>
+                  <p className="text-caption text-foreground leading-relaxed">{aiSummary}</p>
                 </div>
 
                 {/* AI Actions */}
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { icon: Zap, labelEn: "Suggest Next Action", labelAr: "اقتراح الخطوة التالية", color: "text-amber-600 bg-amber-50" },
+                    { icon: Zap, labelEn: "Suggest Next Action", labelAr: "اقتراح الخطوة التالية", color: "text-warning bg-warning/10" },
                     { icon: MessageSquare, labelEn: "Write WhatsApp Follow-up", labelAr: "كتابة متابعة واتساب", color: "text-emerald-600 bg-emerald-50" },
                     { icon: Mail, labelEn: "Write Email Follow-up", labelAr: "كتابة متابعة بريد", color: "text-blue-600 bg-blue-50" },
                     { icon: AlertTriangle, labelEn: "Predict Churn Risk", labelAr: "تحليل خطر الفقد", color: "text-rose-600 bg-rose-50" },
-                    { icon: TrendingUp, labelEn: "Recommend Product", labelAr: "توصية منتج", color: "text-violet-600 bg-violet-50" },
+                    { icon: TrendingUp, labelEn: "Recommend Product", labelAr: "توصية منتج", color: "text-chart-4 bg-chart-4/10" },
                     { icon: Eye, labelEn: "Explain Customer History", labelAr: "شرح تاريخ العميل", color: "text-cyan-600 bg-cyan-50" },
                   ].map((action, i) => (
                     <button key={i} className={`p-3.5 rounded-xl border border-border/40 text-left hover:shadow-sm transition-all ${action.color.split(" ")[1]}`}>
                       <action.icon size={14} className={action.color.split(" ")[0]} />
-                      <p className="text-[11px] font-medium mt-2">{ar ? action.labelAr : action.labelEn}</p>
+                      <p className="text-micro font-medium mt-2">{ar ? action.labelAr : action.labelEn}</p>
                     </button>
                   ))}
                 </div>
@@ -462,7 +462,7 @@ export default function CRMCustomerProfile() {
           <div className="space-y-4">
             {/* Key Metrics */}
             <div className="p-4 rounded-xl border border-border/40 space-y-3">
-              <h4 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "المؤشرات" : "Key Metrics"}</h4>
+              <h4 className="text-micro font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "المؤشرات" : "Key Metrics"}</h4>
               {[
                 { label: ar ? "إجمالي المشتريات" : "Lifetime Spend", value: formatEGP(customer.total_spend), icon: DollarSign },
                 { label: ar ? "عدد الطلبات" : "Total Orders", value: customer.total_orders.toString(), icon: ShoppingCart },
@@ -474,26 +474,26 @@ export default function CRMCustomerProfile() {
                 <div key={i} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <m.icon size={12} className="text-muted-foreground/50" />
-                    <span className="text-[11px] text-muted-foreground">{m.label}</span>
+                    <span className="text-micro text-muted-foreground">{m.label}</span>
                   </div>
-                  <span className="text-[12px] font-medium text-foreground">{m.value}</span>
+                  <span className="text-caption font-medium text-foreground">{m.value}</span>
                 </div>
               ))}
             </div>
 
             {/* Risk & Likelihood */}
             <div className="p-4 rounded-xl border border-border/40 space-y-3">
-              <h4 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "تحليل المخاطر" : "Risk Analysis"}</h4>
+              <h4 className="text-micro font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "تحليل المخاطر" : "Risk Analysis"}</h4>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-muted-foreground">{ar ? "خطر الفقد" : "Churn Risk"}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${customer.churn_risk === "high" ? "bg-rose-100 text-rose-600" : customer.churn_risk === "medium" ? "bg-amber-100 text-amber-700" : "bg-emerald-100 text-emerald-700"}`}>
+                <span className="text-micro text-muted-foreground">{ar ? "خطر الفقد" : "Churn Risk"}</span>
+                <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${customer.churn_risk === "high" ? "bg-rose-100 text-rose-600" : customer.churn_risk === "medium" ? "bg-warning/15 text-warning" : "bg-emerald-100 text-emerald-700"}`}>
                   {customer.churn_risk}
                 </span>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[11px] text-muted-foreground">{ar ? "احتمال الشراء" : "Likelihood to Buy"}</span>
-                  <span className="text-[11px] font-medium">{customer.likelihood_to_buy}%</span>
+                  <span className="text-micro text-muted-foreground">{ar ? "احتمال الشراء" : "Likelihood to Buy"}</span>
+                  <span className="text-micro font-medium">{customer.likelihood_to_buy}%</span>
                 </div>
                 <div className="h-1.5 rounded-full bg-muted/60 overflow-hidden">
                   <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${customer.likelihood_to_buy}%` }} />
@@ -503,30 +503,30 @@ export default function CRMCustomerProfile() {
 
             {/* Integration Status */}
             <div className="p-4 rounded-xl border border-border/40 space-y-3">
-              <h4 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "حالة التكامل" : "Integration Status"}</h4>
+              <h4 className="text-micro font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "حالة التكامل" : "Integration Status"}</h4>
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ShoppingCart size={12} className="text-muted-foreground/50" />
-                    <span className="text-[11px] text-muted-foreground">Shopify</span>
+                    <span className="text-micro text-muted-foreground">Shopify</span>
                   </div>
-                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${customer.source === "shopify" ? "bg-emerald-100 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
+                  <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${customer.source === "shopify" ? "bg-emerald-100 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
                     {customer.source === "shopify" ? (ar ? "متصل" : "Connected") : (ar ? "غير متصل" : "Not connected")}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ShoppingBag size={12} className="text-muted-foreground/50" />
-                    <span className="text-[11px] text-muted-foreground">POS</span>
+                    <span className="text-micro text-muted-foreground">POS</span>
                   </div>
-                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${customer.source === "pos" ? "bg-emerald-100 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
+                  <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${customer.source === "pos" ? "bg-emerald-100 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
                     {customer.source === "pos" ? (ar ? "متصل" : "Connected") : (ar ? "غير متصل" : "Not connected")}
                   </span>
                 </div>
                 {customer.source === "shopify" && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-muted-foreground">{ar ? "آخر مزامنة" : "Last synced"}</span>
-                    <span className="text-[10px] text-foreground font-medium">{ar ? "منذ يوم" : "1 day ago"}</span>
+                    <span className="text-micro text-muted-foreground">{ar ? "آخر مزامنة" : "Last synced"}</span>
+                    <span className="text-micro text-foreground font-medium">{ar ? "منذ يوم" : "1 day ago"}</span>
                   </div>
                 )}
               </div>
@@ -535,11 +535,11 @@ export default function CRMCustomerProfile() {
             {/* Alerts */}
             {alerts.length > 0 && (
               <div className="p-4 rounded-xl border border-rose-200 bg-rose-50/30 space-y-2">
-                <h4 className="text-[11px] font-semibold text-rose-600 flex items-center gap-1.5"><AlertTriangle size={11} /> {ar ? "تنبيهات" : "Alerts"}</h4>
+                <h4 className="text-micro font-semibold text-rose-600 flex items-center gap-1.5"><AlertTriangle size={11} /> {ar ? "تنبيهات" : "Alerts"}</h4>
                 {alerts.map(alert => (
-                  <div key={alert.id} className="text-[11px] text-foreground">
+                  <div key={alert.id} className="text-micro text-foreground">
                     <p className="font-medium">{ar ? alert.title_ar : alert.title}</p>
-                    <p className="text-muted-foreground text-[10px] mt-0.5">{ar ? alert.suggested_action_ar : alert.suggested_action}</p>
+                    <p className="text-muted-foreground text-micro mt-0.5">{ar ? alert.suggested_action_ar : alert.suggested_action}</p>
                   </div>
                 ))}
               </div>
@@ -547,7 +547,7 @@ export default function CRMCustomerProfile() {
 
             {/* Quick Actions */}
             <div className="p-4 rounded-xl border border-border/40 space-y-2">
-              <h4 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "إجراءات سريعة" : "Quick Actions"}</h4>
+              <h4 className="text-micro font-semibold text-muted-foreground uppercase tracking-wider">{ar ? "إجراءات سريعة" : "Quick Actions"}</h4>
               {[
                 { icon: ShoppingCart, labelEn: "Create Order", labelAr: "إنشاء طلب", action: () => {} },
                 { icon: FileText, labelEn: "Create Quotation", labelAr: "إنشاء عرض سعر", action: () => {} },
@@ -556,7 +556,7 @@ export default function CRMCustomerProfile() {
                 { icon: Gift, labelEn: "Add Loyalty Points", labelAr: "إضافة نقاط ولاء", action: () => {} },
                 { icon: Repeat, labelEn: "Issue Refund", labelAr: "إصدار استرداد", action: () => {} },
               ].map((action, i) => (
-                <button key={i} onClick={action.action} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] text-foreground hover:bg-muted/50 transition-colors text-left">
+                <button key={i} onClick={action.action} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-micro text-foreground hover:bg-muted/50 transition-colors text-left">
                   <action.icon size={12} className="text-muted-foreground/50" />
                   {ar ? action.labelAr : action.labelEn}
                 </button>
@@ -572,34 +572,34 @@ export default function CRMCustomerProfile() {
           <div className="absolute inset-0 bg-black/30" onClick={() => { setShowLogModal(null); setLogNotes(""); setLogDuration(""); }} />
           <div className="relative w-full max-w-md bg-background rounded-2xl border border-border shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
-              <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {showLogModal === "call" ? (ar ? "تسجيل مكالمة" : "Log Call") : showLogModal === "email" ? (ar ? "تسجيل بريد" : "Log Email") : (ar ? "تسجيل واتساب" : "Log WhatsApp")}
               </h3>
               <button onClick={() => { setShowLogModal(null); setLogNotes(""); setLogDuration(""); }} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
-                <div className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style={{ backgroundColor: customer.avatar_color }}>
+                <div className="w-9 h-9 rounded-full flex items-center justify-center text-micro font-bold text-white" style={{ backgroundColor: customer.avatar_color }}>
                   {customer.name.split(" ").map(w => w[0]).join("")}
                 </div>
                 <div>
-                  <p className="text-[12px] font-medium">{customer.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{customer.phone}</p>
+                  <p className="text-caption font-medium">{customer.name}</p>
+                  <p className="text-micro text-muted-foreground">{customer.phone}</p>
                 </div>
               </div>
               {showLogModal === "call" && (
                 <div>
-                  <label className="text-[11px] text-muted-foreground mb-1 block">{ar ? "المدة (دقائق)" : "Duration (minutes)"}</label>
-                  <input type="number" value={logDuration} onChange={e => setLogDuration(e.target.value)} className="w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="5" />
+                  <label className="text-micro text-muted-foreground mb-1 block">{ar ? "المدة (دقائق)" : "Duration (minutes)"}</label>
+                  <input type="number" value={logDuration} onChange={e => setLogDuration(e.target.value)} className="w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20" placeholder="5" />
                 </div>
               )}
               <div>
-                <label className="text-[11px] text-muted-foreground mb-1 block">{ar ? "ملاحظات" : "Notes"}</label>
-                <textarea value={logNotes} onChange={e => setLogNotes(e.target.value)} rows={4} className="w-full px-3 py-2 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" placeholder={ar ? "اكتب ملاحظات المكالمة..." : "Write call notes..."} />
+                <label className="text-micro text-muted-foreground mb-1 block">{ar ? "ملاحظات" : "Notes"}</label>
+                <textarea value={logNotes} onChange={e => setLogNotes(e.target.value)} rows={4} className="w-full px-3 py-2 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 resize-none" placeholder={ar ? "اكتب ملاحظات المكالمة..." : "Write call notes..."} />
               </div>
               <div className="flex gap-2 pt-1">
-                <button onClick={() => { setShowLogModal(null); setLogNotes(""); setLogDuration(""); }} className="flex-1 h-10 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-                <button onClick={() => { setShowLogModal(null); setLogNotes(""); setLogDuration(""); }} className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5">
+                <button onClick={() => { setShowLogModal(null); setLogNotes(""); setLogDuration(""); }} className="flex-1 h-10 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+                <button onClick={() => { setShowLogModal(null); setLogNotes(""); setLogDuration(""); }} className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5">
                   <Check size={13} /> {ar ? "حفظ" : "Save Log"}
                 </button>
               </div>
@@ -614,27 +614,27 @@ export default function CRMCustomerProfile() {
           <div className="absolute inset-0 bg-black/30" onClick={() => { setShowFollowUp(false); setFollowUpDate(""); setFollowUpNote(""); }} />
           <div className="relative w-full max-w-md bg-background rounded-2xl border border-border shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
-              <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "جدولة متابعة" : "Schedule Follow-up"}
               </h3>
               <button onClick={() => { setShowFollowUp(false); setFollowUpDate(""); setFollowUpNote(""); }} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
-                <div className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style={{ backgroundColor: customer.avatar_color }}>
+                <div className="w-9 h-9 rounded-full flex items-center justify-center text-micro font-bold text-white" style={{ backgroundColor: customer.avatar_color }}>
                   {customer.name.split(" ").map(w => w[0]).join("")}
                 </div>
                 <div>
-                  <p className="text-[12px] font-medium">{customer.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{customer.phone}</p>
+                  <p className="text-caption font-medium">{customer.name}</p>
+                  <p className="text-micro text-muted-foreground">{customer.phone}</p>
                 </div>
               </div>
               <div>
-                <label className="text-[11px] text-muted-foreground mb-1 block">{ar ? "التاريخ" : "Date"}</label>
-                <input type="date" value={followUpDate} onChange={e => setFollowUpDate(e.target.value)} className="w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                <label className="text-micro text-muted-foreground mb-1 block">{ar ? "التاريخ" : "Date"}</label>
+                <input type="date" value={followUpDate} onChange={e => setFollowUpDate(e.target.value)} className="w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
               </div>
               <div>
-                <label className="text-[11px] text-muted-foreground mb-1 block">{ar ? "نوع المتابعة" : "Follow-up Type"}</label>
+                <label className="text-micro text-muted-foreground mb-1 block">{ar ? "نوع المتابعة" : "Follow-up Type"}</label>
                 <div className="grid grid-cols-4 gap-2">
                   {[
                     { id: "call", icon: Phone, labelEn: "Call", labelAr: "اتصال" },
@@ -644,18 +644,18 @@ export default function CRMCustomerProfile() {
                   ].map(t => (
                     <button key={t.id} className="p-2.5 rounded-xl border-2 border-border/30 text-center hover:border-primary/40 transition-all">
                       <t.icon size={16} className="mx-auto mb-1 text-muted-foreground" />
-                      <p className="text-[9px] font-medium">{ar ? t.labelAr : t.labelEn}</p>
+                      <p className="text-micro font-medium">{ar ? t.labelAr : t.labelEn}</p>
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <label className="text-[11px] text-muted-foreground mb-1 block">{ar ? "ملاحظات" : "Notes"}</label>
-                <textarea value={followUpNote} onChange={e => setFollowUpNote(e.target.value)} rows={3} className="w-full px-3 py-2 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" placeholder={ar ? "موضوع المتابعة..." : "Follow-up topic..."} />
+                <label className="text-micro text-muted-foreground mb-1 block">{ar ? "ملاحظات" : "Notes"}</label>
+                <textarea value={followUpNote} onChange={e => setFollowUpNote(e.target.value)} rows={3} className="w-full px-3 py-2 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 resize-none" placeholder={ar ? "موضوع المتابعة..." : "Follow-up topic..."} />
               </div>
               <div className="flex gap-2 pt-1">
-                <button onClick={() => { setShowFollowUp(false); setFollowUpDate(""); setFollowUpNote(""); }} className="flex-1 h-10 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-                <button onClick={() => { setShowFollowUp(false); setFollowUpDate(""); setFollowUpNote(""); }} className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5">
+                <button onClick={() => { setShowFollowUp(false); setFollowUpDate(""); setFollowUpNote(""); }} className="flex-1 h-10 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+                <button onClick={() => { setShowFollowUp(false); setFollowUpDate(""); setFollowUpNote(""); }} className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5">
                   <Clock size={13} /> {ar ? "جدولة" : "Schedule"}
                 </button>
               </div>

@@ -94,12 +94,12 @@ const ACTIVITY_ICONS: Record<string, string> = {
 };
 
 const COVER_COLORS = [
-  "from-violet-500/20 to-indigo-500/20",
+  "from-chart-4/20 to-indigo-500/20",
   "from-rose-500/20 to-pink-500/20",
   "from-emerald-500/20 to-teal-500/20",
-  "from-amber-500/20 to-orange-500/20",
+  "from-warning/20 to-orange-500/20",
   "from-blue-500/20 to-cyan-500/20",
-  "from-fuchsia-500/20 to-purple-500/20",
+  "from-chart-4/20 to-chart-4/20",
 ];
 
 function getMemberStatus(member: { last_active: string }): "online" | "away" | "offline" {
@@ -111,7 +111,7 @@ function getMemberStatus(member: { last_active: string }): "online" | "away" | "
 
 const STATUS_COLORS = {
   online: "bg-emerald-400",
-  away: "bg-amber-400",
+  away: "bg-warning",
   offline: "bg-zinc-400",
 };
 
@@ -140,7 +140,7 @@ export default function StudioHome() {
   }, []);
 
   const QUICK_ACTIONS = [
-    { id: "new-page", icon: Plus, en: "New Page", ar: "صفحة جديدة", color: "from-violet-500 to-indigo-600" },
+    { id: "new-page", icon: Plus, en: "New Page", ar: "صفحة جديدة", color: "from-chart-4/20 to-indigo-600" },
     { id: "new-db", icon: Database, en: "New Database", ar: "قاعدة بيانات جديدة", color: "from-emerald-500 to-teal-600" },
     { id: "invite", icon: UserPlus, en: "Invite Member", ar: "دعوة عضو", color: "from-rose-500 to-pink-600" },
   ];
@@ -161,14 +161,14 @@ export default function StudioHome() {
         className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/5 via-primary/[0.02] to-transparent border border-border/20 p-8 md:p-10"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/[0.04] rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-violet-500/[0.04] rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-chart-4/[0.04] rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
 
         <motion.div variants={fadeUp} className="relative z-10 space-y-3">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
               <Crown size={16} className="text-primary-foreground" />
             </div>
-            <span className="text-[11px] font-semibold text-primary/60 tracking-[0.15em] uppercase">
+            <span className="text-micro font-semibold text-brand-ink/60 tracking-[0.15em] uppercase">
               {lang === "ar" ? "الاستوديو" : "STUDIO"}
             </span>
           </div>
@@ -176,7 +176,7 @@ export default function StudioHome() {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
             {getGreeting(lang)}, {lang === "ar" ? "أهلاً بك" : "welcome back"}
           </h1>
-          <p className="text-muted-foreground text-base max-w-lg leading-relaxed">
+          <p className="text-muted-foreground text-body-lg max-w-lg leading-relaxed">
             {lang === "ar"
               ? "مرحباً بك في الاستوديو — مساحة عملك الذكية لإنشاء إدارة ومشاركة المعرفة."
               : "Welcome to Studio — your intelligent workspace for creating, managing, and sharing knowledge."}
@@ -198,7 +198,7 @@ export default function StudioHome() {
               <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${action.color} flex items-center justify-center shrink-0`}>
                 <action.icon size={14} className="text-white" />
               </div>
-              <span className="text-sm font-medium">{lang === "ar" ? action.ar : action.en}</span>
+              <span className="text-body font-medium">{lang === "ar" ? action.ar : action.en}</span>
               <ArrowRight
                 size={12}
                 className={`text-muted-foreground/30 group-hover:text-muted-foreground transition-colors ${isRtl ? "rotate-180" : ""}`}
@@ -216,10 +216,10 @@ export default function StudioHome() {
         className="grid grid-cols-2 md:grid-cols-4 gap-3"
       >
         {[
-          { label: lang === "ar" ? "إجمالي الصفحات" : "Total Pages", value: totalPages, icon: FileText, color: "text-violet-500", bg: "bg-violet-500/10" },
+          { label: lang === "ar" ? "إجمالي الصفحات" : "Total Pages", value: totalPages, icon: FileText, color: "text-chart-4", bg: "bg-chart-4/10" },
           { label: lang === "ar" ? "إجمالي المشاهدات" : "Total Views", value: totalViews.toLocaleString(), icon: Eye, color: "text-blue-500", bg: "bg-blue-500/10" },
           { label: lang === "ar" ? "أعضاء نشطون" : "Active Members", value: activeMembers, icon: Users, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-          { label: lang === "ar" ? "المساحة المستخدمة" : "Storage Used", value: storageUsed, icon: HardDrive, color: "text-amber-500", bg: "bg-amber-500/10" },
+          { label: lang === "ar" ? "المساحة المستخدمة" : "Storage Used", value: storageUsed, icon: HardDrive, color: "text-warning", bg: "bg-warning/10" },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -232,8 +232,8 @@ export default function StudioHome() {
               </div>
               <TrendingUp size={12} className="text-emerald-500/50" />
             </div>
-            <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
-            <p className="text-[11px] text-muted-foreground/60 mt-1">{stat.label}</p>
+            <p className="text-display font-bold tracking-tight">{stat.value}</p>
+            <p className="text-micro text-muted-foreground/60 mt-1">{stat.label}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -245,8 +245,8 @@ export default function StudioHome() {
         variants={stagger}
       >
         <div className="flex items-center gap-3 mb-4">
-          <Activity size={14} className="text-primary/60" />
-          <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+          <Activity size={14} className="text-brand-ink/60" />
+          <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
             {lang === "ar" ? "النشاط الأخير" : "Recent Activity"}
           </h2>
           <div className="flex-1 h-px bg-border/30" />
@@ -262,26 +262,26 @@ export default function StudioHome() {
                 className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent/30 transition-colors group"
               >
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-white text-caption font-bold shrink-0"
                   style={{ backgroundColor: member?.avatar || "#6B7280" }}
                 >
                   {activity.user.split(" ").map(n => n[0]).join("").slice(0, 2)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm">
+                  <p className="text-body">
                     <span className="font-medium">{lang === "ar" ? activity.user_ar : activity.user}</span>
                     <span className="text-muted-foreground/60 mx-1">
                       {lang === "ar" ? activity.action_ar : activity.action}
                     </span>
-                    <span className="font-medium text-primary/80 group-hover:text-primary transition-colors">
+                    <span className="font-medium text-brand-ink/80 group-hover:text-brand-ink transition-colors">
                       {lang === "ar" ? activity.page_ar : activity.page}
                     </span>
                   </p>
                 </div>
-                <span className="text-[11px] text-muted-foreground/40 tabular-nums shrink-0">
+                <span className="text-micro text-muted-foreground/40 tabular-nums shrink-0">
                   {activity.time}
                 </span>
-                <span className="text-sm">{ACTIVITY_ICONS[activity.action] || "📝"}</span>
+                <span className="text-body">{ACTIVITY_ICONS[activity.action] || "📝"}</span>
               </motion.div>
             );
           })}
@@ -296,8 +296,8 @@ export default function StudioHome() {
           variants={stagger}
         >
           <div className="flex items-center gap-3 mb-4">
-            <Star size={14} className="text-amber-500/70" />
-            <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+            <Star size={14} className="text-warning/70" />
+            <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
               {lang === "ar" ? "المفضلة" : "Favorites"}
             </h2>
             <div className="flex-1 h-px bg-border/30" />
@@ -312,15 +312,15 @@ export default function StudioHome() {
                 className={`relative flex-shrink-0 w-56 rounded-2xl bg-gradient-to-br ${COVER_COLORS[i % COVER_COLORS.length]} border border-border/20 p-4 hover:border-border/40 hover:shadow-md cursor-pointer transition-all duration-200 group`}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl">{page.icon}</span>
-                  <div className="w-5 h-5 rounded-full bg-amber-400/20 flex items-center justify-center">
-                    <Star size={10} className="text-amber-500 fill-amber-500" />
+                  <span className="text-heading">{page.icon}</span>
+                  <div className="w-5 h-5 rounded-full bg-warning/20 flex items-center justify-center">
+                    <Star size={10} className="text-warning fill-warning" />
                   </div>
                 </div>
-                <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors mb-1">
+                <p className="text-body font-semibold truncate group-hover:text-brand-ink transition-colors mb-1">
                   {lang === "ar" ? page.title_ar : page.title}
                 </p>
-                <p className="text-[11px] text-muted-foreground/60">
+                <p className="text-micro text-muted-foreground/60">
                   {timeAgo(page.updated_at, lang)}
                 </p>
                 <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -344,7 +344,7 @@ export default function StudioHome() {
           >
             <div className="flex items-center gap-3 mb-4">
               <Clock size={14} className="text-muted-foreground/60" />
-              <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+              <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
                 {lang === "ar" ? "الصفحات الأخيرة" : "Recent Pages"}
               </h2>
               <div className="flex-1 h-px bg-border/30" />
@@ -353,7 +353,7 @@ export default function StudioHome() {
             {recentPages.length === 0 ? (
               <div className="text-center py-12 rounded-2xl border border-dashed border-border/40 bg-card/30">
                 <FileText size={32} className="mx-auto text-muted-foreground/30 mb-3" />
-                <p className="text-sm text-muted-foreground/60">
+                <p className="text-body text-muted-foreground/60">
                   {lang === "ar" ? "لا توجد صفحات بعد — ابدأ بإنشاء صفحة جديدة" : "No pages yet — create your first page"}
                 </p>
               </div>
@@ -368,22 +368,22 @@ export default function StudioHome() {
                   >
                     <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${COVER_COLORS[i % COVER_COLORS.length]}`} />
                     <div className="flex items-start gap-3 mt-1">
-                      <span className="text-xl mt-0.5">{page.icon}</span>
+                      <span className="text-heading mt-0.5">{page.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
+                        <p className="text-body font-semibold truncate group-hover:text-brand-ink transition-colors">
                           {lang === "ar" ? page.title_ar : page.title}
                         </p>
                         <div className="flex items-center gap-2 mt-1.5">
-                          <span className="inline-flex items-center rounded-md bg-primary/8 px-2 py-0.5 text-[10px] font-medium text-primary/70">
+                          <span className="inline-flex items-center rounded-md bg-primary/8 px-2 py-0.5 text-micro font-medium text-brand-ink/70">
                             {PAGE_TYPE_LABELS[page.type]?.[lang] || page.type}
                           </span>
-                          <span className="text-[11px] text-muted-foreground/50 flex items-center gap-1">
+                          <span className="text-micro text-muted-foreground/50 flex items-center gap-1">
                             <Eye size={10} />
                             {page.view_count}
                           </span>
                         </div>
                       </div>
-                      <span className="text-[10px] text-muted-foreground/40 tabular-nums shrink-0">
+                      <span className="text-micro text-muted-foreground/40 tabular-nums shrink-0">
                         {timeAgo(page.updated_at, lang)}
                       </span>
                     </div>
@@ -401,7 +401,7 @@ export default function StudioHome() {
           >
             <div className="flex items-center gap-3 mb-4">
               <LayoutTemplate size={14} className="text-muted-foreground/60" />
-              <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+              <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
                 {lang === "ar" ? "معرض القوالب" : "Templates Gallery"}
               </h2>
               <div className="flex-1 h-px bg-border/30" />
@@ -420,26 +420,26 @@ export default function StudioHome() {
                   />
                   <div className="flex items-start gap-3 mt-1">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-title shrink-0"
                       style={{ backgroundColor: `${tmpl.color}15` }}
                     >
                       {tmpl.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold group-hover:text-primary transition-colors">
+                      <p className="text-body font-semibold group-hover:text-brand-ink transition-colors">
                         {lang === "ar" ? tmpl.name_ar : tmpl.name}
                       </p>
-                      <p className="text-[11px] text-muted-foreground/60 line-clamp-2 mt-1 leading-relaxed">
+                      <p className="text-micro text-muted-foreground/60 line-clamp-2 mt-1 leading-relaxed">
                         {lang === "ar" ? tmpl.description_ar : tmpl.description}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/10">
-                    <span className="text-[10px] text-muted-foreground/40 tabular-nums flex items-center gap-1">
+                    <span className="text-micro text-muted-foreground/40 tabular-nums flex items-center gap-1">
                       <BarChart3 size={10} />
                       {tmpl.usage_count} {lang === "ar" ? "مرة" : "uses"}
                     </span>
-                    <button className="text-[11px] font-medium text-primary/70 hover:text-primary transition-colors flex items-center gap-1">
+                    <button className="text-micro font-medium text-brand-ink/70 hover:text-brand-ink transition-colors flex items-center gap-1">
                       {lang === "ar" ? "استخدم" : "Use"}
                       <Zap size={10} />
                     </button>
@@ -460,7 +460,7 @@ export default function StudioHome() {
           >
             <div className="flex items-center gap-3 mb-4">
               <TrendingUp size={14} className="text-muted-foreground/60" />
-              <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+              <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
                 {lang === "ar" ? "الأكثر مشاهدة" : "Popular Pages"}
               </h2>
               <div className="flex-1 h-px bg-border/30" />
@@ -474,16 +474,16 @@ export default function StudioHome() {
                   onClick={() => setLocation(`/studio/${STUDIO_PAGES.find(p => p.title === page.title)?.id || ""}`)}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-accent/30 cursor-pointer transition-colors group"
                 >
-                  <span className="text-[11px] font-bold text-muted-foreground/30 w-4 text-center tabular-nums">
+                  <span className="text-micro font-bold text-muted-foreground/30 w-4 text-center tabular-nums">
                     {i + 1}
                   </span>
-                  <span className="text-lg">{page.icon}</span>
+                  <span className="text-title">{page.icon}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-medium truncate group-hover:text-primary transition-colors">
+                    <p className="text-body font-medium truncate group-hover:text-brand-ink transition-colors">
                       {lang === "ar" ? page.title_ar : page.title}
                     </p>
                   </div>
-                  <span className="text-[11px] text-muted-foreground/50 tabular-nums flex items-center gap-1 shrink-0">
+                  <span className="text-micro text-muted-foreground/50 tabular-nums flex items-center gap-1 shrink-0">
                     <Eye size={10} />
                     {page.view_count}
                   </span>
@@ -500,7 +500,7 @@ export default function StudioHome() {
           >
             <div className="flex items-center gap-3 mb-4">
               <Globe size={14} className="text-muted-foreground/60" />
-              <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+              <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
                 {lang === "ar" ? "أعضاء الفريق" : "Workspace Members"}
               </h2>
               <div className="flex-1 h-px bg-border/30" />
@@ -517,7 +517,7 @@ export default function StudioHome() {
                   >
                     <div className="relative shrink-0">
                       <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-white text-caption font-bold"
                         style={{ backgroundColor: member.avatar }}
                       >
                         {member.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
@@ -525,18 +525,18 @@ export default function StudioHome() {
                       <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-card ${STATUS_COLORS[status]}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium truncate">
+                      <p className="text-body font-medium truncate">
                         {lang === "ar" ? member.name_ar : member.name}
                       </p>
-                      <p className="text-[10px] text-muted-foreground/50 capitalize">
+                      <p className="text-micro text-muted-foreground/50 capitalize">
                         {member.role}
                       </p>
                     </div>
-                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${
+                    <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${
                       status === "online"
                         ? "bg-emerald-500/10 text-emerald-600"
                         : status === "away"
-                        ? "bg-amber-500/10 text-amber-600"
+                        ? "bg-warning/10 text-warning"
                         : "bg-zinc-500/10 text-zinc-500"
                     }`}>
                       {lang === "ar"
@@ -557,7 +557,7 @@ export default function StudioHome() {
           >
             <div className="flex items-center gap-3 mb-4">
               <Lightbulb size={14} className="text-muted-foreground/60" />
-              <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase">
+              <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase">
                 {lang === "ar" ? "ابدأ هنا" : "Getting Started"}
               </h2>
               <div className="flex-1 h-px bg-border/30" />
@@ -571,9 +571,9 @@ export default function StudioHome() {
                   className="flex items-start gap-3 px-4 py-3.5 rounded-xl border border-border/15 bg-card/30 hover:bg-card/50 transition-colors"
                 >
                   <div className="w-7 h-7 rounded-lg bg-primary/8 flex items-center justify-center shrink-0 mt-0.5">
-                    <tip.icon size={14} className="text-primary/50" />
+                    <tip.icon size={14} className="text-brand-ink/50" />
                   </div>
-                  <p className="text-[12px] text-muted-foreground leading-relaxed">
+                  <p className="text-caption text-muted-foreground leading-relaxed">
                     {lang === "ar" ? tip.ar : tip.en}
                   </p>
                 </motion.div>

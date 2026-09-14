@@ -57,17 +57,17 @@ function getPM(w: WorkItem): Record<string, unknown> {
 
 // ─── Shared components ───────────────────────────────────
 
-const labelCls = "text-[11px] text-muted-foreground font-medium mb-1 block";
-const inputCls = "w-full h-9 px-3 rounded-xl border border-border/60 bg-background text-[12px] focus:outline-none focus:ring-2 focus:ring-primary/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
+const inputCls = "w-full h-9 px-3 rounded-xl border border-border/60 bg-background text-caption focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const selectCls = inputCls + " appearance-none cursor-pointer";
 
 function KPI({ icon: Icon, value, label, color, sub }: { icon: React.ElementType; value: string | number; label: string; color: string; sub?: string }) {
   return (
     <div className="bg-background border border-border/40 rounded-xl px-4 py-4">
       <Icon size={14} strokeWidth={1.75} className={color + " mb-2"} />
-      <p className="text-[20px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{value}</p>
-      <p className="text-[10.5px] text-muted-foreground">{label}</p>
-      {sub && <p className="text-[10px] text-muted-foreground/50 mt-0.5">{sub}</p>}
+      <p className="text-heading font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{value}</p>
+      <p className="text-micro text-muted-foreground">{label}</p>
+      {sub && <p className="text-micro text-muted-foreground/50 mt-0.5">{sub}</p>}
     </div>
   );
 }
@@ -75,25 +75,25 @@ function KPI({ icon: Icon, value, label, color, sub }: { icon: React.ElementType
 function SectionTitle({ en, ar, isAr }: { en: string; ar: string; isAr: boolean }) {
   return (
     <div className="flex items-center gap-3 mb-4 mt-8 first:mt-0">
-      <h3 className="text-[11px] font-semibold text-muted-foreground tracking-[0.08em] uppercase shrink-0">{isAr ? ar : en}</h3>
+      <h3 className="text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase shrink-0">{isAr ? ar : en}</h3>
       <div className="flex-1 h-px bg-border/40" />
     </div>
   );
 }
 
 function BreakdownTable({ rows, ar }: { rows: { label: string; value: string | number; sub?: string; color?: string }[]; ar: boolean }) {
-  if (rows.length === 0) return <p className="text-[12px] text-muted-foreground/40 py-4 text-center">{ar ? "لا توجد بيانات" : "No data"}</p>;
+  if (rows.length === 0) return <p className="text-caption text-muted-foreground/40 py-4 text-center">{ar ? "لا توجد بيانات" : "No data"}</p>;
   return (
     <div className="border border-border/40 rounded-xl overflow-hidden divide-y divide-border/30">
       {rows.map((r, i) => (
         <div key={i} className="flex items-center justify-between px-4 py-3 bg-background hover:bg-muted/10 transition-colors">
           <div className="flex items-center gap-2 min-w-0">
             {r.color && <div className={`w-2 h-2 rounded-full shrink-0 ${r.color}`} />}
-            <span className="text-[12.5px] text-foreground truncate">{r.label}</span>
+            <span className="text-caption text-foreground truncate">{r.label}</span>
           </div>
           <div className="text-right shrink-0">
-            <span className="text-[13px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{r.value}</span>
-            {r.sub && <span className="text-[10px] text-muted-foreground ml-1.5">{r.sub}</span>}
+            <span className="text-body font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{r.value}</span>
+            {r.sub && <span className="text-micro text-muted-foreground ml-1.5">{r.sub}</span>}
           </div>
         </div>
       ))}
@@ -102,11 +102,11 @@ function BreakdownTable({ rows, ar }: { rows: { label: string; value: string | n
 }
 
 function AttentionItem({ icon: Icon, text, severity }: { icon: React.ElementType; text: string; severity: "red" | "amber" | "blue" }) {
-  const cls = severity === "red" ? "border-rose-200/50 bg-rose-50/30 text-rose-600" : severity === "amber" ? "border-amber-200/50 bg-amber-50/30 text-amber-600" : "border-blue-200/50 bg-blue-50/30 text-blue-600";
+  const cls = severity === "red" ? "border-rose-200/50 bg-rose-50/30 text-rose-600" : severity === "amber" ? "border-warning/30 bg-warning/10 text-warning" : "border-blue-200/50 bg-blue-50/30 text-blue-600";
   return (
     <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${cls}`}>
       <Icon size={14} strokeWidth={1.75} className="shrink-0" />
-      <span className="text-[12.5px] text-foreground">{text}</span>
+      <span className="text-caption text-foreground">{text}</span>
     </div>
   );
 }
@@ -207,7 +207,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
   });
   const [savedReports, setSavedReports] = useState<SavedReport[]>(() => {
     try {
-      return JSON.parse(localStorage.getItem("thoth_saved_reports") || "[]");
+      return JSON.parse(localStorage.getItem("bumblebee_saved_reports") || "[]");
     } catch { return []; }
   });
   const [activeReport, setActiveReport] = useState<string | null>(null);
@@ -217,14 +217,14 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
     const report: SavedReport = { id: crypto.randomUUID(), name: config.name, config: { ...config }, createdAt: new Date().toISOString() };
     const next = [...savedReports, report];
     setSavedReports(next);
-    localStorage.setItem("thoth_saved_reports", JSON.stringify(next));
+    localStorage.setItem("bumblebee_saved_reports", JSON.stringify(next));
     setActiveReport(report.id);
   }
 
   function deleteReport(id: string) {
     const next = savedReports.filter(r => r.id !== id);
     setSavedReports(next);
-    localStorage.setItem("thoth_saved_reports", JSON.stringify(next));
+    localStorage.setItem("bumblebee_saved_reports", JSON.stringify(next));
     if (activeReport === id) setActiveReport(null);
   }
 
@@ -326,10 +326,10 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
       {/* Saved Reports */}
       {savedReports.length > 0 && (
         <div>
-          <p className="text-[11px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2">{ar ? "التقارير المحفوظة" : "Saved Reports"}</p>
+          <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2">{ar ? "التقارير المحفوظة" : "Saved Reports"}</p>
           <div className="flex flex-wrap gap-2">
             {savedReports.map(r => (
-              <div key={r.id} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-[11px] font-medium cursor-pointer transition-all ${activeReport === r.id ? "border-primary bg-primary/5 text-primary" : "border-border/40 text-muted-foreground hover:border-border/80"}`}>
+              <div key={r.id} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-micro font-medium cursor-pointer transition-all ${activeReport === r.id ? "border-primary bg-primary/5 text-brand-ink" : "border-border/40 text-muted-foreground hover:border-border/80"}`}>
                 <button onClick={() => loadReport(r)}>{r.name}</button>
                 <button onClick={() => deleteReport(r.id)} className="text-muted-foreground/40 hover:text-rose-500"><X size={10} /></button>
               </div>
@@ -379,10 +379,10 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
       {/* Filters */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-[11px] font-semibold text-muted-foreground tracking-[0.06em] uppercase flex items-center gap-1.5">
-            <Filter size={10} /> {ar ? "الفلاتر" : "Filters"} {config.filters.length > 0 && <span className="text-primary">({config.filters.length})</span>}
+          <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase flex items-center gap-1.5">
+            <Filter size={10} /> {ar ? "الفلاتر" : "Filters"} {config.filters.length > 0 && <span className="text-brand-ink">({config.filters.length})</span>}
           </p>
-          <button onClick={addFilter} className="text-[10px] text-primary hover:underline flex items-center gap-1"><Plus size={9} /> {ar ? "إضافة فلتر" : "Add Filter"}</button>
+          <button onClick={addFilter} className="text-micro text-brand-ink hover:underline flex items-center gap-1"><Plus size={9} /> {ar ? "إضافة فلتر" : "Add Filter"}</button>
         </div>
         {config.filters.length > 0 && (
           <div className="space-y-2">
@@ -404,7 +404,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
 
       {/* Actions */}
       <div className="flex items-center gap-2">
-        <button onClick={saveReport} disabled={!config.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-40">
+        <button onClick={saveReport} disabled={!config.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-micro font-medium bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-40">
           <Save size={10} /> {ar ? "حفظ" : "Save"}
         </button>
         <button onClick={() => {
@@ -415,7 +415,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a"); a.href = url; a.download = `report-${config.name || "custom"}.csv`; a.click();
           URL.revokeObjectURL(url);
-        }} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium border border-border/60 text-muted-foreground hover:text-foreground">
+        }} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-micro font-medium border border-border/60 text-muted-foreground hover:text-foreground">
           <Download size={10} /> CSV
         </button>
       </div>
@@ -423,21 +423,21 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
       {/* Results */}
       <div className="border border-border/40 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-border/30 flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-muted-foreground">{ar ? "النتائج" : "Results"}</span>
-          <span className="text-[10px] text-muted-foreground">{reportData.length} {ar ? "صف" : "rows"} · {reportData.reduce((s, r) => s + r.count, 0)} {ar ? "سجل" : "records"}</span>
+          <span className="text-micro font-semibold text-muted-foreground">{ar ? "النتائج" : "Results"}</span>
+          <span className="text-micro text-muted-foreground">{reportData.length} {ar ? "صف" : "rows"} · {reportData.reduce((s, r) => s + r.count, 0)} {ar ? "سجل" : "records"}</span>
         </div>
 
         {reportData.length === 0 ? (
-          <div className="py-8 text-center text-[12px] text-muted-foreground/50">{ar ? "لا توجد نتائج" : "No results"}</div>
+          <div className="py-8 text-center text-caption text-muted-foreground/50">{ar ? "لا توجد نتائج" : "No results"}</div>
         ) : config.chartType === "table" ? (
           <div className="divide-y divide-border/25">
             {reportData.map((row, i) => (
               <div key={i} className="flex items-center justify-between px-4 py-3 hover:bg-muted/10">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ background: statusColors[row.label] || `hsl(${(i * 47) % 360}, 60%, 55%)` }} />
-                  <span className="text-[12px]">{row.label}</span>
+                  <span className="text-caption">{row.label}</span>
                 </div>
-                <span className="text-[13px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <span className="text-body font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {config.metric === "count" ? row.count : fmtC(metricValue(row), currency, ar)}
                 </span>
               </div>
@@ -450,7 +450,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
               const val = metricValue(row);
               return (
                 <div key={i} className="flex items-center gap-3">
-                  <span className="text-[10.5px] text-muted-foreground w-[100px] truncate">{row.label}</span>
+                  <span className="text-micro text-muted-foreground w-[100px] truncate">{row.label}</span>
                   <div className="flex-1 h-3 bg-muted/40 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full rounded-full"
@@ -460,7 +460,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
                       transition={{ duration: 0.4, delay: i * 0.05 }}
                     />
                   </div>
-                  <span className="text-[10.5px] font-medium tabular-nums w-14 text-right">
+                  <span className="text-micro font-medium tabular-nums w-14 text-right">
                     {config.metric === "count" ? val : fmtC(val, currency, ar)}
                   </span>
                 </div>
@@ -471,7 +471,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
           <div className="p-6 flex flex-col items-center">
             {(() => {
               const total = reportData.reduce((s, r) => s + metricValue(r), 0);
-              if (total === 0) return <p className="text-[11px] text-muted-foreground/50">{ar ? "مفيش بيانات" : "No data"}</p>;
+              if (total === 0) return <p className="text-micro text-muted-foreground/50">{ar ? "مفيش بيانات" : "No data"}</p>;
               let cum = 0;
               const parts = reportData.map((row, i) => {
                 const start = (cum / total) * 360;
@@ -483,7 +483,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
                 <>
                   <div className="rounded-full relative" style={{ width: 140, height: 140, background: `conic-gradient(${parts.join(", ")})` }}>
                     <div className="absolute inset-[28%] rounded-full bg-background flex items-center justify-center">
-                      <span className="text-[15px] font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      <span className="text-body-lg font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>
                         {config.metric === "count" ? total : fmtC(total, currency, ar)}
                       </span>
                     </div>
@@ -492,7 +492,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
                     {reportData.filter(r => metricValue(r) > 0).map((row, i) => (
                       <div key={i} className="flex items-center gap-1">
                         <div className="w-2 h-2 rounded-full" style={{ background: statusColors[row.label] || `hsl(${(i * 47) % 360}, 60%, 55%)` }} />
-                        <span className="text-[9px] text-muted-foreground">{row.label}: {metricValue(row)}</span>
+                        <span className="text-micro text-muted-foreground">{row.label}: {metricValue(row)}</span>
                       </div>
                     ))}
                   </div>
@@ -644,13 +644,13 @@ export default function Reports() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <BarChart3 size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "التقارير والتحليلات" : "Reports & Analytics"}</p>
+            <BarChart3 size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "التقارير والتحليلات" : "Reports & Analytics"}</p>
           </div>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "التقارير" : "Reports"}
           </h1>
-          <p className="text-[13px] text-muted-foreground">
+          <p className="text-body text-muted-foreground">
             {totalRecords > 0
               ? (ar ? `تحليلات مبنية على ${totalRecords} سجل حقيقي` : `Analytics built from ${totalRecords} real records`)
               : (ar ? "ضيف بيانات عشان تشوف التقارير" : "Add data to see reports")}
@@ -663,7 +663,7 @@ export default function Reports() {
         <div className="px-7 md:px-10 flex items-center gap-0 overflow-x-auto">
           {TABS.map((t) => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`flex items-center gap-1.5 px-3.5 py-3 text-[12px] font-medium border-b-2 transition-all whitespace-nowrap ${tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`flex items-center gap-1.5 px-3.5 py-3 text-caption font-medium border-b-2 transition-all whitespace-nowrap ${tab === t.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               <t.icon size={12} strokeWidth={1.75} />
               {ar ? t.ar : t.en}
             </button>
@@ -688,14 +688,14 @@ export default function Reports() {
               <KPI icon={DollarSign} value={fmt(revenue)} label={ar ? "الإيرادات" : "Revenue"} color="text-emerald-600" />
               <KPI icon={Receipt} value={fmt(totalExpenses)} label={ar ? "المصاريف" : "Expenses"} color="text-rose-500" />
               <KPI icon={TrendingUp} value={fmt(profit)} label={ar ? "صافي الربح" : "Profit"} color={profit >= 0 ? "text-emerald-600" : "text-rose-500"} />
-              <KPI icon={FileText} value={fmt(outstanding)} label={ar ? "مستحقات" : "Outstanding"} color="text-amber-600" sub={`${overdueInv.length} ${ar ? "متأخر" : "overdue"}`} />
+              <KPI icon={FileText} value={fmt(outstanding)} label={ar ? "مستحقات" : "Outstanding"} color="text-warning" sub={`${overdueInv.length} ${ar ? "متأخر" : "overdue"}`} />
               <KPI icon={TrendingUp} value={fmt(pipeline)} label={ar ? "الصفقات" : "Pipeline"} color="text-blue-600" sub={`${activeDeals.length} ${ar ? "نشط" : "active"}`} />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
               <KPI icon={Briefcase} value={openWork.length} label={ar ? "شغل مفتوح" : "Open Work"} color="text-blue-600" />
               <KPI icon={AlertTriangle} value={overdueWork.length} label={ar ? "متأخر" : "Overdue"} color={overdueWork.length > 0 ? "text-rose-500" : "text-emerald-600"} />
-              <KPI icon={Users} value={activeEmployees.length} label={ar ? "موظفين نشطين" : "Active Employees"} color="text-violet-600" />
-              <KPI icon={ShoppingCart} value={pendingPRs.length} label={ar ? "مستني موافقة" : "Pending PRs"} color="text-amber-600" />
+              <KPI icon={Users} value={activeEmployees.length} label={ar ? "موظفين نشطين" : "Active Employees"} color="text-chart-4" />
+              <KPI icon={ShoppingCart} value={pendingPRs.length} label={ar ? "مستني موافقة" : "Pending PRs"} color="text-warning" />
               <KPI icon={Package} value={resources.length} label={ar ? "الأصول" : "Assets"} color="text-orange-600" />
             </div>
 
@@ -733,8 +733,8 @@ export default function Reports() {
             <div className="flex items-center justify-between mb-4">
               <div />
               {deals.length > 0 && (
-                <button onClick={() => exportCSV(deals, `thoth-sales-report-${new Date().toISOString().slice(0,10)}.csv`)}
-                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-[11.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => exportCSV(deals, `bumblebee-sales-report-${new Date().toISOString().slice(0,10)}.csv`)}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={12} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
@@ -743,7 +743,7 @@ export default function Reports() {
               <KPI icon={TrendingUp} value={fmt(pipeline)} label={ar ? "قيمة الصفقات" : "Pipeline Value"} color="text-blue-600" />
               <KPI icon={CheckCircle2} value={wonDeals.length} label={ar ? "صفقات مكسوبة" : "Won Deals"} color="text-emerald-600" sub={fmt(wonDeals.reduce((s, d) => s + Number(d.value), 0))} />
               <KPI icon={ArrowDownRight} value={lostDeals.length} label={ar ? "صفقات خسرانة" : "Lost Deals"} color="text-rose-500" />
-              <KPI icon={Target} value={pct(wonDeals.length, wonDeals.length + lostDeals.length)} label={ar ? "معدل التحويل" : "Conversion Rate"} color="text-primary" />
+              <KPI icon={Target} value={pct(wonDeals.length, wonDeals.length + lostDeals.length)} label={ar ? "معدل التحويل" : "Conversion Rate"} color="text-brand-ink" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -752,7 +752,7 @@ export default function Reports() {
               </div>
               <div>
                 <SectionTitle en="Top Customers" ar="أكبر العملاء" isAr={ar} />
-                <BreakdownTable ar={ar} rows={topCustomers.map(([name, val]) => ({ label: name, value: fmt(val), color: "bg-amber-500" }))} />
+                <BreakdownTable ar={ar} rows={topCustomers.map(([name, val]) => ({ label: name, value: fmt(val), color: "bg-warning" }))} />
               </div>
             </div>
           </>
@@ -764,8 +764,8 @@ export default function Reports() {
             <div className="flex items-center justify-between mb-4">
               <div />
               {invoices.length > 0 && (
-                <button onClick={() => exportCSV(invoices, `thoth-finance-report-${new Date().toISOString().slice(0,10)}.csv`)}
-                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-[11.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => exportCSV(invoices, `bumblebee-finance-report-${new Date().toISOString().slice(0,10)}.csv`)}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={12} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
@@ -774,7 +774,7 @@ export default function Reports() {
               <KPI icon={DollarSign} value={fmt(revenue)} label={ar ? "الإيرادات" : "Revenue"} color="text-emerald-600" />
               <KPI icon={Receipt} value={fmt(totalExpenses)} label={ar ? "المصاريف" : "Expenses"} color="text-rose-500" />
               <KPI icon={TrendingUp} value={fmt(profit)} label={ar ? "صافي الربح" : "Net Profit"} color={profit >= 0 ? "text-emerald-600" : "text-rose-500"} />
-              <KPI icon={FileText} value={fmt(outstanding)} label={ar ? "مستحقات" : "Outstanding"} color="text-amber-600" />
+              <KPI icon={FileText} value={fmt(outstanding)} label={ar ? "مستحقات" : "Outstanding"} color="text-warning" />
               <KPI icon={CheckCircle2} value={paidInv.length} label={ar ? "مدفوعة" : "Paid"} color="text-emerald-600" />
               <KPI icon={AlertTriangle} value={overdueInv.length} label={ar ? "متأخرة" : "Overdue"} color={overdueInv.length > 0 ? "text-rose-500" : "text-emerald-600"} />
             </div>
@@ -806,8 +806,8 @@ export default function Reports() {
             <div className="flex items-center justify-between mb-4">
               <div />
               {allWork.length > 0 && (
-                <button onClick={() => exportCSV(allWork, `thoth-operations-report-${new Date().toISOString().slice(0,10)}.csv`)}
-                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-[11.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => exportCSV(allWork, `bumblebee-operations-report-${new Date().toISOString().slice(0,10)}.csv`)}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={12} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
@@ -816,20 +816,20 @@ export default function Reports() {
               <KPI icon={Layers} value={openWork.length} label={ar ? "شغل مفتوح" : "Open Work"} color="text-blue-600" />
               <KPI icon={CheckCircle2} value={doneWork.length} label={ar ? "مكتمل" : "Completed"} color="text-emerald-600" />
               <KPI icon={AlertTriangle} value={overdueWork.length} label={ar ? "متأخر" : "Overdue"} color={overdueWork.length > 0 ? "text-rose-500" : "text-emerald-600"} />
-              <KPI icon={Target} value={pct(doneWork.length, allWork.length)} label={ar ? "معدل الإنجاز" : "Completion Rate"} color="text-primary" />
+              <KPI icon={Target} value={pct(doneWork.length, allWork.length)} label={ar ? "معدل الإنجاز" : "Completion Rate"} color="text-brand-ink" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <SectionTitle en="Work by Status" ar="حسب الحالة" isAr={ar} />
                 <BreakdownTable ar={ar} rows={workByStatus.map(([st, count]) => {
-                  const colors: Record<string, string> = { done: "bg-emerald-500", in_progress: "bg-blue-500", review: "bg-violet-500", todo: "bg-slate-400", backlog: "bg-slate-300", blocked: "bg-rose-500", planned: "bg-indigo-400" };
+                  const colors: Record<string, string> = { done: "bg-emerald-500", in_progress: "bg-blue-500", review: "bg-chart-4", todo: "bg-slate-400", backlog: "bg-slate-300", blocked: "bg-rose-500", planned: "bg-indigo-400" };
                   return { label: st.replace("_", " "), value: count, color: colors[st] || "bg-muted-foreground" };
                 })} />
               </div>
               <div>
                 <SectionTitle en="Work by Priority" ar="حسب الأولوية" isAr={ar} />
                 <BreakdownTable ar={ar} rows={workByPriority.map(([p, count]) => {
-                  const colors: Record<string, string> = { critical: "bg-red-500", urgent: "bg-rose-500", high: "bg-orange-500", medium: "bg-amber-500", low: "bg-slate-400" };
+                  const colors: Record<string, string> = { critical: "bg-red-500", urgent: "bg-rose-500", high: "bg-orange-500", medium: "bg-warning", low: "bg-slate-400" };
                   return { label: p.charAt(0).toUpperCase() + p.slice(1), value: count, color: colors[p] || "bg-muted-foreground" };
                 })} />
               </div>
@@ -841,15 +841,15 @@ export default function Reports() {
         {tab === "hr" && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              <KPI icon={Users} value={teamMembers.length} label={ar ? "إجمالي الفريق" : "Team Size"} color="text-violet-600" />
+              <KPI icon={Users} value={teamMembers.length} label={ar ? "إجمالي الفريق" : "Team Size"} color="text-chart-4" />
               <KPI icon={CheckCircle2} value={activeEmployees.length} label={ar ? "نشط" : "Active"} color="text-emerald-600" />
               <KPI icon={Building2} value={empByDept.length} label={ar ? "أقسام" : "Departments"} color="text-blue-600" />
-              <KPI icon={Briefcase} value={openWork.length} label={ar ? "مهام مفتوحة" : "Open Tasks"} color="text-amber-600" />
+              <KPI icon={Briefcase} value={openWork.length} label={ar ? "مهام مفتوحة" : "Open Tasks"} color="text-warning" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <SectionTitle en="Employees by Department" ar="الموظفين حسب القسم" isAr={ar} />
-                <BreakdownTable ar={ar} rows={empByDept.map(([dept, count]) => ({ label: dept, value: count, color: "bg-violet-400" }))} />
+                <BreakdownTable ar={ar} rows={empByDept.map(([dept, count]) => ({ label: dept, value: count, color: "bg-chart-4" }))} />
               </div>
               <div>
                 <SectionTitle en="Team Capacity" ar="قدرة الفريق" isAr={ar} />
@@ -857,7 +857,7 @@ export default function Reports() {
                   { label: ar ? "مهام مفتوحة" : "Open tasks", value: openWork.length, color: "bg-blue-500" },
                   { label: ar ? "متأخرة" : "Overdue", value: overdueWork.length, color: "bg-rose-500" },
                   { label: ar ? "مكتملة" : "Completed", value: doneWork.length, color: "bg-emerald-500" },
-                  { label: ar ? "متوسط لكل موظف" : "Avg per employee", value: activeEmployees.length > 0 ? Math.round(openWork.length / activeEmployees.length) : 0, color: "bg-amber-500" },
+                  { label: ar ? "متوسط لكل موظف" : "Avg per employee", value: activeEmployees.length > 0 ? Math.round(openWork.length / activeEmployees.length) : 0, color: "bg-warning" },
                 ]} />
               </div>
             </div>
@@ -870,22 +870,22 @@ export default function Reports() {
             <div className="flex items-center justify-between mb-4">
               <div />
               {purchaseOrders.length > 0 && (
-                <button onClick={() => { const rows = purchaseOrders.map((p) => { const m = getPM(p); return { po_number: m.po_number, title: p.title_en, vendor: m.vendor_name, amount: m.estimated_amount, status: p.status, created_at: p.created_at }; }); exportCSV(rows, `thoth-purchasing-report-${new Date().toISOString().slice(0,10)}.csv`); }}
-                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-[11.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => { const rows = purchaseOrders.map((p) => { const m = getPM(p); return { po_number: m.po_number, title: p.title_en, vendor: m.vendor_name, amount: m.estimated_amount, status: p.status, created_at: p.created_at }; }); exportCSV(rows, `bumblebee-purchasing-report-${new Date().toISOString().slice(0,10)}.csv`); }}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={12} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              <KPI icon={Building2} value={vendors.length} label={ar ? "الموردين" : "Vendors"} color="text-violet-600" />
+              <KPI icon={Building2} value={vendors.length} label={ar ? "الموردين" : "Vendors"} color="text-chart-4" />
               <KPI icon={FileText} value={purchaseRequests.length} label={ar ? "طلبات شراء" : "Purchase Requests"} color="text-blue-600" />
-              <KPI icon={Clock} value={pendingPRs.length} label={ar ? "مستني موافقة" : "Pending Approval"} color="text-amber-600" />
-              <KPI icon={ShoppingCart} value={purchaseOrders.length} label={ar ? "أوامر شراء" : "Purchase Orders"} color="text-primary" />
+              <KPI icon={Clock} value={pendingPRs.length} label={ar ? "مستني موافقة" : "Pending Approval"} color="text-warning" />
+              <KPI icon={ShoppingCart} value={purchaseOrders.length} label={ar ? "أوامر شراء" : "Purchase Orders"} color="text-brand-ink" />
             </div>
             {topVendors.length > 0 && (
               <>
                 <SectionTitle en="Top Vendors by Spend" ar="أكبر الموردين" isAr={ar} />
-                <BreakdownTable ar={ar} rows={topVendors.map(([name, val]) => ({ label: name, value: fmt(val), color: "bg-violet-400" }))} />
+                <BreakdownTable ar={ar} rows={topVendors.map(([name, val]) => ({ label: name, value: fmt(val), color: "bg-chart-4" }))} />
               </>
             )}
           </>
@@ -897,17 +897,17 @@ export default function Reports() {
             <div className="flex items-center justify-between mb-4">
               <div />
               {resources.length > 0 && (
-                <button onClick={() => exportCSV(resources, `thoth-inventory-report-${new Date().toISOString().slice(0,10)}.csv`)}
-                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-[11.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => exportCSV(resources, `bumblebee-inventory-report-${new Date().toISOString().slice(0,10)}.csv`)}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={12} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               <KPI icon={Package} value={resources.length} label={ar ? "إجمالي الأصول" : "Total Assets"} color="text-orange-600" />
-              <KPI icon={AlertTriangle} value={lowStock.length} label={ar ? "مخزون قليل" : "Low Stock"} color={lowStock.length > 0 ? "text-amber-600" : "text-emerald-600"} />
+              <KPI icon={AlertTriangle} value={lowStock.length} label={ar ? "مخزون قليل" : "Low Stock"} color={lowStock.length > 0 ? "text-warning" : "text-emerald-600"} />
               <KPI icon={Briefcase} value={resources.filter((r) => r.utilization > 0).length} label={ar ? "قيد الاستخدام" : "In Use"} color="text-blue-600" />
-              <KPI icon={Target} value={resources.length > 0 ? Math.round(resources.reduce((s, r) => s + r.utilization, 0) / resources.length) + "%" : "0%"} label={ar ? "متوسط الاستخدام" : "Avg Utilization"} color="text-primary" />
+              <KPI icon={Target} value={resources.length > 0 ? Math.round(resources.reduce((s, r) => s + r.utilization, 0) / resources.length) + "%" : "0%"} label={ar ? "متوسط الاستخدام" : "Avg Utilization"} color="text-brand-ink" />
             </div>
             {(() => {
               const byType: Record<string, number> = {};
@@ -930,10 +930,10 @@ export default function Reports() {
               <BarChart3 size={24} className="text-muted-foreground/40" />
             </div>
             <div className="text-center max-w-[400px]">
-              <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "مفيش بيانات لسه" : "No data yet"}
               </p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">
+              <p className="text-body text-muted-foreground leading-relaxed">
                 {ar ? "ضيف بيانات في أي قسم عشان تشوف التقارير والتحليلات هنا." : "Add data to any module to see reports and analytics here."}
               </p>
             </div>

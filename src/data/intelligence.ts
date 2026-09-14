@@ -1,5 +1,5 @@
 /**
- * THOTH Intelligence Engine v1
+ * Bumblebee Intelligence Engine v1
  *
  * Pure functions that derive insights from the business graph.
  * No AI API calls — all logic is deterministic.
@@ -71,8 +71,8 @@ export function healthLevel(score: number): HealthLevel {
 
 export const HEALTH_META: Record<HealthLevel, { en: string; ar: string; color: string; bg: string }> = {
   excellent: { en: "Excellent",        ar: "ممتاز",       color: "text-emerald-600", bg: "bg-emerald-50" },
-  healthy:   { en: "Healthy",          ar: "صحي",        color: "text-primary",     bg: "bg-primary/8" },
-  attention: { en: "Attention Needed", ar: "يحتاج اهتمام", color: "text-amber-600",  bg: "bg-amber-50" },
+  healthy:   { en: "Healthy",          ar: "صحي",        color: "text-brand-ink",     bg: "bg-primary/8" },
+  attention: { en: "Attention Needed", ar: "يحتاج اهتمام", color: "text-warning",  bg: "bg-warning/10" },
   at_risk:   { en: "At Risk",          ar: "في خطر",     color: "text-rose-600",    bg: "bg-rose-50" },
 };
 

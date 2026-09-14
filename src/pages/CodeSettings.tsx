@@ -17,11 +17,11 @@ import {
   ChevronDown, ChevronRight, Sparkles,
 } from "lucide-react";
 
-const inputCls = "h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition w-full";
-const smallInput = "h-8 px-2.5 rounded-lg border border-border/50 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20 transition w-full";
-const labelCls = "text-[11px] text-muted-foreground font-medium mb-1 block";
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-[12px] font-medium px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
+const inputCls = "h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition w-full";
+const smallInput = "h-8 px-2.5 rounded-lg border border-border/50 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20 transition w-full";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-caption font-medium px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
 
 // Entity groups for organized display
 const ENTITY_GROUPS: { label: string; labelAr: string; entities: EntityType[] }[] = [
@@ -61,13 +61,13 @@ function CodeRow({ entityType, config, onChange, ar }: {
       <div className="flex items-center gap-2 min-w-[180px]">
         <Hash size={13} className="text-muted-foreground/50 shrink-0" />
         <div>
-          <p className="text-[13px] font-medium">{ar ? label.ar : label.en}</p>
+          <p className="text-body font-medium">{ar ? label.ar : label.en}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-2 flex-1">
         <div className="w-[120px]">
-          <label className="text-[9px] text-muted-foreground/60">{ar ? "البادئة" : "Prefix"}</label>
+          <label className="text-micro text-muted-foreground/60">{ar ? "البادئة" : "Prefix"}</label>
           <input
             value={config.prefix}
             onChange={e => onChange({ ...config, prefix: e.target.value.toUpperCase() })}
@@ -76,7 +76,7 @@ function CodeRow({ entityType, config, onChange, ar }: {
           />
         </div>
         <div className="w-[80px]">
-          <label className="text-[9px] text-muted-foreground/60">{ar ? "الفاصل" : "Separator"}</label>
+          <label className="text-micro text-muted-foreground/60">{ar ? "الفاصل" : "Separator"}</label>
           <input
             value={config.separator}
             onChange={e => onChange({ ...config, separator: e.target.value })}
@@ -86,7 +86,7 @@ function CodeRow({ entityType, config, onChange, ar }: {
           />
         </div>
         <div className="w-[80px]">
-          <label className="text-[9px] text-muted-foreground/60">{ar ? "الأرقام" : "Digits"}</label>
+          <label className="text-micro text-muted-foreground/60">{ar ? "الأرقام" : "Digits"}</label>
           <input
             type="number"
             min={3}
@@ -100,7 +100,7 @@ function CodeRow({ entityType, config, onChange, ar }: {
 
       <div className="flex items-center gap-2 min-w-[140px] justify-end opacity-70 group-hover:opacity-100 transition-opacity">
         <Eye size={11} className="text-muted-foreground/40" />
-        <span className="text-[12px] font-mono text-muted-foreground tabular-nums bg-muted/40 px-2.5 py-1 rounded-lg">
+        <span className="text-caption font-mono text-muted-foreground tabular-nums bg-muted/40 px-2.5 py-1 rounded-lg">
           {preview}
         </span>
       </div>
@@ -143,13 +143,13 @@ export default function CodeSettingsPage() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-[22px] font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h1 className="text-heading font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
               <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Settings size={16} className="text-primary" />
+                <Settings size={16} className="text-brand-ink" />
               </div>
               {ar ? "إعدادات أكواد الترقيم" : "Code Numbering Settings"}
             </h1>
-            <p className="text-[13px] text-muted-foreground mt-1.5 ml-[46px]">
+            <p className="text-body text-muted-foreground mt-1.5 ml-[46px]">
               {ar ? "خصص البادئة والفاصل وعدد الأرقام لكل نوع" : "Customize prefix, separator, and digits for each entity type"}
             </p>
           </div>
@@ -167,10 +167,10 @@ export default function CodeSettingsPage() {
 
         {/* Info card */}
         <div className="flex items-start gap-3 p-4 rounded-xl bg-primary/5 border border-primary/10">
-          <Info size={14} className="text-primary shrink-0 mt-0.5" />
-          <div className="text-[12px] text-muted-foreground space-y-1">
+          <Info size={14} className="text-brand-ink shrink-0 mt-0.5" />
+          <div className="text-caption text-muted-foreground space-y-1">
             <p>{ar ? "الأكواد تتزايد تلقائياً عند إنشاء سجل جديد. يمكنك تخصيص البادئة والفاصل وعدد الأرقام لكل نوع." : "Codes auto-increment when creating new records. Customize the prefix, separator, and digit count for each type."}</p>
-            <p className="text-[11px] text-muted-foreground/60">
+            <p className="text-micro text-muted-foreground/60">
               {ar ? "مثال: إذا اخترت البادئة QT والفاصل - و5 أرقام، سيكون الكود التالي QT-00001" : "Example: If you choose prefix QT, separator -, and 5 digits, the next code will be QT-00001"}
             </p>
           </div>
@@ -185,9 +185,9 @@ export default function CodeSettingsPage() {
                 className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-muted/30 transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles size={13} className="text-primary/60" />
-                  <span className="text-[13px] font-medium">{ar ? group.labelAr : group.label}</span>
-                  <span className="text-[10px] text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded-md">{group.entities.length}</span>
+                  <Sparkles size={13} className="text-brand-ink/60" />
+                  <span className="text-body font-medium">{ar ? group.labelAr : group.label}</span>
+                  <span className="text-micro text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded-md">{group.entities.length}</span>
                 </div>
                 {expandedGroup === gi ? <ChevronDown size={14} className="text-muted-foreground" /> : <ChevronRight size={14} className="text-muted-foreground" />}
               </button>
@@ -210,7 +210,7 @@ export default function CodeSettingsPage() {
 
         {/* Preview summary */}
         <div className="p-5 rounded-2xl border border-border/40 bg-muted/20">
-          <h3 className="text-[13px] font-medium mb-3 flex items-center gap-2">
+          <h3 className="text-body font-medium mb-3 flex items-center gap-2">
             <Eye size={13} className="text-muted-foreground" />
             {ar ? "معاينة الأكواد" : "Code Preview"}
           </h3>
@@ -220,8 +220,8 @@ export default function CodeSettingsPage() {
               const code = previewCode(et, settings, Math.floor(Math.random() * 999) + 1);
               return (
                 <div key={et} className="flex items-center gap-2 p-2.5 rounded-xl bg-background border border-border/30">
-                  <span className="text-[11px] text-muted-foreground truncate">{ar ? label.ar : label.en}</span>
-                  <span className="text-[11px] font-mono font-medium ml-auto tabular-nums">{code}</span>
+                  <span className="text-micro text-muted-foreground truncate">{ar ? label.ar : label.en}</span>
+                  <span className="text-micro font-mono font-medium ml-auto tabular-nums">{code}</span>
                 </div>
               );
             })}

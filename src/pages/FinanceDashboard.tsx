@@ -1,7 +1,7 @@
 /**
  * Finance Dashboard — لوحة المالية
  *
- * Comprehensive financial command center for THOTH Fashion.
+ * Comprehensive financial command center for Bumblebee Fashion.
  */
 
 import { useState, useMemo } from "react";
@@ -61,12 +61,12 @@ const STATUS_STYLES: Record<string, { bg: string; text: string; dot: string }> =
   draft:   { bg: "bg-slate-50",   text: "text-slate-600",   dot: "bg-slate-400" },
   sent:    { bg: "bg-blue-50",    text: "text-blue-600",    dot: "bg-blue-400" },
   viewed:  { bg: "bg-indigo-50",  text: "text-indigo-600",  dot: "bg-indigo-400" },
-  partial: { bg: "bg-amber-50",   text: "text-amber-600",   dot: "bg-amber-400" },
+  partial: { bg: "bg-warning/10",   text: "text-warning",   dot: "bg-warning" },
   paid:    { bg: "bg-emerald-50", text: "text-emerald-600", dot: "bg-emerald-400" },
   overdue: { bg: "bg-rose-50",    text: "text-rose-600",    dot: "bg-rose-400" },
   cancelled: { bg: "bg-zinc-50",  text: "text-zinc-500",    dot: "bg-zinc-400" },
   completed: { bg: "bg-emerald-50", text: "text-emerald-600", dot: "bg-emerald-400" },
-  pending:   { bg: "bg-amber-50",   text: "text-amber-600",   dot: "bg-amber-400" },
+  pending:   { bg: "bg-warning/10",   text: "text-warning",   dot: "bg-warning" },
   failed:    { bg: "bg-rose-50",    text: "text-rose-600",    dot: "bg-rose-400" },
   reversed:  { bg: "bg-orange-50",  text: "text-orange-600",  dot: "bg-orange-400" },
 };
@@ -171,9 +171,9 @@ export default function FinanceDashboard() {
       label: ar ? "صافي الربح" : "Net Profit",
       value: formatEGP(FIN_METRICS.net_profit),
       icon: Wallet,
-      color: "text-violet-600",
-      bg: "bg-violet-50",
-      border: "border-violet-100",
+      color: "text-chart-4",
+      bg: "bg-chart-4/10",
+      border: "border-chart-4/30",
       change: `${FIN_METRICS.net_margin}%`,
       changePositive: FIN_METRICS.net_profit > 0,
     },
@@ -191,9 +191,9 @@ export default function FinanceDashboard() {
       label: ar ? "الرصيد النقدي" : "Cash Balance",
       value: formatEGP(FIN_METRICS.cash_balance),
       icon: PiggyBank,
-      color: "text-amber-600",
-      bg: "bg-amber-50",
-      border: "border-amber-100",
+      color: "text-warning",
+      bg: "bg-warning/10",
+      border: "border-warning/30",
       change: ar ? "متاح" : "Available",
       changePositive: true,
     },
@@ -283,12 +283,12 @@ export default function FinanceDashboard() {
       >
         <div>
           <h1
-            className="text-[24px] font-semibold tracking-tight"
+            className="text-display font-semibold tracking-tight"
             style={serif}
           >
             {ar ? "لوحة المالية" : "Finance Dashboard"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-body text-muted-foreground mt-1">
             {ar ? "نظرة شاملة على الوضع المالي" : "Comprehensive financial overview"}
           </p>
         </div>
@@ -296,12 +296,12 @@ export default function FinanceDashboard() {
           {[
             { label: ar ? "فاتورة جديدة" : "New Invoice", icon: FileText, path: "/finance", color: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100" },
             { label: ar ? "تسجيل دفعة" : "Record Payment", icon: CreditCard, path: "/finance", color: "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100" },
-            { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-violet-50 text-violet-600 border-violet-100 hover:bg-violet-100" },
+            { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-chart-4/10 text-chart-4 border-chart-4/30 hover:bg-chart-4/15" },
           ].map((btn) => (
             <button
               key={btn.label}
               onClick={() => navigate(btn.path)}
-              className={`h-9 px-4 rounded-xl border text-[11px] font-medium flex items-center gap-1.5 transition-all duration-200 ${btn.color}`}
+              className={`h-9 px-4 rounded-xl border text-micro font-medium flex items-center gap-1.5 transition-all duration-200 ${btn.color}`}
             >
               <btn.icon size={12} />
               {btn.label}
@@ -317,7 +317,7 @@ export default function FinanceDashboard() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-lg text-[11px] font-medium transition-all duration-200 ${
+              className={`px-4 py-2 rounded-lg text-micro font-medium transition-all duration-200 ${
                 activeTab === tab
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -349,19 +349,19 @@ export default function FinanceDashboard() {
               <div className={`w-8 h-8 rounded-xl ${kpi.bg} flex items-center justify-center`}>
                 <kpi.icon size={15} className={kpi.color} />
               </div>
-              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${
+              <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${
                 kpi.changePositive ? "bg-emerald-100/60 text-emerald-600" : "bg-rose-100/60 text-rose-600"
               }`}>
                 {kpi.change}
               </span>
             </div>
             <p
-              className="text-[20px] font-bold text-foreground leading-none"
+              className="text-heading font-bold text-foreground leading-none"
               style={serif}
             >
               {kpi.value}
             </p>
-            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
+            <p className="text-micro text-muted-foreground mt-1.5 font-medium">
               {kpi.label}
             </p>
           </motion.div>
@@ -385,11 +385,11 @@ export default function FinanceDashboard() {
               className="lg:col-span-2 p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-[13px] font-semibold flex items-center gap-2">
+                <h3 className="text-body font-semibold flex items-center gap-2">
                   <BarChart3 size={14} className="text-blue-500" />
                   {ar ? "الإيرادات مقابل المصروفات" : "Revenue vs Expenses"}
                 </h3>
-                <span className="text-[10px] text-muted-foreground">2026</span>
+                <span className="text-micro text-muted-foreground">2026</span>
               </div>
 
               {/* Bar chart */}
@@ -421,7 +421,7 @@ export default function FinanceDashboard() {
                           />
                         </div>
                       </div>
-                      <span className="text-[9px] text-muted-foreground font-medium">{m.month}</span>
+                      <span className="text-micro text-muted-foreground font-medium">{m.month}</span>
                     </div>
                   );
                 })}
@@ -431,11 +431,11 @@ export default function FinanceDashboard() {
               <div className="flex items-center gap-5 pt-3 border-t border-border/30">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-sm bg-emerald-400" />
-                  <span className="text-[10px] text-muted-foreground">{ar ? "الإيرادات" : "Revenue"}</span>
+                  <span className="text-micro text-muted-foreground">{ar ? "الإيرادات" : "Revenue"}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-sm bg-rose-300" />
-                  <span className="text-[10px] text-muted-foreground">{ar ? "المصروفات" : "Expenses"}</span>
+                  <span className="text-micro text-muted-foreground">{ar ? "المصروفات" : "Expenses"}</span>
                 </div>
               </div>
             </motion.div>
@@ -445,7 +445,7 @@ export default function FinanceDashboard() {
               variants={fadeUp}
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
-              <h3 className="text-[13px] font-semibold flex items-center gap-2 mb-4">
+              <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
                 <PieChartIcon size={14} className="text-emerald-500" />
                 {ar ? "الإيرادات حسب الفئة" : "Revenue by Category"}
               </h3>
@@ -462,15 +462,15 @@ export default function FinanceDashboard() {
                         className="w-2.5 h-2.5 rounded-full shrink-0"
                         style={{ backgroundColor: REVENUE_CAT_COLORS[i % REVENUE_CAT_COLORS.length] }}
                       />
-                      <span className="text-[11px] text-foreground">
+                      <span className="text-micro text-foreground">
                         {ar ? cat.category_ar : cat.category}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-medium text-foreground tabular-nums">
+                      <span className="text-micro font-medium text-foreground tabular-nums">
                         {formatEGP(cat.amount)}
                       </span>
-                      <span className="text-[9px] text-muted-foreground tabular-nums w-8 text-right">
+                      <span className="text-micro text-muted-foreground tabular-nums w-8 text-right">
                         {Math.round((cat.amount / totalRevenue) * 100)}%
                       </span>
                     </div>
@@ -488,7 +488,7 @@ export default function FinanceDashboard() {
               variants={fadeUp}
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
-              <h3 className="text-[13px] font-semibold flex items-center gap-2 mb-4">
+              <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
                 <Receipt size={14} className="text-rose-500" />
                 {ar ? "المصروفات حسب الفئة" : "Expense by Category"}
               </h3>
@@ -501,15 +501,15 @@ export default function FinanceDashboard() {
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-2">
                           <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-                          <span className="text-[11px] font-medium text-foreground">
+                          <span className="text-micro font-medium text-foreground">
                             {ar ? cat.category_ar : cat.category}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-medium tabular-nums text-foreground">
+                          <span className="text-micro font-medium tabular-nums text-foreground">
                             {formatEGP(cat.amount)}
                           </span>
-                          <span className="text-[9px] text-muted-foreground tabular-nums w-8 text-right">
+                          <span className="text-micro text-muted-foreground tabular-nums w-8 text-right">
                             {pct}%
                           </span>
                         </div>
@@ -534,14 +534,14 @@ export default function FinanceDashboard() {
               variants={fadeUp}
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
-              <h3 className="text-[13px] font-semibold flex items-center gap-2 mb-4">
-                <Clock size={14} className="text-amber-500" />
+              <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
+                <Clock size={14} className="text-warning" />
                 {ar ? "أعمار الحسابات المدينة" : "Accounts Receivable Aging"}
               </h3>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {[
                   { label: ar ? "Current" : "Current", value: agingBuckets.current, color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
-                  { label: "1-30 " + (ar ? "يوم" : "days"), value: agingBuckets["1-30"], color: "bg-amber-50 text-amber-600 border-amber-100" },
+                  { label: "1-30 " + (ar ? "يوم" : "days"), value: agingBuckets["1-30"], color: "bg-warning/10 text-warning border-warning/30" },
                   { label: "31-60 " + (ar ? "يوم" : "days"), value: agingBuckets["31-60"], color: "bg-orange-50 text-orange-600 border-orange-100" },
                   { label: "61-90 " + (ar ? "يوم" : "days"), value: agingBuckets["61-90"], color: "bg-rose-50 text-rose-600 border-rose-100" },
                 ].map((bucket, i) => (
@@ -549,9 +549,9 @@ export default function FinanceDashboard() {
                     key={bucket.label}
                     className={`p-3 rounded-xl border ${bucket.color}`}
                   >
-                    <p className="text-[10px] font-medium opacity-70">{bucket.label}</p>
+                    <p className="text-micro font-medium opacity-70">{bucket.label}</p>
                     <p
-                      className="text-[18px] font-bold mt-1 leading-none"
+                      className="text-title font-bold mt-1 leading-none"
                       style={serif}
                     >
                       {formatEGP(bucket.value)}
@@ -569,7 +569,7 @@ export default function FinanceDashboard() {
                   { label: "61-90d", value: agingBuckets["61-90"], color: "#ef4444" },
                 ].map((b, i) => (
                   <div key={b.label} className="flex items-center gap-3">
-                    <span className="text-[10px] text-muted-foreground w-12 shrink-0">{b.label}</span>
+                    <span className="text-micro text-muted-foreground w-12 shrink-0">{b.label}</span>
                     <div className="flex-1 h-2 rounded-full bg-muted/30 overflow-hidden">
                       <motion.div
                         className="h-full rounded-full"
@@ -579,7 +579,7 @@ export default function FinanceDashboard() {
                         style={{ backgroundColor: b.color }}
                       />
                     </div>
-                    <span className="text-[10px] font-medium tabular-nums text-foreground w-20 text-right">
+                    <span className="text-micro font-medium tabular-nums text-foreground w-20 text-right">
                       {formatEGP(b.value)}
                     </span>
                   </div>
@@ -594,14 +594,14 @@ export default function FinanceDashboard() {
                       <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${
                         arItem.status === "current" ? "bg-emerald-400" : "bg-rose-400"
                       }`} />
-                      <span className="text-[11px] text-foreground truncate">
+                      <span className="text-micro text-foreground truncate">
                         {arItem.customer_name}
                       </span>
-                      <span className="text-[9px] text-muted-foreground">
+                      <span className="text-micro text-muted-foreground">
                         {arItem.invoice_number}
                       </span>
                     </div>
-                    <span className={`text-[11px] font-medium tabular-nums ${
+                    <span className={`text-micro font-medium tabular-nums ${
                       arItem.days_overdue > 0 ? "text-rose-600" : "text-foreground"
                     }`}>
                       {formatEGP(arItem.balance)}
@@ -618,13 +618,13 @@ export default function FinanceDashboard() {
             className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[13px] font-semibold flex items-center gap-2">
+              <h3 className="text-body font-semibold flex items-center gap-2">
                 <FileText size={14} className="text-blue-500" />
                 {ar ? "الفواتير الأخيرة" : "Recent Invoices"}
               </h3>
               <button
                 onClick={() => navigate("/finance")}
-                className="text-[11px] text-primary hover:opacity-70 flex items-center gap-1"
+                className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1"
               >
                 {ar ? "عرض الكل" : "View all"} <ChevronRight size={11} />
               </button>
@@ -641,7 +641,7 @@ export default function FinanceDashboard() {
                       ar ? "الحالة" : "Status",
                       ar ? "المتبقي" : "Balance",
                     ].map((h) => (
-                      <th key={h} className="text-[10px] font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
+                      <th key={h} className="text-micro font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
                         {h}
                       </th>
                     ))}
@@ -657,33 +657,33 @@ export default function FinanceDashboard() {
                         onClick={() => navigate("/finance")}
                       >
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium text-foreground tabular-nums">
+                          <span className="text-micro font-medium text-foreground tabular-nums">
                             {inv.invoice_number}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-foreground">
+                          <span className="text-micro text-foreground">
                             {ar ? inv.customer_name_ar : inv.customer_name}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium tabular-nums text-foreground">
+                          <span className="text-micro font-medium tabular-nums text-foreground">
                             {formatEGP(inv.total)}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground tabular-nums">
+                          <span className="text-micro text-muted-foreground tabular-nums">
                             {inv.issue_date}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
+                          <span className={`inline-flex items-center gap-1 text-micro font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
                             <span className={`w-1 h-1 rounded-full ${st.dot}`} />
                             {ar ? (inv.status === "paid" ? "مدفوعة" : inv.status === "overdue" ? "متأخرة" : inv.status === "sent" ? "مُرسلة" : inv.status === "draft" ? "مسودة" : inv.status === "partial" ? "جزئية" : inv.status) : inv.status}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className={`text-[11px] font-medium tabular-nums ${
+                          <span className={`text-micro font-medium tabular-nums ${
                             inv.balance > 0 ? "text-rose-600" : "text-emerald-600"
                           }`}>
                             {formatEGP(inv.balance)}
@@ -706,16 +706,16 @@ export default function FinanceDashboard() {
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[13px] font-semibold flex items-center gap-2">
-                  <WalletCards size={14} className="text-amber-500" />
+                <h3 className="text-body font-semibold flex items-center gap-2">
+                  <WalletCards size={14} className="text-warning" />
                   {ar ? "المدفوعات المعلقة" : "Pending Payments"}
                 </h3>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-600 font-medium">
+                <span className="text-micro px-1.5 py-0.5 rounded-full bg-warning/15 text-warning font-medium">
                   {pendingPayments.length}
                 </span>
               </div>
               {pendingPayments.length === 0 ? (
-                <p className="text-[11px] text-muted-foreground text-center py-6">
+                <p className="text-micro text-muted-foreground text-center py-6">
                   {ar ? "لا توجد مدفوعات معلقة" : "No pending payments"}
                 </p>
               ) : (
@@ -729,25 +729,25 @@ export default function FinanceDashboard() {
                         className="flex items-center justify-between p-3 rounded-xl border border-border/30 hover:bg-muted/20 transition-colors"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-                            <CreditCard size={13} className="text-amber-600" />
+                          <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
+                            <CreditCard size={13} className="text-warning" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-[11px] font-medium text-foreground truncate">
+                            <p className="text-micro font-medium text-foreground truncate">
                               {ar ? pay.customer_name_ar : pay.customer_name}
                             </p>
                             <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-[9px] text-muted-foreground">
+                              <span className="text-micro text-muted-foreground">
                                 {ar ? method.ar : method.en}
                               </span>
-                              <span className="text-[9px] text-muted-foreground">·</span>
-                              <span className="text-[9px] text-muted-foreground tabular-nums">
+                              <span className="text-micro text-muted-foreground">·</span>
+                              <span className="text-micro text-muted-foreground tabular-nums">
                                 {pay.date}
                               </span>
                             </div>
                           </div>
                         </div>
-                        <span className="text-[12px] font-semibold tabular-nums text-foreground shrink-0 ml-3">
+                        <span className="text-caption font-semibold tabular-nums text-foreground shrink-0 ml-3">
                           {formatEGP(pay.amount)}
                         </span>
                       </div>
@@ -762,22 +762,22 @@ export default function FinanceDashboard() {
               variants={fadeUp}
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
-              <h3 className="text-[13px] font-semibold flex items-center gap-2 mb-4">
-                <Zap size={14} className="text-violet-500" />
+              <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
+                <Zap size={14} className="text-chart-4" />
                 {ar ? "إجراءات سريعة" : "Quick Actions"}
               </h3>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { label: ar ? "إنشاء فاتورة" : "Create Invoice", icon: FileText, path: "/finance", color: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100" },
                   { label: ar ? "تسجيل دفعة" : "Record Payment", icon: CreditCard, path: "/finance", color: "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100" },
-                  { label: ar ? "إضافة مصروف" : "Add Expense", icon: Receipt, path: "/finance", color: "bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100" },
-                  { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-violet-50 text-violet-600 border-violet-100 hover:bg-violet-100" },
+                  { label: ar ? "إضافة مصروف" : "Add Expense", icon: Receipt, path: "/finance", color: "bg-warning/10 text-warning border-warning/30 hover:bg-warning/15" },
+                  { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-chart-4/10 text-chart-4 border-chart-4/30 hover:bg-chart-4/15" },
                   { label: ar ? "تسوية بنكية" : "Bank Reconciliation", icon: Landmark, path: "/finance", color: "bg-teal-50 text-teal-600 border-teal-100 hover:bg-teal-100" },
                 ].map((action) => (
                   <button
                     key={action.label}
                     onClick={() => navigate(action.path)}
-                    className={`h-10 px-3.5 rounded-xl border text-[11px] font-medium flex items-center gap-2 transition-all duration-200 ${action.color}`}
+                    className={`h-10 px-3.5 rounded-xl border text-micro font-medium flex items-center gap-2 transition-all duration-200 ${action.color}`}
                   >
                     <action.icon size={13} />
                     {action.label}
@@ -802,12 +802,12 @@ export default function FinanceDashboard() {
             className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[13px] font-semibold flex items-center gap-2">
+              <h3 className="text-body font-semibold flex items-center gap-2">
                 <FileText size={14} className="text-blue-500" />
                 {ar ? "جميع الفواتير" : "All Invoices"}
               </h3>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-micro text-muted-foreground">
                   {FIN_INVOICES.length} {ar ? "فواتير" : "invoices"}
                 </span>
               </div>
@@ -826,7 +826,7 @@ export default function FinanceDashboard() {
                       ar ? "تاريخ الاستحقاق" : "Due Date",
                       ar ? "الحالة" : "Status",
                     ].map((h) => (
-                      <th key={h} className="text-[10px] font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
+                      <th key={h} className="text-micro font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
                         {h}
                       </th>
                     ))}
@@ -842,44 +842,44 @@ export default function FinanceDashboard() {
                         onClick={() => navigate("/finance")}
                       >
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium text-foreground tabular-nums">
+                          <span className="text-micro font-medium text-foreground tabular-nums">
                             {inv.invoice_number}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-foreground">
+                          <span className="text-micro text-foreground">
                             {ar ? inv.customer_name_ar : inv.customer_name}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground truncate max-w-[180px] block">
+                          <span className="text-micro text-muted-foreground truncate max-w-[180px] block">
                             {ar ? inv.title_ar : inv.title}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium tabular-nums text-foreground">
+                          <span className="text-micro font-medium tabular-nums text-foreground">
                             {formatEGP(inv.total)}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] tabular-nums text-emerald-600">
+                          <span className="text-micro tabular-nums text-emerald-600">
                             {formatEGP(inv.paid_amount)}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className={`text-[11px] font-medium tabular-nums ${
+                          <span className={`text-micro font-medium tabular-nums ${
                             inv.balance > 0 ? "text-rose-600" : "text-emerald-600"
                           }`}>
                             {formatEGP(inv.balance)}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground tabular-nums">
+                          <span className="text-micro text-muted-foreground tabular-nums">
                             {inv.due_date}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
+                          <span className={`inline-flex items-center gap-1 text-micro font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
                             <span className={`w-1 h-1 rounded-full ${st.dot}`} />
                             {ar ? (inv.status === "paid" ? "مدفوعة" : inv.status === "overdue" ? "متأخرة" : inv.status === "sent" ? "مُرسلة" : inv.status === "draft" ? "مسودة" : inv.status === "partial" ? "جزئية" : inv.status) : inv.status}
                           </span>
@@ -907,11 +907,11 @@ export default function FinanceDashboard() {
             className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[13px] font-semibold flex items-center gap-2">
+              <h3 className="text-body font-semibold flex items-center gap-2">
                 <CreditCard size={14} className="text-emerald-500" />
                 {ar ? "جميع المدفوعات" : "All Payments"}
               </h3>
-              <span className="text-[10px] text-muted-foreground">
+              <span className="text-micro text-muted-foreground">
                 {FIN_PAYMENTS.length} {ar ? "مدفوعات" : "payments"}
               </span>
             </div>
@@ -928,7 +928,7 @@ export default function FinanceDashboard() {
                       ar ? "التاريخ" : "Date",
                       ar ? "الحالة" : "Status",
                     ].map((h) => (
-                      <th key={h} className="text-[10px] font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
+                      <th key={h} className="text-micro font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
                         {h}
                       </th>
                     ))}
@@ -945,37 +945,37 @@ export default function FinanceDashboard() {
                         onClick={() => navigate("/finance")}
                       >
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium text-foreground tabular-nums">
+                          <span className="text-micro font-medium text-foreground tabular-nums">
                             {pay.reference}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-foreground">
+                          <span className="text-micro text-foreground">
                             {ar ? pay.customer_name_ar : pay.customer_name}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground tabular-nums">
+                          <span className="text-micro text-muted-foreground tabular-nums">
                             {pay.invoice_number}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium tabular-nums text-foreground">
+                          <span className="text-micro font-medium tabular-nums text-foreground">
                             {formatEGP(pay.amount)}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground">
+                          <span className="text-micro text-muted-foreground">
                             {ar ? method.ar : method.en}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground tabular-nums">
+                          <span className="text-micro text-muted-foreground tabular-nums">
                             {pay.date}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
+                          <span className={`inline-flex items-center gap-1 text-micro font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
                             <span className={`w-1 h-1 rounded-full ${st.dot}`} />
                             {ar ? (pay.status === "completed" ? "مكتملة" : pay.status === "pending" ? "معلقة" : pay.status === "failed" ? "فاشلة" : pay.status) : pay.status}
                           </span>
@@ -1003,11 +1003,11 @@ export default function FinanceDashboard() {
             className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[13px] font-semibold flex items-center gap-2">
+              <h3 className="text-body font-semibold flex items-center gap-2">
                 <Receipt size={14} className="text-rose-500" />
                 {ar ? "جميع المصروفات" : "All Expenses"}
               </h3>
-              <span className="text-[10px] text-muted-foreground">
+              <span className="text-micro text-muted-foreground">
                 {FIN_EXPENSES.length} {ar ? "مصروفات" : "expenses"}
               </span>
             </div>
@@ -1024,7 +1024,7 @@ export default function FinanceDashboard() {
                       ar ? "الحالة" : "Status",
                       ar ? "متكرر" : "Recurring",
                     ].map((h) => (
-                      <th key={h} className="text-[10px] font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
+                      <th key={h} className="text-micro font-medium text-muted-foreground text-left pb-2 pr-4 whitespace-nowrap">
                         {h}
                       </th>
                     ))}
@@ -1040,7 +1040,7 @@ export default function FinanceDashboard() {
                         onClick={() => navigate("/finance")}
                       >
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-foreground">
+                          <span className="text-micro text-foreground">
                             {ar ? exp.vendor_ar : exp.vendor}
                           </span>
                         </td>
@@ -1050,28 +1050,28 @@ export default function FinanceDashboard() {
                               className="w-2 h-2 rounded-full shrink-0"
                               style={{ backgroundColor: EXPENSE_CAT_COLORS[exp.category] || "#94a3b8" }}
                             />
-                            <span className="text-[11px] text-muted-foreground capitalize">
+                            <span className="text-micro text-muted-foreground capitalize">
                               {ar ? (exp.category === "rent" ? "الإيجار" : exp.category === "salaries" ? "الرواتب" : exp.category === "utilities" ? "المرافق" : exp.category === "marketing" ? "التسويق" : exp.category === "supplies" ? "المستلزمات" : exp.category === "technology" ? "التكنولوجيا" : exp.category === "insurance" ? "التأمين" : exp.category === "maintenance" ? "الصيانة" : exp.category) : exp.category}
                             </span>
                           </div>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground truncate max-w-[200px] block">
+                          <span className="text-micro text-muted-foreground truncate max-w-[200px] block">
                             {ar ? exp.description_ar : exp.description}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] font-medium tabular-nums text-foreground">
+                          <span className="text-micro font-medium tabular-nums text-foreground">
                             {formatEGP(exp.amount)}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className="text-[11px] text-muted-foreground tabular-nums">
+                          <span className="text-micro text-muted-foreground tabular-nums">
                             {exp.date}
                           </span>
                         </td>
                         <td className="py-2.5 pr-4">
-                          <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
+                          <span className={`inline-flex items-center gap-1 text-micro font-medium px-2 py-0.5 rounded-full ${st.bg} ${st.text}`}>
                             <span className={`w-1 h-1 rounded-full ${st.dot}`} />
                             {ar ? (exp.status === "paid" ? "مدفوع" : exp.status === "pending" ? "معلق" : exp.status === "approved" ? "معتمد" : exp.status === "draft" ? "مسودة" : exp.status) : exp.status}
                           </span>

@@ -66,7 +66,7 @@ export function SmartTimeline({ entries, entityType, entityId, showConnected = f
       {/* Connected entities bar */}
       {connected.length > 0 && showConnected && (
         <div className="mb-4 p-3 rounded-xl bg-muted/30 border border-border/30">
-          <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2">
+          <p className="text-micro font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2">
             {ar ? "سجلات مرتبطة" : "Connected Records"}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -77,7 +77,7 @@ export function SmartTimeline({ entries, entityType, entityId, showConnected = f
                 <button
                   key={r.meta.id}
                   onClick={() => navigate(r.meta.route)}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background border border-border/40 text-[12px] text-foreground hover:border-primary/30 hover:text-primary transition-colors"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background border border-border/40 text-caption text-foreground hover:border-primary/30 hover:text-brand-ink transition-colors"
                 >
                   <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: dot }} />
                   <span className="truncate max-w-[120px]">{ar ? r.meta.titleAr : r.meta.titleEn}</span>
@@ -96,7 +96,7 @@ export function SmartTimeline({ entries, entityType, entityId, showConnected = f
             <div key={e.id} className="relative flex gap-4 pb-6 last:pb-0">
               {/* Node */}
               <div className="relative z-10 w-6 h-6 rounded-full border-2 border-background bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-[9px] text-muted-foreground font-bold leading-none">
+                <span className="text-micro text-muted-foreground font-bold">
                   {kindIcon(e.kind)}
                 </span>
               </div>
@@ -104,20 +104,20 @@ export function SmartTimeline({ entries, entityType, entityId, showConnected = f
               {/* Content */}
               <div className="flex-1 min-w-0 pt-0.5">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-[13px] font-medium text-foreground leading-snug">
+                  <p className="text-body font-medium text-foreground leading-snug">
                     {ar ? e.titleAr : e.titleEn}
                   </p>
-                  <span className="text-[11px] text-muted-foreground/60 whitespace-nowrap shrink-0">
+                  <span className="text-micro text-muted-foreground/60 whitespace-nowrap shrink-0">
                     {ar ? e.dateAr : e.dateEn}
                   </span>
                 </div>
                 {(e.descEn || e.descAr) && (
-                  <p className="text-[12px] text-muted-foreground mt-0.5 leading-snug">
+                  <p className="text-caption text-muted-foreground mt-0.5 leading-snug">
                     {ar ? e.descAr : e.descEn}
                   </p>
                 )}
                 {e.actorEn && (
-                  <p className="text-[11px] text-muted-foreground/50 mt-1">
+                  <p className="text-micro text-muted-foreground/50 mt-1">
                     {ar ? e.actorAr : e.actorEn}
                   </p>
                 )}

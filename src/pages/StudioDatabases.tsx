@@ -164,7 +164,7 @@ export default function StudioDatabases() {
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[1200px] mx-auto space-y-6">
       {/* Database Selector */}
       <motion.div initial="hidden" animate="visible" variants={fadeUp} className="space-y-1">
-        <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
+        <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
           {ar ? "قواعد البيانات" : "Databases"}
         </p>
         <div className="flex items-center gap-2 flex-wrap">
@@ -172,13 +172,13 @@ export default function StudioDatabases() {
             <button
               key={db.id}
               onClick={() => { setSelectedDbId(db.id); setActiveViewType(db.views[0]?.type ?? "table"); }}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 border ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-body font-medium transition-all duration-200 border ${
                 selectedDbId === db.id
-                  ? "bg-primary/10 border-primary/30 text-primary"
+                  ? "bg-primary/10 border-primary/30 text-brand-ink"
                   : "bg-card/40 border-border/30 text-muted-foreground hover:bg-accent/30 hover:text-foreground"
               }`}
             >
-              <span className="text-base">{db.icon}</span>
+              <span className="text-body-lg">{db.icon}</span>
               <span>{ar ? db.name_ar : db.name}</span>
             </button>
           ))}
@@ -190,15 +190,15 @@ export default function StudioDatabases() {
           {/* Database Header */}
           <motion.div initial="hidden" animate="visible" variants={fadeUp} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-2xl">{database.icon}</span>
+              <span className="text-display">{database.icon}</span>
               <div>
                 <h1
-                  className="text-[22px] font-medium text-foreground"
+                  className="text-heading font-medium text-foreground"
                   style={{ fontFamily: "var(--app-font-serif)" }}
                 >
                   {ar ? database.name_ar : database.name}
                 </h1>
-                <p className="text-[11px] text-muted-foreground/60 mt-0.5">
+                <p className="text-micro text-muted-foreground/60 mt-0.5">
                   {rows.length} {ar ? "صف" : "rows"} · {database.properties.length} {ar ? "خصائص" : "properties"}
                 </p>
               </div>
@@ -206,9 +206,9 @@ export default function StudioDatabases() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowProperties(!showProperties)}
-                className={`h-8 px-3 rounded-lg text-[12px] font-medium flex items-center gap-1.5 transition-all border ${
+                className={`h-8 px-3 rounded-lg text-caption font-medium flex items-center gap-1.5 transition-all border ${
                   showProperties
-                    ? "bg-primary/10 border-primary/30 text-primary"
+                    ? "bg-primary/10 border-primary/30 text-brand-ink"
                     : "bg-card/40 border-border/30 text-muted-foreground hover:bg-accent/30"
                 }`}
               >
@@ -231,7 +231,7 @@ export default function StudioDatabases() {
                       <button
                         key={view.id}
                         onClick={() => setActiveViewType(view.type)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-caption font-medium transition-all ${
                           activeViewType === view.type
                             ? "bg-background shadow-sm text-foreground"
                             : "text-muted-foreground hover:text-foreground"
@@ -254,7 +254,7 @@ export default function StudioDatabases() {
                     value={filterText}
                     onChange={e => setFilterText(e.target.value)}
                     placeholder={ar ? "تصفية..." : "Filter..."}
-                    className="h-8 w-40 pl-8 pr-3 rounded-lg border border-border/40 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20 placeholder:text-muted-foreground/50"
+                    className="h-8 w-40 pl-8 pr-3 rounded-lg border border-border/40 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20 placeholder:text-muted-foreground/50"
                   />
                   {filterText && (
                     <button
@@ -268,9 +268,9 @@ export default function StudioDatabases() {
 
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`h-8 px-3 rounded-lg text-[12px] font-medium flex items-center gap-1.5 border transition-all ${
+                  className={`h-8 px-3 rounded-lg text-caption font-medium flex items-center gap-1.5 border transition-all ${
                     showFilters
-                      ? "bg-primary/10 border-primary/30 text-primary"
+                      ? "bg-primary/10 border-primary/30 text-brand-ink"
                       : "bg-card/40 border-border/30 text-muted-foreground hover:bg-accent/30"
                   }`}
                 >
@@ -280,7 +280,7 @@ export default function StudioDatabases() {
 
                 <button
                   onClick={() => setShowAddRow(true)}
-                  className="h-8 px-3 rounded-lg bg-primary text-primary-foreground text-[12px] font-medium flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
+                  className="h-8 px-3 rounded-lg bg-primary text-primary-foreground text-caption font-medium flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
                 >
                   <Plus size={13} />
                   {ar ? "إضافة صف" : "Add Row"}
@@ -303,13 +303,13 @@ export default function StudioDatabases() {
                         value={newRowText}
                         onChange={e => setNewRowText(e.target.value)}
                         placeholder={ar ? "اسم الصف الجديد..." : "New row name..."}
-                        className="flex-1 h-8 px-3 rounded-lg border border-border/40 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20"
+                        className="flex-1 h-8 px-3 rounded-lg border border-border/40 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20"
                         autoFocus
                         onKeyDown={e => e.key === "Enter" && handleAddRow()}
                       />
                       <button
                         onClick={handleAddRow}
-                        className="h-8 px-4 rounded-lg bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-colors"
+                        className="h-8 px-4 rounded-lg bg-primary text-primary-foreground text-caption font-medium hover:bg-primary/90 transition-colors"
                       >
                         {ar ? "إضافة" : "Add"}
                       </button>
@@ -328,20 +328,20 @@ export default function StudioDatabases() {
               {activeViewType === "table" && (
                 <motion.div initial="hidden" animate="visible" variants={stagger} className="rounded-xl border border-border/40 bg-card/40 overflow-hidden">
                   <div className="overflow-x-auto">
-                    <table className="w-full text-[12.5px]">
+                    <table className="w-full text-caption">
                       <thead>
                         <tr className="border-b border-border/30">
-                          <th className="px-4 py-2.5 text-left text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-wider w-10">#</th>
+                          <th className="px-4 py-2.5 text-left text-micro font-semibold text-muted-foreground/70 uppercase tracking-wider w-10">#</th>
                           {visibleProps.map(prop => (
                             <th
                               key={prop.id}
                               onClick={() => handleSort(prop.id)}
-                              className="px-4 py-2.5 text-left text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-wider cursor-pointer hover:text-foreground transition-colors select-none group"
+                              className="px-4 py-2.5 text-left text-micro font-semibold text-muted-foreground/70 uppercase tracking-wider cursor-pointer hover:text-foreground transition-colors select-none group"
                             >
                               <div className="flex items-center gap-1.5">
                                 {getPropertyLabel(prop, ar)}
                                 {sortColumn === prop.id ? (
-                                  sortDir === "asc" ? <ArrowUp size={10} className="text-primary" /> : <ArrowDown size={10} className="text-primary" />
+                                  sortDir === "asc" ? <ArrowUp size={10} className="text-brand-ink" /> : <ArrowDown size={10} className="text-brand-ink" />
                                 ) : (
                                   <ArrowUpDown size={10} className="opacity-0 group-hover:opacity-50 transition-opacity" />
                                 )}
@@ -369,7 +369,7 @@ export default function StudioDatabases() {
                         ))}
                         {filteredRows.length === 0 && (
                           <tr>
-                            <td colSpan={visibleProps.length + 2} className="px-4 py-12 text-center text-muted-foreground/50 text-[13px]">
+                            <td colSpan={visibleProps.length + 2} className="px-4 py-12 text-center text-muted-foreground/50 text-body">
                               {ar ? "لا توجد بيانات" : "No data found"}
                             </td>
                           </tr>
@@ -392,12 +392,12 @@ export default function StudioDatabases() {
                       <div className="w-full h-28 rounded-lg bg-gradient-to-br from-primary/5 to-primary/10 border border-border/20 flex items-center justify-center mb-3">
                         <span className="text-3xl opacity-30">{database.icon}</span>
                       </div>
-                      <p className="text-[13px] font-medium truncate mb-1">
+                      <p className="text-body font-medium truncate mb-1">
                         {String(Object.values(row.properties)[0] ?? "")}
                       </p>
                       <div className="flex items-center gap-2 flex-wrap">
                         {visibleProps.slice(1, 4).map(prop => (
-                          <span key={prop.id} className="text-[10px] text-muted-foreground/60">
+                          <span key={prop.id} className="text-micro text-muted-foreground/60">
                             {getPropertyLabel(prop, ar)}: {String(row.properties[prop.id] ?? "—")}
                           </span>
                         ))}
@@ -405,7 +405,7 @@ export default function StudioDatabases() {
                     </motion.div>
                   ))}
                   {filteredRows.length === 0 && (
-                    <div className="col-span-full text-center py-12 text-muted-foreground/50 text-[13px]">
+                    <div className="col-span-full text-center py-12 text-muted-foreground/50 text-body">
                       {ar ? "لا توجد بيانات" : "No data found"}
                     </div>
                   )}
@@ -419,10 +419,10 @@ export default function StudioDatabases() {
                     <motion.div key={col.label} variants={fadeUp} className="min-w-[260px] flex-1">
                       <div className="flex items-center gap-2 mb-3 px-1">
                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }} />
-                        <span className="text-[12px] font-semibold text-muted-foreground">
+                        <span className="text-caption font-semibold text-muted-foreground">
                           {ar ? col.label_ar : col.label}
                         </span>
-                        <span className="text-[10px] text-muted-foreground/50 tabular-nums bg-muted/50 px-1.5 py-0.5 rounded">
+                        <span className="text-micro text-muted-foreground/50 tabular-nums bg-muted/50 px-1.5 py-0.5 rounded">
                           {col.rows.length}
                         </span>
                       </div>
@@ -432,7 +432,7 @@ export default function StudioDatabases() {
                             key={row.id}
                             className="rounded-xl border border-border/30 bg-card/60 p-3 hover:border-border/50 hover:shadow-sm transition-all duration-150 cursor-pointer group"
                           >
-                            <p className="text-[12.5px] font-medium mb-2 group-hover:text-primary transition-colors">
+                            <p className="text-caption font-medium mb-2 group-hover:text-brand-ink transition-colors">
                               {String(Object.values(row.properties)[0] ?? "")}
                             </p>
                             <div className="flex items-center gap-2 flex-wrap">
@@ -440,7 +440,7 @@ export default function StudioDatabases() {
                                 const val = row.properties[prop.id];
                                 if (!val) return null;
                                 return (
-                                  <span key={prop.id} className="text-[10px] text-muted-foreground/60 bg-muted/30 px-1.5 py-0.5 rounded">
+                                  <span key={prop.id} className="text-micro text-muted-foreground/60 bg-muted/30 px-1.5 py-0.5 rounded">
                                     {String(val)}
                                   </span>
                                 );
@@ -449,7 +449,7 @@ export default function StudioDatabases() {
                           </div>
                         ))}
                         {col.rows.length === 0 && (
-                          <div className="rounded-xl border border-dashed border-border/30 p-4 text-center text-[11px] text-muted-foreground/40">
+                          <div className="rounded-xl border border-dashed border-border/30 p-4 text-center text-micro text-muted-foreground/40">
                             {ar ? "فارغ" : "Empty"}
                           </div>
                         )}
@@ -463,7 +463,7 @@ export default function StudioDatabases() {
               {activeViewType === "calendar" && (
                 <motion.div initial="hidden" animate="visible" variants={fadeUp} className="rounded-xl border border-border/40 bg-card/40 p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-[14px] font-medium">
+                    <h3 className="text-body-lg font-medium">
                       {monthNames[calendarMonth]} {calendarYear}
                     </h3>
                     <div className="flex items-center gap-1">
@@ -489,7 +489,7 @@ export default function StudioDatabases() {
                   </div>
                   <div className="grid grid-cols-7 gap-px">
                     {dayNames.map(d => (
-                      <div key={d} className="text-center text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-wider py-2">
+                      <div key={d} className="text-center text-micro font-semibold text-muted-foreground/60 uppercase tracking-wider py-2">
                         {d}
                       </div>
                     ))}
@@ -498,15 +498,15 @@ export default function StudioDatabases() {
                         key={i}
                         className={`min-h-[80px] p-1.5 rounded-lg border border-border/10 ${
                           d.isCurrentMonth ? "bg-background/50" : "bg-muted/10 text-muted-foreground/30"
-                        } ${d.day === now.getDate() && d.isCurrentMonth && calendarMonth === now.getMonth() && calendarYear === now.getFullYear() ? "ring-1 ring-primary/30 bg-primary/5" : ""}`}
+                        } ${d.day === now.getDate() && d.isCurrentMonth && calendarMonth === now.getMonth() && calendarYear === now.getFullYear() ? "ring-1 ring-brand-ink/30 bg-primary/5" : ""}`}
                       >
-                        <span className={`text-[11px] tabular-nums ${d.isCurrentMonth ? "text-foreground" : "text-muted-foreground/30"}`}>
+                        <span className={`text-micro tabular-nums ${d.isCurrentMonth ? "text-foreground" : "text-muted-foreground/30"}`}>
                           {d.day}
                         </span>
                         {d.items.map(item => (
                           <div
                             key={item.id}
-                            className="mt-0.5 px-1 py-0.5 rounded text-[10px] bg-primary/10 text-primary truncate cursor-pointer hover:bg-primary/20 transition-colors"
+                            className="mt-0.5 px-1 py-0.5 rounded text-micro bg-primary/10 text-brand-ink truncate cursor-pointer hover:bg-primary/20 transition-colors"
                           >
                             {String(Object.values(item.properties)[0] ?? "")}
                           </div>
@@ -526,16 +526,16 @@ export default function StudioDatabases() {
                       variants={fadeUp}
                       className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-accent/20 transition-colors group cursor-pointer border border-transparent hover:border-border/20"
                     >
-                      <span className="text-[11px] text-muted-foreground/40 tabular-nums w-6">{i + 1}</span>
-                      <span className="text-sm">{database.icon}</span>
+                      <span className="text-micro text-muted-foreground/40 tabular-nums w-6">{i + 1}</span>
+                      <span className="text-body">{database.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-medium truncate group-hover:text-primary transition-colors">
+                        <p className="text-body font-medium truncate group-hover:text-brand-ink transition-colors">
                           {String(Object.values(row.properties)[0] ?? "")}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">
                         {visibleProps.slice(1, 4).map(prop => (
-                          <span key={prop.id} className="text-[10px] text-muted-foreground/60">
+                          <span key={prop.id} className="text-micro text-muted-foreground/60">
                             <CellRenderer value={row.properties[prop.id]} property={prop} ar={ar} />
                           </span>
                         ))}
@@ -546,7 +546,7 @@ export default function StudioDatabases() {
                     </motion.div>
                   ))}
                   {filteredRows.length === 0 && (
-                    <div className="text-center py-12 text-muted-foreground/50 text-[13px]">
+                    <div className="text-center py-12 text-muted-foreground/50 text-body">
                       {ar ? "لا توجد بيانات" : "No data found"}
                     </div>
                   )}
@@ -566,7 +566,7 @@ export default function StudioDatabases() {
                 >
                   <div className="w-[260px] rounded-xl border border-border/30 bg-card/50 p-4 space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wider">
+                      <h3 className="text-caption font-semibold text-muted-foreground uppercase tracking-wider">
                         {ar ? "الخصائص" : "Properties"}
                       </h3>
                       <button
@@ -587,8 +587,8 @@ export default function StudioDatabases() {
                           >
                             <Icon size={13} className="text-muted-foreground/50 shrink-0" />
                             <div className="flex-1 min-w-0">
-                              <p className="text-[12px] font-medium truncate">{getPropertyLabel(prop, ar)}</p>
-                              <p className="text-[10px] text-muted-foreground/50 capitalize">{prop.type.replace("_", " ")}</p>
+                              <p className="text-caption font-medium truncate">{getPropertyLabel(prop, ar)}</p>
+                              <p className="text-micro text-muted-foreground/50 capitalize">{prop.type.replace("_", " ")}</p>
                             </div>
                             {prop.options && (
                               <div className="flex items-center gap-0.5">
@@ -607,7 +607,7 @@ export default function StudioDatabases() {
                       })}
                     </div>
 
-                    <button className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-border/30 text-[11px] text-muted-foreground/60 hover:text-foreground hover:border-border/50 hover:bg-accent/20 transition-all">
+                    <button className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-border/30 text-micro text-muted-foreground/60 hover:text-foreground hover:border-border/50 hover:bg-accent/20 transition-all">
                       <Plus size={12} />
                       {ar ? "إضافة خاصية" : "Add Property"}
                     </button>
@@ -622,7 +622,7 @@ export default function StudioDatabases() {
       {!database && (
         <motion.div initial="hidden" animate="visible" variants={fadeUp} className="text-center py-20">
           <Database size={40} className="mx-auto text-muted-foreground/20 mb-4" />
-          <p className="text-sm text-muted-foreground/60">
+          <p className="text-body text-muted-foreground/60">
             {ar ? "اختر قاعدة بيانات" : "Select a database"}
           </p>
         </motion.div>
@@ -640,7 +640,7 @@ function CellRenderer({ value, property, ar }: { value: any; property: StudioDat
     const opt = property.options?.find(o => o.label === value);
     return (
       <span
-        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-micro font-medium"
         style={{
           backgroundColor: getStatusColor(opt?.color ?? "#94A3B8"),
           color: opt?.color ?? "#94A3B8",
@@ -659,7 +659,7 @@ function CellRenderer({ value, property, ar }: { value: any; property: StudioDat
           return (
             <span
               key={v}
-              className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium"
+              className="inline-flex items-center px-1.5 py-0.5 rounded-full text-micro font-medium"
               style={{
                 backgroundColor: getStatusColor(opt?.color ?? "#94A3B8"),
                 color: opt?.color ?? "#94A3B8",

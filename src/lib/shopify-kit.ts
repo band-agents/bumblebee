@@ -6,7 +6,7 @@
 
 export type KitAppKey = "wallet" | "wishlist" | "reviews";
 
-const LS_KEY = "thoth_shopify_kit";
+const LS_KEY = "bumblebee_shopify_kit";
 
 export interface KitState {
   enabled: Record<KitAppKey, boolean>;

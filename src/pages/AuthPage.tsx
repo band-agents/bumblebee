@@ -92,7 +92,7 @@ export default function AuthPage() {
     }
   }
 
-  const inputCls = "w-full h-12 rounded-2xl border border-[var(--ink)]/12 bg-[var(--paper)] px-4 text-[18px] font-semibold text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--teal)]/30 focus:border-[var(--teal)] transition placeholder:text-[var(--ink-soft)] placeholder:font-medium";
+  const inputCls = "w-full h-12 rounded-2xl border border-[var(--ink)]/12 bg-[var(--paper)] px-4 text-title font-semibold text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--teal)]/30 focus:border-[var(--teal)] transition placeholder:text-[var(--ink-soft)] placeholder:font-medium";
 
   return (
     <div style={{ ...VARS, ...body }} className="min-h-screen flex bg-[var(--cream)] text-[var(--ink)]">
@@ -109,7 +109,7 @@ export default function AuthPage() {
         <motion.a href="/" className="relative flex items-center gap-2.5 w-fit text-[var(--cream)]"
           initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }}>
           <Ibis size={26} />
-          <span className="text-[24px] tracking-[0.14em]" style={display}>THOTH</span>
+          <span className="text-display tracking-[0.14em]" style={display}>Bumblebee</span>
         </motion.a>
 
         {/* floating cards */}
@@ -125,7 +125,7 @@ export default function AuthPage() {
                 <span className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: c.tint }}>
                   <c.icon size={17} className="text-white" />
                 </span>
-                <span className="text-[19px] font-bold text-[var(--ink)] leading-none">{c.label}</span>
+                <span className="text-title font-bold text-[var(--ink)] leading-none">{c.label}</span>
               </motion.div>
             </motion.div>
           ))}
@@ -136,19 +136,19 @@ export default function AuthPage() {
           <h2 className="text-[clamp(2rem,3vw,2.8rem)] leading-[1.05] text-[var(--cream)] mb-4" style={display}>
             One system that speaks your trade.
           </h2>
-          <p className="text-[19px] leading-[1.3] text-[var(--cream)]/80 font-medium max-w-[42ch]">
+          <p className="text-title leading-[1.3] text-[var(--cream)]/80 font-medium max-w-[42ch]">
             Sales, production, inventory, finance and people — bilingual, playful, and shaped around your business. Built in Egypt by the scribes of records.
           </p>
           <div className="mt-7 flex flex-wrap gap-2.5">
             {["27+ modules", "EN / AR", "1-day custom builds"].map((t) => (
-              <span key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3.5 py-1.5 text-[16px] font-semibold text-[var(--cream)]">
+              <span key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3.5 py-1.5 text-title font-semibold text-[var(--cream)]">
                 <Check size={13} /> {t}
               </span>
             ))}
           </div>
         </motion.div>
 
-        <p className="relative text-[15px] font-semibold text-[var(--cream)]/70">© 2026 THOTH · Cairo, Egypt</p>
+        <p className="relative text-body-lg font-semibold text-[var(--cream)]/70">© 2026 Bumblebee · Cairo, Egypt</p>
       </div>
 
       {/* ── Right form panel ───────────────────────────── */}
@@ -157,7 +157,7 @@ export default function AuthPage() {
         <motion.a href="/" className="lg:hidden flex items-center gap-2.5 mb-10 text-[var(--ink)]"
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }}>
           <Ibis size={28} />
-          <span className="text-[26px] tracking-[0.14em]" style={display}>THOTH</span>
+          <span className="text-display tracking-[0.14em]" style={display}>Bumblebee</span>
         </motion.a>
 
         <div className="w-full max-w-[400px]">
@@ -166,7 +166,7 @@ export default function AuthPage() {
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }}>
             {(["signin", "signup"] as Mode[]).map((m) => (
               <button key={m} onClick={() => { setMode(m); setError(null); setNotice(null); }}
-                className="relative flex-1 py-2.5 text-[17px] font-bold rounded-full transition-colors">
+                className="relative flex-1 py-2.5 text-title font-bold rounded-full transition-colors">
                 {mode === m && (
                   <motion.span layoutId="auth-pill" className="absolute inset-0 rounded-full bg-[var(--ink)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }} />
@@ -179,17 +179,17 @@ export default function AuthPage() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}>
-            <h1 className="text-[40px] leading-[1.02] mb-1.5" style={display}>
+            <h1 className="text-display leading-[1.02] mb-1.5" style={display}>
               {mode === "signin" ? "Welcome back." : "Let's build yours."}
             </h1>
-            <p className="text-[18px] font-medium text-[var(--ink-soft)] mb-7">
-              {mode === "signin" ? "Sign in to continue to THOTH." : "Free for one user, forever. No card needed."}
+            <p className="text-title font-medium text-[var(--ink-soft)] mb-7">
+              {mode === "signin" ? "Sign in to continue to Bumblebee." : "Free for one user, forever. No card needed."}
             </p>
           </motion.div>
 
           {/* Google */}
           <motion.button type="button" onClick={handleGoogle} disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 h-12 rounded-2xl border border-[var(--ink)]/12 bg-[var(--paper)] text-[18px] font-bold text-[var(--ink)] hover:bg-[var(--mint)]/40 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 h-12 rounded-2xl border border-[var(--ink)]/12 bg-[var(--paper)] text-title font-bold text-[var(--ink)] hover:bg-[var(--mint)]/40 transition-colors disabled:opacity-50"
             whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5, ease: EASE }}>
             {googleLoading ? <Loader2 size={17} className="animate-spin text-[var(--ink-soft)]" /> : (
@@ -205,7 +205,7 @@ export default function AuthPage() {
 
           <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-[var(--ink)]/10" />
-            <span className="text-[15px] font-semibold text-[var(--ink-soft)]">or with email</span>
+            <span className="text-body-lg font-semibold text-[var(--ink-soft)]">or with email</span>
             <div className="flex-1 h-px bg-[var(--ink)]/10" />
           </div>
 
@@ -222,7 +222,7 @@ export default function AuthPage() {
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required minLength={6} className={inputCls} />
 
             <motion.button type="submit" disabled={emailLoading || !email || !password}
-              className="w-full h-12 rounded-2xl bg-[var(--teal)] text-[var(--cream)] text-[19px] font-bold flex items-center justify-center gap-2 hover:bg-[var(--teal-deep)] transition-colors disabled:opacity-40 shadow-[0_10px_30px_-10px_rgba(58,125,122,0.6)]"
+              className="w-full h-12 rounded-2xl bg-[var(--teal)] text-[var(--cream)] text-title font-bold flex items-center justify-center gap-2 hover:bg-[var(--teal-deep)] transition-colors disabled:opacity-40 shadow-[0_10px_30px_-10px_rgba(58,125,122,0.6)]"
               whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }}>
               {emailLoading && <Loader2 size={16} className="animate-spin" />}
               {mode === "signin" ? "Sign in" : "Create account"}
@@ -232,22 +232,22 @@ export default function AuthPage() {
 
           <AnimatePresence>
             {notice && (
-              <motion.p className="mt-4 flex items-center gap-2 text-[16px] font-semibold text-[var(--teal-deep)] bg-[var(--mint)] rounded-xl px-3.5 py-2.5"
+              <motion.p className="mt-4 flex items-center gap-2 text-title font-semibold text-[var(--teal-deep)] bg-[var(--mint)] rounded-xl px-3.5 py-2.5"
                 initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <Sparkles size={15} /> {notice}
               </motion.p>
             )}
             {error && (
-              <motion.p className="mt-4 text-[16px] font-semibold text-rose-600 bg-rose-50 rounded-xl px-3.5 py-2.5"
+              <motion.p className="mt-4 text-title font-semibold text-rose-600 bg-rose-50 rounded-xl px-3.5 py-2.5"
                 initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 {error}
               </motion.p>
             )}
           </AnimatePresence>
 
-          <p className="text-center text-[16px] font-medium text-[var(--ink-soft)] mt-6">
+          <p className="text-center text-title font-medium text-[var(--ink-soft)] mt-6">
             {mode === "signin" ? (
-              <>New to THOTH?{" "}
+              <>New to Bumblebee?{" "}
                 <button onClick={() => { setMode("signup"); setError(null); setNotice(null); }} className="text-[var(--teal)] font-bold hover:underline underline-offset-2">Start free</button>
               </>
             ) : (
@@ -257,7 +257,7 @@ export default function AuthPage() {
             )}
           </p>
 
-          <a href="/" className="mt-8 flex items-center justify-center gap-1.5 text-[15px] font-semibold text-[var(--ink-soft)] hover:text-[var(--ink)] transition-colors">
+          <a href="/" className="mt-8 flex items-center justify-center gap-1.5 text-body-lg font-semibold text-[var(--ink-soft)] hover:text-[var(--ink)] transition-colors">
             <ArrowRight size={14} className="rotate-180" /> Back to home
           </a>
         </div>

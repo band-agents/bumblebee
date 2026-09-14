@@ -80,9 +80,9 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     const COLORS: Record<PersonType, string> = {
-      customer:   "bg-violet-100 text-violet-700",
+      customer:   "bg-chart-4/15 text-chart-4",
       employee:   "bg-emerald-100 text-emerald-700",
-      supplier:   "bg-amber-100 text-amber-700",
+      supplier:   "bg-warning/15 text-warning",
       contractor: "bg-blue-100 text-blue-700",
       partner:    "bg-cyan-100 text-cyan-700",
     };
@@ -130,7 +130,7 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[480px] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-[17px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+          <h2 className="text-title font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
             {ar ? "إضافة شخص جديد" : "Add Person"}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -144,16 +144,16 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
             {/* Type + Status */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "النوع" : "Type"}</label>
-                <select value={form.type} onChange={(e) => field("type", e.target.value)} className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "النوع" : "Type"}</label>
+                <select value={form.type} onChange={(e) => field("type", e.target.value)} className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
                   {(["customer","employee","supplier","contractor","partner"] as PersonType[]).map((t) => (
                     <option key={t} value={t}>{TYPE_META[t].en}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "الحالة" : "Status"}</label>
-                <select value={form.status} onChange={(e) => field("status", e.target.value)} className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الحالة" : "Status"}</label>
+                <select value={form.status} onChange={(e) => field("status", e.target.value)} className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
                   <option value="active">{ar ? "نشط" : "Active"}</option>
                   <option value="lead">{ar ? "محتمل" : "Lead"}</option>
                   <option value="inactive">{ar ? "غير نشط" : "Inactive"}</option>
@@ -163,53 +163,53 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
 
             {/* Name */}
             <div>
-              <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+              <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                 {ar ? "الاسم" : "Full Name"} <span className="text-rose-400">*</span>
               </label>
               <input ref={nameRef} type="text" value={form.name} onChange={(e) => field("name", e.target.value)}
                 placeholder={ar ? "مثال: عمر الراشدي" : "e.g. Omar Al-Rashidi"}
-                className={`w-full h-9 px-3 rounded-xl border bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.name ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
+                className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.name ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.name && <p className="text-[11px] text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.name}</p>}
+              {errors.name && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.name}</p>}
             </div>
 
             {/* Company */}
             <div>
-              <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+              <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                 {ar ? "الشركة" : "Company"} <span className="text-rose-400">*</span>
               </label>
               <input type="text" value={form.company} onChange={(e) => field("company", e.target.value)}
                 placeholder={ar ? "مثال: شركة الخليج" : "e.g. Gulf Traders LLC"}
-                className={`w-full h-9 px-3 rounded-xl border bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.company ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
+                className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.company ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.company && <p className="text-[11px] text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.company}</p>}
+              {errors.company && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.company}</p>}
             </div>
 
             {/* Role */}
             <div>
-              <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+              <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                 {ar ? "المنصب" : "Role"} <span className="text-rose-400">*</span>
               </label>
               <input type="text" value={form.role} onChange={(e) => field("role", e.target.value)}
                 placeholder={ar ? "مثال: مدير المشتريات" : "e.g. Procurement Manager"}
-                className={`w-full h-9 px-3 rounded-xl border bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.role ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
+                className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.role ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.role && <p className="text-[11px] text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.role}</p>}
+              {errors.role && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.role}</p>}
             </div>
 
             {/* Email + Phone */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "البريد الإلكتروني" : "Email"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "البريد الإلكتروني" : "Email"}</label>
                 <input type="email" value={form.email} onChange={(e) => field("email", e.target.value)} placeholder="name@company.com"
-                  className={`w-full h-9 px-3 rounded-xl border bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.email ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
+                  className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.email ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
                 />
-                {errors.email && <p className="text-[11px] text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.email}</p>}
+                {errors.email && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.email}</p>}
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "الهاتف" : "Phone"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الهاتف" : "Phone"}</label>
                 <input type="tel" value={form.phone} onChange={(e) => field("phone", e.target.value)} placeholder="+971 50 000 0000"
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
                 />
               </div>
             </div>
@@ -217,10 +217,10 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
 
           {/* Footer */}
           <div className="px-6 py-4 border-t border-border/40 flex items-center justify-end gap-3">
-            <button type="button" onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button type="button" onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-body text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
               {ar ? "إلغاء" : "Cancel"}
             </button>
-            <button type="submit" disabled={submitted} className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60">
+            <button type="submit" disabled={submitted} className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60">
               {submitted
                 ? <><Check size={14} strokeWidth={2.5} />{ar ? "تمت الإضافة" : "Added"}</>
                 : <><Plus size={14} strokeWidth={2} />{ar ? "إضافة" : "Add Person"}</>
@@ -250,36 +250,36 @@ function PersonCard({ person: p, lang, onClick }: { person: PersonRow; lang: "en
     >
       {/* Top row */}
       <div className="flex items-start justify-between gap-3">
-        <div className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-[11px] font-semibold tracking-wide select-none ${(m.avatarColor as string) || "bg-primary/10 text-primary"}`}>
+        <div className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-micro font-semibold tracking-wide select-none ${(m.avatarColor as string) || "bg-primary/10 text-brand-ink"}`}>
           {initials(p.name_en)}
         </div>
-        <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full ${typeMeta.pill}`}>
+        <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${typeMeta.pill}`}>
           {ar ? typeMeta.ar : typeMeta.en}
         </span>
       </div>
 
       {/* Name / company */}
       <div className="min-w-0 flex-1">
-        <h3 className="text-[14px] font-medium text-foreground truncate leading-snug mb-0.5 group-hover:text-primary transition-colors" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <h3 className="text-body-lg font-medium text-foreground truncate leading-snug mb-0.5 group-hover:text-brand-ink transition-colors" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? (p.name_ar || p.name_en) : p.name_en}
         </h3>
-        <p className="text-[11.5px] text-muted-foreground truncate flex items-center gap-1">
+        <p className="text-micro text-muted-foreground truncate flex items-center gap-1">
           <Building2 size={10} strokeWidth={1.75} className="shrink-0" />
           {ar ? (m.companyAr as string || m.company as string || "—") : (m.company as string || "—")}
         </p>
-        <p className="text-[11px] text-muted-foreground/70 truncate mt-0.5">{ar ? (m.roleAr as string || "") : (m.role as string || "")}</p>
+        <p className="text-micro text-muted-foreground/70 truncate mt-0.5">{ar ? (m.roleAr as string || "") : (m.role as string || "")}</p>
       </div>
 
       {/* Contact */}
       <div className="flex flex-col gap-1 min-w-0">
         {p.email && (
-          <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground truncate">
+          <span className="flex items-center gap-1.5 text-micro text-muted-foreground truncate">
             <Mail size={10} strokeWidth={1.75} className="shrink-0 text-muted-foreground/60" />
             <span className="truncate">{p.email}</span>
           </span>
         )}
         {p.phone && (
-          <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground truncate">
+          <span className="flex items-center gap-1.5 text-micro text-muted-foreground truncate">
             <Phone size={10} strokeWidth={1.75} className="shrink-0 text-muted-foreground/60" />
             <span className="font-mono tracking-tight">{p.phone}</span>
           </span>
@@ -290,10 +290,10 @@ function PersonCard({ person: p, lang, onClick }: { person: PersonRow; lang: "en
       <div className="flex items-center justify-between pt-3 border-t border-border/40">
         <div className="flex items-center gap-1.5">
           <div className={`w-1.5 h-1.5 rounded-full ${statusMeta.dot}`} />
-          <span className="text-[11px] text-muted-foreground">{ar ? statusMeta.ar : statusMeta.en}</span>
+          <span className="text-micro text-muted-foreground">{ar ? statusMeta.ar : statusMeta.en}</span>
         </div>
-        <div className="flex items-center gap-1 text-muted-foreground/40 group-hover:text-primary/60 transition-colors">
-          <span className="text-[10.5px]">{ar ? (m.lastContactAr as string || "") : (m.lastContactEn as string || "")}</span>
+        <div className="flex items-center gap-1 text-muted-foreground/40 group-hover:text-brand-ink/60 transition-colors">
+          <span className="text-micro">{ar ? (m.lastContactAr as string || "") : (m.lastContactEn as string || "")}</span>
           <ChevRight size={11} strokeWidth={1.75} />
         </div>
       </div>
@@ -320,7 +320,7 @@ function PeopleTable({ people, lang, onRowClick }: { people: PersonRow[]; lang: 
         <thead>
           <tr className="border-b border-border/50 bg-muted/20">
             {COLS.map((c) => (
-              <th key={c.en} className={`${c.w} px-4 py-3 text-start text-[10.5px] font-semibold text-muted-foreground tracking-[0.07em] uppercase`}>
+              <th key={c.en} className={`${c.w} px-4 py-3 text-start text-micro font-semibold text-muted-foreground tracking-[0.07em] uppercase`}>
                 {ar ? c.ar : c.en}
               </th>
             ))}
@@ -340,40 +340,40 @@ function PeopleTable({ people, lang, onRowClick }: { people: PersonRow[]; lang: 
               >
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className={`w-7 h-7 rounded-lg shrink-0 flex items-center justify-center text-[9.5px] font-semibold select-none ${(m.avatarColor as string) || "bg-primary/10 text-primary"}`}>
+                    <div className={`w-7 h-7 rounded-lg shrink-0 flex items-center justify-center text-micro font-semibold select-none ${(m.avatarColor as string) || "bg-primary/10 text-brand-ink"}`}>
                       {initials(p.name_en)}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[13px] font-medium text-foreground truncate group-hover:text-primary transition-colors" style={{ letterSpacing: "-0.01em" }}>
+                      <p className="text-body font-medium text-foreground truncate group-hover:text-brand-ink transition-colors" style={{ letterSpacing: "-0.01em" }}>
                         {ar ? (p.name_ar || p.name_en) : p.name_en}
                       </p>
-                      <p className="text-[11px] text-muted-foreground truncate">{ar ? (m.companyAr as string || "") : (m.company as string || "")}</p>
+                      <p className="text-micro text-muted-foreground truncate">{ar ? (m.companyAr as string || "") : (m.company as string || "")}</p>
                     </div>
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full ${typeMeta.pill}`}>
+                  <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${typeMeta.pill}`}>
                     {ar ? typeMeta.ar : typeMeta.en}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-1.5">
                     <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusMeta.dot}`} />
-                    <span className="text-[12px] text-foreground/80">{ar ? statusMeta.ar : statusMeta.en}</span>
+                    <span className="text-caption text-foreground/80">{ar ? statusMeta.ar : statusMeta.en}</span>
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <span className="text-[12px] text-muted-foreground truncate block max-w-[200px]">
+                  <span className="text-caption text-muted-foreground truncate block max-w-[200px]">
                     {ar ? (m.roleAr as string || "") : (m.role as string || "")}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   {p.email
-                    ? <span className="text-[12px] text-muted-foreground truncate block max-w-[200px]">{p.email}</span>
-                    : <span className="text-[12px] text-muted-foreground/40">—</span>}
+                    ? <span className="text-caption text-muted-foreground truncate block max-w-[200px]">{p.email}</span>
+                    : <span className="text-caption text-muted-foreground/40">—</span>}
                 </td>
                 <td className="px-4 py-3">
-                  <span className="text-[12px] text-muted-foreground font-mono tracking-tight">{p.phone || "—"}</span>
+                  <span className="text-caption text-muted-foreground font-mono tracking-tight">{p.phone || "—"}</span>
                 </td>
               </tr>
             );
@@ -395,7 +395,7 @@ function Pagination({ page, total, pageSize, onPage, lang }: { page: number; tot
 
   return (
     <div className="flex items-center justify-between mt-4">
-      <p className="text-[12px] text-muted-foreground">
+      <p className="text-caption text-muted-foreground">
         {ar ? `${from}–${to} من ${total}` : `${from}–${to} of ${total}`}
       </p>
       <div className="flex items-center gap-1">
@@ -405,7 +405,7 @@ function Pagination({ page, total, pageSize, onPage, lang }: { page: number; tot
         </button>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
           <button key={p} onClick={() => onPage(p)}
-            className={`w-8 h-8 rounded-lg text-[12px] font-medium border transition-all duration-150 ${p === page ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:text-foreground hover:bg-muted"}`}>
+            className={`w-8 h-8 rounded-lg text-caption font-medium border transition-all duration-150 ${p === page ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:text-foreground hover:bg-muted"}`}>
             {p}
           </button>
         ))}
@@ -515,23 +515,23 @@ function PeopleDemo() {
         {/* ── Header ── */}
         <div className="flex items-start justify-between gap-4 mb-8">
           <div>
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
               {ar ? "المؤسسة" : "Organization"}
             </p>
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "الأشخاص" : "People"}
             </h1>
           </div>
           <div className="flex items-center gap-2 shrink-0 mt-1">
-            <button onClick={() => setShowImport(true)} className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+            <button onClick={() => setShowImport(true)} className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
               <Upload size={13} />{ar ? "استيراد" : "Import"}
             </button>
-            <button onClick={() => exportCSV(people.map((p) => ({ name_en: p.name_en, name_ar: p.name_ar, email: p.email, phone: p.phone, role_en: (pm(p).role as string) || "" })), "contacts-export")} className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+            <button onClick={() => exportCSV(people.map((p) => ({ name_en: p.name_en, name_ar: p.name_ar, email: p.email, phone: p.phone, role_en: (pm(p).role as string) || "" })), "contacts-export")} className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
               <Download size={13} />{ar ? "تصدير" : "Export"}
             </button>
             <button
               onClick={() => setModalOpen(true)}
-              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium shadow-sm hover:opacity-90 active:opacity-80 transition-opacity"
+              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-body font-medium shadow-sm hover:opacity-90 active:opacity-80 transition-opacity"
             >
               <Plus size={14} strokeWidth={2.5} />
               {ar ? "إضافة شخص" : "Add Person"}
@@ -546,7 +546,7 @@ function PeopleDemo() {
             <Search size={13} strokeWidth={1.75} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input type="search" value={search} onChange={(e) => setSearch(e.target.value)}
               placeholder={ar ? "بحث…" : "Search people…"}
-              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
+              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
             />
           </div>
 
@@ -556,7 +556,7 @@ function PeopleDemo() {
           <div className="flex items-center gap-1.5 flex-wrap">
             {TYPE_FILTER_OPTIONS.map((f) => (
               <button key={f.value} onClick={() => setTypeFilter(f.value as PersonType | "all")}
-                className={`h-7 px-3 rounded-lg text-[12px] font-medium border transition-all duration-150 ${typeFilter === f.value ? "bg-primary/8 text-primary border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
+                className={`h-7 px-3 rounded-lg text-caption font-medium border transition-all duration-150 ${typeFilter === f.value ? "bg-primary/8 text-brand-ink border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
                 {ar ? f.ar : f.en}
               </button>
             ))}
@@ -566,7 +566,7 @@ function PeopleDemo() {
 
           {/* Status */}
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as Status | "all")}
-            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-[12px] text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-caption text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
             {STATUS_FILTER_OPTIONS.map((f) => (
               <option key={f.value} value={f.value}>{ar ? f.ar : f.en}</option>
             ))}
@@ -574,7 +574,7 @@ function PeopleDemo() {
 
           {/* Clear */}
           {hasActiveFilters && (
-            <button onClick={clearFilters} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
+            <button onClick={clearFilters} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
               <X size={11} strokeWidth={2} />
               {ar ? "مسح" : "Clear"}
             </button>
@@ -585,13 +585,13 @@ function PeopleDemo() {
           {/* View toggle */}
           <div className="flex items-center border border-border rounded-xl overflow-hidden bg-card">
             <button onClick={() => setView("card")}
-              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "card" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "card" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:text-foreground"}`}
               aria-label={ar ? "عرض البطاقات" : "Card view"}>
               <LayoutGrid size={14} strokeWidth={1.75} />
             </button>
             <div className="w-px h-4 bg-border/60" aria-hidden="true" />
             <button onClick={() => setView("table")}
-              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "table" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "table" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:text-foreground"}`}
               aria-label={ar ? "عرض القائمة" : "Table view"}>
               <List size={14} strokeWidth={1.75} />
             </button>
@@ -599,7 +599,7 @@ function PeopleDemo() {
         </div>
 
         {/* ── Count ── */}
-        <p className="text-[12px] text-muted-foreground mb-4">
+        <p className="text-caption text-muted-foreground mb-4">
           {ar ? `${filtered.length} شخص` : `${filtered.length} ${filtered.length === 1 ? "person" : "people"}`}
         </p>
 
@@ -609,10 +609,10 @@ function PeopleDemo() {
             <div className="w-10 h-10 rounded-xl bg-muted mx-auto mb-4 flex items-center justify-center">
               <Search size={16} className="text-muted-foreground" strokeWidth={1.5} />
             </div>
-            <p className="text-[13px] font-medium text-foreground mb-1">{ar ? "لا توجد نتائج" : "No results found"}</p>
-            <p className="text-[12px] text-muted-foreground">{ar ? "جرب تغيير البحث أو الفلاتر" : "Try adjusting your search or filters"}</p>
+            <p className="text-body font-medium text-foreground mb-1">{ar ? "لا توجد نتائج" : "No results found"}</p>
+            <p className="text-caption text-muted-foreground">{ar ? "جرب تغيير البحث أو الفلاتر" : "Try adjusting your search or filters"}</p>
             {hasActiveFilters && (
-              <button onClick={clearFilters} className="mt-4 text-[12px] text-primary hover:underline">
+              <button onClick={clearFilters} className="mt-4 text-caption text-brand-ink hover:underline">
                 {ar ? "مسح الفلاتر" : "Clear filters"}
               </button>
             )}

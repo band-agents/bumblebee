@@ -45,17 +45,17 @@ type Person = Database["public"]["Tables"]["people"]["Row"];
 const SO_STATUSES = [
   { value: "draft",       en: "Draft",         ar: "مسودة",         pill: "bg-slate-100 text-slate-600" },
   { value: "approved",    en: "Confirmed",      ar: "مؤكد",          pill: "bg-blue-100 text-blue-600" },
-  { value: "in_progress", en: "In Production",  ar: "في التصنيع",    pill: "bg-violet-100 text-violet-600" },
-  { value: "review",      en: "Ready",          ar: "جاهز للتسليم",  pill: "bg-amber-100 text-amber-700" },
+  { value: "in_progress", en: "In Production",  ar: "في التصنيع",    pill: "bg-chart-4/15 text-chart-4" },
+  { value: "review",      en: "Ready",          ar: "جاهز للتسليم",  pill: "bg-warning/15 text-warning" },
   { value: "sent",        en: "Delivered",      ar: "تم التسليم",    pill: "bg-emerald-100 text-emerald-700" },
   { value: "done",        en: "Closed",         ar: "مقفول",         pill: "bg-emerald-200 text-emerald-800" },
   { value: "cancelled",   en: "Cancelled",      ar: "ملغي",          pill: "bg-muted text-muted-foreground" },
 ];
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
-const smallInput = "w-full h-8 px-2.5 rounded-lg border border-border/50 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
+const smallInput = "w-full h-8 px-2.5 rounded-lg border border-border/50 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20";
 
 function getM(w: WorkItem): SOMeta { return (w.metadata ?? {}) as SOMeta; }
 
@@ -297,7 +297,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
         {/* Header */}
         <div className="px-6 pt-5 pb-4 border-b border-border/40 shrink-0">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[18px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "طلب عميل جديد — الويزارد المتصل" : "New Sales Order — Connected Wizard"}
             </h2>
             <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={16} /></button>
@@ -309,7 +309,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
               const done = i < step;
               return (
                 <button key={i} onClick={() => { if (i <= step) setStep(i); }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${active ? "bg-primary text-primary-foreground" : done ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-micro font-medium transition-all ${active ? "bg-primary text-primary-foreground" : done ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
                   {done ? <CheckCircle2 size={12} /> : <Icon size={12} />}
                   <span className="hidden md:inline">{ar ? s.ar : s.en}</span>
                 </button>
@@ -327,7 +327,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
               <div className="flex gap-3 mb-3">
                 {(["company", "individual"] as const).map(t => (
                   <button key={t} type="button" onClick={() => setCustomerType(t)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-medium border transition-all ${customerType === t ? "border-primary bg-primary/5 text-primary" : "border-border/60 text-muted-foreground hover:bg-muted/50"}`}>
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-caption font-medium border transition-all ${customerType === t ? "border-primary bg-primary/5 text-brand-ink" : "border-border/60 text-muted-foreground hover:bg-muted/50"}`}>
                     {t === "company" ? <Building2 size={13} /> : <User size={13} />}
                     {t === "company" ? (ar ? "شركة" : "Company") : (ar ? "فرد" : "Individual")}
                   </button>
@@ -343,7 +343,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                   ar={ar}
                 />
               </div>
-              <p className="text-[10.5px] text-muted-foreground text-center">{ar ? "أو أدخل البيانات يدوي" : "Or enter manually below"}</p>
+              <p className="text-micro text-muted-foreground text-center">{ar ? "أو أدخل البيانات يدوي" : "Or enter manually below"}</p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={labelCls}>{ar ? "اسم العميل" : "Customer Name"}</label>
@@ -381,8 +381,8 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
           {step === 1 && (
             <>
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[13px] font-medium">{ar ? "اختر المنتجات من الكتالوج" : "Select Products from Catalog"}</p>
-                <button type="button" onClick={addManualItem} className="flex items-center gap-1 text-[11px] text-primary font-medium hover:opacity-70"><Plus size={12} /> {ar ? "صنف يدوي" : "Manual Item"}</button>
+                <p className="text-body font-medium">{ar ? "اختر المنتجات من الكتالوج" : "Select Products from Catalog"}</p>
+                <button type="button" onClick={addManualItem} className="flex items-center gap-1 text-micro text-brand-ink font-medium hover:opacity-70"><Plus size={12} /> {ar ? "صنف يدوي" : "Manual Item"}</button>
               </div>
 
               {/* Product catalog picker */}
@@ -390,7 +390,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
                 <input value={productSearch} onChange={e => setProductSearch(e.target.value)}
                   placeholder={ar ? "ابحث في المنتجات بالاسم أو الكود..." : "Search products by name or SKU..."}
-                  className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20" />
+                  className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20" />
               </div>
               {filteredProducts.length > 0 && (
                 <div className="grid grid-cols-2 gap-2 mb-4">
@@ -402,14 +402,14 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                         disabled={already}
                         className={`text-left p-3 rounded-xl border transition-all ${already ? "border-primary/30 bg-primary/5 opacity-60" : "border-border/40 hover:border-primary/40 hover:bg-muted/30"}`}>
                         <div className="flex items-center gap-2 mb-1">
-                          {pm.sku && <span className="text-[9px] font-mono text-muted-foreground">{pm.sku}</span>}
-                          {pm.category && <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/8 text-primary">{pm.category}</span>}
+                          {pm.sku && <span className="text-micro font-mono text-muted-foreground">{pm.sku}</span>}
+                          {pm.category && <span className="text-micro px-1.5 py-0.5 rounded bg-primary/8 text-brand-ink">{pm.category}</span>}
                         </div>
-                        <p className="text-[12px] font-medium truncate">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
-                        <div className="flex items-center gap-2 mt-1 text-[10px] text-muted-foreground">
+                        <p className="text-caption font-medium truncate">{ar ? (p.name_ar || p.name_en) : p.name_en}</p>
+                        <div className="flex items-center gap-2 mt-1 text-micro text-muted-foreground">
                           {pm.suggested_price && <span>{fmt(pm.suggested_price)} {currency}</span>}
                           {pm.stages?.length && <span>· {calculateCriticalPath(pm.stages).totalDays}d</span>}
-                          {already && <span className="text-primary font-medium">{ar ? "✓ تم الإضافة" : "✓ Added"}</span>}
+                          {already && <span className="text-brand-ink font-medium">{ar ? "✓ تم الإضافة" : "✓ Added"}</span>}
                         </div>
                       </button>
                     );
@@ -420,17 +420,17 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
               {/* Selected items */}
               {items.length > 0 && (
                 <div className="border-t border-border/30 pt-3">
-                  <p className="text-[12px] text-muted-foreground mb-2">{ar ? "الأصناف المختارة" : "Selected Items"} ({items.length})</p>
+                  <p className="text-caption text-muted-foreground mb-2">{ar ? "الأصناف المختارة" : "Selected Items"} ({items.length})</p>
                   <div className="space-y-2">
                     {items.map((item, i) => (
                       <div key={item.id} className="border border-border/30 rounded-xl p-3 bg-muted/10">
                         <div className="flex items-center gap-2 mb-2">
                           {item.product_id ? (
-                            <span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">{ar ? "من الكتالوج" : "Catalog"}</span>
+                            <span className="text-micro px-2 py-0.5 rounded bg-primary/10 text-brand-ink font-medium">{ar ? "من الكتالوج" : "Catalog"}</span>
                           ) : (
-                            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-medium">{ar ? "يدوي" : "Manual"}</span>
+                            <span className="text-micro px-2 py-0.5 rounded bg-warning/15 text-warning font-medium">{ar ? "يدوي" : "Manual"}</span>
                           )}
-                          {item.product_sku && <span className="text-[9px] font-mono text-muted-foreground">{item.product_sku}</span>}
+                          {item.product_sku && <span className="text-micro font-mono text-muted-foreground">{item.product_sku}</span>}
                           <div className="flex-1" />
                           <button onClick={() => removeItem(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-500 hover:bg-rose-50"><X size={11} /></button>
                         </div>
@@ -445,13 +445,13 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                           <div className="col-span-3">
                             <input type="number" value={item.unitPrice} onChange={e => updateItem(i, { ...item, unitPrice: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} placeholder={ar ? "السعر" : "Price"} />
                           </div>
-                          <div className="col-span-2 flex items-center justify-end text-[12px] font-medium tabular-nums">
+                          <div className="col-span-2 flex items-center justify-end text-caption font-medium tabular-nums">
                             {fmt(item.qty * item.unitPrice)}
                           </div>
                         </div>
                       </div>
                     ))}
-                    <div className="flex justify-end text-[13px] font-medium pt-2">
+                    <div className="flex justify-end text-body font-medium pt-2">
                       <span className="text-muted-foreground mr-3">{ar ? "الإجمالي:" : "Total:"}</span>
                       <span className="tabular-nums">{fmt(totalAmount)} {currency}</span>
                     </div>
@@ -496,7 +496,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
           {/* Step 3: Manufacturing Route */}
           {step === 3 && (
             <>
-              <p className="text-[12px] text-muted-foreground mb-3">
+              <p className="text-caption text-muted-foreground mb-3">
                 {ar ? "اختر خط التصنيع المناسب للطلب" : "Choose the manufacturing route for this order"}
               </p>
               {[
@@ -506,21 +506,21 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
               ].map(route => (
                 <button key={route.value} type="button" onClick={() => setMfgRoute(route.value)}
                   className={`w-full text-left p-4 rounded-xl border mb-2 transition-all ${mfgRoute === route.value ? "border-primary bg-primary/5" : "border-border/40 hover:border-border/70"}`}>
-                  <p className="text-[13px] font-medium">{ar ? route.ar : route.en}</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">{route.desc}</p>
+                  <p className="text-body font-medium">{ar ? route.ar : route.en}</p>
+                  <p className="text-micro text-muted-foreground mt-0.5">{route.desc}</p>
                 </button>
               ))}
 
               {/* Product stage summary */}
               {items.filter(i => i.stages_snapshot?.length).length > 0 && (
                 <div className="border-t border-border/30 pt-3 mt-3">
-                  <p className="text-[12px] font-medium mb-2">{ar ? "مراحل التصنيع لكل منتج" : "Manufacturing stages per product"}</p>
+                  <p className="text-caption font-medium mb-2">{ar ? "مراحل التصنيع لكل منتج" : "Manufacturing stages per product"}</p>
                   {items.filter(i => i.stages_snapshot?.length).map(item => {
                     const cp = calculateCriticalPath(item.stages_snapshot!);
                     return (
                       <div key={item.id} className="bg-muted/20 rounded-lg p-3 mb-2">
-                        <p className="text-[12px] font-medium">{item.product_name} × {item.qty}</p>
-                        <div className="flex items-center gap-3 mt-1 text-[10.5px] text-muted-foreground">
+                        <p className="text-caption font-medium">{item.product_name} × {item.qty}</p>
+                        <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
                           <span>{item.stages_snapshot!.length} {ar ? "مرحلة" : "stages"}</span>
                           <span>{cp.totalDays} {ar ? "يوم عمل" : "work days"}</span>
                           {cp.parallelSavings > 0 && <span className="text-emerald-600">{ar ? `وفر ${cp.parallelSavings} يوم` : `saves ${cp.parallelSavings}d`}</span>}
@@ -538,53 +538,53 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
             <>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-3">
-                  <p className="text-[13px] font-medium">{ar ? "ملخص التكلفة" : "Cost Summary"}</p>
+                  <p className="text-body font-medium">{ar ? "ملخص التكلفة" : "Cost Summary"}</p>
                   {/* Discount & tax controls */}
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="text-[10px] text-muted-foreground">{ar ? "خصم" : "Discount"}</label>
+                      <label className="text-micro text-muted-foreground">{ar ? "خصم" : "Discount"}</label>
                       <div className="flex gap-1">
                         <input type="number" min={0} value={orderDiscount || ""} onChange={e => setOrderDiscount(parseFloat(e.target.value) || 0)} className={smallInput} placeholder="0" />
                         <div className="flex rounded-lg border border-border/60 overflow-hidden shrink-0">
                           {(["pct", "fixed"] as const).map(t => (
-                            <button key={t} type="button" onClick={() => setOrderDiscountType(t)} className={`px-2 text-[11px] font-medium ${orderDiscountType === t ? "bg-foreground text-background" : "text-muted-foreground"}`}>{t === "pct" ? "%" : currency}</button>
+                            <button key={t} type="button" onClick={() => setOrderDiscountType(t)} className={`px-2 text-micro font-medium ${orderDiscountType === t ? "bg-foreground text-background" : "text-muted-foreground"}`}>{t === "pct" ? "%" : currency}</button>
                           ))}
                         </div>
                       </div>
                     </div>
                     <div>
-                      <label className="text-[10px] text-muted-foreground">{ar ? "ضريبة %" : "Tax %"}</label>
+                      <label className="text-micro text-muted-foreground">{ar ? "ضريبة %" : "Tax %"}</label>
                       <input type="number" min={0} value={taxRate || ""} onChange={e => setTaxRate(parseFloat(e.target.value) || 0)} className={smallInput} placeholder="0" />
                     </div>
                   </div>
                   <div className="bg-muted/20 rounded-xl p-4 space-y-2">
-                    <div className="flex justify-between text-[12px]">
+                    <div className="flex justify-between text-caption">
                       <span className="text-muted-foreground">{ar ? "الإجمالي الفرعي" : "Subtotal"}</span>
                       <span className="font-medium tabular-nums">{fmt(subtotal)} {currency}</span>
                     </div>
                     {orderDiscAmt > 0 && (
-                      <div className="flex justify-between text-[12px] text-rose-500">
+                      <div className="flex justify-between text-caption text-rose-500">
                         <span>{ar ? "الخصم" : "Discount"}</span>
                         <span className="font-medium tabular-nums">− {fmt(Math.round(orderDiscAmt))} {currency}</span>
                       </div>
                     )}
                     {taxAmt > 0 && (
-                      <div className="flex justify-between text-[12px] text-muted-foreground">
+                      <div className="flex justify-between text-caption text-muted-foreground">
                         <span>{ar ? "الضريبة" : "Tax"} ({taxRate}%)</span>
                         <span className="font-medium tabular-nums">+ {fmt(Math.round(taxAmt))} {currency}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-[13px] font-semibold border-t border-border/30 pt-2">
+                    <div className="flex justify-between text-body font-semibold border-t border-border/30 pt-2">
                       <span>{ar ? "قيمة الطلب" : "Order Total"}</span>
                       <span className="tabular-nums text-emerald-600">{fmt(Math.round(totalAmount))} {currency}</span>
                     </div>
                     {estimatedCost > 0 && (
                       <>
-                        <div className="flex justify-between text-[12px]">
+                        <div className="flex justify-between text-caption">
                           <span className="text-muted-foreground">{ar ? "تكلفة التصنيع المتوقعة" : "Est. Mfg Cost"}</span>
                           <span className="font-medium tabular-nums">{fmt(Math.round(estimatedCost))} {currency}</span>
                         </div>
-                        <div className="flex justify-between text-[12px] border-t border-border/30 pt-2">
+                        <div className="flex justify-between text-caption border-t border-border/30 pt-2">
                           <span className="font-medium">{ar ? "هامش الربح المتوقع" : "Est. Margin"}</span>
                           <span className={`font-medium tabular-nums ${(totalAmount - estimatedCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
                             {totalAmount > 0 ? Math.round(((totalAmount - estimatedCost) / totalAmount) * 100) : 0}%
@@ -596,10 +596,10 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
 
                   {/* Time */}
                   <div className="bg-muted/20 rounded-xl p-4">
-                    <p className="text-[11px] text-muted-foreground mb-1">{ar ? "مدة التصنيع المتوقعة" : "Est. Manufacturing Time"}</p>
-                    <p className="text-[20px] font-medium tabular-nums">{estimatedDays || "—"} {estimatedDays ? (ar ? "يوم عمل" : "work days") : ""}</p>
+                    <p className="text-micro text-muted-foreground mb-1">{ar ? "مدة التصنيع المتوقعة" : "Est. Manufacturing Time"}</p>
+                    <p className="text-heading font-medium tabular-nums">{estimatedDays || "—"} {estimatedDays ? (ar ? "يوم عمل" : "work days") : ""}</p>
                     {dueDate && estimatedDays > 0 && (
-                      <p className={`text-[10.5px] mt-1 ${estimatedDays > Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000) ? "text-rose-500" : "text-emerald-600"}`}>
+                      <p className={`text-micro mt-1 ${estimatedDays > Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000) ? "text-rose-500" : "text-emerald-600"}`}>
                         {estimatedDays > Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000)
                           ? (ar ? "⚠ الوقت مش كافي للتسليم في الميعاد!" : "⚠ Not enough time for deadline!")
                           : (ar ? "✓ ممكن نلحق الميعاد" : "✓ Can meet deadline")}
@@ -610,8 +610,8 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <p className="text-[13px] font-medium">{ar ? "الدفعات" : "Payments"}</p>
-                    <button type="button" onClick={addPayment} className="flex items-center gap-1 text-[11px] text-primary font-medium hover:opacity-70"><Plus size={12} /> {ar ? "دفعة" : "Add"}</button>
+                    <p className="text-body font-medium">{ar ? "الدفعات" : "Payments"}</p>
+                    <button type="button" onClick={addPayment} className="flex items-center gap-1 text-micro text-brand-ink font-medium hover:opacity-70"><Plus size={12} /> {ar ? "دفعة" : "Add"}</button>
                   </div>
                   {payments.map((p, i) => (
                     <div key={p.id} className="border border-border/30 rounded-lg p-2.5 bg-muted/10">
@@ -630,7 +630,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                     </div>
                   ))}
                   {totalPaid > 0 && (
-                    <div className="flex justify-between text-[12px] font-medium">
+                    <div className="flex justify-between text-caption font-medium">
                       <span className="text-muted-foreground">{ar ? "إجمالي المدفوع:" : "Total Paid:"}</span>
                       <span className="tabular-nums">{fmt(totalPaid)} / {fmt(totalAmount)} {currency} ({totalAmount > 0 ? Math.round((totalPaid / totalAmount) * 100) : 0}%)</span>
                     </div>
@@ -644,8 +644,8 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
           {step === 5 && (
             <>
               <div className="bg-muted/20 rounded-xl p-4 space-y-3">
-                <p className="text-[13px] font-medium">{ar ? "ملخص الطلب" : "Order Summary"}</p>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-[12px]">
+                <p className="text-body font-medium">{ar ? "ملخص الطلب" : "Order Summary"}</p>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-caption">
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "رقم الطلب" : "SO#"}</span><span className="font-mono">{soNumber}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "العميل" : "Customer"}</span><span>{customerName}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "المشروع" : "Project"}</span><span>{projectName || "—"}</span></div>
@@ -659,7 +659,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
 
               {/* Readiness checklist */}
               <div className="border-t border-border/30 pt-4">
-                <p className="text-[12px] font-medium mb-3">{ar ? "قائمة الجاهزية" : "Readiness Checklist"}</p>
+                <p className="text-caption font-medium mb-3">{ar ? "قائمة الجاهزية" : "Readiness Checklist"}</p>
                 <div className="space-y-2">
                   {[
                     { val: customerConfirmed, set: setCustomerConfirmed, en: "Customer confirmed", ar: "العميل أكد" },
@@ -669,7 +669,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                     { val: depositReceived, set: setDepositReceived, en: "Deposit received", ar: "العربون اتدفع" },
                   ].map(chk => (
                     <button key={chk.en} type="button" onClick={() => chk.set(!chk.val)}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-[12px] text-left transition-all ${chk.val ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-border/40 text-muted-foreground hover:bg-muted/30"}`}>
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-caption text-left transition-all ${chk.val ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-border/40 text-muted-foreground hover:bg-muted/30"}`}>
                       <CheckCircle2 size={14} className={chk.val ? "text-emerald-500" : "text-muted-foreground/30"} />
                       <span>{ar ? chk.ar : chk.en}</span>
                     </button>
@@ -680,10 +680,10 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
               {/* Warnings */}
               {warnings.length > 0 && (
                 <div className="border-t border-border/30 pt-3 mt-3">
-                  <p className="text-[12px] font-medium mb-2 flex items-center gap-1.5"><AlertTriangle size={12} className="text-amber-500" /> {ar ? "تنبيهات" : "Warnings"}</p>
+                  <p className="text-caption font-medium mb-2 flex items-center gap-1.5"><AlertTriangle size={12} className="text-warning" /> {ar ? "تنبيهات" : "Warnings"}</p>
                   <div className="space-y-1.5">
                     {warnings.map((w, i) => (
-                      <div key={i} className={`flex items-start gap-2 text-[11.5px] px-3 py-2 rounded-lg ${w.type === "error" ? "bg-rose-50 text-rose-700" : w.type === "warning" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
+                      <div key={i} className={`flex items-start gap-2 text-micro px-3 py-2 rounded-lg ${w.type === "error" ? "bg-rose-50 text-rose-700" : w.type === "warning" ? "bg-warning/10 text-warning" : "bg-blue-50 text-blue-700"}`}>
                         {w.type === "error" ? <AlertCircle size={12} className="mt-0.5 shrink-0" /> : <Info size={12} className="mt-0.5 shrink-0" />}
                         <span>{ar ? w.ar : w.en}</span>
                       </div>
@@ -694,18 +694,18 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
             </>
           )}
 
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex items-center gap-3">
           {step > 0 && (
-            <button type="button" onClick={() => setStep(s => s - 1)} className="flex items-center gap-1.5 h-10 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">
+            <button type="button" onClick={() => setStep(s => s - 1)} className="flex items-center gap-1.5 h-10 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">
               <ChevronLeft size={14} /> {ar ? "السابق" : "Back"}
             </button>
           )}
           <div className="flex-1" />
-          <button type="button" onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           {step < 5 ? (
             <button onClick={() => setStep(s => s + 1)} className={btnPrimary + " h-10"}>
               {ar ? "التالي" : "Next"} <ChevronRight size={14} />
@@ -860,19 +860,19 @@ export default function SalesOrders() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <ClipboardCheck size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "طلبات العملاء" : "Sales Orders"}</p>
+            <ClipboardCheck size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "طلبات العملاء" : "Sales Orders"}</p>
           </div>
           <div className="flex items-start justify-between gap-4 mb-5">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "طلبات العملاء" : "Sales Orders"}
             </h1>
             <div className="flex items-center gap-2 shrink-0">
               {orders.length > 0 && (
                 <button onClick={() => {
                   const rows = orders.map(o => { const m = getM(o); return { so_number: m.so_number, customer: m.customer_name, project: m.project_name, priority: m.priority, items: (m.items||[]).length, total: soGrand(m), paid: calcPaid(m.payments||[]), status: o.status }; });
-                  exportCSV(rows, `thoth-sales-orders-${new Date().toISOString().slice(0,10)}.csv`);
-                }} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                  exportCSV(rows, `bumblebee-sales-orders-${new Date().toISOString().slice(0,10)}.csv`);
+                }} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
@@ -884,17 +884,17 @@ export default function SalesOrders() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { icon: FileText, value: totalOrders.toLocaleString("en"), label: ar ? "إجمالي الطلبات" : "Total Orders", color: "text-primary" },
+              { icon: FileText, value: totalOrders.toLocaleString("en"), label: ar ? "إجمالي الطلبات" : "Total Orders", color: "text-brand-ink" },
               { icon: CheckCircle2, value: confirmed, label: ar ? "مؤكد" : "Confirmed", color: "text-blue-600" },
-              { icon: Wrench, value: inProd, label: ar ? "في التصنيع" : "In Production", color: "text-violet-600" },
-              { icon: Truck, value: ready, label: ar ? "جاهز للتسليم" : "Ready", color: "text-amber-600" },
+              { icon: Wrench, value: inProd, label: ar ? "في التصنيع" : "In Production", color: "text-chart-4" },
+              { icon: Truck, value: ready, label: ar ? "جاهز للتسليم" : "Ready", color: "text-warning" },
               { icon: AlertCircle, value: overdue, label: ar ? "متأخر" : "Overdue", color: overdue > 0 ? "text-rose-500" : "text-emerald-600" },
               { icon: DollarSign, value: fmt(totalValue), label: ar ? "القيمة الإجمالية" : "Total Value", color: "text-foreground" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <m.icon size={14} strokeWidth={1.75} className={m.color + " mb-2"} />
-                <p className="text-[17px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -906,9 +906,9 @@ export default function SalesOrders() {
         <div className="max-w-[1100px] flex items-center gap-3">
           <div className="relative flex-1 max-w-[300px]">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "ابحث بالرقم أو العميل أو المشروع..." : "Search by SO#, customer, project..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "ابحث بالرقم أو العميل أو المشروع..." : "Search by SO#, customer, project..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
           </div>
-          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="h-9 px-3 rounded-xl border border-border/60 bg-background text-[12px] appearance-none cursor-pointer">
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="h-9 px-3 rounded-xl border border-border/60 bg-background text-caption appearance-none cursor-pointer">
             <option value="all">{ar ? "كل الحالات" : "All Status"}</option>
             {SO_STATUSES.map(s => <option key={s.value} value={s.value}>{ar ? s.ar : s.en}</option>)}
           </select>
@@ -923,15 +923,15 @@ export default function SalesOrders() {
               <ClipboardCheck size={24} className="text-muted-foreground/40" />
             </div>
             <div className="text-center max-w-[400px]">
-              <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش طلبات لسه" : "No sales orders yet"}</p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">
+              <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش طلبات لسه" : "No sales orders yet"}</p>
+              <p className="text-body text-muted-foreground leading-relaxed">
                 {ar ? "أنشئ طلب عميل جديد بالويزارد المتصل." : "Create a new order with the connected wizard."}
               </p>
             </div>
             <button onClick={() => setModal(true)} className={btnPrimary + " h-10"}><Plus size={14} /> {ar ? "طلب جديد" : "New Order"}</button>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+          <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
         ) : (
           <div className="space-y-3">
             {filtered.map(o => {
@@ -950,28 +950,28 @@ export default function SalesOrders() {
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="text-[10.5px] font-mono text-muted-foreground">{m.so_number}</span>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                        {pri && <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
-                        {isOd && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
+                        <span className="text-micro font-mono text-muted-foreground">{m.so_number}</span>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                        {pri && <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
+                        {isOd && <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
                         {m.customer_type === "individual" && <User size={10} className="text-muted-foreground/40" />}
                         {m.customer_type === "company" && <Building2 size={10} className="text-muted-foreground/40" />}
                       </div>
-                      <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                         {m.project_name || m.customer_name || o.title_en}
                       </p>
-                      <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground">
+                      <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
                         {m.customer_name && <span>{m.customer_name}</span>}
                         {(m.items||[]).length > 0 && <span>{(m.items||[]).length} {ar ? "صنف" : "items"}</span>}
-                        {linkedProducts > 0 && <span className="text-primary">{linkedProducts} {ar ? "متصل بالكتالوج" : "linked"}</span>}
+                        {linkedProducts > 0 && <span className="text-brand-ink">{linkedProducts} {ar ? "متصل بالكتالوج" : "linked"}</span>}
                         {m.estimated_days && <span><Clock size={9} className="inline mr-0.5" />{m.estimated_days}d</span>}
                         {o.due_date && <span><Calendar size={9} className="inline mr-0.5" />{o.due_date}</span>}
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-[16px] font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(itemsTotal)}</p>
-                      {paidTotal > 0 && <p className="text-[10.5px] text-emerald-600 mt-0.5">{fmt(paidTotal)} {ar ? "مدفوع" : "paid"}</p>}
-                      {remaining > 0 && paidTotal > 0 && <p className="text-[10px] text-muted-foreground">{fmt(remaining)} {ar ? "متبقي" : "remaining"}</p>}
+                      <p className="text-title font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(itemsTotal)}</p>
+                      {paidTotal > 0 && <p className="text-micro text-emerald-600 mt-0.5">{fmt(paidTotal)} {ar ? "مدفوع" : "paid"}</p>}
+                      {remaining > 0 && paidTotal > 0 && <p className="text-micro text-muted-foreground">{fmt(remaining)} {ar ? "متبقي" : "remaining"}</p>}
                     </div>
                   </div>
 
@@ -992,17 +992,17 @@ export default function SalesOrders() {
                           </button>
                         ))}
                       </div>
-                      <span className="text-[10px] text-muted-foreground">{readyCount}/5 {ar ? "جاهز" : "ready"}</span>
+                      <span className="text-micro text-muted-foreground">{readyCount}/5 {ar ? "جاهز" : "ready"}</span>
                     </div>
                   )}
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 pt-3 border-t border-border/30">
-                    {o.status === "draft" && <button onClick={() => updateStatus(o.id, "approved")} className="text-[11px] text-blue-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تأكيد" : "Confirm"}</button>}
-                    {o.status === "approved" && <button onClick={() => updateStatus(o.id, "in_progress")} className="text-[11px] text-violet-600 font-medium hover:opacity-70 flex items-center gap-1"><Wrench size={11} /> {ar ? "ابدأ التصنيع" : "Start Production"}</button>}
-                    {o.status === "in_progress" && <button onClick={() => updateStatus(o.id, "review")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1"><Package size={11} /> {ar ? "جاهز للتسليم" : "Ready"}</button>}
-                    {o.status === "review" && <button onClick={() => updateStatus(o.id, "sent")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><Truck size={11} /> {ar ? "تم التسليم" : "Delivered"}</button>}
-                    {o.status === "sent" && <button onClick={() => updateStatus(o.id, "done")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "اقفل الطلب" : "Close"}</button>}
+                    {o.status === "draft" && <button onClick={() => updateStatus(o.id, "approved")} className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تأكيد" : "Confirm"}</button>}
+                    {o.status === "approved" && <button onClick={() => updateStatus(o.id, "in_progress")} className="text-micro text-chart-4 font-medium hover:opacity-70 flex items-center gap-1"><Wrench size={11} /> {ar ? "ابدأ التصنيع" : "Start Production"}</button>}
+                    {o.status === "in_progress" && <button onClick={() => updateStatus(o.id, "review")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1"><Package size={11} /> {ar ? "جاهز للتسليم" : "Ready"}</button>}
+                    {o.status === "review" && <button onClick={() => updateStatus(o.id, "sent")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><Truck size={11} /> {ar ? "تم التسليم" : "Delivered"}</button>}
+                    {o.status === "sent" && <button onClick={() => updateStatus(o.id, "done")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "اقفل الطلب" : "Close"}</button>}
                     <button onClick={() => setDeleteTarget(o)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors">
                       <Trash2 size={12} />
                     </button>

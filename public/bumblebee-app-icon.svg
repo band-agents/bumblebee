@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="88" height="88">
+  <!-- Bumblebee app icon — the gold stamp: signature body, deep-honey detail,
+       on warm graphite. Use wherever the mark appears without the UI around it. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.42" y2="1">
+      <stop offset="0" stop-color="#332E28"/>
+      <stop offset="1" stop-color="#1C1A17"/>
+    </linearGradient>
+    <clipPath id="abd2">
+      <path d="M32 29.2C38.3 29.2 41.2 35.4 41.2 42C41.2 51.5 37.3 61.5 32 61.5C26.7 61.5 22.8 51.5 22.8 42C22.8 35.4 25.7 29.2 32 29.2Z"/>
+    </clipPath>
+  </defs>
+  <rect width="88" height="88" rx="20" fill="url(#bg)"/>
+  <g transform="translate(14 14) scale(0.9375)">
+    <g fill="#8A6A12" opacity="0.8">
+      <path d="M35.4 27.2C38.4 21.6 45.6 13.8 52.8 10.2C57.4 7.9 61.6 8.4 62 12.4C62.4 16.8 57.6 24.4 51 28.4C46.2 31.3 40.6 32.3 37.4 31.4C34.7 30.6 34.2 29.4 35.4 27.2Z"/>
+      <path d="M28.6 27.2C25.6 21.6 18.4 13.8 11.2 10.2C6.6 7.9 2.4 8.4 2 12.4C1.6 16.8 6.4 24.4 13 28.4C17.8 31.3 23.4 32.3 26.6 31.4C29.3 30.6 29.8 29.4 28.6 27.2Z"/>
+    </g>
+    <g stroke="#F5E484" stroke-width="2.2" stroke-linecap="round" fill="none">
+      <path d="M28.4 12.4C26.2 8.8 24.4 6.2 22.6 4.2"/>
+      <path d="M35.6 12.4C37.8 8.8 39.6 6.2 41.4 4.2"/>
+    </g>
+    <g fill="#F5E484"><circle cx="22" cy="3.7" r="1.6"/><circle cx="42" cy="3.7" r="1.6"/></g>
+    <path d="M32 29.2C38.3 29.2 41.2 35.4 41.2 42C41.2 51.5 37.3 61.5 32 61.5C26.7 61.5 22.8 51.5 22.8 42C22.8 35.4 25.7 29.2 32 29.2Z" fill="#F5E484"/>
+    <g clip-path="url(#abd2)" stroke="#8A6A12" fill="none" stroke-linecap="butt">
+      <path d="M19 36.4Q32 40.4 45 36.4" stroke-width="6.2"/>
+      <path d="M21 48.6Q32 52.2 43 48.6" stroke-width="4.8"/>
+    </g>
+    <ellipse cx="32" cy="27.6" rx="8.6" ry="7" fill="#8A6A12"/>
+    <circle cx="32" cy="18" r="8.1" fill="#F5E484"/>
+    <g fill="#8A6A12">
+      <ellipse cx="27.9" cy="19" rx="2.6" ry="3.5" transform="rotate(-16 27.9 19)"/>
+      <ellipse cx="36.1" cy="19" rx="2.6" ry="3.5" transform="rotate(16 36.1 19)"/>
+    </g>
+    <g stroke="#F5E484" stroke-width="2.6" stroke-linecap="round">
+      <path d="M23.9 14.4L29.8 17.4"/>
+      <path d="M40.1 14.4L34.2 17.4"/>
+    </g>
+  </g>
+</svg>

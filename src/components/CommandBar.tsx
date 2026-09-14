@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 // ─── Recent history helpers ────────────────────────────────
 
-const HISTORY_KEY = "thoth_command_history";
+const HISTORY_KEY = "bumblebee_command_history";
 const MAX_HISTORY = 8;
 
 function loadHistory(): string[] {
@@ -135,19 +135,19 @@ function ResultRow({
     >
       <span className={`
         shrink-0 w-7 h-7 rounded-md flex items-center justify-center
-        ${selected ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground group-hover:bg-accent group-hover:text-foreground"}
+        ${selected ? "bg-primary/15 text-brand-ink" : "bg-muted text-muted-foreground group-hover:bg-accent group-hover:text-foreground"}
         transition-colors duration-75
       `}>
         <Icon size={13} strokeWidth={1.75} />
       </span>
       <span className="flex-1 min-w-0">
-        <span className="block text-[13px] font-medium leading-tight truncate">{title}</span>
+        <span className="block text-body font-medium leading-tight truncate">{title}</span>
         {subtitle && (
-          <span className="block text-[11px] text-muted-foreground leading-tight truncate mt-0.5">{subtitle}</span>
+          <span className="block text-micro text-muted-foreground leading-tight truncate mt-0.5">{subtitle}</span>
         )}
       </span>
       {selected && (
-        <span className="shrink-0 text-[10px] text-muted-foreground/60 border border-border rounded px-1 py-0.5">↵</span>
+        <span className="shrink-0 text-micro text-muted-foreground/60 border border-border rounded px-1 py-0.5">↵</span>
       )}
     </button>
   );
@@ -158,7 +158,7 @@ function ResultRow({
 function SectionLabel({ label }: { label: string }) {
   return (
     <div className="px-3 pt-3 pb-1">
-      <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+      <span className="text-micro font-semibold uppercase tracking-widest text-muted-foreground/60">
         {label}
       </span>
     </div>
@@ -300,7 +300,7 @@ export function CommandBar() {
                   onKeyDown={handleKeyDown}
                   placeholder={ar ? "ابحث أو اكتب أمراً..." : "Search or type a command…"}
                   className={`
-                    flex-1 bg-transparent text-[14px] text-foreground placeholder:text-muted-foreground/60
+                    flex-1 bg-transparent text-body-lg text-foreground placeholder:text-muted-foreground/60
                     outline-none border-none min-w-0
                     ${ar ? "text-right" : ""}
                   `}
@@ -315,7 +315,7 @@ export function CommandBar() {
                     <X size={13} strokeWidth={2} />
                   </button>
                 )}
-                <kbd className="shrink-0 hidden sm:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground/50 border border-border/50 rounded px-1.5 py-0.5">
+                <kbd className="shrink-0 hidden sm:inline-flex items-center gap-0.5 text-micro text-muted-foreground/50 border border-border/50 rounded px-1.5 py-0.5">
                   Esc
                 </kbd>
               </div>
@@ -325,7 +325,7 @@ export function CommandBar() {
 
                 {/* No results */}
                 {hasQuery && !hasResults && (
-                  <div className="py-10 text-center text-[13px] text-muted-foreground">
+                  <div className="py-10 text-center text-body text-muted-foreground">
                     {ar ? "لا توجد نتائج لـ" : "No results for"}{" "}
                     <span className="font-medium text-foreground">"{query}"</span>
                   </div>
@@ -433,20 +433,20 @@ export function CommandBar() {
 
               {/* Footer hint */}
               <div className={`flex items-center gap-3 px-4 py-2.5 border-t border-border/30 bg-muted/30 ${ar ? "flex-row-reverse" : ""}`}>
-                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50">
+                <div className="flex items-center gap-1.5 text-micro text-muted-foreground/50">
                   <kbd className="border border-border/50 rounded px-1 py-0.5">↑↓</kbd>
                   <span>{ar ? "للتنقل" : "navigate"}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50">
+                <div className="flex items-center gap-1.5 text-micro text-muted-foreground/50">
                   <kbd className="border border-border/50 rounded px-1 py-0.5">↵</kbd>
                   <span>{ar ? "للتحديد" : "select"}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50">
+                <div className="flex items-center gap-1.5 text-micro text-muted-foreground/50">
                   <kbd className="border border-border/50 rounded px-1 py-0.5">Esc</kbd>
                   <span>{ar ? "للإغلاق" : "close"}</span>
                 </div>
-                <div className={`${ar ? "me-auto" : "ms-auto"} text-[10px] text-muted-foreground/40`}>
-                  THOTH Search
+                <div className={`${ar ? "me-auto" : "ms-auto"} text-micro text-muted-foreground/40`}>
+                  Bumblebee Search
                 </div>
               </div>
             </div>

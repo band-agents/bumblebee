@@ -1,6 +1,8 @@
 node_modules
 dist
 .env.local
+.env*.local
+.vercel
 .env*.bak
 .env.local.bak
 .tsbuildinfo

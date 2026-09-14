@@ -33,7 +33,7 @@ const STATUS_CONFIG: Record<BlockerStatus, { icon: LucideIcon; color: string; bg
   completed: { icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-200/60", label: "Done", labelAr: "تم" },
   required:  { icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50", border: "border-rose-200/60", label: "Required", labelAr: "مطلوب" },
   optional:  { icon: Circle, color: "text-muted-foreground", bg: "bg-muted/30", border: "border-border/40", label: "Optional", labelAr: "اختياري" },
-  blocked:   { icon: Lock, color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200/60", label: "Blocked", labelAr: "محجوز" },
+  blocked:   { icon: Lock, color: "text-warning", bg: "bg-warning/10", border: "border-warning/30", label: "Blocked", labelAr: "محجوز" },
 };
 
 // ─── Common blocker presets ───────────────────────────────
@@ -77,16 +77,16 @@ export default function WorkflowBlockers({ items, ar = false, title, titleAr, cl
               <CheckCircle2 size={14} className="text-emerald-600" />
             </motion.div>
           ) : (
-            <AlertTriangle size={14} className="text-amber-500" />
+            <AlertTriangle size={14} className="text-warning" />
           )}
-          <span className="text-[11.5px] font-semibold">
+          <span className="text-micro font-semibold">
             {ar
               ? (titleAr || (allClear ? "جاهز للتشغيل ✓" : "مش جاهز للتشغيل"))
               : (title || (allClear ? "Ready to proceed ✓" : "Not ready yet"))
             }
           </span>
         </div>
-        <span className="text-[10px] text-muted-foreground font-medium">
+        <span className="text-micro text-muted-foreground font-medium">
           {completed}/{total}
         </span>
       </div>
@@ -123,16 +123,16 @@ export default function WorkflowBlockers({ items, ar = false, title, titleAr, cl
                 {ItemIcon && <ItemIcon size={12} className="text-muted-foreground/60" />}
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`text-[11.5px] font-medium ${item.status === "completed" ? "line-through text-muted-foreground" : ""}`}>
+                <p className={`text-micro font-medium ${item.status === "completed" ? "line-through text-muted-foreground" : ""}`}>
                   {ar ? item.labelAr || item.label : item.label}
                 </p>
                 {item.reason && item.status !== "completed" && (
-                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                  <p className="text-micro text-muted-foreground mt-0.5">
                     {ar ? item.reasonAr || item.reason : item.reason}
                   </p>
                 )}
               </div>
-              <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${config.bg} ${config.color} shrink-0`}>
+              <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${config.bg} ${config.color} shrink-0`}>
                 {ar ? config.labelAr : config.label}
               </span>
             </motion.div>

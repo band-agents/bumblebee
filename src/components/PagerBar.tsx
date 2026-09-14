@@ -24,7 +24,7 @@ export function PagerBar({ page, pageSize, total, onPage, ar, fetching }: {
   const btn = "w-7 h-7 rounded-lg border border-border/50 flex items-center justify-center text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors disabled:opacity-30 disabled:pointer-events-none";
 
   return (
-    <div className={`flex items-center justify-between gap-3 px-1 py-3 text-[11.5px] text-muted-foreground ${fetching ? "opacity-60" : ""}`}>
+    <div className={`flex items-center justify-between gap-3 px-1 py-3 text-micro text-muted-foreground ${fetching ? "opacity-60" : ""}`}>
       <span className="tabular-nums">
         {ar ? `${fmt(from)}–${fmt(to)} من ${fmt(total)}` : `${fmt(from)}–${fmt(to)} of ${fmt(total)}`}
       </span>

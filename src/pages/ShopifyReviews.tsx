@@ -100,7 +100,7 @@ const DIST = [
 function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void }) {
   return (
     <button type="button" role="switch" aria-checked={on} onClick={() => onChange(!on)}
-      className={`relative w-9 h-5 shrink-0 rounded-full transition-colors duration-200 ${on ? "bg-amber-500" : "bg-muted-foreground/25"}`}>
+      className={`relative w-9 h-5 shrink-0 rounded-full transition-colors duration-200 ${on ? "bg-warning" : "bg-muted-foreground/25"}`}>
       <span className={`absolute top-0.5 start-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200 ${on ? "translate-x-4 rtl:-translate-x-4" : ""}`} />
     </button>
   );
@@ -117,13 +117,13 @@ function Stars({ n, size = 12, color = "#f59e0b" }: { n: number; size?: number; 
 }
 
 const cardCls = "border border-border/40 rounded-xl bg-background";
-const inputCls = "h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
+const inputCls = "h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
 const numCls = `${inputCls} w-24 tabular-nums`;
 
 const STATUS_META: Record<ReviewStatus, { en: string; ar: string; cls: string }> = {
-  pending:   { en: "Pending", ar: "بانتظار المراجعة", cls: "bg-amber-50 text-amber-700" },
+  pending:   { en: "Pending", ar: "بانتظار المراجعة", cls: "bg-warning/10 text-warning" },
   published: { en: "Published", ar: "منشور", cls: "bg-emerald-50 text-emerald-700" },
-  featured:  { en: "Featured", ar: "مميز", cls: "bg-violet-50 text-violet-700" },
+  featured:  { en: "Featured", ar: "مميز", cls: "bg-chart-4/10 text-chart-4" },
   rejected:  { en: "Rejected", ar: "مرفوض", cls: "bg-rose-50 text-rose-600" },
   spam:      { en: "Spam", ar: "سبام", cls: "bg-zinc-100 text-zinc-500" },
 };
@@ -148,20 +148,20 @@ function ReviewWidgetPreview({ cfg, dark, ar }: { cfg: ReviewsConfig; dark: bool
       {/* Summary header */}
       <div className="flex items-center gap-4 mb-4">
         <div>
-          <p className={`text-[26px] font-semibold leading-none ${frameText}`}>4.8</p>
+          <p className={`text-display font-semibold leading-none ${frameText}`}>4.8</p>
           <Stars n={5} size={11} color={cfg.starColor} />
         </div>
         <div className="flex-1 space-y-1">
           {DIST.slice(0, 3).map(d => (
             <div key={d.stars} className="flex items-center gap-2">
-              <span className={`text-[9px] w-3 ${softText}`}>{d.stars}</span>
+              <span className={`text-micro w-3 ${softText}`}>{d.stars}</span>
               <div className={`flex-1 h-1.5 rounded-full ${dark ? "bg-zinc-700" : "bg-zinc-100"}`}>
                 <div className="h-full rounded-full" style={{ width: `${(d.count / DIST[0].count) * 100}%`, background: cfg.starColor }} />
               </div>
             </div>
           ))}
         </div>
-        <span className={`text-[9.5px] ${softText}`}>{ar ? "1,096 تقييم" : "1,096 reviews"}</span>
+        <span className={`text-micro ${softText}`}>{ar ? "1,096 تقييم" : "1,096 reviews"}</span>
       </div>
 
       {/* Reviews */}
@@ -173,29 +173,29 @@ function ReviewWidgetPreview({ cfg, dark, ar }: { cfg: ReviewsConfig; dark: bool
           <div key={i} className={`border rounded-xl p-3 ${cardBg} ${cfg.layout === "carousel" ? "min-w-[46%]" : ""} ${cfg.layout === "grid" && i === 2 ? "col-span-2" : ""}`}>
             <div className="flex items-center gap-2 mb-1.5">
               {cfg.showAvatars && (
-                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-semibold text-white`} style={{ background: cfg.starColor }}>
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-micro font-semibold text-white`} style={{ background: cfg.starColor }}>
                   {r.name[0]}
                 </span>
               )}
               <div className="min-w-0">
-                <p className={`text-[10.5px] font-medium leading-none ${frameText}`}>{r.name}</p>
+                <p className={`text-micro font-medium ${frameText}`}>{r.name}</p>
                 <Stars n={r.stars} size={9} color={cfg.starColor} />
               </div>
               {cfg.showVerified && (
-                <span className="ms-auto flex items-center gap-0.5 text-[8px] text-emerald-600 bg-emerald-50 rounded-full px-1.5 py-0.5">
+                <span className="ms-auto flex items-center gap-0.5 text-micro text-emerald-600 bg-emerald-50 rounded-full px-1.5 py-0.5">
                   <BadgeCheck size={8} />{ar ? "شراء موثق" : "Verified"}
                 </span>
               )}
             </div>
-            <p className={`text-[10px] leading-relaxed ${softText}`}>{r.body}</p>
+            <p className={`text-micro leading-relaxed ${softText}`}>{r.body}</p>
             {r.photos > 0 && (
               <div className="flex gap-1.5 mt-2">
                 {Array.from({ length: r.photos }).map((_, j) => (
-                  <span key={j} className={`w-9 h-9 rounded-lg flex items-center justify-center text-[13px] ${dark ? "bg-zinc-700" : "bg-zinc-100"}`}>📸</span>
+                  <span key={j} className={`w-9 h-9 rounded-lg flex items-center justify-center text-body ${dark ? "bg-zinc-700" : "bg-zinc-100"}`}>📸</span>
                 ))}
               </div>
             )}
-            {cfg.showDates && <p className={`text-[8.5px] mt-1.5 ${softText} opacity-70`}>{r.date}</p>}
+            {cfg.showDates && <p className={`text-micro mt-1.5 ${softText} opacity-70`}>{r.date}</p>}
           </div>
         ))}
       </div>
@@ -279,31 +279,31 @@ export default function ShopifyReviewsPage() {
   return (
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[1020px] mx-auto">
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
 
       {/* Header */}
-      <Link href="/shopify/kit" className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors mb-3">
+      <Link href="/shopify/kit" className="inline-flex items-center gap-1 text-micro text-muted-foreground hover:text-foreground transition-colors mb-3">
         <ChevronLeft size={12} className={ar ? "rotate-180" : ""} />{ar ? "عدة شوبيفاي" : "Shopify Kit"}
       </Link>
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm ${enabled ? "" : "grayscale opacity-60"}`}>
+          <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br from-warning/20 to-orange-500 flex items-center justify-center shadow-sm ${enabled ? "" : "grayscale opacity-60"}`}>
             <Star size={21} className="text-white" fill="white" />
           </div>
           <div>
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "التقييمات" : "Reviews"}
             </h1>
-            <p className="text-[12px] text-muted-foreground mt-0.5">
+            <p className="text-caption text-muted-foreground mt-0.5">
               {ar ? "اجمع وأدر واعرض الإثبات الاجتماعي بالكامل" : "Collect, moderate, and showcase social proof end-to-end"}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2.5">
-          <span className={`text-[11px] ${enabled ? "text-amber-600" : "text-muted-foreground"}`}>
+          <span className={`text-micro ${enabled ? "text-warning" : "text-muted-foreground"}`}>
             {enabled ? (ar ? "مفعّل" : "Live") : (ar ? "موقوف" : "Off")}
           </span>
           <Toggle on={enabled} onChange={toggleEnabled} />
@@ -314,10 +314,10 @@ export default function ShopifyReviewsPage() {
       <div className="flex items-center gap-1 p-1 rounded-xl border border-border/40 bg-card w-fit mb-6 overflow-x-auto max-w-full">
         {TABS.map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
-            className={`h-8 px-3.5 rounded-lg text-[12px] font-medium whitespace-nowrap transition-colors flex items-center gap-1.5 ${tab === t.key ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+            className={`h-8 px-3.5 rounded-lg text-caption font-medium whitespace-nowrap transition-colors flex items-center gap-1.5 ${tab === t.key ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
             {ar ? t.ar : t.en}
             {!!t.badge && (
-              <span className={`text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center font-semibold ${tab === t.key ? "bg-white/25 text-white" : "bg-amber-100 text-amber-700"}`}>
+              <span className={`text-micro min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center font-semibold ${tab === t.key ? "bg-white/25 text-white" : "bg-warning/15 text-warning"}`}>
                 {t.badge}
               </span>
             )}
@@ -331,22 +331,22 @@ export default function ShopifyReviewsPage() {
           <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-3">
             {/* Big rating */}
             <div className={`${cardCls} p-6 flex flex-col items-center justify-center text-center`}>
-              <p className="text-[44px] font-medium leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{avg}</p>
+              <p className="text-display font-medium leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{avg}</p>
               <div className="mt-2"><Stars n={5} size={16} color={cfg.starColor} /></div>
-              <p className="text-[11px] text-muted-foreground mt-2">{totalReviews.toLocaleString()} {ar ? "تقييم منشور" : "published reviews"}</p>
+              <p className="text-micro text-muted-foreground mt-2">{totalReviews.toLocaleString()} {ar ? "تقييم منشور" : "published reviews"}</p>
             </div>
             {/* Distribution */}
             <div className={`${cardCls} p-5`}>
-              <h3 className="text-[13.5px] font-medium mb-3.5">{ar ? "توزيع التقييمات" : "Rating distribution"}</h3>
+              <h3 className="text-body font-medium mb-3.5">{ar ? "توزيع التقييمات" : "Rating distribution"}</h3>
               <div className="space-y-2">
                 {DIST.map(d => (
                   <div key={d.stars} className="flex items-center gap-3">
-                    <span className="text-[11px] text-muted-foreground w-3 tabular-nums">{d.stars}</span>
+                    <span className="text-micro text-muted-foreground w-3 tabular-nums">{d.stars}</span>
                     <Star size={11} fill={cfg.starColor} style={{ color: cfg.starColor }} />
                     <div className="flex-1 h-2 rounded-full bg-muted">
                       <div className="h-full rounded-full transition-all" style={{ width: `${(d.count / totalReviews) * 100}%`, background: cfg.starColor }} />
                     </div>
-                    <span className="text-[11px] text-muted-foreground tabular-nums w-10 text-end">{d.count}</span>
+                    <span className="text-micro text-muted-foreground tabular-nums w-10 text-end">{d.count}</span>
                   </div>
                 ))}
               </div>
@@ -356,21 +356,21 @@ export default function ShopifyReviewsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { icon: TrendingUp, val: "96", labelEn: "New this month", labelAr: "جديد هذا الشهر", cls: "text-emerald-600" },
-              { icon: Camera, val: "38%", labelEn: "With photos", labelAr: "بالصور", cls: "text-violet-600" },
+              { icon: Camera, val: "38%", labelEn: "With photos", labelAr: "بالصور", cls: "text-chart-4" },
               { icon: Reply, val: "87%", labelEn: "Response rate", labelAr: "معدل الرد", cls: "text-blue-600" },
-              { icon: Mail, val: "41%", labelEn: "Request → review", labelAr: "طلب ← تقييم", cls: "text-amber-600" },
+              { icon: Mail, val: "41%", labelEn: "Request → review", labelAr: "طلب ← تقييم", cls: "text-warning" },
             ].map((k, i) => (
               <div key={i} className={`${cardCls} p-4`}>
                 <k.icon size={14} className={`${k.cls} mb-2`} />
-                <p className={`text-[18px] font-medium tabular-nums ${k.cls}`} style={{ fontFamily: "var(--app-font-serif)" }}>{k.val}</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">{ar ? k.labelAr : k.labelEn}</p>
+                <p className={`text-title font-medium tabular-nums ${k.cls}`} style={{ fontFamily: "var(--app-font-serif)" }}>{k.val}</p>
+                <p className="text-micro text-muted-foreground mt-0.5">{ar ? k.labelAr : k.labelEn}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex items-start gap-3 px-4 py-3.5 rounded-xl border border-amber-100 bg-amber-50/40">
-            <Sparkles size={14} className="text-amber-500 mt-0.5 shrink-0" />
-            <p className="text-[12px] text-foreground/80 leading-relaxed">
+          <div className="flex items-start gap-3 px-4 py-3.5 rounded-xl border border-warning/30 bg-warning/10">
+            <Sparkles size={14} className="text-warning mt-0.5 shrink-0" />
+            <p className="text-caption text-foreground/80 leading-relaxed">
               {ar
                 ? "تقييم حسن (نجمتان) عن المقاسات تكرر 3 مرات هذا الشهر على «بنطلون واسع». راجع جدول المقاسات — رد واحد علني جيد يحسّن الثقة أكثر من عشرة تقييمات إيجابية."
                 : "Hassan's 2-star sizing complaint is the 3rd this month on \"Wide-Leg Trousers\". Review the size chart — one good public reply builds more trust than ten 5-star reviews."}
@@ -385,10 +385,10 @@ export default function ShopifyReviewsPage() {
           <div className="flex items-center gap-2 flex-wrap">
             {(["all", "pending", "published", "featured", "rejected", "spam"] as const).map(s => (
               <button key={s} onClick={() => setStatusFilter(s)}
-                className={`h-8 px-3 rounded-lg text-[11.5px] font-medium transition-colors ${statusFilter === s ? "bg-foreground text-background" : "border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted"}`}>
+                className={`h-8 px-3 rounded-lg text-micro font-medium transition-colors ${statusFilter === s ? "bg-foreground text-background" : "border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted"}`}>
                 {s === "all" ? (ar ? "الكل" : "All") : (ar ? STATUS_META[s].ar : STATUS_META[s].en)}
                 {s === "pending" && reviews.some(r => r.status === "pending") && (
-                  <span className="ms-1.5 text-[9px] bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5">{reviews.filter(r => r.status === "pending").length}</span>
+                  <span className="ms-1.5 text-micro bg-warning/15 text-warning rounded-full px-1.5 py-0.5">{reviews.filter(r => r.status === "pending").length}</span>
                 )}
               </button>
             ))}
@@ -405,30 +405,30 @@ export default function ShopifyReviewsPage() {
               return (
                 <div key={r.id} className={`${cardCls} p-5 ${r.status === "spam" ? "opacity-60" : ""}`}>
                   <div className="flex items-start gap-3.5">
-                    <span className="text-[22px] mt-0.5">{r.productEmoji}</span>
+                    <span className="text-heading mt-0.5">{r.productEmoji}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <Stars n={r.stars} color={cfg.starColor} />
-                        <p className="text-[13px] font-medium text-foreground">{ar ? r.authorAr : r.authorEn}</p>
+                        <p className="text-body font-medium text-foreground">{ar ? r.authorAr : r.authorEn}</p>
                         {r.verified && (
-                          <span className="flex items-center gap-0.5 text-[9px] text-emerald-600"><BadgeCheck size={10} />{ar ? "شراء موثق" : "Verified purchase"}</span>
+                          <span className="flex items-center gap-0.5 text-micro text-emerald-600"><BadgeCheck size={10} />{ar ? "شراء موثق" : "Verified purchase"}</span>
                         )}
-                        <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${sm.cls}`}>{ar ? sm.ar : sm.en}</span>
-                        <span className="text-[10px] text-muted-foreground/60 ms-auto">{r.date}</span>
+                        <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${sm.cls}`}>{ar ? sm.ar : sm.en}</span>
+                        <span className="text-micro text-muted-foreground/60 ms-auto">{r.date}</span>
                       </div>
-                      <p className="text-[10.5px] text-muted-foreground mt-0.5">{ar ? r.productAr : r.productEn}</p>
-                      <p className="text-[12.5px] text-foreground/85 leading-relaxed mt-2">{ar ? r.bodyAr : r.bodyEn}</p>
+                      <p className="text-micro text-muted-foreground mt-0.5">{ar ? r.productAr : r.productEn}</p>
+                      <p className="text-caption text-foreground/85 leading-relaxed mt-2">{ar ? r.bodyAr : r.bodyEn}</p>
                       {r.photos.length > 0 && (
                         <div className="flex gap-2 mt-2.5">
                           {r.photos.map((p, i) => (
-                            <span key={i} className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center text-[18px]">{p}</span>
+                            <span key={i} className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center text-title">{p}</span>
                           ))}
                         </div>
                       )}
                       {r.reply && (
                         <div className="mt-3 ms-3 ps-3 border-s-2 border-primary/30">
-                          <p className="text-[10px] font-medium text-primary mb-0.5">{ar ? "ردك" : "Your reply"}</p>
-                          <p className="text-[11.5px] text-muted-foreground leading-relaxed">{r.reply}</p>
+                          <p className="text-micro font-medium text-brand-ink mb-0.5">{ar ? "ردك" : "Your reply"}</p>
+                          <p className="text-micro text-muted-foreground leading-relaxed">{r.reply}</p>
                         </div>
                       )}
 
@@ -440,11 +440,11 @@ export default function ShopifyReviewsPage() {
                             placeholder={ar ? "اكتب ردًا علنيًا..." : "Write a public reply..."}
                             className={`${inputCls} flex-1`} />
                           <button onClick={() => submitReply(r.id)}
-                            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90">
+                            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90">
                             {ar ? "نشر" : "Post"}
                           </button>
                           <button onClick={() => { setReplyingTo(null); setReplyText(""); }}
-                            className="h-9 px-3 rounded-xl border border-border text-[12px] text-muted-foreground hover:bg-muted">
+                            className="h-9 px-3 rounded-xl border border-border text-caption text-muted-foreground hover:bg-muted">
                             {ar ? "إلغاء" : "Cancel"}
                           </button>
                         </div>
@@ -453,26 +453,26 @@ export default function ShopifyReviewsPage() {
                           {r.status === "pending" && (
                             <>
                               <button onClick={() => setStatus(r.id, "published", ar ? "تم النشر" : "Published")}
-                                className="h-8 px-3 rounded-lg bg-emerald-600 text-white text-[11px] font-medium hover:opacity-90 flex items-center gap-1"><Check size={11} />{ar ? "نشر" : "Approve"}</button>
+                                className="h-8 px-3 rounded-lg bg-emerald-600 text-white text-micro font-medium hover:opacity-90 flex items-center gap-1"><Check size={11} />{ar ? "نشر" : "Approve"}</button>
                               <button onClick={() => setStatus(r.id, "rejected", ar ? "تم الرفض" : "Rejected")}
-                                className="h-8 px-3 rounded-lg border border-border/60 text-[11px] text-muted-foreground hover:text-rose-600 hover:border-rose-200 flex items-center gap-1"><X size={11} />{ar ? "رفض" : "Reject"}</button>
+                                className="h-8 px-3 rounded-lg border border-border/60 text-micro text-muted-foreground hover:text-rose-600 hover:border-rose-200 flex items-center gap-1"><X size={11} />{ar ? "رفض" : "Reject"}</button>
                             </>
                           )}
                           {(r.status === "published" || r.status === "featured") && (
                             <button onClick={() => setStatus(r.id, r.status === "featured" ? "published" : "featured", r.status === "featured" ? (ar ? "أُلغي التمييز" : "Unfeatured") : (ar ? "تم التمييز" : "Featured on storefront"))}
-                              className={`h-8 px-3 rounded-lg text-[11px] font-medium flex items-center gap-1 ${r.status === "featured" ? "bg-violet-100 text-violet-700" : "border border-border/60 text-muted-foreground hover:text-violet-600 hover:border-violet-200"}`}>
+                              className={`h-8 px-3 rounded-lg text-micro font-medium flex items-center gap-1 ${r.status === "featured" ? "bg-chart-4/15 text-chart-4" : "border border-border/60 text-muted-foreground hover:text-chart-4 hover:border-chart-4/30"}`}>
                               <Pin size={11} />{r.status === "featured" ? (ar ? "مميز" : "Featured") : (ar ? "تمييز" : "Feature")}
                             </button>
                           )}
                           {r.status !== "spam" && r.status !== "rejected" && (
                             <button onClick={() => { setReplyingTo(r.id); setReplyText(r.reply || ""); }}
-                              className="h-8 px-3 rounded-lg border border-border/60 text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1">
+                              className="h-8 px-3 rounded-lg border border-border/60 text-micro text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1">
                               <Reply size={11} />{r.reply ? (ar ? "تعديل الرد" : "Edit reply") : (ar ? "رد" : "Reply")}
                             </button>
                           )}
                           {r.status === "spam" && (
                             <button onClick={() => setReviews(prev => prev.filter(x => x.id !== r.id))}
-                              className="h-8 px-3 rounded-lg border border-border/60 text-[11px] text-muted-foreground hover:text-rose-600 flex items-center gap-1">
+                              className="h-8 px-3 rounded-lg border border-border/60 text-micro text-muted-foreground hover:text-rose-600 flex items-center gap-1">
                               <Trash2 size={11} />{ar ? "حذف نهائي" : "Delete forever"}
                             </button>
                           )}
@@ -486,7 +486,7 @@ export default function ShopifyReviewsPage() {
             {filteredReviews.length === 0 && (
               <div className={`${cardCls} py-12 text-center`}>
                 <MessageSquare size={20} className="mx-auto mb-2 text-muted-foreground/30" />
-                <p className="text-[12.5px] text-muted-foreground">{ar ? "لا توجد تقييمات هنا" : "Nothing here"}</p>
+                <p className="text-caption text-muted-foreground">{ar ? "لا توجد تقييمات هنا" : "Nothing here"}</p>
               </div>
             )}
           </div>
@@ -498,27 +498,27 @@ export default function ShopifyReviewsPage() {
         <div className="space-y-3.5 max-w-[680px]">
           <div className={`${cardCls} p-5`}>
             <div className="flex items-start gap-3.5">
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${cfg.requestOn ? "bg-amber-50 text-amber-600" : "bg-muted text-muted-foreground"}`}>
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${cfg.requestOn ? "bg-warning/10 text-warning" : "bg-muted text-muted-foreground"}`}>
                 <Mail size={16} />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-[13.5px] font-medium">{ar ? "طلب تقييم تلقائي" : "Automatic review requests"}</h3>
+                  <h3 className="text-body font-medium">{ar ? "طلب تقييم تلقائي" : "Automatic review requests"}</h3>
                   <Toggle on={cfg.requestOn} onChange={v => update({ requestOn: v })} />
                 </div>
-                <p className="text-[11.5px] text-muted-foreground mt-0.5 leading-relaxed">
+                <p className="text-micro text-muted-foreground mt-0.5 leading-relaxed">
                   {ar ? "بريد أنيق يُرسل بعد التسليم — التوقيت الصحيح هو كل شيء." : "A beautiful email sent after delivery — timing is everything."}
                 </p>
                 {cfg.requestOn && (
                   <div className="mt-3.5 pt-3.5 border-t border-border/30 space-y-3">
-                    <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+                    <label className="flex items-center gap-2 text-caption text-muted-foreground">
                       {ar ? "أرسل بعد التسليم بـ" : "Send"}
                       <input type="number" min="1" max="60" value={cfg.requestDelayDays}
                         onChange={e => update({ requestDelayDays: parseInt(e.target.value) || 7 })} className={numCls} />
                       {ar ? "يوم" : "days after delivery"}
                     </label>
                     <div className="flex items-center justify-between gap-4">
-                      <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+                      <label className="flex items-center gap-2 text-caption text-muted-foreground">
                         {ar ? "تذكير واحد بعد" : "One reminder"}
                         <input type="number" min="1" max="30" value={cfg.reminderDelayDays} disabled={!cfg.reminderOn}
                           onChange={e => update({ reminderDelayDays: parseInt(e.target.value) || 5 })} className={`${numCls} disabled:opacity-40`} />
@@ -534,30 +534,30 @@ export default function ShopifyReviewsPage() {
 
           <div className={`${cardCls} p-5`}>
             <div className="flex items-start gap-3.5">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"><Gift size={16} /></div>
+              <div className="w-9 h-9 rounded-xl bg-warning/10 text-warning flex items-center justify-center shrink-0"><Gift size={16} /></div>
               <div className="flex-1">
-                <h3 className="text-[13.5px] font-medium">{ar ? "حافز التقييم" : "Review incentive"}</h3>
-                <p className="text-[11.5px] text-muted-foreground mt-0.5 leading-relaxed">
-                  {ar ? "كافئ من يقيّم — النقاط تتكامل مباشرة مع وحدة الولاء في ثوث." : "Reward reviewers — points integrate directly with THOTH's Loyalty module."}
+                <h3 className="text-body font-medium">{ar ? "حافز التقييم" : "Review incentive"}</h3>
+                <p className="text-micro text-muted-foreground mt-0.5 leading-relaxed">
+                  {ar ? "كافئ من يقيّم — النقاط تتكامل مباشرة مع وحدة الولاء في بامبلبي." : "Reward reviewers — points integrate directly with Bumblebee's Loyalty module."}
                 </p>
                 <div className="mt-3.5 pt-3.5 border-t border-border/30 space-y-3">
                   <div className="grid grid-cols-3 gap-2">
                     {([["none", ar ? "بدون" : "None"], ["points", ar ? "نقاط ولاء" : "Loyalty points"], ["discount", ar ? "كود خصم" : "Discount code"]] as const).map(([k, l]) => (
                       <button key={k} onClick={() => update({ incentiveType: k })}
-                        className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.incentiveType === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                        className={`h-9 rounded-lg border text-micro transition-colors ${cfg.incentiveType === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                         {l}
                       </button>
                     ))}
                   </div>
                   {cfg.incentiveType === "points" && (
-                    <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+                    <label className="flex items-center gap-2 text-caption text-muted-foreground">
                       {ar ? "نقاط لكل تقييم" : "Points per review"}
                       <input type="number" min="0" value={cfg.incentivePoints}
                         onChange={e => update({ incentivePoints: parseInt(e.target.value) || 0 })} className={numCls} />
                     </label>
                   )}
                   {cfg.incentiveType === "discount" && (
-                    <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+                    <label className="flex items-center gap-2 text-caption text-muted-foreground">
                       {ar ? "خصم للطلب القادم" : "Discount on next order"}
                       <input type="number" min="0" max="50" value={cfg.incentiveDiscountPct}
                         onChange={e => update({ incentiveDiscountPct: parseInt(e.target.value) || 0 })} className={numCls} />%
@@ -565,7 +565,7 @@ export default function ShopifyReviewsPage() {
                   )}
                   {cfg.incentiveType !== "none" && (
                     <div className="flex items-center justify-between gap-4">
-                      <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+                      <label className="flex items-center gap-2 text-caption text-muted-foreground">
                         <Camera size={13} />
                         {ar ? "مكافأة إضافية للصور:" : "Photo bonus:"}
                         <input type="number" min="0" value={cfg.photoBonusPoints} disabled={!cfg.photoBonusOn}
@@ -582,17 +582,17 @@ export default function ShopifyReviewsPage() {
 
           {/* Email preview */}
           <div className={`${cardCls} p-5`}>
-            <h3 className="text-[13.5px] font-medium mb-3">{ar ? "معاينة بريد الطلب" : "Request email preview"}</h3>
+            <h3 className="text-body font-medium mb-3">{ar ? "معاينة بريد الطلب" : "Request email preview"}</h3>
             <div className="rounded-xl border border-border/50 bg-card p-5 max-w-[400px] mx-auto">
-              <p className="text-[16px] mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-title mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "كيف كان «فستان كتان صيفي»؟" : "How was your Linen Summer Dress?"}
               </p>
-              <p className="text-[11px] text-muted-foreground leading-relaxed">
+              <p className="text-micro text-muted-foreground leading-relaxed">
                 {ar ? "وصلك منذ أسبوع — نحب نسمع رأيك. يأخذ 30 ثانية." : "It arrived a week ago — we'd love your take. Takes 30 seconds."}
               </p>
               <div className="flex justify-center my-4"><Stars n={0} size={26} color={cfg.starColor} /></div>
               {cfg.incentiveType !== "none" && (
-                <p className="text-[10.5px] text-center text-amber-700 bg-amber-50 rounded-lg py-2 px-3">
+                <p className="text-micro text-center text-warning bg-warning/10 rounded-lg py-2 px-3">
                   {cfg.incentiveType === "points"
                     ? (ar ? `🎁 اكسب ${cfg.incentivePoints} نقطة ولاء مقابل تقييمك` : `🎁 Earn ${cfg.incentivePoints} loyalty points for your review`)
                     : (ar ? `🎁 خصم ${cfg.incentiveDiscountPct}% على طلبك القادم` : `🎁 ${cfg.incentiveDiscountPct}% off your next order`)}
@@ -609,17 +609,17 @@ export default function ShopifyReviewsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-6 items-start">
           <div className="space-y-4">
             <div className={`${cardCls} p-5 space-y-4`}>
-              <h3 className="text-[13.5px] font-medium">{ar ? "التخطيط" : "Layout"}</h3>
+              <h3 className="text-body font-medium">{ar ? "التخطيط" : "Layout"}</h3>
               <div className="grid grid-cols-3 gap-2">
                 {([["grid", LayoutGrid, ar ? "شبكة" : "Grid"], ["list", List, ar ? "قائمة" : "List"], ["carousel", GalleryHorizontal, ar ? "شريط" : "Carousel"]] as [WidgetLayout, React.ElementType, string][]).map(([k, I, l]) => (
                   <button key={k} onClick={() => update({ layout: k })}
-                    className={`h-16 rounded-lg border flex flex-col items-center justify-center gap-1.5 text-[10.5px] transition-colors ${cfg.layout === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                    className={`h-16 rounded-lg border flex flex-col items-center justify-center gap-1.5 text-micro transition-colors ${cfg.layout === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                     <I size={16} />{l}
                   </button>
                 ))}
               </div>
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground mb-2">{ar ? "لون النجوم" : "Star color"}</p>
+                <p className="text-micro font-medium text-muted-foreground mb-2">{ar ? "لون النجوم" : "Star color"}</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   {STAR_SWATCHES.map(c => (
                     <button key={c} onClick={() => update({ starColor: c })}
@@ -633,7 +633,7 @@ export default function ShopifyReviewsPage() {
             </div>
 
             <div className={`${cardCls} p-5 space-y-4`}>
-              <h3 className="text-[13.5px] font-medium">{ar ? "العناصر" : "Elements"}</h3>
+              <h3 className="text-body font-medium">{ar ? "العناصر" : "Elements"}</h3>
               {[
                 { key: "showPhotos" as const, en: "Customer photos", ar: "صور العملاء", descEn: "Photo strips inside review cards", descAr: "شرائط صور داخل بطاقات التقييم" },
                 { key: "showVerified" as const, en: "Verified badge", ar: "شارة الشراء الموثق", descEn: "Marks reviews from real orders", descAr: "تميّز التقييمات من طلبات حقيقية" },
@@ -642,8 +642,8 @@ export default function ShopifyReviewsPage() {
               ].map(el => (
                 <div key={el.key} className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-[12.5px] text-foreground">{ar ? el.ar : el.en}</p>
-                    <p className="text-[10.5px] text-muted-foreground">{ar ? el.descAr : el.descEn}</p>
+                    <p className="text-caption text-foreground">{ar ? el.ar : el.en}</p>
+                    <p className="text-micro text-muted-foreground">{ar ? el.descAr : el.descEn}</p>
                   </div>
                   <Toggle on={cfg[el.key]} onChange={v => update({ [el.key]: v } as Partial<ReviewsConfig>)} />
                 </div>
@@ -654,14 +654,14 @@ export default function ShopifyReviewsPage() {
           {/* Live preview */}
           <div className="lg:sticky lg:top-6">
             <div className="flex items-center justify-between mb-2.5">
-              <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "معاينة حية" : "Live preview"}</p>
+              <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "معاينة حية" : "Live preview"}</p>
               <button onClick={() => setDarkPreview(d => !d)}
                 className="w-8 h-8 rounded-lg border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 {darkPreview ? <Sun size={13} /> : <Moon size={13} />}
               </button>
             </div>
             <ReviewWidgetPreview cfg={cfg} dark={darkPreview} ar={ar} />
-            <p className="text-[10.5px] text-muted-foreground/60 mt-2.5 text-center">
+            <p className="text-micro text-muted-foreground/60 mt-2.5 text-center">
               {ar ? "هكذا يظهر الودجت على صفحة المنتج" : "This is exactly how the widget renders on product pages"}
             </p>
           </div>
@@ -672,16 +672,16 @@ export default function ShopifyReviewsPage() {
       {tab === "settings" && (
         <div className="space-y-4 max-w-[620px]">
           <div className={`${cardCls} p-5 space-y-4`}>
-            <h3 className="text-[13.5px] font-medium">{ar ? "النشر" : "Publishing"}</h3>
+            <h3 className="text-body font-medium">{ar ? "النشر" : "Publishing"}</h3>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-[12.5px] text-foreground">{ar ? "نشر تلقائي" : "Auto-publish"}</p>
-                <p className="text-[10.5px] text-muted-foreground">{ar ? "التقييمات العالية تُنشر فورًا؛ الأقل تنتظر مراجعتك" : "High ratings go live instantly; lower ones wait for you"}</p>
+                <p className="text-caption text-foreground">{ar ? "نشر تلقائي" : "Auto-publish"}</p>
+                <p className="text-micro text-muted-foreground">{ar ? "التقييمات العالية تُنشر فورًا؛ الأقل تنتظر مراجعتك" : "High ratings go live instantly; lower ones wait for you"}</p>
               </div>
               <Toggle on={cfg.autoPublishOn} onChange={v => update({ autoPublishOn: v })} />
             </div>
             {cfg.autoPublishOn && (
-              <label className="flex items-center gap-2 text-[12px] text-muted-foreground ps-1">
+              <label className="flex items-center gap-2 text-caption text-muted-foreground ps-1">
                 {ar ? "انشر تلقائيًا التقييمات من" : "Auto-publish reviews rated"}
                 <select value={cfg.autoPublishMinStars} onChange={e => update({ autoPublishMinStars: parseInt(e.target.value) })}
                   className={`${inputCls} w-20 cursor-pointer`}>
@@ -694,8 +694,8 @@ export default function ShopifyReviewsPage() {
               <div className="flex items-center gap-2.5">
                 <Ban size={14} className="text-muted-foreground" />
                 <div>
-                  <p className="text-[12.5px] text-foreground">{ar ? "فلتر الألفاظ" : "Profanity filter"}</p>
-                  <p className="text-[10.5px] text-muted-foreground">{ar ? "بالعربية والإنجليزية — يحوّل المخالف لقائمة الانتظار" : "Arabic & English — flags offenders to the pending queue"}</p>
+                  <p className="text-caption text-foreground">{ar ? "فلتر الألفاظ" : "Profanity filter"}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "بالعربية والإنجليزية — يحوّل المخالف لقائمة الانتظار" : "Arabic & English — flags offenders to the pending queue"}</p>
                 </div>
               </div>
               <Toggle on={cfg.profanityFilter} onChange={v => update({ profanityFilter: v })} />
@@ -704,8 +704,8 @@ export default function ShopifyReviewsPage() {
               <div className="flex items-center gap-2.5">
                 <Globe size={14} className="text-muted-foreground" />
                 <div>
-                  <p className="text-[12.5px] text-foreground">{ar ? "نتائج بحث غنية (SEO)" : "SEO rich snippets"}</p>
-                  <p className="text-[10.5px] text-muted-foreground">{ar ? "نجوم التقييم تظهر في نتائج جوجل" : "Star ratings appear directly in Google results"}</p>
+                  <p className="text-caption text-foreground">{ar ? "نتائج بحث غنية (SEO)" : "SEO rich snippets"}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "نجوم التقييم تظهر في نتائج جوجل" : "Star ratings appear directly in Google results"}</p>
                 </div>
               </div>
               <Toggle on={cfg.richSnippets} onChange={v => update({ richSnippets: v })} />
@@ -715,9 +715,9 @@ export default function ShopifyReviewsPage() {
           <div className={`${cardCls} p-5`}>
             <div className="flex items-center gap-2.5 mb-1">
               <ShieldAlert size={14} className="text-muted-foreground" />
-              <h3 className="text-[13.5px] font-medium">{ar ? "الحماية من السبام" : "Spam protection"}</h3>
+              <h3 className="text-body font-medium">{ar ? "الحماية من السبام" : "Spam protection"}</h3>
             </div>
-            <p className="text-[11.5px] text-muted-foreground leading-relaxed">
+            <p className="text-micro text-muted-foreground leading-relaxed">
               {ar
                 ? "مفعّلة دائمًا: كشف الروابط، بصمة الجهاز، وحد تقييم واحد لكل طلب. التقييمات المشبوهة تذهب لتبويب «سبام» ولا تظهر أبدًا للعملاء."
                 : "Always on: link detection, device fingerprinting, and one-review-per-order. Suspicious reviews land in the Spam tab and never reach customers."}
@@ -725,7 +725,7 @@ export default function ShopifyReviewsPage() {
           </div>
 
           <button onClick={() => { update(DEFAULT_CONFIG); showToast(ar ? "تمت إعادة الضبط" : "Reset to defaults"); }}
-            className="text-[11.5px] text-muted-foreground hover:text-rose-600 transition-colors">
+            className="text-micro text-muted-foreground hover:text-rose-600 transition-colors">
             {ar ? "إعادة كل الإعدادات للوضع الافتراضي" : "Reset all settings to defaults"}
           </button>
         </div>

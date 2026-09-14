@@ -59,7 +59,7 @@ function DonutChart({ segments, size = 100 }: { segments: { label: string; value
         })}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[14px] font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{total}</span>
+        <span className="text-body-lg font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{total}</span>
       </div>
     </div>
   );
@@ -74,12 +74,12 @@ function FunnelChart({ stages, ar }: { stages: { label: string; labelAr: string;
         const pct = (stage.value / max) * 100;
         return (
           <div key={i} className="flex items-center gap-3">
-            <span className="text-[10px] text-muted-foreground w-20 text-right shrink-0">{ar ? stage.labelAr : stage.label}</span>
+            <span className="text-micro text-muted-foreground w-20 text-right shrink-0">{ar ? stage.labelAr : stage.label}</span>
             <div className="flex-1 h-6 rounded-lg bg-muted/30 overflow-hidden">
               <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="h-full rounded-lg flex items-center justify-end px-2" style={{ backgroundColor: stage.color }}>
-                <span className="text-[9px] font-medium text-white">{stage.value}</span>
+                <span className="text-micro font-medium text-white">{stage.value}</span>
               </motion.div>
             </div>
           </div>
@@ -180,32 +180,32 @@ export default function CRM() {
       {/* Greeting */}
       <motion.div variants={cardV} custom={0} initial="hidden" animate="visible" className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "مرحباً بك في CRM" : "Welcome to CRM"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-body text-muted-foreground mt-1">
             {ar ? "ماذا يحتاج انتباهك الآن؟" : "What needs your attention right now?"}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => navigate("/crm/customers")}
-            className="h-9 px-4 rounded-xl border border-border/60 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
+            className="h-9 px-4 rounded-xl border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
             <Users size={12} /> {ar ? "العملاء" : "Customers"}
           </button>
           <button onClick={() => navigate("/crm/pipeline")}
-            className="h-9 px-4 rounded-xl border border-border/60 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
+            className="h-9 px-4 rounded-xl border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
             <Target size={12} /> {ar ? "الصفقات" : "Pipeline"}
           </button>
           <button onClick={() => navigate("/crm/customers/new")}
-            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[11px] font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
+            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-micro font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
             <Plus size={12} /> {ar ? "عميل جديد" : "New Customer"}
           </button>
           <button onClick={() => navigate("/crm/pipeline?new=true")}
-            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[11px] font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
+            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-micro font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
             <Target size={12} /> {ar ? "صفقة جديدة" : "New Deal"}
           </button>
           <button onClick={() => navigate("/crm/customers/new?contact=true")}
-            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[11px] font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
+            className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-micro font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
             <UserPlus size={12} /> {ar ? "جهة اتصال" : "New Contact"}
           </button>
         </div>
@@ -215,21 +215,21 @@ export default function CRM() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: ar ? "إجمالي الإيرادات" : "Total Revenue", value: formatEGP(stats.totalRevenue), icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50/80", change: "+18%", up: true },
-          { label: ar ? "العملاء النشطون" : "Active Customers", value: stats.active, icon: Users, color: "text-primary", bg: "bg-primary/5", change: "+3", up: true },
-          { label: ar ? "صفقات مفتوحة" : "Open Deals", value: stats.openLeads, icon: Target, color: "text-violet-600", bg: "bg-violet-50/80", change: formatEGP(stats.avgDealSize), up: true },
-          { label: ar ? "معدل التحويل" : "Conversion", value: `${stats.conversionRate}%`, icon: TrendingUp, color: "text-amber-600", bg: "bg-amber-50/80", change: "+5%", up: true },
+          { label: ar ? "العملاء النشطون" : "Active Customers", value: stats.active, icon: Users, color: "text-brand-ink", bg: "bg-primary/5", change: "+3", up: true },
+          { label: ar ? "صفقات مفتوحة" : "Open Deals", value: stats.openLeads, icon: Target, color: "text-chart-4", bg: "bg-chart-4/10", change: formatEGP(stats.avgDealSize), up: true },
+          { label: ar ? "معدل التحويل" : "Conversion", value: `${stats.conversionRate}%`, icon: TrendingUp, color: "text-warning", bg: "bg-warning/10", change: "+5%", up: true },
         ].map((kpi, i) => (
           <motion.div key={i} variants={cardV} custom={i + 1} initial="hidden" animate="visible"
             className={`${kpi.bg} rounded-xl p-4 border border-border/30`}>
             <div className="flex items-center justify-between mb-2">
               <kpi.icon size={15} className={kpi.color} />
-              <span className={`text-[9px] font-medium flex items-center gap-0.5 ${kpi.up ? "text-emerald-600" : "text-rose-500"}`}>
+              <span className={`text-micro font-medium flex items-center gap-0.5 ${kpi.up ? "text-emerald-600" : "text-rose-500"}`}>
                 {kpi.up ? <ArrowUpRight size={9} /> : <ArrowDownRight size={9} />}
                 {kpi.change}
               </span>
             </div>
-            <p className="text-[20px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{kpi.label}</p>
+            <p className="text-heading font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{kpi.label}</p>
           </motion.div>
         ))}
       </div>
@@ -238,10 +238,10 @@ export default function CRM() {
       {stats.criticalAlerts > 0 && (
         <motion.div variants={cardV} custom={5} initial="hidden" animate="visible">
           <div className="flex items-center justify-between mb-2.5">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
+            <h3 className="text-body font-semibold flex items-center gap-2">
               <AlertTriangle size={14} className="text-rose-500" />
               {ar ? "تنبيهات حرجة" : "Critical Alerts"}
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">{stats.criticalAlerts}</span>
+              <span className="text-micro px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">{stats.criticalAlerts}</span>
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -252,9 +252,9 @@ export default function CRM() {
                     <AlertTriangle size={12} className="text-rose-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-medium text-foreground">{ar ? alert.title_ar : alert.title}</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{ar ? alert.description_ar : alert.description}</p>
-                    <p className="text-[9px] text-primary mt-1.5 font-medium flex items-center gap-1">
+                    <p className="text-micro font-medium text-foreground">{ar ? alert.title_ar : alert.title}</p>
+                    <p className="text-micro text-muted-foreground mt-0.5 line-clamp-2">{ar ? alert.description_ar : alert.description}</p>
+                    <p className="text-micro text-brand-ink mt-1.5 font-medium flex items-center gap-1">
                       <Zap size={8} /> {ar ? alert.suggested_action_ar : alert.suggested_action}
                     </p>
                   </div>
@@ -270,32 +270,32 @@ export default function CRM() {
         {/* Revenue Trend */}
         <motion.div variants={cardV} custom={6} initial="hidden" animate="visible" className="md:col-span-2 p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
-              <BarChart3 size={14} className="text-primary" />
+            <h3 className="text-body font-semibold flex items-center gap-2">
+              <BarChart3 size={14} className="text-brand-ink" />
               {ar ? "اتجاه الإيرادات" : "Revenue Trend"}
             </h3>
-            <span className="text-[10px] text-muted-foreground">{ar ? "آخر ١٢ شهر" : "Last 12 months"}</span>
+            <span className="text-micro text-muted-foreground">{ar ? "آخر ١٢ شهر" : "Last 12 months"}</span>
           </div>
           <MiniBarChart data={revenueTrend} color="hsl(var(--primary))" height={80} />
           <div className="flex justify-between mt-2">
             {months.filter((_, i) => i % 2 === 0).map(m => (
-              <span key={m} className="text-[8px] text-muted-foreground/60">{m}</span>
+              <span key={m} className="text-micro text-muted-foreground/60">{m}</span>
             ))}
           </div>
           <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border/30">
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-[10px] text-muted-foreground">{ar ? "إجمالي" : "Total"}</span>
+              <span className="text-micro text-muted-foreground">{ar ? "إجمالي" : "Total"}</span>
             </div>
-            <div className="text-[11px] font-medium text-foreground">{formatEGP(revenueTrend.reduce((s, v) => s + v, 0))}</div>
-            <div className="text-[10px] text-emerald-600 flex items-center gap-0.5"><ArrowUpRight size={9} /> +12%</div>
+            <div className="text-micro font-medium text-foreground">{formatEGP(revenueTrend.reduce((s, v) => s + v, 0))}</div>
+            <div className="text-micro text-emerald-600 flex items-center gap-0.5"><ArrowUpRight size={9} /> +12%</div>
           </div>
         </motion.div>
 
         {/* Customer Segments */}
         <motion.div variants={cardV} custom={7} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
-          <h3 className="text-[13px] font-semibold flex items-center gap-2 mb-4">
-            <Star size={14} className="text-amber-500" />
+          <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
+            <Star size={14} className="text-warning" />
             {ar ? "شرائح العملاء" : "Customer Segments"}
           </h3>
           <div className="flex justify-center mb-4">
@@ -306,9 +306,9 @@ export default function CRM() {
               <div key={i} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: seg.color }} />
-                  <span className="text-[11px] text-foreground">{ar ? seg.labelAr : seg.label}</span>
+                  <span className="text-micro text-foreground">{ar ? seg.labelAr : seg.label}</span>
                 </div>
-                <span className="text-[11px] font-medium">{seg.value}</span>
+                <span className="text-micro font-medium">{seg.value}</span>
               </div>
             ))}
           </div>
@@ -320,44 +320,44 @@ export default function CRM() {
         {/* Conversion Funnel */}
         <motion.div variants={cardV} custom={8} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
-              <Target size={14} className="text-violet-500" />
+            <h3 className="text-body font-semibold flex items-center gap-2">
+              <Target size={14} className="text-chart-4" />
               {ar ? "قمع التحويل" : "Conversion Funnel"}
             </h3>
-            <button onClick={() => navigate("/crm/pipeline")} className="text-[10px] text-primary hover:underline flex items-center gap-0.5">
+            <button onClick={() => navigate("/crm/pipeline")} className="text-micro text-brand-ink hover:underline flex items-center gap-0.5">
               {ar ? "عرض" : "View"} <ChevronRight size={10} />
             </button>
           </div>
           <FunnelChart stages={funnelStages} ar={ar} />
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
-            <span className="text-[10px] text-muted-foreground">{ar ? "معدل التحويل" : "Conversion Rate"}</span>
-            <span className="text-[14px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{stats.conversionRate}%</span>
+            <span className="text-micro text-muted-foreground">{ar ? "معدل التحويل" : "Conversion Rate"}</span>
+            <span className="text-body-lg font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{stats.conversionRate}%</span>
           </div>
         </motion.div>
 
         {/* Top Customers */}
         <motion.div variants={cardV} custom={9} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
+            <h3 className="text-body font-semibold flex items-center gap-2">
               <TrendingUp size={14} className="text-emerald-500" />
               {ar ? "أكبر العملاء" : "Top Customers"}
             </h3>
-            <button onClick={() => navigate("/crm/customers")} className="text-[10px] text-primary hover:underline flex items-center gap-0.5">
+            <button onClick={() => navigate("/crm/customers")} className="text-micro text-brand-ink hover:underline flex items-center gap-0.5">
               {ar ? "الكل" : "All"} <ChevronRight size={10} />
             </button>
           </div>
           <div className="space-y-2.5">
             {topCustomers.map((c, i) => (
               <div key={c.id} onClick={() => navigate(`/crm/customers/${c.id}`)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer">
-                <span className="text-[10px] text-muted-foreground w-4 text-center font-medium">{i + 1}</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0" style={{ backgroundColor: c.avatar_color }}>
+                <span className="text-micro text-muted-foreground w-4 text-center font-medium">{i + 1}</span>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-micro font-bold text-white shrink-0" style={{ backgroundColor: c.avatar_color }}>
                   {c.name.split(" ").map(w => w[0]).join("")}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-medium text-foreground truncate">{c.name}</p>
-                  <p className="text-[9px] text-muted-foreground">{c.total_orders} {ar ? "طلب" : "orders"}</p>
+                  <p className="text-micro font-medium text-foreground truncate">{c.name}</p>
+                  <p className="text-micro text-muted-foreground">{c.total_orders} {ar ? "طلب" : "orders"}</p>
                 </div>
-                <span className="text-[11px] font-semibold text-foreground">{formatEGP(c.total_spend)}</span>
+                <span className="text-micro font-semibold text-foreground">{formatEGP(c.total_spend)}</span>
               </div>
             ))}
           </div>
@@ -369,10 +369,10 @@ export default function CRM() {
         {/* Today's Tasks */}
         <motion.div variants={cardV} custom={10} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
+            <h3 className="text-body font-semibold flex items-center gap-2">
               <Calendar size={14} className="text-blue-500" />
               {ar ? "مهام اليوم" : "Today's Tasks"}
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-600 font-medium">{todayTasks.length}</span>
+              <span className="text-micro px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-600 font-medium">{todayTasks.length}</span>
             </h3>
           </div>
           <div className="space-y-1.5">
@@ -389,13 +389,13 @@ export default function CRM() {
                       {isCompleted && <Check size={10} className="text-white" strokeWidth={3} />}
                     </button>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-[11px] font-medium ${isCompleted ? "line-through text-muted-foreground" : "text-foreground"}`}>
+                      <p className={`text-micro font-medium ${isCompleted ? "line-through text-muted-foreground" : "text-foreground"}`}>
                         {ar ? task.title_ar : task.title}
                       </p>
                       <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="text-[9px] text-muted-foreground">{task.customer_name}</span>
-                        <span className={`w-1.5 h-1.5 rounded-full ${task.priority === "urgent" ? "bg-rose-500" : task.priority === "high" ? "bg-amber-500" : "bg-blue-500"}`} />
-                        {isOverdue && <span className="text-[8px] text-rose-500 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
+                        <span className="text-micro text-muted-foreground">{task.customer_name}</span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${task.priority === "urgent" ? "bg-rose-500" : task.priority === "high" ? "bg-warning" : "bg-blue-500"}`} />
+                        {isOverdue && <span className="text-micro text-rose-500 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
                       </div>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
@@ -412,7 +412,7 @@ export default function CRM() {
         {/* Recent Activity */}
         <motion.div variants={cardV} custom={11} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
+            <h3 className="text-body font-semibold flex items-center gap-2">
               <Activity size={14} className="text-cyan-500" />
               {ar ? "آخر النشاطات" : "Recent Activity"}
             </h3>
@@ -427,14 +427,14 @@ export default function CRM() {
                   {i < CRM_ACTIVITY_FEED.slice(0, 8).length - 1 && <div className="w-px flex-1 bg-border/30 my-0.5" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px]">
+                  <p className="text-micro">
                     <span className="font-medium">{item.user}</span>{" "}
                     <span className="text-muted-foreground">{ar ? item.action_ar : item.action}</span>{" "}
-                    <span className="font-medium text-primary cursor-pointer hover:underline" onClick={() => navigate(`/crm/customers/${item.customer_id}`)}>{item.customer_name}</span>
+                    <span className="font-medium text-brand-ink cursor-pointer hover:underline" onClick={() => navigate(`/crm/customers/${item.customer_id}`)}>{item.customer_name}</span>
                   </p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-[8px] text-muted-foreground">{item.timestamp}</span>
-                    {item.amount && <span className="text-[8px] font-medium text-foreground">{formatEGP(item.amount)}</span>}
+                    <span className="text-micro text-muted-foreground">{item.timestamp}</span>
+                    {item.amount && <span className="text-micro font-medium text-foreground">{formatEGP(item.amount)}</span>}
                   </div>
                 </div>
               </div>
@@ -446,7 +446,7 @@ export default function CRM() {
       {/* Quick Stats Footer */}
       <motion.div variants={cardV} custom={12} initial="hidden" animate="visible" className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: ar ? "عملاء VIP" : "VIP Customers", value: stats.vip, icon: Star, color: "text-amber-600" },
+          { label: ar ? "عملاء VIP" : "VIP Customers", value: stats.vip, icon: Star, color: "text-warning" },
           { label: ar ? "فواتير متأخرة" : "Overdue Invoices", value: stats.overdueInvoices, icon: AlertTriangle, color: "text-rose-600" },
           { label: ar ? "صفقات مكتسبة" : "Won Deals", value: stats.wonLeads.length, icon: CheckCircle2, color: "text-emerald-600" },
           { label: ar ? "مهام معلقة" : "Pending Tasks", value: stats.pendingTasks, icon: Clock, color: "text-blue-600" },
@@ -454,8 +454,8 @@ export default function CRM() {
         ].map((item, i) => (
           <div key={i} className="p-3 rounded-xl border border-border/40 bg-background text-center">
             <item.icon size={14} className={`${item.color} mx-auto mb-1.5`} />
-            <p className="text-[16px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{item.value}</p>
-            <p className="text-[9px] text-muted-foreground">{item.label}</p>
+            <p className="text-title font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{item.value}</p>
+            <p className="text-micro text-muted-foreground">{item.label}</p>
           </div>
         ))}
       </motion.div>

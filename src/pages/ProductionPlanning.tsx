@@ -34,9 +34,9 @@ const STAGES = [
   { value: "pending",       en: "Pending",       ar: "في الانتظار",    icon: Clock,          color: "bg-zinc-100 text-zinc-600" },
   { value: "cutting",       en: "Cutting",       ar: "التقطيع",       icon: Scissors,       color: "bg-blue-50 text-blue-600" },
   { value: "edgebanding",   en: "Edgebanding",   ar: "الكنار",        icon: Layers,         color: "bg-indigo-50 text-indigo-600" },
-  { value: "drilling",      en: "Drilling",      ar: "التخريم",       icon: Wrench,         color: "bg-violet-50 text-violet-600" },
+  { value: "drilling",      en: "Drilling",      ar: "التخريم",       icon: Wrench,         color: "bg-chart-4/10 text-chart-4" },
   { value: "assembly",      en: "Assembly",      ar: "التجميع",       icon: Box,            color: "bg-cyan-50 text-cyan-600" },
-  { value: "finishing",     en: "Finishing",      ar: "الدهان/التشطيب", icon: Paintbrush,     color: "bg-amber-50 text-amber-600" },
+  { value: "finishing",     en: "Finishing",      ar: "الدهان/التشطيب", icon: Paintbrush,     color: "bg-warning/10 text-warning" },
   { value: "quality_check", en: "Quality Check",  ar: "مراقبة الجودة",  icon: ClipboardCheck, color: "bg-orange-50 text-orange-600" },
   { value: "packing",       en: "Packing",       ar: "التغليف",       icon: Package,        color: "bg-teal-50 text-teal-600" },
   { value: "ready",         en: "Ready",         ar: "جاهز للتسليم",   icon: CheckCircle2,   color: "bg-emerald-50 text-emerald-600" },
@@ -47,7 +47,7 @@ const STAGES = [
 const PRIORITIES = [
   { value: "critical", en: "Critical", ar: "حرج",    color: "bg-rose-100 text-rose-700" },
   { value: "urgent",   en: "Urgent",   ar: "عاجل",   color: "bg-orange-100 text-orange-700" },
-  { value: "high",     en: "High",     ar: "عالي",   color: "bg-amber-100 text-amber-700" },
+  { value: "high",     en: "High",     ar: "عالي",   color: "bg-warning/15 text-warning" },
   { value: "medium",   en: "Medium",   ar: "متوسط",  color: "bg-blue-100 text-blue-700" },
   { value: "low",      en: "Low",      ar: "منخفض",  color: "bg-zinc-100 text-zinc-600" },
 ] as const;
@@ -60,9 +60,9 @@ const GRAIN_DIRS = [
 
 // ─── Helpers ──────────────────────────────────────────────
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function genPONumber(): string {
   const d = new Date();
@@ -143,7 +143,7 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editPO ? (ar ? "تعديل أمر التشغيل" : "Edit Production Order") : (ar ? "أمر تشغيل جديد" : "New Production Order")}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -185,10 +185,10 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
           </div>
           <div><label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
             <textarea className={inputCls + " h-16 py-2 resize-none"} value={notes} onChange={e => setNotes(e.target.value)} /></div>
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSubmit} disabled={loading || !poNumber.trim() || !title.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {editPO ? (ar ? "حفظ" : "Save") : (ar ? "أنشئ الأمر" : "Create Order")}
           </button>
@@ -243,7 +243,7 @@ function CuttingModal({ onClose, onSaved, poId, editItem, ar, workspaceId }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editItem ? (ar ? "تعديل قطعة" : "Edit Piece") : (ar ? "قطعة جديدة" : "New Cutting Piece")}
           </h3>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -271,12 +271,12 @@ function CuttingModal({ onClose, onSaved, poId, editItem, ar, workspaceId }: {
                 {GRAIN_DIRS.map(g => <option key={g.value} value={g.value}>{ar ? g.ar : g.en}</option>)}
               </select></div>
           </div>
-          <p className="text-[11px] text-muted-foreground font-medium">{ar ? "الكنار (حواف)" : "Edge Banding"}</p>
+          <p className="text-micro text-muted-foreground font-medium">{ar ? "الكنار (حواف)" : "Edge Banding"}</p>
           <div className="grid grid-cols-4 gap-2">
-            <div><label className={labelCls}>{ar ? "أعلى" : "Top"}</label><input className={inputCls + " text-[11px]"} value={edgeTop} onChange={e => setEdgeTop(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "أسفل" : "Bottom"}</label><input className={inputCls + " text-[11px]"} value={edgeBottom} onChange={e => setEdgeBottom(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "يسار" : "Left"}</label><input className={inputCls + " text-[11px]"} value={edgeLeft} onChange={e => setEdgeLeft(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "يمين" : "Right"}</label><input className={inputCls + " text-[11px]"} value={edgeRight} onChange={e => setEdgeRight(e.target.value)} /></div>
+            <div><label className={labelCls}>{ar ? "أعلى" : "Top"}</label><input className={inputCls + " text-micro"} value={edgeTop} onChange={e => setEdgeTop(e.target.value)} /></div>
+            <div><label className={labelCls}>{ar ? "أسفل" : "Bottom"}</label><input className={inputCls + " text-micro"} value={edgeBottom} onChange={e => setEdgeBottom(e.target.value)} /></div>
+            <div><label className={labelCls}>{ar ? "يسار" : "Left"}</label><input className={inputCls + " text-micro"} value={edgeLeft} onChange={e => setEdgeLeft(e.target.value)} /></div>
+            <div><label className={labelCls}>{ar ? "يمين" : "Right"}</label><input className={inputCls + " text-micro"} value={edgeRight} onChange={e => setEdgeRight(e.target.value)} /></div>
           </div>
           <div><label className={labelCls}>{ar ? "برنامج CNC" : "CNC Program"}</label>
             <input className={inputCls} value={cnc} onChange={e => setCnc(e.target.value)} /></div>
@@ -284,7 +284,7 @@ function CuttingModal({ onClose, onSaved, poId, editItem, ar, workspaceId }: {
             <textarea className={inputCls + " h-14 py-2 resize-none"} value={notes} onChange={e => setNotes(e.target.value)} /></div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading || !partName.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "حفظ" : "Save"}
           </button>
@@ -400,13 +400,13 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{po.po_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${priDef.color}`}>{ar ? priDef.ar : priDef.en}</span>
-            {isOverdue && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
+            <span className="text-micro font-mono text-muted-foreground">{po.po_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${priDef.color}`}>{ar ? priDef.ar : priDef.en}</span>
+            {isOverdue && <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title}</h2>
-          <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title}</h2>
+          <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
             {po.customer_name && <span className="flex items-center gap-1"><Building2 size={10} />{po.customer_name}</span>}
             {po.assigned_station && <span className="flex items-center gap-1"><Wrench size={10} />{po.assigned_station}</span>}
             {linkedMeta?.so_number && <span className="flex items-center gap-1"><FileText size={10} />{linkedMeta.so_number}</span>}
@@ -419,9 +419,9 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
             <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${po.progress}%` }} />
             </div>
-            <span className="text-[11px] font-medium tabular-nums">{po.progress}%</span>
+            <span className="text-micro font-medium tabular-nums">{po.progress}%</span>
           </div>
-          <button onClick={() => setEditPO(true)} className="text-[11px] text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
+          <button onClick={() => setEditPO(true)} className="text-micro text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
         </div>
       </div>
 
@@ -429,8 +429,8 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
       <div className="flex gap-1 mb-5 border-b border-border/30 pb-3">
         {detailTabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5
-              ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+            className={`px-3 py-2 rounded-lg text-caption font-medium transition-colors flex items-center gap-1.5
+              ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <t.icon size={13} />{ar ? t.ar : t.en}
           </button>
         ))}
@@ -443,7 +443,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Production Stages Tab ── */}
           {tab === "stages" && (
             <div className="space-y-2">
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "مراحل التصنيع" : "Production Stages"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "مراحل التصنيع" : "Production Stages"}</h3>
               {sortedStages.map((log, i) => {
                 const stageDef = STAGES.find(s => s.value === log.stage);
                 if (!stageDef) return null;
@@ -466,8 +466,8 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                       <SIcon size={15} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium">{ar ? stageDef.ar : stageDef.en}</p>
-                      <div className="flex items-center gap-3 text-[10.5px] text-muted-foreground mt-0.5">
+                      <p className="text-body font-medium">{ar ? stageDef.ar : stageDef.en}</p>
+                      <div className="flex items-center gap-3 text-micro text-muted-foreground mt-0.5">
                         {log.status === "completed" && log.duration_minutes != null && (
                           <span className="flex items-center gap-1"><Timer size={9} />{log.duration_minutes} {ar ? "دقيقة" : "min"}</span>
                         )}
@@ -480,13 +480,13 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                       {log.status === "completed" && <CheckCircle2 size={16} className="text-emerald-500" />}
                       {canStart && (
                         <button onClick={() => advanceStage(log.stage, "start")}
-                          className="text-[11px] text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200">
+                          className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200">
                           <Play size={11} /> {ar ? "ابدأ" : "Start"}
                         </button>
                       )}
                       {canComplete && (
                         <button onClick={() => advanceStage(log.stage, "complete")}
-                          className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200">
+                          className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200">
                           <Check size={11} /> {ar ? "اكتمل" : "Done"}
                         </button>
                       )}
@@ -495,7 +495,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                 );
               })}
               {sortedStages.length === 0 && (
-                <p className="text-[12px] text-muted-foreground/50 py-8 text-center">{ar ? "مفيش مراحل" : "No stages"}</p>
+                <p className="text-caption text-muted-foreground/50 py-8 text-center">{ar ? "مفيش مراحل" : "No stages"}</p>
               )}
             </div>
           )}
@@ -505,19 +505,19 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-[14px] font-semibold">{ar ? "قائمة التقطيع" : "Cutting List"}</h3>
+                  <h3 className="text-body-lg font-semibold">{ar ? "قائمة التقطيع" : "Cutting List"}</h3>
                   {cuttingList.length > 0 && (
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{completedCuts}/{cuttingList.length} {ar ? "مكتمل" : "completed"}</p>
+                    <p className="text-micro text-muted-foreground mt-0.5">{completedCuts}/{cuttingList.length} {ar ? "مكتمل" : "completed"}</p>
                   )}
                 </div>
-                <button onClick={() => { setEditCut(null); setCutModal(true); }} className={btnPrimary + " h-9 text-[12px]"}><Plus size={13} /> {ar ? "قطعة جديدة" : "Add Piece"}</button>
+                <button onClick={() => { setEditCut(null); setCutModal(true); }} className={btnPrimary + " h-9 text-caption"}><Plus size={13} /> {ar ? "قطعة جديدة" : "Add Piece"}</button>
               </div>
               {cuttingList.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش قطع لسه" : "No cutting pieces yet"}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش قطع لسه" : "No cutting pieces yet"}</div>
               ) : (
                 <div className="border border-border/40 rounded-xl overflow-hidden">
                   {/* Table header */}
-                  <div className="grid grid-cols-[40px_1fr_100px_80px_80px_60px_100px_80px] gap-2 px-4 py-2 bg-muted/30 text-[10px] text-muted-foreground font-medium border-b border-border/30">
+                  <div className="grid grid-cols-[40px_1fr_100px_80px_80px_60px_100px_80px] gap-2 px-4 py-2 bg-muted/30 text-micro text-muted-foreground font-medium border-b border-border/30">
                     <span>#</span>
                     <span>{ar ? "القطعة" : "Part"}</span>
                     <span>{ar ? "الخامة" : "Material"}</span>
@@ -534,14 +534,14 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                           <CheckCircle2 size={11} />
                         </button>
                         <div className="min-w-0">
-                          <p className={`text-[12px] truncate ${item.completed ? "line-through text-muted-foreground" : "font-medium"}`}>{item.part_name}</p>
-                          {item.cnc_program && <span className="text-[9px] text-muted-foreground">CNC: {item.cnc_program}</span>}
+                          <p className={`text-caption truncate ${item.completed ? "line-through text-muted-foreground" : "font-medium"}`}>{item.part_name}</p>
+                          {item.cnc_program && <span className="text-micro text-muted-foreground">CNC: {item.cnc_program}</span>}
                         </div>
-                        <span className="text-[11px] text-muted-foreground truncate">{item.material || "—"}</span>
-                        <span className="text-[11px] tabular-nums">{item.thickness ?? "—"}</span>
-                        <span className="text-[11px] tabular-nums">{item.width ?? "—"}</span>
-                        <span className="text-[11px] tabular-nums">{item.length ?? "—"}</span>
-                        <span className="text-[11px] tabular-nums">{item.qty}</span>
+                        <span className="text-micro text-muted-foreground truncate">{item.material || "—"}</span>
+                        <span className="text-micro tabular-nums">{item.thickness ?? "—"}</span>
+                        <span className="text-micro tabular-nums">{item.width ?? "—"}</span>
+                        <span className="text-micro tabular-nums">{item.length ?? "—"}</span>
+                        <span className="text-micro tabular-nums">{item.qty}</span>
                         <div className="flex gap-1">
                           <button onClick={() => { setEditCut(item); setCutModal(true); }} className="p-1 rounded hover:bg-muted/50 text-muted-foreground"><Edit3 size={11} /></button>
                           <button onClick={() => deleteCuttingItem(item.id)} className="p-1 rounded hover:bg-rose-50 text-rose-400"><Trash2 size={11} /></button>
@@ -557,7 +557,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Timeline Tab ── */}
           {tab === "timeline" && (
             <div>
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "الجدول الزمني" : "Production Timeline"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "الجدول الزمني" : "Production Timeline"}</h3>
               <div className="space-y-1">
                 {sortedStages.map((log, i) => {
                   const stageDef = STAGES.find(s => s.value === log.stage);
@@ -574,8 +574,8 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                         {i < sortedStages.length - 1 && <div className="w-px h-8 bg-border/40 mt-1" />}
                       </div>
                       <div className="flex-1 min-w-0 -mt-0.5">
-                        <p className="text-[12px] font-medium">{ar ? stageDef.ar : stageDef.en}</p>
-                        <div className="flex items-center gap-3 text-[10px] text-muted-foreground mt-0.5">
+                        <p className="text-caption font-medium">{ar ? stageDef.ar : stageDef.en}</p>
+                        <div className="flex items-center gap-3 text-micro text-muted-foreground mt-0.5">
                           {log.started_at && <span>{ar ? "بدأ" : "Started"}: {new Date(log.started_at).toLocaleString()}</span>}
                           {log.completed_at && <span>{ar ? "اكتمل" : "Done"}: {new Date(log.completed_at).toLocaleString()}</span>}
                           {log.duration_minutes != null && <span className="font-medium">{log.duration_minutes} {ar ? "د" : "min"}</span>}
@@ -589,7 +589,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
               {sortedStages.some(s => s.duration_minutes != null) && (
                 <div className="mt-4 pt-3 border-t border-border/30 flex items-center gap-2">
                   <Timer size={13} className="text-muted-foreground" />
-                  <span className="text-[12px] font-medium">
+                  <span className="text-caption font-medium">
                     {ar ? "إجمالي الوقت:" : "Total:"} {sortedStages.reduce((sum, s) => sum + (s.duration_minutes || 0), 0)} {ar ? "دقيقة" : "min"}
                   </span>
                 </div>
@@ -672,7 +672,7 @@ export default function ProductionPlanning() {
       po_number: p.po_number, title: p.title, customer_name: p.customer_name,
       status: p.status, priority: p.priority, progress: p.progress,
       assigned_station: p.assigned_station, start_date: p.start_date, due_date: p.due_date,
-    })), `thoth-production-orders-${new Date().toISOString().slice(0, 10)}.csv`);
+    })), `bumblebee-production-orders-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   // Quick filter tabs for common groupings
@@ -714,10 +714,10 @@ export default function ProductionPlanning() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "تخطيط الإنتاج" : "Production Planning"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "أوامر التشغيل ومراحل التصنيع" : "Production Orders & Manufacturing Stages"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "أوامر التشغيل ومراحل التصنيع" : "Production Orders & Manufacturing Stages"}</p>
         </div>
         <button onClick={() => setModal(true)} className={btnPrimary + " h-10"}><Plus size={14} /> {ar ? "أمر تشغيل جديد" : "New Order"}</button>
       </div>
@@ -731,8 +731,8 @@ export default function ProductionPlanning() {
           { label: ar ? "متأخر" : "Overdue", value: overdue, color: overdue > 0 ? "text-rose-600" : "text-zinc-400" },
         ].map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
-            <p className="text-[11px] text-muted-foreground mb-1">{s.label}</p>
-            <p className={`text-[20px] font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+            <p className="text-micro text-muted-foreground mb-1">{s.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -746,7 +746,7 @@ export default function ProductionPlanning() {
         </div>
         <div className="flex gap-1">
           {filterGroups.map(g => (
-            <button key={g.value} onClick={() => setFilterStatus(g.value)} className={`px-3 py-2 rounded-lg text-[11px] font-medium ${filterStatus === g.value ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
+            <button key={g.value} onClick={() => setFilterStatus(g.value)} className={`px-3 py-2 rounded-lg text-micro font-medium ${filterStatus === g.value ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
           ))}
         </div>
         <button onClick={handleExport} className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground" title={ar ? "تصدير" : "Export"}><Download size={14} /></button>
@@ -758,12 +758,12 @@ export default function ProductionPlanning() {
       ) : prodOrders.length === 0 ? (
         <div className="py-16 text-center">
           <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4"><Wrench size={22} className="text-muted-foreground/30" /></div>
-          <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش أوامر تشغيل لسه" : "No production orders yet"}</h3>
-          <p className="text-[13px] text-muted-foreground">{ar ? "أنشئ أول أمر تشغيل من تصميم معتمد." : "Create your first production order from an approved design."}</p>
+          <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش أوامر تشغيل لسه" : "No production orders yet"}</h3>
+          <p className="text-body text-muted-foreground">{ar ? "أنشئ أول أمر تشغيل من تصميم معتمد." : "Create your first production order from an approved design."}</p>
           <button onClick={() => setModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "أمر تشغيل جديد" : "New Order"}</button>
         </div>
       ) : displayList.length === 0 ? (
-        <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+        <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
       ) : (
         <div className="space-y-3">
           {displayList.map(p => {
@@ -780,13 +780,13 @@ export default function ProductionPlanning() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-[10.5px] font-mono text-muted-foreground">{p.po_number}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${priDef.color}`}>{ar ? priDef.ar : priDef.en}</span>
-                      {isOd && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
+                      <span className="text-micro font-mono text-muted-foreground">{p.po_number}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.color}`}>{ar ? st.ar : st.en}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${priDef.color}`}>{ar ? priDef.ar : priDef.en}</span>
+                      {isOd && <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
                     </div>
-                    <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{p.title}</p>
-                    <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+                    <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{p.title}</p>
+                    <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
                       {p.customer_name && <span className="flex items-center gap-1"><Building2 size={9} />{p.customer_name}</span>}
                       {p.assigned_station && <span className="flex items-center gap-1"><Wrench size={9} />{p.assigned_station}</span>}
                       {linkedMeta?.so_number && <span className="flex items-center gap-1"><FileText size={9} />{linkedMeta.so_number}</span>}
@@ -798,7 +798,7 @@ export default function ProductionPlanning() {
                       <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
                         <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${p.progress}%` }} />
                       </div>
-                      <span className="text-[10px] tabular-nums text-muted-foreground">{p.progress}%</span>
+                      <span className="text-micro tabular-nums text-muted-foreground">{p.progress}%</span>
                     </div>
                     <ChevronRight size={14} className="text-muted-foreground/30" />
                   </div>

@@ -122,8 +122,8 @@ export default function LoyaltyAnalyticsPage() {
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[1060px] mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
-        <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+        <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
+        <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
           {ar ? "التحليلات" : "Analytics"}
         </h1>
       </div>
@@ -131,16 +131,16 @@ export default function LoyaltyAnalyticsPage() {
       {/* ── KPI Row ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
-          { value: fmtPts(a.totalIssued), label: ar ? "إجمالي النقاط المصدرة" : "Total Points Issued", icon: Award, color: "text-primary", sub: `${a.totalMembers} ${ar ? "عضو" : "members"}` },
+          { value: fmtPts(a.totalIssued), label: ar ? "إجمالي النقاط المصدرة" : "Total Points Issued", icon: Award, color: "text-brand-ink", sub: `${a.totalMembers} ${ar ? "عضو" : "members"}` },
           { value: `${a.redemptionRate}%`, label: ar ? "معدل الاستبدال" : "Redemption Rate", icon: Target, color: "text-emerald-600", sub: `${fmtPts(a.totalRedeemed)} ${ar ? "مستبدلة" : "redeemed"}` },
-          { value: fmtCurrency(a.pointsLiability), label: ar ? "الالتزامات المستحقة" : "Points Liability", icon: Wallet, color: "text-amber-500", sub: `${fmtPts(a.outstanding)} ${ar ? "نقطة معلقة" : "outstanding pts"}` },
-          { value: `${a.repeatRate}%`, label: ar ? "تكرار الشراء" : "Repeat Purchase", icon: Repeat, color: "text-violet-500", sub: `${a.repeatMembers}/${a.totalMembers} ${ar ? "عضو" : "members"}` },
+          { value: fmtCurrency(a.pointsLiability), label: ar ? "الالتزامات المستحقة" : "Points Liability", icon: Wallet, color: "text-warning", sub: `${fmtPts(a.outstanding)} ${ar ? "نقطة معلقة" : "outstanding pts"}` },
+          { value: `${a.repeatRate}%`, label: ar ? "تكرار الشراء" : "Repeat Purchase", icon: Repeat, color: "text-chart-4", sub: `${a.repeatMembers}/${a.totalMembers} ${ar ? "عضو" : "members"}` },
         ].map((kpi, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
             <kpi.icon size={14} className={`${kpi.color} mb-2`} />
-            <p className={`text-[22px] font-medium tabular-nums ${kpi.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
-            <p className="text-[10.5px] text-muted-foreground mt-0.5">{kpi.label}</p>
-            <p className="text-[9.5px] text-muted-foreground/60 mt-0.5">{kpi.sub}</p>
+            <p className={`text-heading font-medium tabular-nums ${kpi.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{kpi.label}</p>
+            <p className="text-micro text-muted-foreground/60 mt-0.5">{kpi.sub}</p>
           </div>
         ))}
       </div>
@@ -149,41 +149,41 @@ export default function LoyaltyAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
         {/* Total tracked revenue */}
         <div className="border border-border/40 rounded-xl p-5 bg-background">
-          <h3 className="text-[12px] font-medium text-muted-foreground mb-3">{ar ? "إيرادات مرتبطة بالولاء" : "Loyalty-Linked Revenue"}</h3>
-          <p className="text-[26px] font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtCurrency(a.totalRevenue)}</p>
-          <p className="text-[10px] text-muted-foreground mt-1">{ar ? "من" : "From"} {transactions.filter(t => t.orderAmount).length} {ar ? "طلب مسجل" : "tracked orders"}</p>
+          <h3 className="text-caption font-medium text-muted-foreground mb-3">{ar ? "إيرادات مرتبطة بالولاء" : "Loyalty-Linked Revenue"}</h3>
+          <p className="text-display font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtCurrency(a.totalRevenue)}</p>
+          <p className="text-micro text-muted-foreground mt-1">{ar ? "من" : "From"} {transactions.filter(t => t.orderAmount).length} {ar ? "طلب مسجل" : "tracked orders"}</p>
         </div>
 
         {/* Channel split */}
         <div className="border border-border/40 rounded-xl p-5 bg-background">
-          <h3 className="text-[12px] font-medium text-muted-foreground mb-3">{ar ? "توزيع القنوات" : "Channel Split"}</h3>
+          <h3 className="text-caption font-medium text-muted-foreground mb-3">{ar ? "توزيع القنوات" : "Channel Split"}</h3>
           <div className="flex gap-4 mb-3">
             <div className="flex-1">
               <div className="flex items-center gap-1.5 mb-1">
-                <ShoppingBag size={10} className="text-violet-500" />
-                <span className="text-[10px] text-muted-foreground">{ar ? "أونلاين" : "Online"}</span>
+                <ShoppingBag size={10} className="text-chart-4" />
+                <span className="text-micro text-muted-foreground">{ar ? "أونلاين" : "Online"}</span>
               </div>
-              <p className="text-[18px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{a.shopifyPct}%</p>
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{a.shopifyPct}%</p>
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-1.5 mb-1">
-                <Store size={10} className="text-amber-500" />
-                <span className="text-[10px] text-muted-foreground">{ar ? "المتجر" : "In-Store"}</span>
+                <Store size={10} className="text-warning" />
+                <span className="text-micro text-muted-foreground">{ar ? "المتجر" : "In-Store"}</span>
               </div>
-              <p className="text-[18px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{a.storePct}%</p>
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{a.storePct}%</p>
             </div>
           </div>
           <div className="h-2.5 bg-muted/30 rounded-full overflow-hidden flex">
-            <div className="h-full bg-violet-500 rounded-l-full" style={{ width: `${a.shopifyPct}%` }} />
-            <div className="h-full bg-amber-400 rounded-r-full" style={{ width: `${a.storePct}%` }} />
+            <div className="h-full bg-chart-4 rounded-l-full" style={{ width: `${a.shopifyPct}%` }} />
+            <div className="h-full bg-warning rounded-r-full" style={{ width: `${a.storePct}%` }} />
           </div>
         </div>
 
         {/* AOV */}
         <div className="border border-border/40 rounded-xl p-5 bg-background">
-          <h3 className="text-[12px] font-medium text-muted-foreground mb-3">{ar ? "متوسط قيمة الطلب" : "Average Order Value"}</h3>
-          <p className="text-[26px] font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtCurrency(Math.round(a.aov))}</p>
-          <p className="text-[10px] text-muted-foreground mt-1">{ar ? "متوسط نقاط لكل عضو:" : "Avg pts/member:"} {fmtPts(a.avgLifetime)}</p>
+          <h3 className="text-caption font-medium text-muted-foreground mb-3">{ar ? "متوسط قيمة الطلب" : "Average Order Value"}</h3>
+          <p className="text-display font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtCurrency(Math.round(a.aov))}</p>
+          <p className="text-micro text-muted-foreground mt-1">{ar ? "متوسط نقاط لكل عضو:" : "Avg pts/member:"} {fmtPts(a.avgLifetime)}</p>
         </div>
       </div>
 
@@ -191,7 +191,7 @@ export default function LoyaltyAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
         {/* Tier distribution */}
         <div className="border border-border/40 rounded-xl p-5 bg-background">
-          <h3 className="text-[13px] font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "توزيع المستويات" : "Tier Distribution"}
           </h3>
           <div className="space-y-3">
@@ -201,10 +201,10 @@ export default function LoyaltyAnalyticsPage() {
                 <div key={td.slug}>
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${tm.pill}`}>{ar ? tm.ar : tm.en}</span>
-                      <span className="text-[11px] font-medium tabular-nums">{td.count}</span>
+                      <span className={`text-micro font-semibold px-2 py-0.5 rounded-full ${tm.pill}`}>{ar ? tm.ar : tm.en}</span>
+                      <span className="text-micro font-medium tabular-nums">{td.count}</span>
                     </div>
-                    <span className="text-[10px] text-muted-foreground tabular-nums">{td.pct}%</span>
+                    <span className="text-micro text-muted-foreground tabular-nums">{td.pct}%</span>
                   </div>
                   <div className="h-2 bg-muted/25 rounded-full overflow-hidden">
                     <div className="h-full rounded-full transition-all" style={{ width: `${td.pct}%`, background: tm.color }} />
@@ -214,7 +214,7 @@ export default function LoyaltyAnalyticsPage() {
             })}
           </div>
 
-          <div className="mt-4 pt-3 border-t border-border/20 flex items-center justify-between text-[10px] text-muted-foreground">
+          <div className="mt-4 pt-3 border-t border-border/20 flex items-center justify-between text-micro text-muted-foreground">
             <span>{ar ? "متوسط الإنفاق لكل عضو" : "Avg spend/member"}</span>
             <span className="font-medium text-foreground tabular-nums">
               {fmtCurrency(Math.round(members.reduce((s, m) => s + m.totalSpend, 0) / members.length))}
@@ -224,11 +224,11 @@ export default function LoyaltyAnalyticsPage() {
 
         {/* Monthly trend */}
         <div className="border border-border/40 rounded-xl p-5 bg-background">
-          <h3 className="text-[13px] font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "الاتجاه الشهري" : "Monthly Trend"}
           </h3>
           {a.monthlyTrend.length === 0 ? (
-            <p className="text-[12px] text-muted-foreground py-6 text-center">{ar ? "لا توجد بيانات كافية" : "Insufficient data"}</p>
+            <p className="text-caption text-muted-foreground py-6 text-center">{ar ? "لا توجد بيانات كافية" : "Insufficient data"}</p>
           ) : (
             <div className="space-y-4">
               {a.monthlyTrend.map(m => {
@@ -238,23 +238,23 @@ export default function LoyaltyAnalyticsPage() {
                 return (
                   <div key={m.month}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[11px] font-medium">{monthName}</span>
-                      <span className="text-[9.5px] text-muted-foreground">{m.activeMembers} {ar ? "عضو نشط" : "active"}</span>
+                      <span className="text-micro font-medium">{monthName}</span>
+                      <span className="text-micro text-muted-foreground">{m.activeMembers} {ar ? "عضو نشط" : "active"}</span>
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[8px] text-emerald-600 w-12 shrink-0">{ar ? "مكتسبة" : "Earned"}</span>
+                        <span className="text-micro text-emerald-600 w-12 shrink-0">{ar ? "مكتسبة" : "Earned"}</span>
                         <div className="flex-1 h-2 bg-muted/25 rounded-full overflow-hidden">
                           <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${maxVal > 0 ? (m.earned / maxVal) * 100 : 0}%` }} />
                         </div>
-                        <span className="text-[9px] text-muted-foreground tabular-nums w-14 text-end">{fmtPts(m.earned)}</span>
+                        <span className="text-micro text-muted-foreground tabular-nums w-14 text-end">{fmtPts(m.earned)}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[8px] text-primary w-12 shrink-0">{ar ? "مستبدلة" : "Redeemed"}</span>
+                        <span className="text-micro text-brand-ink w-12 shrink-0">{ar ? "مستبدلة" : "Redeemed"}</span>
                         <div className="flex-1 h-2 bg-muted/25 rounded-full overflow-hidden">
                           <div className="h-full bg-primary rounded-full" style={{ width: `${maxVal > 0 ? (m.redeemed / maxVal) * 100 : 0}%` }} />
                         </div>
-                        <span className="text-[9px] text-muted-foreground tabular-nums w-14 text-end">{fmtPts(m.redeemed)}</span>
+                        <span className="text-micro text-muted-foreground tabular-nums w-14 text-end">{fmtPts(m.redeemed)}</span>
                       </div>
                     </div>
                   </div>
@@ -270,7 +270,7 @@ export default function LoyaltyAnalyticsPage() {
         {/* Top earners */}
         <div className="border border-border/40 rounded-xl bg-background">
           <div className="px-5 py-4 border-b border-border/25 flex items-center justify-between">
-            <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "أعلى المكتسبين" : "Top Earners"}
             </h3>
             <TrendingUp size={13} className="text-emerald-500" />
@@ -281,17 +281,17 @@ export default function LoyaltyAnalyticsPage() {
               return (
                 <button key={m.id} onClick={() => navigate(`/loyalty/members/${m.id}`)}
                   className="w-full flex items-center gap-3 px-5 py-3 hover:bg-muted/10 transition-colors text-start">
-                  <span className="text-[10px] font-bold text-muted-foreground/40 w-4">{i + 1}</span>
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[9px] font-semibold text-white shrink-0" style={{ background: m.avatarColor }}>
+                  <span className="text-micro font-bold text-muted-foreground/40 w-4">{i + 1}</span>
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-micro font-semibold text-white shrink-0" style={{ background: m.avatarColor }}>
                     {m.nameEn.split(" ").map(w => w[0]).join("")}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-medium truncate">{ar ? m.nameAr : m.nameEn}</p>
-                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${tm.pill}`}>{ar ? tm.ar : tm.en}</span>
+                    <p className="text-caption font-medium truncate">{ar ? m.nameAr : m.nameEn}</p>
+                    <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${tm.pill}`}>{ar ? tm.ar : tm.en}</span>
                   </div>
                   <div className="text-end">
-                    <p className="text-[12px] font-medium text-emerald-600 tabular-nums">{fmtPts(m.lifetimePoints)}</p>
-                    <p className="text-[9px] text-muted-foreground">{ar ? "نقطة" : "pts"}</p>
+                    <p className="text-caption font-medium text-emerald-600 tabular-nums">{fmtPts(m.lifetimePoints)}</p>
+                    <p className="text-micro text-muted-foreground">{ar ? "نقطة" : "pts"}</p>
                   </div>
                 </button>
               );
@@ -302,10 +302,10 @@ export default function LoyaltyAnalyticsPage() {
         {/* Top redeemers */}
         <div className="border border-border/40 rounded-xl bg-background">
           <div className="px-5 py-4 border-b border-border/25 flex items-center justify-between">
-            <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "أعلى المستبدلين" : "Top Redeemers"}
             </h3>
-            <Gift size={13} className="text-primary" />
+            <Gift size={13} className="text-brand-ink" />
           </div>
           <div className="divide-y divide-border/20">
             {a.topRedeemers.map((m, i) => {
@@ -314,17 +314,17 @@ export default function LoyaltyAnalyticsPage() {
               return (
                 <button key={m.id} onClick={() => navigate(`/loyalty/members/${m.id}`)}
                   className="w-full flex items-center gap-3 px-5 py-3 hover:bg-muted/10 transition-colors text-start">
-                  <span className="text-[10px] font-bold text-muted-foreground/40 w-4">{i + 1}</span>
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[9px] font-semibold text-white shrink-0" style={{ background: m.avatarColor }}>
+                  <span className="text-micro font-bold text-muted-foreground/40 w-4">{i + 1}</span>
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-micro font-semibold text-white shrink-0" style={{ background: m.avatarColor }}>
                     {m.nameEn.split(" ").map(w => w[0]).join("")}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-medium truncate">{ar ? m.nameAr : m.nameEn}</p>
-                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${tm.pill}`}>{ar ? tm.ar : tm.en}</span>
+                    <p className="text-caption font-medium truncate">{ar ? m.nameAr : m.nameEn}</p>
+                    <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${tm.pill}`}>{ar ? tm.ar : tm.en}</span>
                   </div>
                   <div className="text-end">
-                    <p className="text-[12px] font-medium text-primary tabular-nums">{fmtPts(m.redeemedPoints)}</p>
-                    <p className="text-[9px] text-muted-foreground">{rdRate}% {ar ? "استبدال" : "redeemed"}</p>
+                    <p className="text-caption font-medium text-brand-ink tabular-nums">{fmtPts(m.redeemedPoints)}</p>
+                    <p className="text-micro text-muted-foreground">{rdRate}% {ar ? "استبدال" : "redeemed"}</p>
                   </div>
                 </button>
               );
@@ -335,18 +335,18 @@ export default function LoyaltyAnalyticsPage() {
 
       {/* ── Category Affinity ── */}
       <div className="border border-border/40 rounded-xl p-5 bg-background mb-6">
-        <h3 className="text-[13px] font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <h3 className="text-body font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? "الفئات المفضلة" : "Category Affinity"}
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {a.categories.map(cat => (
             <div key={cat.name} className="flex items-center gap-3 p-3 rounded-xl bg-muted/15">
               <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center">
-                <PieChart size={13} className="text-primary" />
+                <PieChart size={13} className="text-brand-ink" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[12px] font-medium truncate">{cat.name}</p>
-                <p className="text-[10px] text-muted-foreground">{cat.count} {ar ? "عضو" : "members"} · {cat.pct}%</p>
+                <p className="text-caption font-medium truncate">{cat.name}</p>
+                <p className="text-micro text-muted-foreground">{cat.count} {ar ? "عضو" : "members"} · {cat.pct}%</p>
               </div>
             </div>
           ))}
@@ -355,20 +355,20 @@ export default function LoyaltyAnalyticsPage() {
 
       {/* ── Points Health Summary ── */}
       <div className="bg-muted/15 border border-border/30 rounded-xl p-5">
-        <h3 className="text-[13px] font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <h3 className="text-body font-medium text-foreground mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? "صحة النقاط" : "Points Health"}
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {[
             { label: ar ? "إجمالي الإصدار" : "Total Issued", value: fmtPts(a.totalIssued), color: "text-foreground" },
-            { label: ar ? "مستبدلة" : "Redeemed", value: fmtPts(a.totalRedeemed), color: "text-primary" },
+            { label: ar ? "مستبدلة" : "Redeemed", value: fmtPts(a.totalRedeemed), color: "text-brand-ink" },
             { label: ar ? "منتهية" : "Expired", value: fmtPts(a.totalExpired), color: "text-muted-foreground" },
-            { label: ar ? "قائمة" : "Outstanding", value: fmtPts(a.outstanding), color: "text-amber-600" },
+            { label: ar ? "قائمة" : "Outstanding", value: fmtPts(a.outstanding), color: "text-warning" },
             { label: ar ? "الالتزام المالي" : "Liability", value: fmtCurrency(a.pointsLiability), color: "text-rose-500" },
           ].map((item, i) => (
             <div key={i} className="text-center">
-              <p className="text-[10px] text-muted-foreground mb-1">{item.label}</p>
-              <p className={`text-[16px] font-medium tabular-nums ${item.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{item.value}</p>
+              <p className="text-micro text-muted-foreground mb-1">{item.label}</p>
+              <p className={`text-title font-medium tabular-nums ${item.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{item.value}</p>
             </div>
           ))}
         </div>
@@ -378,12 +378,12 @@ export default function LoyaltyAnalyticsPage() {
           <div className="h-3 bg-muted/30 rounded-full overflow-hidden flex">
             <div className="h-full bg-primary" style={{ width: `${a.redemptionRate}%` }} title={`${ar ? "مستبدلة" : "Redeemed"} ${a.redemptionRate}%`} />
             <div className="h-full bg-muted-foreground/30" style={{ width: `${a.totalIssued > 0 ? Math.round((a.totalExpired / a.totalIssued) * 100) : 0}%` }} title={`${ar ? "منتهية" : "Expired"}`} />
-            <div className="h-full bg-amber-400" style={{ width: `${a.totalIssued > 0 ? Math.round((a.outstanding / a.totalIssued) * 100) : 0}%` }} title={`${ar ? "قائمة" : "Outstanding"}`} />
+            <div className="h-full bg-warning" style={{ width: `${a.totalIssued > 0 ? Math.round((a.outstanding / a.totalIssued) * 100) : 0}%` }} title={`${ar ? "قائمة" : "Outstanding"}`} />
           </div>
-          <div className="flex justify-between mt-1.5 text-[8.5px] text-muted-foreground">
+          <div className="flex justify-between mt-1.5 text-micro text-muted-foreground">
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-primary inline-block" />{ar ? "مستبدلة" : "Redeemed"}</span>
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-muted-foreground/30 inline-block" />{ar ? "منتهية" : "Expired"}</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-amber-400 inline-block" />{ar ? "قائمة" : "Outstanding"}</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-warning inline-block" />{ar ? "قائمة" : "Outstanding"}</span>
           </div>
         </div>
       </div>

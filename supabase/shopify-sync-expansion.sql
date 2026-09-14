@@ -1,7 +1,7 @@
 -- ═══════════════════════════════════════════════════════════
 -- SHOPIFY SYNC EXPANSION
 -- Per-entity sync directions (import / export / two-way / off),
--- generic THOTH ↔ Shopify entity mapping, and sync run history.
+-- generic Bumblebee ↔ Shopify entity mapping, and sync run history.
 --
 -- Run AFTER loyalty-foundation.sql (extends shopify_connections).
 -- ═══════════════════════════════════════════════════════════
@@ -17,7 +17,7 @@
 --     "loyalty":   "export" | "off",
 --     "analytics": "import" | "off"
 --   },
---   "conflict_policy": "latest" | "shopify" | "thoth",
+--   "conflict_policy": "latest" | "shopify" | "bumblebee",
 --   "auto_sync": true,
 --   "sync_interval_minutes": 30
 -- }
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS shopify_entity_map (
   -- Conflict resolution
   last_synced_at  TIMESTAMPTZ,
   last_direction  TEXT,                    -- 'import' | 'export'
-  thoth_hash      TEXT,                    -- content hash at last sync (change detection)
+  bumblebee_hash      TEXT,                    -- content hash at last sync (change detection)
   shopify_hash    TEXT,
 
   metadata        JSONB DEFAULT '{}',
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS shopify_entity_map (
   UNIQUE(workspace_id, entity_type, shopify_id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_shopify_entity_map_thoth
+CREATE INDEX IF NOT EXISTS idx_shopify_entity_map_bumblebee
   ON shopify_entity_map(workspace_id, entity_type, thoth_id);
 
 ALTER TABLE shopify_entity_map ENABLE ROW LEVEL SECURITY;

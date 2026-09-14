@@ -56,7 +56,7 @@ export default function AuthCallback() {
           // exchangeCodeForSession handles the PKCE code→session swap
           const { error: exchangeErr } = await sb!.auth.exchangeCodeForSession(code);
           if (exchangeErr) {
-            console.error("[THOTH] Code exchange error:", exchangeErr);
+            console.error("[Bumblebee] Code exchange error:", exchangeErr);
             setError(exchangeErr.message || "Failed to complete sign-in.");
             return;
           }
@@ -102,7 +102,7 @@ export default function AuthCallback() {
         // Still nothing after waiting
         setError("Could not complete sign-in. Please try again.");
       } catch (e) {
-        console.error("[THOTH] Auth callback error:", e);
+        console.error("[Bumblebee] Auth callback error:", e);
         setError(e instanceof Error ? e.message : "Something went wrong.");
       }
     }
@@ -130,7 +130,7 @@ export default function AuthCallback() {
     // Navigate after a tiny delay so React state settles.
     // If the user started from an invite link, return them to it so
     // they can accept — instead of dropping them into workspace setup.
-    const pendingInvite = localStorage.getItem("thoth_pending_invite");
+    const pendingInvite = localStorage.getItem("bumblebee_pending_invite");
     setTimeout(() => {
       navigate(pendingInvite ? `/invite/${pendingInvite}` : "/", { replace: true });
     }, 100);
@@ -144,13 +144,13 @@ export default function AuthCallback() {
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-rose-50 border border-rose-200 mb-5">
             <AlertCircle size={22} className="text-rose-500" />
           </div>
-          <h2 className="text-[17px] font-semibold text-foreground mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+          <h2 className="text-title font-semibold text-foreground mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
             Sign-in Issue
           </h2>
-          <p className="text-[13px] text-muted-foreground mb-2 leading-relaxed">
+          <p className="text-body text-muted-foreground mb-2 leading-relaxed">
             {error}
           </p>
-          <p className="text-[11px] text-muted-foreground/50 mb-6">
+          <p className="text-micro text-muted-foreground/50 mb-6">
             If this keeps happening, check your Supabase and Google OAuth settings.
           </p>
           <button
@@ -160,7 +160,7 @@ export default function AuthCallback() {
               if (sb) sb.auth.signOut();
               navigate("/", { replace: true });
             }}
-            className="inline-flex items-center gap-2 h-11 px-6 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 h-11 px-6 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity"
           >
             <ArrowLeft size={13} />
             Back to Login
@@ -177,11 +177,11 @@ export default function AuthCallback() {
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-foreground/5 border border-foreground/8 mb-5">
           <Loader2 size={20} className="animate-spin text-foreground/50" />
         </div>
-        <p className="text-[16px] font-semibold text-foreground mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+        <p className="text-title font-semibold text-foreground mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
           {status}
         </p>
-        <p className="text-[12px] text-muted-foreground/50 mt-1">
-          Connecting to THOTH
+        <p className="text-caption text-muted-foreground/50 mt-1">
+          Connecting to Bumblebee
         </p>
       </div>
     </div>

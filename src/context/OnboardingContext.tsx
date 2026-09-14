@@ -29,7 +29,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("thoth_onboarding");
+    const saved = localStorage.getItem("bumblebee_onboarding");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -41,13 +41,13 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
   const completeOnboarding = (data: Omit<OnboardingData, "completed">) => {
     const fullData: OnboardingData = { ...data, completed: true };
-    localStorage.setItem("thoth_onboarding", JSON.stringify(fullData));
+    localStorage.setItem("bumblebee_onboarding", JSON.stringify(fullData));
     setOnboardingData(fullData);
     if (fullData.language) setLang(fullData.language);
   };
 
   const clearOnboarding = () => {
-    localStorage.removeItem("thoth_onboarding");
+    localStorage.removeItem("bumblebee_onboarding");
     setOnboardingData(null);
   };
 

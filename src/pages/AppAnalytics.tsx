@@ -61,19 +61,19 @@ function MetricCard({ icon: Icon, label, value, sub, color, trend }: {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Icon size={14} strokeWidth={1.75} className={color} />
-          <p className="text-[10px] text-muted-foreground tracking-wide">{label}</p>
+          <p className="text-micro text-muted-foreground tracking-wide">{label}</p>
         </div>
         {trend !== undefined && (
-          <span className={`text-[9px] font-semibold flex items-center gap-0.5 px-1.5 py-0.5 rounded-full ${trend >= 0 ? "text-emerald-600 bg-emerald-500/10" : "text-rose-500 bg-rose-500/10"}`}>
+          <span className={`text-micro font-semibold flex items-center gap-0.5 px-1.5 py-0.5 rounded-full ${trend >= 0 ? "text-emerald-600 bg-emerald-500/10" : "text-rose-500 bg-rose-500/10"}`}>
             {trend >= 0 ? <ArrowUp size={8} /> : <ArrowDown size={8} />}
             {Math.abs(trend)}%
           </span>
         )}
       </div>
-      <p className="text-[22px] font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+      <p className="text-heading font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
         {value}
       </p>
-      {sub && <p className="text-[10px] text-muted-foreground mt-1">{sub}</p>}
+      {sub && <p className="text-micro text-muted-foreground mt-1">{sub}</p>}
     </div>
   );
 }
@@ -115,19 +115,19 @@ function DownloadsChart({ ar, period }: { ar: boolean; period: Period }) {
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <BarChart3 size={14} strokeWidth={1.75} className="text-primary" />
-          <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+          <BarChart3 size={14} strokeWidth={1.75} className="text-brand-ink" />
+          <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
             {ar ? "趋势 التنزيلات" : "Downloads Trend"}
           </h3>
         </div>
-        <span className="text-[10px] text-muted-foreground tabular-nums">
+        <span className="text-micro text-muted-foreground tabular-nums">
           {formatNumber(Math.round(APP_ANALYTICS.downloads * mult))} {ar ? "إجمالي" : "total"}
         </span>
       </div>
       <div className="flex items-end gap-[3px] h-[140px]">
         {bars.map((bar, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-popover border border-border text-[10px] font-medium text-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-md">
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-popover border border-border text-micro font-medium text-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-md">
               {formatNumber(bar.value)}
             </div>
             <motion.div
@@ -145,7 +145,7 @@ function DownloadsChart({ ar, period }: { ar: boolean; period: Period }) {
           if (period === "30d") return i % 5 === 0 || i === bars.length - 1;
           return true;
         }).map((bar, i) => (
-          <span key={i} className="text-[8px] text-muted-foreground/60 tabular-nums">{bar.label}</span>
+          <span key={i} className="text-micro text-muted-foreground/60 tabular-nums">{bar.label}</span>
         ))}
       </div>
     </div>
@@ -168,7 +168,7 @@ function DeviceDonut({ data, ar }: { data: { ios: number; android: number }; ar:
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-5">
         <MonitorSmartphone size={14} strokeWidth={1.75} className="text-blue-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "توزيع الأجهزة" : "Device Breakdown"}
         </h3>
       </div>
@@ -176,7 +176,7 @@ function DeviceDonut({ data, ar }: { data: { ios: number; android: number }; ar:
         <div className="relative w-[120px] h-[120px] shrink-0">
           <div className="w-full h-full rounded-full" style={{ background: gradient }} />
           <div className="absolute inset-[22px] rounded-full bg-background flex items-center justify-center">
-            <span className="text-[18px] font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <span className="text-title font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
               {formatNumber(total)}
             </span>
           </div>
@@ -185,20 +185,20 @@ function DeviceDonut({ data, ar }: { data: { ios: number; android: number }; ar:
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-blue-500 shrink-0" />
             <div className="flex-1 flex items-center justify-between">
-              <span className="text-[12px] text-foreground">🍎 iOS</span>
+              <span className="text-caption text-foreground">🍎 iOS</span>
               <div className="flex items-center gap-2">
-                <span className="text-[12px] font-medium text-foreground tabular-nums">{iosPct}%</span>
-                <span className="text-[10px] text-muted-foreground tabular-nums">{formatNumber(data.ios)}</span>
+                <span className="text-caption font-medium text-foreground tabular-nums">{iosPct}%</span>
+                <span className="text-micro text-muted-foreground tabular-nums">{formatNumber(data.ios)}</span>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-emerald-500 shrink-0" />
             <div className="flex-1 flex items-center justify-between">
-              <span className="text-[12px] text-foreground">🤖 Android</span>
+              <span className="text-caption text-foreground">🤖 Android</span>
               <div className="flex items-center gap-2">
-                <span className="text-[12px] font-medium text-foreground tabular-nums">{androidPct}%</span>
-                <span className="text-[10px] text-muted-foreground tabular-nums">{formatNumber(data.android)}</span>
+                <span className="text-caption font-medium text-foreground tabular-nums">{androidPct}%</span>
+                <span className="text-micro text-muted-foreground tabular-nums">{formatNumber(data.android)}</span>
               </div>
             </div>
           </div>
@@ -217,7 +217,7 @@ function GeoBreakdown({ data, ar }: { data: AppAnalyticsType["geo_breakdown"]; a
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-5">
         <Globe size={14} strokeWidth={1.75} className="text-emerald-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "التوزيع الجغرافي" : "Geographic Breakdown"}
         </h3>
       </div>
@@ -227,11 +227,11 @@ function GeoBreakdown({ data, ar }: { data: AppAnalyticsType["geo_breakdown"]; a
           const flag = countryFlags[item.country] || "🌍";
           return (
             <div key={i} className="flex items-center gap-3">
-              <span className="text-lg shrink-0">{flag}</span>
+              <span className="text-title shrink-0">{flag}</span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[12px] text-foreground">{ar ? item.country_ar : item.country}</span>
-                  <span className="text-[11px] font-medium text-foreground tabular-nums">{formatNumber(item.users)}</span>
+                  <span className="text-caption text-foreground">{ar ? item.country_ar : item.country}</span>
+                  <span className="text-micro font-medium text-foreground tabular-nums">{formatNumber(item.users)}</span>
                 </div>
                 <div className="h-1.5 bg-muted/50 rounded-full overflow-hidden">
                   <motion.div
@@ -258,8 +258,8 @@ function TopScreensTable({ data, ar }: { data: AppAnalyticsType["top_screens"]; 
   return (
     <div className="bg-background border border-border/40 rounded-xl overflow-hidden">
       <div className="px-5 py-4 border-b border-border/30 flex items-center gap-2">
-        <Eye size={14} strokeWidth={1.75} className="text-purple-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <Eye size={14} strokeWidth={1.75} className="text-chart-4" />
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "أكثر الشاشات مشاهدة" : "Top Screens"}
         </h3>
       </div>
@@ -267,16 +267,16 @@ function TopScreensTable({ data, ar }: { data: AppAnalyticsType["top_screens"]; 
         <table className="w-full">
           <thead>
             <tr className="border-b border-border/25">
-              <th className="text-left px-5 py-2.5 text-[10px] font-medium text-muted-foreground tracking-wide uppercase">
+              <th className="text-left px-5 py-2.5 text-micro font-medium text-muted-foreground tracking-wide uppercase">
                 {ar ? "الشاشة" : "Screen"}
               </th>
-              <th className="text-right px-5 py-2.5 text-[10px] font-medium text-muted-foreground tracking-wide uppercase">
+              <th className="text-right px-5 py-2.5 text-micro font-medium text-muted-foreground tracking-wide uppercase">
                 {ar ? "المشاهدات" : "Views"}
               </th>
-              <th className="text-right px-5 py-2.5 text-[10px] font-medium text-muted-foreground tracking-wide uppercase">
+              <th className="text-right px-5 py-2.5 text-micro font-medium text-muted-foreground tracking-wide uppercase">
                 {ar ? "متوسط الوقت" : "Avg Time"}
               </th>
-              <th className="text-right px-5 py-2.5 text-[10px] font-medium text-muted-foreground tracking-wide uppercase w-[140px]">
+              <th className="text-right px-5 py-2.5 text-micro font-medium text-muted-foreground tracking-wide uppercase w-[140px]">
                 {ar ? "النسبة" : "Share"}
               </th>
             </tr>
@@ -287,13 +287,13 @@ function TopScreensTable({ data, ar }: { data: AppAnalyticsType["top_screens"]; 
               return (
                 <tr key={i} className="hover:bg-muted/15 transition-colors">
                   <td className="px-5 py-3">
-                    <span className="text-[12px] font-medium text-foreground">{ar ? screen.screen_ar : screen.screen}</span>
+                    <span className="text-caption font-medium text-foreground">{ar ? screen.screen_ar : screen.screen}</span>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <span className="text-[12px] text-foreground tabular-nums">{formatNumber(screen.views)}</span>
+                    <span className="text-caption text-foreground tabular-nums">{formatNumber(screen.views)}</span>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <span className="text-[12px] text-muted-foreground tabular-nums">{formatDuration(screen.avg_time)}</span>
+                    <span className="text-caption text-muted-foreground tabular-nums">{formatDuration(screen.avg_time)}</span>
                   </td>
                   <td className="px-5 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">
@@ -305,7 +305,7 @@ function TopScreensTable({ data, ar }: { data: AppAnalyticsType["top_screens"]; 
                           className="h-full rounded-full bg-primary/60"
                         />
                       </div>
-                      <span className="text-[10px] text-muted-foreground tabular-nums w-8 text-right">{sharePct}%</span>
+                      <span className="text-micro text-muted-foreground tabular-nums w-8 text-right">{sharePct}%</span>
                     </div>
                   </td>
                 </tr>
@@ -329,33 +329,33 @@ function RevenueCard({ data, ar, period }: { data: AppAnalyticsType; ar: boolean
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-5">
-        <DollarSign size={14} strokeWidth={1.75} className="text-amber-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <DollarSign size={14} strokeWidth={1.75} className="text-warning" />
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "إيرادات التطبيق" : "Revenue Metrics"}
         </h3>
       </div>
       <div className="space-y-4">
         <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-          <span className="text-[12px] text-muted-foreground">{ar ? "إجمالي الإيرادات" : "Total Revenue"}</span>
-          <span className="text-[16px] font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
-            {formatCurrency(revenue)} <span className="text-[11px] text-muted-foreground">EGP</span>
+          <span className="text-caption text-muted-foreground">{ar ? "إجمالي الإيرادات" : "Total Revenue"}</span>
+          <span className="text-title font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+            {formatCurrency(revenue)} <span className="text-micro text-muted-foreground">EGP</span>
           </span>
         </div>
         <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-          <span className="text-[12px] text-muted-foreground">{ar ? "معدل التحويل" : "Conversion Rate"}</span>
-          <span className="text-[16px] font-medium text-emerald-500 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <span className="text-caption text-muted-foreground">{ar ? "معدل التحويل" : "Conversion Rate"}</span>
+          <span className="text-title font-medium text-emerald-500 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
             {conversionRate}%
           </span>
         </div>
         <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-          <span className="text-[12px] text-muted-foreground">{ar ? "معدل فتح الإشعارات" : "Push Open Rate"}</span>
-          <span className="text-[16px] font-medium text-blue-500 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <span className="text-caption text-muted-foreground">{ar ? "معدل فتح الإشعارات" : "Push Open Rate"}</span>
+          <span className="text-title font-medium text-blue-500 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
             {pushOpenRate}%
           </span>
         </div>
         <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-          <span className="text-[12px] text-muted-foreground">{ar ? "إجمالي المشاهدات" : "Screen Views"}</span>
-          <span className="text-[16px] font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <span className="text-caption text-muted-foreground">{ar ? "إجمالي المشاهدات" : "Screen Views"}</span>
+          <span className="text-title font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
             {formatNumber(Math.round(data.screen_views * mult))}
           </span>
         </div>
@@ -395,17 +395,17 @@ export default function AppAnalytics() {
       {/* ─── Header ──────────────────────────────────────── */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+          <h1 className="text-heading font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
             {ar ? "تحليلات التطبيق" : "App Analytics"}
           </h1>
-          <p className="text-[12px] text-muted-foreground mt-0.5">
+          <p className="text-caption text-muted-foreground mt-0.5">
             {ar ? "نظرة عامة على أداء التطبيق المحمول" : "Mobile app performance overview"}
           </p>
         </div>
         <div className="relative">
           <button
             onClick={() => setPeriodOpen(!periodOpen)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-background border border-border/40 text-[12px] font-medium text-foreground hover:border-border/60 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-background border border-border/40 text-caption font-medium text-foreground hover:border-border/60 transition-colors"
           >
             {periodLabels[period][ar ? "ar" : "en"]}
             <ChevronDown size={13} className={`transition-transform ${periodOpen ? "rotate-180" : ""}`} />
@@ -420,8 +420,8 @@ export default function AppAnalytics() {
                 <button
                   key={p}
                   onClick={() => { setPeriod(p); setPeriodOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-[12px] transition-colors ${
-                    period === p ? "bg-primary/10 text-primary font-medium" : "text-foreground hover:bg-muted/30"
+                  className={`w-full text-left px-4 py-2.5 text-caption transition-colors ${
+                    period === p ? "bg-primary/10 text-brand-ink font-medium" : "text-foreground hover:bg-muted/30"
                   }`}
                 >
                   {periodLabels[p][ar ? "ar" : "en"]}
@@ -438,7 +438,7 @@ export default function AppAnalytics() {
           icon={Download}
           label={ar ? "إجمالي التنزيلات" : "Total Downloads"}
           value={formatNumber(stats.downloads)}
-          color="text-primary"
+          color="text-brand-ink"
           trend={12}
         />
         <MetricCard
@@ -459,7 +459,7 @@ export default function AppAnalytics() {
           icon={Clock}
           label={ar ? "متوسط مدة الجلسة" : "Avg Session Duration"}
           value={formatDuration(stats.avgSessionDuration)}
-          color="text-amber-500"
+          color="text-warning"
           trend={-3}
         />
         <MetricCard
@@ -467,7 +467,7 @@ export default function AppAnalytics() {
           label={ar ? "الإيرادات" : "Revenue"}
           value={`${formatCurrency(stats.revenue)}`}
           sub="EGP"
-          color="text-purple-500"
+          color="text-chart-4"
           trend={22}
         />
         <MetricCard

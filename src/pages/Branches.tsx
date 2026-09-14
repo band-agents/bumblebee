@@ -13,8 +13,8 @@ type Branch = Database["public"]["Tables"]["branches"]["Row"];
 type Register = Database["public"]["Tables"]["pos_registers"]["Row"];
 
 const BRANCH_TYPES = [
-  { value: "factory", en: "Factory", ar: "مصنع", color: "bg-amber-100 text-amber-700" },
-  { value: "showroom", en: "Showroom", ar: "معرض", color: "bg-violet-100 text-violet-600" },
+  { value: "factory", en: "Factory", ar: "مصنع", color: "bg-warning/15 text-warning" },
+  { value: "showroom", en: "Showroom", ar: "معرض", color: "bg-chart-4/15 text-chart-4" },
   { value: "warehouse", en: "Warehouse", ar: "مخزن", color: "bg-blue-100 text-blue-600" },
   { value: "retail", en: "Retail", ar: "تجزئة", color: "bg-emerald-100 text-emerald-700" },
   { value: "office", en: "Office", ar: "مكتب", color: "bg-slate-100 text-slate-600" },
@@ -26,10 +26,10 @@ const REGISTER_STATUSES = [
   { value: "closed", en: "Closed", ar: "مغلق", pill: "bg-rose-100 text-rose-600" },
 ];
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
 
 // ─── Branch Modal ────────────────────────────────────────
 
@@ -85,7 +85,7 @@ function BranchModal({ onClose, onSaved, ar, initial }: {
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[500px] max-h-[85vh] overflow-auto">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40 sticky top-0 bg-background z-10">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {initial ? (ar ? "تعديل الفرع" : "Edit Branch") : (ar ? "إضافة فرع" : "Add Branch")}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
@@ -132,11 +132,11 @@ function BranchModal({ onClose, onSaved, ar, initial }: {
               <input type="checkbox" checked={form.active} onChange={(e) => setForm((f) => ({ ...f, active: e.target.checked }))} className="sr-only peer" />
               <div className="w-9 h-5 bg-muted rounded-full peer peer-checked:bg-primary/80 transition-colors after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
             </label>
-            <span className="text-[12px] text-foreground">{ar ? "نشط" : "Active"}</span>
+            <span className="text-caption text-foreground">{ar ? "نشط" : "Active"}</span>
           </div>
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1">{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1">{error}</p>}
           <div className="flex gap-3 pt-1">
-            <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+            <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
             <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
               {loading && <Loader2 size={12} className="animate-spin" />} {initial ? (ar ? "احفظ" : "Save") : (ar ? "إضافة" : "Add")}
             </button>
@@ -197,7 +197,7 @@ function RegisterModal({ onClose, onSaved, ar, branchId, initial }: {
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[420px]">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {initial ? (ar ? "تعديل الكاشير" : "Edit Register") : (ar ? "إضافة كاشير" : "Add Register")}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
@@ -226,7 +226,7 @@ function RegisterModal({ onClose, onSaved, ar, branchId, initial }: {
             </div>
           </div>
           <div className="flex gap-3 pt-1">
-            <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+            <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
             <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
               {loading && <Loader2 size={12} className="animate-spin" />} {initial ? (ar ? "احفظ" : "Save") : (ar ? "إضافة" : "Add")}
             </button>
@@ -293,7 +293,7 @@ export default function BranchesPage() {
       <div className="h-full flex items-center justify-center bg-background">
         <div className="text-center space-y-2">
           <Building2 size={24} className="mx-auto text-muted-foreground/40 animate-pulse" />
-          <p className="text-[13px] text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</p>
+          <p className="text-body text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</p>
         </div>
       </div>
     );
@@ -306,12 +306,12 @@ export default function BranchesPage() {
         {/* Header */}
         <div className="shrink-0 px-4 py-3 border-b border-border/40">
           <div className="flex items-center justify-between mb-3">
-            <h1 className="text-[15px] font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h1 className="text-body-lg font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
               {lang === "ar" ? "الفروع" : "Branches"}
             </h1>
             <button
               onClick={() => { setEditBranch(null); setShowBranchModal(true); }}
-              className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors"
+              className="w-8 h-8 rounded-lg bg-primary/10 text-brand-ink flex items-center justify-center hover:bg-primary/20 transition-colors"
             >
               <Plus size={15} />
             </button>
@@ -323,7 +323,7 @@ export default function BranchesPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={lang === "ar" ? "بحث عن فرع..." : "Search branches..."}
-              className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-background text-[13px] placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+              className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-background text-body placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-brand-ink/30"
             />
           </div>
         </div>
@@ -346,13 +346,13 @@ export default function BranchesPage() {
                       <Building2 size={14} />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[13px] font-medium text-foreground truncate">{branch.name}</p>
-                      {branch.name_ar && <p className="text-[11px] text-muted-foreground truncate" dir="rtl">{branch.name_ar}</p>}
+                      <p className="text-body font-medium text-foreground truncate">{branch.name}</p>
+                      {branch.name_ar && <p className="text-micro text-muted-foreground truncate" dir="rtl">{branch.name_ar}</p>}
                       <div className="flex items-center gap-2 mt-1">
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${bt.color}`}>{lang === "ar" ? bt.ar : bt.en}</span>
-                        <span className="text-[10px] text-muted-foreground/60">{regCount} {lang === "ar" ? "كاشير" : "registers"}</span>
+                        <span className={`text-micro px-1.5 py-0.5 rounded-full ${bt.color}`}>{lang === "ar" ? bt.ar : bt.en}</span>
+                        <span className="text-micro text-muted-foreground/60">{regCount} {lang === "ar" ? "كاشير" : "registers"}</span>
                         {!branch.is_active && (
-                          <span className="text-[10px] text-rose-500">{lang === "ar" ? "غير نشط" : "Inactive"}</span>
+                          <span className="text-micro text-rose-500">{lang === "ar" ? "غير نشط" : "Inactive"}</span>
                         )}
                       </div>
                     </div>
@@ -365,7 +365,7 @@ export default function BranchesPage() {
           {filteredBranches.length === 0 && (
             <div className="flex flex-col items-center justify-center h-32 text-center">
               <Building2 size={20} className="text-muted-foreground/30 mb-2" />
-              <p className="text-[12px] text-muted-foreground">{lang === "ar" ? "لا توجد فروع" : "No branches found"}</p>
+              <p className="text-caption text-muted-foreground">{lang === "ar" ? "لا توجد فروع" : "No branches found"}</p>
             </div>
           )}
         </div>
@@ -387,14 +387,14 @@ export default function BranchesPage() {
                   );
                 })()}
                 <div>
-                  <h2 className="text-[18px] font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <h2 className="text-title font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {selectedBranch.name}
                   </h2>
-                  {selectedBranch.name_ar && <p className="text-[13px] text-muted-foreground" dir="rtl">{selectedBranch.name_ar}</p>}
+                  {selectedBranch.name_ar && <p className="text-body text-muted-foreground" dir="rtl">{selectedBranch.name_ar}</p>}
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[11px] font-mono text-muted-foreground/60">{selectedBranch.branch_code}</span>
-                    <span className="text-[11px] text-muted-foreground/40">·</span>
-                    <span className="text-[11px] text-muted-foreground/60">{selectedBranch.branch_type}</span>
+                    <span className="text-micro font-mono text-muted-foreground/60">{selectedBranch.branch_code}</span>
+                    <span className="text-micro text-muted-foreground/40">·</span>
+                    <span className="text-micro text-muted-foreground/60">{selectedBranch.branch_type}</span>
                   </div>
                 </div>
               </div>
@@ -424,23 +424,23 @@ export default function BranchesPage() {
               <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
                 <div className="flex items-center gap-2 mb-1.5">
                   <MapPin size={12} className="text-muted-foreground/50" />
-                  <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider">{lang === "ar" ? "العنوان" : "Address"}</span>
+                  <span className="text-micro text-muted-foreground/60 uppercase tracking-wider">{lang === "ar" ? "العنوان" : "Address"}</span>
                 </div>
-                <p className="text-[12px] text-foreground">{selectedBranch.address || "—"}</p>
+                <p className="text-caption text-foreground">{selectedBranch.address || "—"}</p>
               </div>
               <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
                 <div className="flex items-center gap-2 mb-1.5">
                   <Phone size={12} className="text-muted-foreground/50" />
-                  <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider">{lang === "ar" ? "الهاتف" : "Phone"}</span>
+                  <span className="text-micro text-muted-foreground/60 uppercase tracking-wider">{lang === "ar" ? "الهاتف" : "Phone"}</span>
                 </div>
-                <p className="text-[12px] text-foreground">{selectedBranch.phone || "—"}</p>
+                <p className="text-caption text-foreground">{selectedBranch.phone || "—"}</p>
               </div>
               <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
                 <div className="flex items-center gap-2 mb-1.5">
                   <User size={12} className="text-muted-foreground/50" />
-                  <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider">{lang === "ar" ? "المدير" : "Manager"}</span>
+                  <span className="text-micro text-muted-foreground/60 uppercase tracking-wider">{lang === "ar" ? "المدير" : "Manager"}</span>
                 </div>
-                <p className="text-[12px] text-foreground">{selectedBranch.manager_name || "—"}</p>
+                <p className="text-caption text-foreground">{selectedBranch.manager_name || "—"}</p>
               </div>
             </div>
 
@@ -449,14 +449,14 @@ export default function BranchesPage() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Store size={14} className="text-muted-foreground/50" />
-                  <h3 className="text-[14px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <h3 className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {lang === "ar" ? "أجهزة الكاشير" : "POS Registers"}
                   </h3>
-                  <span className="text-[11px] text-muted-foreground/60">({branchRegisters.length})</span>
+                  <span className="text-micro text-muted-foreground/60">({branchRegisters.length})</span>
                 </div>
                 <button
                   onClick={() => { setEditRegister(null); setShowRegisterModal(true); }}
-                  className="h-7 px-3 rounded-lg bg-primary/10 text-primary text-[11px] font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors"
+                  className="h-7 px-3 rounded-lg bg-primary/10 text-brand-ink text-micro font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors"
                 >
                   <Plus size={12} />
                   {lang === "ar" ? "إضافة" : "Add"}
@@ -474,10 +474,10 @@ export default function BranchesPage() {
                             <Store size={14} />
                           </div>
                           <div>
-                            <p className="text-[13px] font-medium text-foreground">{reg.name}</p>
+                            <p className="text-body font-medium text-foreground">{reg.name}</p>
                             <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-[10px] font-mono text-muted-foreground/60">{reg.register_code || "—"}</span>
-                              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${rs.pill}`}>
+                              <span className="text-micro font-mono text-muted-foreground/60">{reg.register_code || "—"}</span>
+                              <span className={`text-micro px-1.5 py-0.5 rounded-full ${rs.pill}`}>
                                 {lang === "ar" ? rs.ar : rs.en}
                               </span>
                             </div>
@@ -485,14 +485,14 @@ export default function BranchesPage() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <p className="text-[10px] text-muted-foreground/60">{lang === "ar" ? "الرصيد" : "Float"}</p>
-                            <p className="text-[12px] font-medium text-foreground tabular-nums">
+                            <p className="text-micro text-muted-foreground/60">{lang === "ar" ? "الرصيد" : "Float"}</p>
+                            <p className="text-caption font-medium text-foreground tabular-nums">
                               {new Intl.NumberFormat("en-EG", { style: "currency", currency: "EGP", minimumFractionDigits: 0 }).format(reg.float_amount)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-[10px] text-muted-foreground/60">{lang === "ar" ? "النقدي" : "Cash"}</p>
-                            <p className="text-[12px] font-medium text-foreground tabular-nums">
+                            <p className="text-micro text-muted-foreground/60">{lang === "ar" ? "النقدي" : "Cash"}</p>
+                            <p className="text-caption font-medium text-foreground tabular-nums">
                               {new Intl.NumberFormat("en-EG", { style: "currency", currency: "EGP", minimumFractionDigits: 0 }).format(reg.current_cash)}
                             </p>
                           </div>
@@ -510,7 +510,7 @@ export default function BranchesPage() {
               ) : (
                 <div className="bg-background border border-dashed border-border/60 rounded-xl py-8 text-center">
                   <Store size={20} className="mx-auto text-muted-foreground/30 mb-2" />
-                  <p className="text-[12px] text-muted-foreground">{lang === "ar" ? "لا توجد أجهزة كاشير" : "No registers yet"}</p>
+                  <p className="text-caption text-muted-foreground">{lang === "ar" ? "لا توجد أجهزة كاشير" : "No registers yet"}</p>
                 </div>
               )}
             </div>
@@ -520,10 +520,10 @@ export default function BranchesPage() {
             <div className="text-center space-y-3">
               <Building2 size={32} className="mx-auto text-muted-foreground/20" />
               <div>
-                <p className="text-[14px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <p className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {lang === "ar" ? "اختر فرعاً" : "Select a branch"}
                 </p>
-                <p className="text-[12px] text-muted-foreground mt-1">
+                <p className="text-caption text-muted-foreground mt-1">
                   {lang === "ar" ? "من القائمة على اليسار" : "from the list on the left"}
                 </p>
               </div>

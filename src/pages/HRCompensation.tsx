@@ -28,16 +28,16 @@ const cardV: Variants = {
 
 const PAYSLIP_STATUS: Record<string, { en: string; ar: string; pill: string }> = {
   draft: { en: "Draft", ar: "مسودة", pill: "bg-zinc-100 text-zinc-500" },
-  pending_approval: { en: "Pending", ar: "معلق", pill: "bg-amber-100 text-amber-700" },
+  pending_approval: { en: "Pending", ar: "معلق", pill: "bg-warning/15 text-warning" },
   approved: { en: "Approved", ar: "موافق", pill: "bg-blue-100 text-blue-600" },
   paid: { en: "Paid", ar: "مدفوع", pill: "bg-emerald-100 text-emerald-700" },
 };
 
 const BENEFIT_TYPE_META: Record<string, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   insurance: { en: "Insurance", ar: "تأمين", icon: Shield, color: "text-blue-600", bg: "bg-blue-50" },
-  retirement: { en: "Retirement", ar: "تقاعد", icon: Building2, color: "text-violet-600", bg: "bg-violet-50" },
+  retirement: { en: "Retirement", ar: "تقاعد", icon: Building2, color: "text-chart-4", bg: "bg-chart-4/10" },
   leave: { en: "Leave", ar: "إجازة", icon: Leaf, color: "text-emerald-600", bg: "bg-emerald-50" },
-  perk: { en: "Perk", ar: "مزايا", icon: Gift, color: "text-amber-600", bg: "bg-amber-50" },
+  perk: { en: "Perk", ar: "مزايا", icon: Gift, color: "text-warning", bg: "bg-warning/10" },
   wellness: { en: "Wellness", ar: "صحة", icon: Heart, color: "text-rose-600", bg: "bg-rose-50" },
   education: { en: "Education", ar: "تعليم", icon: GraduationCap, color: "text-cyan-600", bg: "bg-cyan-50" },
 };
@@ -45,7 +45,7 @@ const BENEFIT_TYPE_META: Record<string, { en: string; ar: string; icon: React.El
 const BENEFIT_STATUS: Record<string, { en: string; ar: string; pill: string }> = {
   active: { en: "Active", ar: "نشط", pill: "bg-emerald-100 text-emerald-700" },
   inactive: { en: "Inactive", ar: "غير نشط", pill: "bg-zinc-100 text-zinc-500" },
-  pending_renewal: { en: "Renewal", ar: "تجديد", pill: "bg-amber-100 text-amber-700" },
+  pending_renewal: { en: "Renewal", ar: "تجديد", pill: "bg-warning/15 text-warning" },
 };
 
 export default function HRCompensation() {
@@ -83,14 +83,14 @@ export default function HRCompensation() {
       {/* Header */}
       <motion.div variants={cardV} custom={0} initial="hidden" animate="visible" className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "التعويضات والمزايا" : "Compensation & Benefits"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-body text-muted-foreground mt-1">
             {ar ? "هيكل الرواتب، المزايا، وكراسات الرواتب" : "Salary structures, benefits, and payslips"}
           </p>
         </div>
-        <button className="h-9 px-4 rounded-xl border border-border/60 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
+        <button className="h-9 px-4 rounded-xl border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
           <Download size={12} /> {ar ? "تصدير" : "Export"}
         </button>
       </motion.div>
@@ -99,17 +99,17 @@ export default function HRCompensation() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: ar ? "إجمالي الرواتب الشهرية" : "Total Payroll Monthly", value: formatEGP(kpis.totalPayroll), icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50/80" },
-          { label: ar ? "متوسط الراتب الأساسي" : "Avg Basic Salary", value: formatEGP(kpis.avgSalary), icon: TrendingUp, color: "text-primary", bg: "bg-primary/5" },
+          { label: ar ? "متوسط الراتب الأساسي" : "Avg Basic Salary", value: formatEGP(kpis.avgSalary), icon: TrendingUp, color: "text-brand-ink", bg: "bg-primary/5" },
           { label: ar ? "تكلفة المزايا" : "Benefits Cost (Company)", value: formatEGP(kpis.benefitsCost), icon: Heart, color: "text-rose-600", bg: "bg-rose-50/80" },
-          { label: ar ? "كراسات معلقة" : "Pending Payslips", value: kpis.pendingCount, icon: Clock, color: "text-amber-600", bg: "bg-amber-50/80" },
+          { label: ar ? "كراسات معلقة" : "Pending Payslips", value: kpis.pendingCount, icon: Clock, color: "text-warning", bg: "bg-warning/10" },
         ].map((kpi, i) => (
           <motion.div key={i} variants={cardV} custom={i + 1} initial="hidden" animate="visible"
             className={`${kpi.bg} rounded-xl p-4 border border-border/30`}>
             <div className="flex items-center justify-between mb-2">
               <kpi.icon size={15} className={kpi.color} />
             </div>
-            <p className="text-[20px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{kpi.label}</p>
+            <p className="text-heading font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{kpi.label}</p>
           </motion.div>
         ))}
       </div>
@@ -117,8 +117,8 @@ export default function HRCompensation() {
       {/* Salary Grades */}
       <motion.div variants={cardV} custom={5} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
         <div className="flex items-center gap-2 mb-4">
-          <CreditCard size={14} className="text-primary" />
-          <h3 className="text-[13px] font-semibold">{ar ? "المستويات الوظيفية" : "Salary Grades"}</h3>
+          <CreditCard size={14} className="text-brand-ink" />
+          <h3 className="text-body font-semibold">{ar ? "المستويات الوظيفية" : "Salary Grades"}</h3>
         </div>
         <div className="space-y-3">
           {HR_SALARY_GRADES.map((grade, i) => {
@@ -128,10 +128,10 @@ export default function HRCompensation() {
             return (
               <div key={grade.id} className="group">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] font-medium">{ar ? grade.grade_ar : grade.grade}</span>
-                  <div className="flex items-center gap-3 text-[9px] text-muted-foreground">
+                  <span className="text-micro font-medium">{ar ? grade.grade_ar : grade.grade}</span>
+                  <div className="flex items-center gap-3 text-micro text-muted-foreground">
                     <span>{formatEGP(grade.min_salary)}</span>
-                    <span className="text-primary font-medium">{formatEGP(grade.mid_point)}</span>
+                    <span className="text-brand-ink font-medium">{formatEGP(grade.mid_point)}</span>
                     <span>{formatEGP(grade.max_salary)}</span>
                   </div>
                 </div>
@@ -147,7 +147,7 @@ export default function HRCompensation() {
                 </div>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                   {grade.allowances.map((a, j) => (
-                    <span key={j} className="text-[8px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
+                    <span key={j} className="text-micro px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
                       {ar ? a.name_ar : a.name} {formatEGP(a.amount)}
                     </span>
                   ))}
@@ -162,8 +162,8 @@ export default function HRCompensation() {
       <motion.div variants={cardV} custom={6} initial="hidden" animate="visible">
         <div className="flex items-center gap-2 mb-3">
           <Heart size={14} className="text-rose-500" />
-          <h3 className="text-[13px] font-semibold">{ar ? "كتالوج المزايا" : "Benefits Catalog"}</h3>
-          <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">{HR_BENEFITS.length}</span>
+          <h3 className="text-body font-semibold">{ar ? "كتالوج المزايا" : "Benefits Catalog"}</h3>
+          <span className="text-micro px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">{HR_BENEFITS.length}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {HR_BENEFITS.map((benefit, i) => {
@@ -177,28 +177,28 @@ export default function HRCompensation() {
                   <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center`}>
                     <Icon size={14} className={meta.color} />
                   </div>
-                  <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                  <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
                 </div>
-                <h4 className="text-[12px] font-semibold mb-1">{ar ? benefit.name_ar : benefit.name}</h4>
-                <p className="text-[9px] text-muted-foreground mb-3 line-clamp-2">{ar ? benefit.description_ar : benefit.description}</p>
+                <h4 className="text-caption font-semibold mb-1">{ar ? benefit.name_ar : benefit.name}</h4>
+                <p className="text-micro text-muted-foreground mb-3 line-clamp-2">{ar ? benefit.description_ar : benefit.description}</p>
                 <div className="flex items-center gap-1.5 mb-3">
-                  <span className={`text-[8px] px-1.5 py-0.5 rounded-full ${meta.bg} ${meta.color} font-medium`}>{ar ? meta.ar : meta.en}</span>
-                  <span className="text-[8px] text-muted-foreground">{benefit.provider}</span>
+                  <span className={`text-micro px-1.5 py-0.5 rounded-full ${meta.bg} ${meta.color} font-medium`}>{ar ? meta.ar : meta.en}</span>
+                  <span className="text-micro text-muted-foreground">{benefit.provider}</span>
                 </div>
                 {benefit.cost_per_employee > 0 && (
                   <div className="space-y-1.5 pt-2.5 border-t border-border/30">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-muted-foreground">{ar ? "الشركة" : "Company"}</span>
-                      <span className="text-[10px] font-medium text-emerald-600">{formatEGP(benefit.company_contribution)}</span>
+                      <span className="text-micro text-muted-foreground">{ar ? "الشركة" : "Company"}</span>
+                      <span className="text-micro font-medium text-emerald-600">{formatEGP(benefit.company_contribution)}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-muted-foreground">{ar ? "الموظف" : "Employee"}</span>
-                      <span className="text-[10px] font-medium text-rose-500">{formatEGP(benefit.employee_contribution)}</span>
+                      <span className="text-micro text-muted-foreground">{ar ? "الموظف" : "Employee"}</span>
+                      <span className="text-micro font-medium text-rose-500">{formatEGP(benefit.employee_contribution)}</span>
                     </div>
                   </div>
                 )}
                 <div className="mt-3 pt-2 border-t border-border/30">
-                  <p className="text-[8px] text-muted-foreground flex items-center gap-1">
+                  <p className="text-micro text-muted-foreground flex items-center gap-1">
                     <BadgeCheck size={9} className="shrink-0" />
                     {ar ? benefit.eligibility_ar : benefit.eligibility}
                   </p>
@@ -214,19 +214,19 @@ export default function HRCompensation() {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <FileText size={14} className="text-blue-500" />
-            <h3 className="text-[13px] font-semibold">{ar ? "كراسات الرواتب" : "Payslips"}</h3>
+            <h3 className="text-body font-semibold">{ar ? "كراسات الرواتب" : "Payslips"}</h3>
           </div>
         </div>
 
         {/* Filters */}
         <div className="flex items-center gap-3 mb-3 flex-wrap">
           <select value={filterPeriod} onChange={e => setFilterPeriod(e.target.value)}
-            className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] cursor-pointer">
+            className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption cursor-pointer">
             <option value="all">{ar ? "كل الفترات" : "All Periods"}</option>
             {periods.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
           <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
-            className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] cursor-pointer">
+            className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption cursor-pointer">
             <option value="all">{ar ? "كل الحالات" : "All Status"}</option>
             {Object.entries(PAYSLIP_STATUS).map(([k, v]) => <option key={k} value={k}>{ar ? v.ar : v.en}</option>)}
           </select>
@@ -237,13 +237,13 @@ export default function HRCompensation() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border/30">
-                  <th className="text-left px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "الموظف" : "Employee"}</th>
-                  <th className="text-left px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "الفترة" : "Period"}</th>
-                  <th className="text-right px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "الأساسي" : "Basic"}</th>
-                  <th className="text-right px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "البدلات" : "Allow."}</th>
-                  <th className="text-right px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "الخصومات" : "Ded."}</th>
-                  <th className="text-right px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "الصافي" : "Net"}</th>
-                  <th className="text-center px-4 py-3 text-[11px] font-semibold text-muted-foreground">{ar ? "الحالة" : "Status"}</th>
+                  <th className="text-left px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "الموظف" : "Employee"}</th>
+                  <th className="text-left px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "الفترة" : "Period"}</th>
+                  <th className="text-right px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "الأساسي" : "Basic"}</th>
+                  <th className="text-right px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "البدلات" : "Allow."}</th>
+                  <th className="text-right px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "الخصومات" : "Ded."}</th>
+                  <th className="text-right px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "الصافي" : "Net"}</th>
+                  <th className="text-center px-4 py-3 text-micro font-semibold text-muted-foreground">{ar ? "الحالة" : "Status"}</th>
                   <th className="w-10"></th>
                 </tr>
               </thead>
@@ -256,15 +256,15 @@ export default function HRCompensation() {
                     <tr key={ps.id} className="border-b border-border/20 hover:bg-muted/20 cursor-pointer transition-colors"
                       onClick={() => setSelectedPayslip(ps)}>
                       <td className="px-4 py-3">
-                        <p className="text-[12px] font-medium">{ar ? ps.employee_name_ar : ps.employee_name}</p>
+                        <p className="text-caption font-medium">{ar ? ps.employee_name_ar : ps.employee_name}</p>
                       </td>
-                      <td className="px-4 py-3 text-[12px] text-muted-foreground">{ps.period}</td>
-                      <td className="px-4 py-3 text-[12px] text-right font-medium">{formatEGP(ps.basic_salary)}</td>
-                      <td className="px-4 py-3 text-[12px] text-right text-emerald-600">+{formatEGP(allowances)}</td>
-                      <td className="px-4 py-3 text-[12px] text-right text-rose-500">-{formatEGP(deductions)}</td>
-                      <td className="px-4 py-3 text-[13px] text-right font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(ps.net_salary)}</td>
+                      <td className="px-4 py-3 text-caption text-muted-foreground">{ps.period}</td>
+                      <td className="px-4 py-3 text-caption text-right font-medium">{formatEGP(ps.basic_salary)}</td>
+                      <td className="px-4 py-3 text-caption text-right text-emerald-600">+{formatEGP(allowances)}</td>
+                      <td className="px-4 py-3 text-caption text-right text-rose-500">-{formatEGP(deductions)}</td>
+                      <td className="px-4 py-3 text-body text-right font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(ps.net_salary)}</td>
                       <td className="px-4 py-3 text-center">
-                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
                       </td>
                       <td className="px-4 py-3">
                         <Eye size={14} className="text-muted-foreground/30" />
@@ -278,7 +278,7 @@ export default function HRCompensation() {
           {filteredPayslips.length === 0 && (
             <div className="text-center py-12">
               <AlertCircle size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-              <p className="text-[12px] text-muted-foreground">{ar ? "لا توجد سجلات" : "No payslips found"}</p>
+              <p className="text-caption text-muted-foreground">{ar ? "لا توجد سجلات" : "No payslips found"}</p>
             </div>
           )}
         </div>
@@ -290,7 +290,7 @@ export default function HRCompensation() {
           <div className="absolute inset-0 bg-black/30" onClick={() => setSelectedPayslip(null)} />
           <div className="relative w-full max-w-md bg-background rounded-2xl border border-border shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
-              <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "كشف راتب" : "Payslip"} — {selectedPayslip.period}
               </h3>
               <button onClick={() => setSelectedPayslip(null)} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted">
@@ -299,18 +299,18 @@ export default function HRCompensation() {
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-center gap-3 pb-4 border-b border-border/30">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-[12px] font-bold text-primary">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-caption font-bold text-brand-ink">
                   {(ar ? selectedPayslip.employee_name_ar : selectedPayslip.employee_name).split(" ").map(w => w[0]).join("")}
                 </div>
                 <div>
-                  <p className="text-[13px] font-medium">{ar ? selectedPayslip.employee_name_ar : selectedPayslip.employee_name}</p>
-                  <p className="text-[10px] text-muted-foreground">{ar ? "الرقم الوظافي" : "ID"}: {selectedPayslip.employee_id}</p>
+                  <p className="text-body font-medium">{ar ? selectedPayslip.employee_name_ar : selectedPayslip.employee_name}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "الرقم الوظافي" : "ID"}: {selectedPayslip.employee_id}</p>
                 </div>
               </div>
 
               {/* Earnings */}
               <div>
-                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">{ar ? "الإيرادات" : "Earnings"}</p>
+                <p className="text-micro font-semibold text-muted-foreground uppercase tracking-wider mb-2">{ar ? "الإيرادات" : "Earnings"}</p>
                 <div className="space-y-1.5">
                   {[
                     { label: ar ? "المرتب الأساسي" : "Basic Salary", value: selectedPayslip.basic_salary, color: "" },
@@ -322,8 +322,8 @@ export default function HRCompensation() {
                     { label: ar ? "العمولة" : "Commission", value: selectedPayslip.commission, color: "text-emerald-600" },
                   ].filter(r => r.value > 0).map((row, i) => (
                     <div key={i} className="flex items-center justify-between py-1">
-                      <span className="text-[11px] text-muted-foreground">{row.label}</span>
-                      <span className={`text-[12px] font-medium ${row.color}`}>{formatEGP(row.value)}</span>
+                      <span className="text-micro text-muted-foreground">{row.label}</span>
+                      <span className={`text-caption font-medium ${row.color}`}>{formatEGP(row.value)}</span>
                     </div>
                   ))}
                 </div>
@@ -331,7 +331,7 @@ export default function HRCompensation() {
 
               {/* Deductions */}
               <div>
-                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">{ar ? "الخصومات" : "Deductions"}</p>
+                <p className="text-micro font-semibold text-muted-foreground uppercase tracking-wider mb-2">{ar ? "الخصومات" : "Deductions"}</p>
                 <div className="space-y-1.5">
                   {[
                     { label: ar ? "التأمين الاجتماعي" : "Social Insurance", value: selectedPayslip.social_insurance },
@@ -340,8 +340,8 @@ export default function HRCompensation() {
                     { label: ar ? "خصومات أخرى" : "Other Deductions", value: selectedPayslip.other_deductions },
                   ].filter(r => r.value > 0).map((row, i) => (
                     <div key={i} className="flex items-center justify-between py-1">
-                      <span className="text-[11px] text-muted-foreground">{row.label}</span>
-                      <span className="text-[12px] font-medium text-rose-500">-{formatEGP(row.value)}</span>
+                      <span className="text-micro text-muted-foreground">{row.label}</span>
+                      <span className="text-caption font-medium text-rose-500">-{formatEGP(row.value)}</span>
                     </div>
                   ))}
                 </div>
@@ -349,18 +349,18 @@ export default function HRCompensation() {
 
               {/* Total */}
               <div className="flex items-center justify-between pt-3 border-t border-border/40">
-                <span className="text-[13px] font-semibold">{ar ? "صافي الراتب" : "Net Salary"}</span>
-                <span className="text-[18px] font-bold text-primary" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(selectedPayslip.net_salary)}</span>
+                <span className="text-body font-semibold">{ar ? "صافي الراتب" : "Net Salary"}</span>
+                <span className="text-title font-bold text-brand-ink" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(selectedPayslip.net_salary)}</span>
               </div>
 
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1">
+              <div className="flex items-center justify-between text-micro text-muted-foreground pt-1">
                 <span>{ar ? "حالة الدفع" : "Payment Status"}</span>
-                <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${(PAYSLIP_STATUS[selectedPayslip.status] || PAYSLIP_STATUS.draft).pill}`}>
+                <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${(PAYSLIP_STATUS[selectedPayslip.status] || PAYSLIP_STATUS.draft).pill}`}>
                   {ar ? (PAYSLIP_STATUS[selectedPayslip.status] || PAYSLIP_STATUS.draft).ar : (PAYSLIP_STATUS[selectedPayslip.status] || PAYSLIP_STATUS.draft).en}
                 </span>
               </div>
               {selectedPayslip.paid_at && (
-                <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                <div className="flex items-center justify-between text-micro text-muted-foreground">
                   <span>{ar ? "تاريخ الدفع" : "Paid At"}</span>
                   <span>{new Date(selectedPayslip.paid_at).toLocaleDateString(ar ? "ar-EG" : "en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
                 </div>

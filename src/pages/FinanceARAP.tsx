@@ -23,7 +23,7 @@ const fmtEGP = (n: number) =>
 
 const AGING_BUCKETS = [
   { key: "Current", en: "Current", ar: "جاري", color: "#10b981", bg: "bg-emerald-50 border-emerald-200", text: "text-emerald-700", bar: "from-emerald-400 to-emerald-500" },
-  { key: "1-30 days", en: "1–30 days", ar: "١–٣٠ يوم", color: "#f59e0b", bg: "bg-amber-50 border-amber-200", text: "text-amber-700", bar: "from-amber-400 to-amber-500" },
+  { key: "1-30 days", en: "1–30 days", ar: "١–٣٠ يوم", color: "#f59e0b", bg: "bg-warning/10 border-warning/30", text: "text-warning", bar: "from-warning/20 to-warning/20" },
   { key: "31-60 days", en: "31–60 days", ar: "٣١–٦٠ يوم", color: "#f97316", bg: "bg-orange-50 border-orange-200", text: "text-orange-700", bar: "from-orange-400 to-orange-500" },
   { key: "61-90 days", en: "61–90 days", ar: "٦١–٩٠ يوم", color: "#ef4444", bg: "bg-red-50 border-red-200", text: "text-red-700", bar: "from-red-400 to-red-500" },
 ];
@@ -32,7 +32,7 @@ const AGING_BUCKETS = [
 
 const AR_STATUS_META: Record<string, { en: string; ar: string; pill: string; dot: string }> = {
   current:     { en: "Current",     ar: "جاري",       pill: "bg-emerald-100 text-emerald-600",  dot: "bg-emerald-500" },
-  overdue_30:  { en: "Overdue",     ar: "متأخر",      pill: "bg-amber-100 text-amber-600",      dot: "bg-amber-500" },
+  overdue_30:  { en: "Overdue",     ar: "متأخر",      pill: "bg-warning/15 text-warning",      dot: "bg-warning" },
   overdue_60:  { en: "Overdue",     ar: "متأخر",      pill: "bg-orange-100 text-orange-600",    dot: "bg-orange-500" },
   overdue_90:  { en: "Overdue",     ar: "متأخر",      pill: "bg-red-100 text-red-600",          dot: "bg-red-500" },
 };
@@ -40,7 +40,7 @@ const AR_STATUS_META: Record<string, { en: string; ar: string; pill: string; dot
 // ─── AP Status Meta ───────────────────────────────────────
 
 const AP_STATUS_META: Record<string, { en: string; ar: string; pill: string; dot: string }> = {
-  pending:  { en: "Due",     ar: "مستحق",    pill: "bg-amber-100 text-amber-600",   dot: "bg-amber-500" },
+  pending:  { en: "Due",     ar: "مستحق",    pill: "bg-warning/15 text-warning",   dot: "bg-warning" },
   approved: { en: "Approved", ar: "معتمد",    pill: "bg-blue-100 text-blue-600",     dot: "bg-blue-500" },
   paid:     { en: "Paid",     ar: "مدفوع",    pill: "bg-emerald-100 text-emerald-600", dot: "bg-emerald-500" },
   draft:    { en: "Draft",    ar: "مسودة",    pill: "bg-slate-100 text-slate-600",   dot: "bg-slate-400" },
@@ -49,7 +49,7 @@ const AP_STATUS_META: Record<string, { en: string; ar: string; pill: string; dot
 
 // ─── Shared UI ────────────────────────────────────────────
 
-const inputCls = "w-full h-9 ps-8 pe-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
+const inputCls = "w-full h-9 ps-8 pe-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
 
 // ═══════════════════════════════════════════════════════════
 // Main Page
@@ -160,12 +160,12 @@ export default function FinanceARAP() {
     { label: ar ? "إجمالي المدينة" : "Total AR", value: fmtEGP(totalAR), icon: DollarSign, color: "#6366f1", bg: "bg-indigo-50" },
     { label: ar ? "المتأخر" : "Overdue Amount", value: fmtEGP(overdueAR), icon: AlertTriangle, color: "#ef4444", bg: "bg-red-50" },
     { label: ar ? "الحالي" : "Current Amount", value: fmtEGP(currentAR), icon: CheckCircle2, color: "#10b981", bg: "bg-emerald-50" },
-    { label: ar ? "متوسط أيام التحصيل" : "Avg Days to Collect", value: `${avgDaysCollect} ${ar ? "يوم" : "days"}`, icon: Clock, color: "#f59e0b", bg: "bg-amber-50" },
+    { label: ar ? "متوسط أيام التحصيل" : "Avg Days to Collect", value: `${avgDaysCollect} ${ar ? "يوم" : "days"}`, icon: Clock, color: "#f59e0b", bg: "bg-warning/10" },
   ];
 
   const apKpis = [
-    { label: ar ? "إجمالي الدائن" : "Total AP", value: fmtEGP(totalAP), icon: DollarSign, color: "#8b5cf6", bg: "bg-violet-50" },
-    { label: ar ? "مستحق هذا الشهر" : "Due This Month", value: fmtEGP(dueThisMonth), icon: Calendar, color: "#f59e0b", bg: "bg-amber-50" },
+    { label: ar ? "إجمالي الدائن" : "Total AP", value: fmtEGP(totalAP), icon: DollarSign, color: "#8b5cf6", bg: "bg-chart-4/10" },
+    { label: ar ? "مستحق هذا الشهر" : "Due This Month", value: fmtEGP(dueThisMonth), icon: Calendar, color: "#f59e0b", bg: "bg-warning/10" },
     { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(overdueAP), icon: AlertTriangle, color: "#ef4444", bg: "bg-red-50" },
     { label: ar ? "القادم" : "Upcoming", value: fmtEGP(upcomingAP), icon: TrendingUp, color: "#3b82f6", bg: "bg-blue-50" },
   ];
@@ -197,20 +197,20 @@ export default function FinanceARAP() {
       <div className="border-b border-border/40 px-8 md:px-10 py-8"
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1280px]">
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
             {ar ? "المالية" : "Finance"}
           </p>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-[26px] font-medium text-foreground leading-tight"
+              <h1 className="text-display font-medium text-foreground leading-tight"
                 style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
                 {ar ? "الحسابات المدينة والدائن" : "Receivable & Payable"}
               </h1>
-              <p className="text-[12px] text-muted-foreground mt-1">
+              <p className="text-caption text-muted-foreground mt-1">
                 {ar ? "إدارة الحسابات المدينة والدائن" : "Manage accounts receivable & payable"}
               </p>
             </div>
-            <button className="flex items-center gap-2 h-9 px-3.5 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button className="flex items-center gap-2 h-9 px-3.5 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
               <Download size={13} strokeWidth={1.75} />
               {ar ? "تصدير" : "Export"}
             </button>
@@ -222,7 +222,7 @@ export default function FinanceARAP() {
               <button
                 key={tab.key}
                 onClick={() => { setActiveTab(tab.key); setSearch(""); setAgingFilter("all"); setStatusFilter("all"); }}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-body font-medium transition-all ${
                   activeTab === tab.key
                     ? "bg-background text-foreground shadow-sm border border-border/40"
                     : "text-muted-foreground hover:text-foreground"
@@ -255,11 +255,11 @@ export default function FinanceARAP() {
                 </div>
                 <ArrowUpRight size={14} className="text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
               </div>
-              <p className="text-[17px] font-medium text-foreground leading-none tabular-nums mb-1"
+              <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1"
                 style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                 {kpi.value}
               </p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{kpi.label}</p>
+              <p className="text-micro text-muted-foreground uppercase tracking-wide">{kpi.label}</p>
             </motion.div>
           ))}
         </div>
@@ -267,7 +267,7 @@ export default function FinanceARAP() {
         {/* ── AR Aging Breakdown ── */}
         {activeTab === "receivable" && (
           <div className="bg-background border border-border/40 rounded-xl px-5 py-5">
-            <h3 className="text-[13px] font-semibold text-foreground mb-4"
+            <h3 className="text-body font-semibold text-foreground mb-4"
               style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "تقسيم الأعمار المدينة" : "AR Aging Breakdown"}
             </h3>
@@ -275,8 +275,8 @@ export default function FinanceARAP() {
               {arAgingData.map((aging, i) => (
                 <div key={aging.key} className="flex items-center gap-4">
                   <div className="w-[100px] shrink-0">
-                    <p className="text-[11px] font-medium text-foreground">{ar ? aging.ar : aging.en}</p>
-                    <p className="text-[10px] text-muted-foreground">{aging.count} {ar ? "فواتير" : "invoices"}</p>
+                    <p className="text-micro font-medium text-foreground">{ar ? aging.ar : aging.en}</p>
+                    <p className="text-micro text-muted-foreground">{aging.count} {ar ? "فواتير" : "invoices"}</p>
                   </div>
                   <div className="flex-1 h-7 rounded-lg bg-muted/30 overflow-hidden relative">
                     <motion.div
@@ -285,7 +285,7 @@ export default function FinanceARAP() {
                       transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.1 }}
                       className={`h-full rounded-lg bg-gradient-to-r ${aging.bar} relative`}
                     >
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-white tabular-nums drop-shadow-sm">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-micro font-semibold text-white tabular-nums drop-shadow-sm">
                         {fmtEGP(aging.amount)}
                       </span>
                     </motion.div>
@@ -315,19 +315,19 @@ export default function FinanceARAP() {
 
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-border/60 bg-card text-[12px] font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+            className="flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-border/60 bg-card text-caption font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors"
           >
             <Filter size={13} />
             {ar ? "فلتر" : "Filters"}
             {(agingFilter !== "all" || statusFilter !== "all") && (
-              <span className="w-4 h-4 rounded-full bg-primary text-primary-foreground text-[9px] flex items-center justify-center font-medium">!</span>
+              <span className="w-4 h-4 rounded-full bg-primary text-primary-foreground text-micro flex items-center justify-center font-medium">!</span>
             )}
           </button>
 
           {(agingFilter !== "all" || statusFilter !== "all" || search) && (
             <button
               onClick={() => { setSearch(""); setAgingFilter("all"); setStatusFilter("all"); }}
-              className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all"
+              className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all"
             >
               <X size={11} strokeWidth={2} /> {ar ? "مسح" : "Clear"}
             </button>
@@ -346,12 +346,12 @@ export default function FinanceARAP() {
               <div className="flex items-center gap-4 py-3 px-4 rounded-xl border border-border/40 bg-card/50 flex-wrap">
                 {activeTab === "receivable" && (
                   <div className="flex items-center gap-2">
-                    <label className="text-[11px] text-muted-foreground uppercase tracking-wide">{ar ? "الأعمار" : "Aging"}</label>
+                    <label className="text-micro text-muted-foreground uppercase tracking-wide">{ar ? "الأعمار" : "Aging"}</label>
                     <div className="relative">
                       <select
                         value={agingFilter}
                         onChange={(e) => setAgingFilter(e.target.value)}
-                        className="h-8 px-3 pr-7 rounded-lg border border-border/60 bg-card text-[12px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer"
+                        className="h-8 px-3 pr-7 rounded-lg border border-border/60 bg-card text-caption text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer"
                       >
                         <option value="all">{ar ? "كل الأعمار" : "All Aging"}</option>
                         {AGING_BUCKETS.map((b) => (
@@ -364,12 +364,12 @@ export default function FinanceARAP() {
                 )}
 
                 <div className="flex items-center gap-2">
-                  <label className="text-[11px] text-muted-foreground uppercase tracking-wide">{ar ? "الحالة" : "Status"}</label>
+                  <label className="text-micro text-muted-foreground uppercase tracking-wide">{ar ? "الحالة" : "Status"}</label>
                   <div className="relative">
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                      className="h-8 px-3 pr-7 rounded-lg border border-border/60 bg-card text-[12px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer"
+                      className="h-8 px-3 pr-7 rounded-lg border border-border/60 bg-card text-caption text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer"
                     >
                       {(activeTab === "receivable" ? arStatusFilters : apStatusFilters).map((f) => (
                         <option key={f.value} value={f.value}>{ar ? f.ar : f.en}</option>
@@ -382,7 +382,7 @@ export default function FinanceARAP() {
                 {(agingFilter !== "all" || statusFilter !== "all") && (
                   <button
                     onClick={() => { setAgingFilter("all"); setStatusFilter("all"); }}
-                    className="text-[11px] text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                    className="text-micro text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
                   >
                     {ar ? "مسح الفلتر" : "Clear filters"}
                   </button>
@@ -396,7 +396,7 @@ export default function FinanceARAP() {
         {activeTab === "receivable" && (
           <div className="border border-border/40 rounded-xl overflow-hidden bg-background">
             <div className="overflow-x-auto">
-              <table className="w-full text-[12px]">
+              <table className="w-full text-caption">
                 <thead>
                   <tr className="bg-muted/30 border-b border-border/30">
                     {[ar ? "العميل" : "Customer",
@@ -410,7 +410,7 @@ export default function FinanceARAP() {
                       ar ? "الأعمار" : "Aging Bucket",
                       ar ? "إجراءات" : "Actions",
                     ].map((h, i) => (
-                      <th key={i} className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap text-[10px] tracking-[0.06em] uppercase">
+                      <th key={i} className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap text-micro tracking-[0.06em] uppercase">
                         {h}
                       </th>
                     ))}
@@ -430,10 +430,10 @@ export default function FinanceARAP() {
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center shrink-0">
-                              <Building2 size={13} strokeWidth={1.75} className="text-primary" />
+                              <Building2 size={13} strokeWidth={1.75} className="text-brand-ink" />
                             </div>
                             <div>
-                              <p className="text-[12px] font-medium text-foreground truncate max-w-[150px]">
+                              <p className="text-caption font-medium text-foreground truncate max-w-[150px]">
                                 {ar ? row.customer_name_ar : row.customer_name}
                               </p>
                             </div>
@@ -461,28 +461,28 @@ export default function FinanceARAP() {
                         </td>
                         <td className="px-4 py-3.5 whitespace-nowrap">
                           {row.days_overdue > 0 ? (
-                            <span className="text-[11px] font-medium text-red-600">
+                            <span className="text-micro font-medium text-red-600">
                               {row.days_overdue} {ar ? "يوم" : "days"}
                             </span>
                           ) : (
-                            <span className="text-[11px] text-emerald-600">{ar ? "جاري" : "Current"}</span>
+                            <span className="text-micro text-emerald-600">{ar ? "جاري" : "Current"}</span>
                           )}
                         </td>
                         <td className="px-4 py-3.5 text-center">
-                          <span className={`inline-flex items-center gap-1.5 text-[10px] font-medium px-2.5 py-1 rounded-full ${statusMeta.pill}`}>
+                          <span className={`inline-flex items-center gap-1.5 text-micro font-medium px-2.5 py-1 rounded-full ${statusMeta.pill}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${statusMeta.dot}`} />
                             {ar ? statusMeta.ar : statusMeta.en}
                           </span>
                         </td>
                         <td className="px-4 py-3.5">
-                          <span className={`inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full border ${agingMeta.bg} ${agingMeta.text}`}>
+                          <span className={`inline-flex items-center text-micro font-medium px-2 py-0.5 rounded-full border ${agingMeta.bg} ${agingMeta.text}`}>
                             {ar ? agingMeta.ar : agingMeta.en}
                           </span>
                         </td>
                         <td className="px-4 py-3.5">
                           <button
                             onClick={() => handleSendReminder(ar ? row.customer_name_ar : row.customer_name)}
-                            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-border/60 text-[11px] font-medium text-muted-foreground hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all"
+                            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-brand-ink hover:border-primary/30 hover:bg-primary/5 transition-all"
                           >
                             <Send size={10} strokeWidth={2} />
                             {ar ? "تذكير" : "Remind"}
@@ -494,7 +494,7 @@ export default function FinanceARAP() {
                   {filteredAR.length === 0 && (
                     <tr>
                       <td colSpan={10} className="px-6 py-14 text-center">
-                        <p className="text-[13px] text-muted-foreground/60">
+                        <p className="text-body text-muted-foreground/60">
                           {ar ? "لا توجد حسابات مدينة" : "No receivable accounts found"}
                         </p>
                       </td>
@@ -505,10 +505,10 @@ export default function FinanceARAP() {
             </div>
             {filteredAR.length > 0 && (
               <div className="flex items-center justify-between px-4 py-3 border-t border-border/30 bg-muted/10">
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-micro text-muted-foreground">
                   {ar ? `${filteredAR.length} من ${arData.length}` : `${filteredAR.length} of ${arData.length}`}
                 </p>
-                <p className="text-[11px] font-medium text-foreground tabular-nums">
+                <p className="text-micro font-medium text-foreground tabular-nums">
                   {ar ? "الإجمالي:" : "Total:"} {fmtEGP(filteredAR.reduce((s, r) => s + r.balance, 0))}
                 </p>
               </div>
@@ -520,7 +520,7 @@ export default function FinanceARAP() {
         {activeTab === "payable" && (
           <div className="border border-border/40 rounded-xl overflow-hidden bg-background">
             <div className="overflow-x-auto">
-              <table className="w-full text-[12px]">
+              <table className="w-full text-caption">
                 <thead>
                   <tr className="bg-muted/30 border-b border-border/30">
                     {[ar ? "المورد" : "Vendor",
@@ -532,7 +532,7 @@ export default function FinanceARAP() {
                       ar ? "الحالة" : "Status",
                       ar ? "إجراءات" : "Actions",
                     ].map((h, i) => (
-                      <th key={i} className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap text-[10px] tracking-[0.06em] uppercase">
+                      <th key={i} className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap text-micro tracking-[0.06em] uppercase">
                         {h}
                       </th>
                     ))}
@@ -550,21 +550,21 @@ export default function FinanceARAP() {
                       >
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
-                              <Building2 size={13} strokeWidth={1.75} className="text-violet-600" />
+                            <div className="w-8 h-8 rounded-lg bg-chart-4/10 flex items-center justify-center shrink-0">
+                              <Building2 size={13} strokeWidth={1.75} className="text-chart-4" />
                             </div>
                             <div>
-                              <p className="text-[12px] font-medium text-foreground truncate max-w-[160px]">
+                              <p className="text-caption font-medium text-foreground truncate max-w-[160px]">
                                 {ar ? row.vendor_ar : row.vendor}
                               </p>
                             </div>
                           </div>
                         </td>
                         <td className="px-4 py-3.5">
-                          <span className="text-[11px] text-muted-foreground capitalize">{row.category}</span>
+                          <span className="text-micro text-muted-foreground capitalize">{row.category}</span>
                         </td>
                         <td className="px-4 py-3.5">
-                          <p className="text-[12px] text-foreground max-w-[200px] truncate">
+                          <p className="text-caption text-foreground max-w-[200px] truncate">
                             {ar ? row.description_ar : row.description}
                           </p>
                         </td>
@@ -580,15 +580,15 @@ export default function FinanceARAP() {
                         </td>
                         <td className="px-4 py-3.5 whitespace-nowrap">
                           {row.days_overdue > 0 ? (
-                            <span className="text-[11px] font-medium text-red-600">
+                            <span className="text-micro font-medium text-red-600">
                               {row.days_overdue} {ar ? "يوم" : "days"}
                             </span>
                           ) : (
-                            <span className="text-[11px] text-emerald-600">{ar ? "جاري" : "Current"}</span>
+                            <span className="text-micro text-emerald-600">{ar ? "جاري" : "Current"}</span>
                           )}
                         </td>
                         <td className="px-4 py-3.5 text-center">
-                          <span className={`inline-flex items-center gap-1.5 text-[10px] font-medium px-2.5 py-1 rounded-full ${statusMeta.pill}`}>
+                          <span className={`inline-flex items-center gap-1.5 text-micro font-medium px-2.5 py-1 rounded-full ${statusMeta.pill}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${statusMeta.dot}`} />
                             {ar ? statusMeta.ar : statusMeta.en}
                           </span>
@@ -597,13 +597,13 @@ export default function FinanceARAP() {
                           {row.apStatus !== "paid" ? (
                             <button
                               onClick={() => handlePay(ar ? row.vendor_ar : row.vendor)}
-                              className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg bg-foreground text-background text-[11px] font-medium hover:opacity-90 transition-opacity"
+                              className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg bg-foreground text-background text-micro font-medium hover:opacity-90 transition-opacity"
                             >
                               <CreditCard size={10} strokeWidth={2} />
                               {ar ? "دفع" : "Pay"}
                             </button>
                           ) : (
-                            <span className="flex items-center gap-1 text-[11px] text-emerald-600">
+                            <span className="flex items-center gap-1 text-micro text-emerald-600">
                               <CheckCircle2 size={11} />
                               {ar ? "مدفوع" : "Paid"}
                             </span>
@@ -615,7 +615,7 @@ export default function FinanceARAP() {
                   {filteredAP.length === 0 && (
                     <tr>
                       <td colSpan={8} className="px-6 py-14 text-center">
-                        <p className="text-[13px] text-muted-foreground/60">
+                        <p className="text-body text-muted-foreground/60">
                           {ar ? "لا توجد حسابات دائنة" : "No payable accounts found"}
                         </p>
                       </td>
@@ -626,10 +626,10 @@ export default function FinanceARAP() {
             </div>
             {filteredAP.length > 0 && (
               <div className="flex items-center justify-between px-4 py-3 border-t border-border/30 bg-muted/10">
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-micro text-muted-foreground">
                   {ar ? `${filteredAP.length} من ${apData.length}` : `${filteredAP.length} of ${apData.length}`}
                 </p>
-                <p className="text-[11px] font-medium text-foreground tabular-nums">
+                <p className="text-micro font-medium text-foreground tabular-nums">
                   {ar ? "الإجمالي:" : "Total:"} {fmtEGP(filteredAP.reduce((s, e) => s + e.amount, 0))}
                 </p>
               </div>
@@ -645,7 +645,7 @@ export default function FinanceARAP() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-2 px-4 py-2.5 rounded-xl bg-foreground text-background text-[12px] font-medium shadow-lg"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-2 px-4 py-2.5 rounded-xl bg-foreground text-background text-caption font-medium shadow-lg"
           >
             <CheckCircle2 size={14} />
             {toast}

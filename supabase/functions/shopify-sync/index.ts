@@ -1,5 +1,5 @@
 /**
- * Shopify Sync — Two-way data exchange between THOTH and Shopify
+ * Shopify Sync — Two-way data exchange between Bumblebee and Shopify
  *
  * Connection lifecycle:
  * - connect            → store credentials, test, register webhooks
@@ -8,12 +8,12 @@
  * - save_sync_config   → persist per-entity sync directions
  *
  * Data sync (honors sync_config directions):
- * - pull_products      → Shopify products  → THOTH products table
- * - push_products      → THOTH products    → Shopify products
- * - pull_inventory     → Shopify stock     → THOTH resources (matched by SKU)
- * - push_inventory     → THOTH resources   → Shopify inventory levels
+ * - pull_products      → Shopify products  → Bumblebee products table
+ * - push_products      → Bumblebee products    → Shopify products
+ * - pull_inventory     → Shopify stock     → Bumblebee resources (matched by SKU)
+ * - push_inventory     → Bumblebee resources   → Shopify inventory levels
  * - pull_orders        → Shopify orders    → shopify_orders (backfill)
- * - pull_customers     → Shopify customers → THOTH people
+ * - pull_customers     → Shopify customers → Bumblebee people
  * - run_full_sync      → everything enabled in sync_config, in its direction
  *
  * Loyalty (existing):
@@ -105,7 +105,7 @@ interface SyncConfig {
     loyalty: SyncDirection;
     analytics: SyncDirection;
   };
-  conflict_policy: "latest" | "shopify" | "thoth";
+  conflict_policy: "latest" | "shopify" | "bumblebee";
   auto_sync: boolean;
   sync_interval_minutes: number;
 }
@@ -412,7 +412,7 @@ async function upsertMapping(
   );
 }
 
-// ─── Pull products (Shopify → THOTH) ─────────────────────
+// ─── Pull products (Shopify → Bumblebee) ─────────────────────
 
 async function pullProducts(supabase: any, connection: ShopifyConnection, workspaceId: string, trigger = "manual") {
   const runId = await startRun(supabase, workspaceId, "products", "import", trigger);
@@ -459,7 +459,7 @@ async function pullProducts(supabase: any, connection: ShopifyConnection, worksp
     const validMapping = mapping?.thoth_id && mapping.thoth_table === "resources" ? mapping : null;
 
     if (validMapping) {
-      // Merge: keep THOTH-side fields (BOM, stages, costing) intact
+      // Merge: keep Bumblebee-side fields (BOM, stages, costing) intact
       const { data: existing } = await supabase
         .from("resources").select("metadata").eq("id", validMapping.thoth_id).maybeSingle();
       await supabase.from("resources").update({
@@ -493,14 +493,14 @@ async function pullProducts(supabase: any, connection: ShopifyConnection, worksp
   return { ok: true, pulled, skipped };
 }
 
-// ─── Push products (THOTH → Shopify) ─────────────────────
+// ─── Push products (Bumblebee → Shopify) ─────────────────────
 
 async function pushProducts(supabase: any, connection: ShopifyConnection, workspaceId: string, trigger = "manual") {
   const runId = await startRun(supabase, workspaceId, "products", "export", trigger);
   let pushed = 0, skipped = 0;
   let firstError: string | undefined;
 
-  // THOTH products live in `resources` (type "product") with ProductMeta metadata
+  // Bumblebee products live in `resources` (type "product") with ProductMeta metadata
   const { data: products } = await supabase
     .from("resources")
     .select("id, name_en, metadata")
@@ -561,7 +561,7 @@ async function pushProducts(supabase: any, connection: ShopifyConnection, worksp
   return { ok: true, pushed, skipped, error: firstError };
 }
 
-// ─── Pull inventory (Shopify → THOTH, matched by SKU) ────
+// ─── Pull inventory (Shopify → Bumblebee, matched by SKU) ────
 
 async function pullInventory(supabase: any, connection: ShopifyConnection, workspaceId: string, trigger = "manual") {
   const runId = await startRun(supabase, workspaceId, "inventory", "import", trigger);
@@ -581,7 +581,7 @@ async function pullInventory(supabase: any, connection: ShopifyConnection, works
     }
   }
 
-  // Match against THOTH inventory resources by metadata.sku
+  // Match against Bumblebee inventory resources by metadata.sku
   const { data: resources } = await supabase
     .from("resources")
     .select("id, metadata")
@@ -612,7 +612,7 @@ async function pullInventory(supabase: any, connection: ShopifyConnection, works
   return { ok: true, pulled, skipped };
 }
 
-// ─── Push inventory (THOTH → Shopify) ────────────────────
+// ─── Push inventory (Bumblebee → Shopify) ────────────────────
 
 async function pushInventory(supabase: any, connection: ShopifyConnection, workspaceId: string, trigger = "manual") {
   const runId = await startRun(supabase, workspaceId, "inventory", "export", trigger);
@@ -667,7 +667,7 @@ async function pushInventory(supabase: any, connection: ShopifyConnection, works
   return { ok: true, pushed, skipped, error: firstError };
 }
 
-// ─── Pull orders backfill (Shopify → THOTH) ──────────────
+// ─── Pull orders backfill (Shopify → Bumblebee) ──────────────
 // Webhooks handle live orders; this imports history on first connect.
 
 async function pullOrders(supabase: any, connection: ShopifyConnection, workspaceId: string, trigger = "manual") {
@@ -711,7 +711,7 @@ async function pullOrders(supabase: any, connection: ShopifyConnection, workspac
       });
     }
 
-    // 2. Visible THOTH sales order (Orders page reads work_items type sales_order)
+    // 2. Visible Bumblebee sales order (Orders page reads work_items type sales_order)
     const total = parseFloat(o.total_price ?? "0");
     const customerName = [o.customer?.first_name, o.customer?.last_name].filter(Boolean).join(" ")
       || o.email || (o.shipping_address?.name ?? "Shopify customer");
@@ -770,11 +770,11 @@ async function pullOrders(supabase: any, connection: ShopifyConnection, workspac
   }
 
   await finishRun(supabase, runId, { status: "success", records_pulled: pulled, records_skipped: skipped });
-  await logEvent(supabase, workspaceId, "orders_pulled", true, `${pulled} orders imported as THOTH sales orders (${skipped} already linked)`);
+  await logEvent(supabase, workspaceId, "orders_pulled", true, `${pulled} orders imported as Bumblebee sales orders (${skipped} already linked)`);
   return { ok: true, pulled, skipped };
 }
 
-// ─── Pull customers (Shopify → THOTH people) ─────────────
+// ─── Pull customers (Shopify → Bumblebee people) ─────────────
 
 async function pullCustomers(supabase: any, connection: ShopifyConnection, workspaceId: string, trigger = "manual") {
   const runId = await startRun(supabase, workspaceId, "customers", "import", trigger);
@@ -881,25 +881,25 @@ async function syncMetafields(
   // Update metafields
   const metafields = [
     {
-      namespace: "thoth_loyalty",
+      namespace: "bumblebee_loyalty",
       key: "points_balance",
       value: String(member.current_points),
       type: "number_integer",
     },
     {
-      namespace: "thoth_loyalty",
+      namespace: "bumblebee_loyalty",
       key: "tier",
       value: member.tier_slug || "bronze",
       type: "single_line_text_field",
     },
     {
-      namespace: "thoth_loyalty",
+      namespace: "bumblebee_loyalty",
       key: "member_number",
       value: member.member_number,
       type: "single_line_text_field",
     },
     {
-      namespace: "thoth_loyalty",
+      namespace: "bumblebee_loyalty",
       key: "lifetime_points",
       value: String(member.lifetime_points),
       type: "number_integer",
@@ -1053,7 +1053,7 @@ async function createDiscountCode(
   }
 
   // Generate unique discount code
-  const code = `THOTH-${redemption.member_id.substring(0, 4).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
+  const code = `BEE-${redemption.member_id.substring(0, 4).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
 
   // Create Price Rule
   const priceRuleResult = await shopifyApi(connection, "price_rules.json", "POST", {

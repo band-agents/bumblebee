@@ -5,7 +5,7 @@ import type { User, Session, AuthError } from "@supabase/supabase-js";
 
 export const DEMO_USER: User = {
   id: "demo-user-id",
-  email: "demo@thoth.app",
+  email: "demo@bumblebee.app",
   app_metadata: { provider: "demo" },
   user_metadata: { full_name: "Demo User", avatar_url: null },
   aud: "authenticated",
@@ -34,7 +34,7 @@ export interface AuthResult {
 
 export async function signUp(email: string, password: string, fullName?: string): Promise<AuthResult> {
   if (isDemoMode || !supabase) {
-    console.warn("[THOTH] Demo mode — sign up is a no-op");
+    console.warn("[Bumblebee] Demo mode — sign up is a no-op");
     return { user: DEMO_USER, session: DEMO_SESSION, error: null };
   }
   const { data, error } = await supabase.auth.signUp({
@@ -47,7 +47,7 @@ export async function signUp(email: string, password: string, fullName?: string)
 
 export async function signIn(email: string, password: string): Promise<AuthResult> {
   if (isDemoMode || !supabase) {
-    console.warn("[THOTH] Demo mode — sign in is a no-op");
+    console.warn("[Bumblebee] Demo mode — sign in is a no-op");
     return { user: DEMO_USER, session: DEMO_SESSION, error: null };
   }
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -56,7 +56,7 @@ export async function signIn(email: string, password: string): Promise<AuthResul
 
 export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
   if (isDemoMode || !supabase) {
-    console.warn("[THOTH] Demo mode — OAuth is a no-op");
+    console.warn("[Bumblebee] Demo mode — OAuth is a no-op");
     return { error: null };
   }
   const { error } = await supabase.auth.signInWithOAuth({
@@ -70,7 +70,7 @@ export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
 
 export async function signInWithApple(): Promise<{ error: AuthError | null }> {
   if (isDemoMode || !supabase) {
-    console.warn("[THOTH] Demo mode — OAuth is a no-op");
+    console.warn("[Bumblebee] Demo mode — OAuth is a no-op");
     return { error: null };
   }
   const { error } = await supabase.auth.signInWithOAuth({

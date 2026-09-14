@@ -11,7 +11,7 @@
 //      copyable invite link instead. The link always works regardless.
 //
 // Deploy: paste into Dashboard → Edge Functions → New function "send-invite".
-// Optional secrets: RESEND_API_KEY, RESEND_FROM (e.g. "THOTH <team@yourdomain.com>").
+// Optional secrets: RESEND_API_KEY, RESEND_FROM (e.g. "Bumblebee <team@yourdomain.com>").
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -41,12 +41,12 @@ function emailHtml(opts: {
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:440px;background:#ffffff;border-radius:16px;border:1px solid #e8e5df;overflow:hidden;">
         <tr><td style="padding:32px 32px 8px;text-align:center;">
-          <div style="font-size:20px;letter-spacing:0.08em;color:#2D3139;font-weight:600;">THOTH</div>
+          <div style="font-size:20px;letter-spacing:0.08em;color:#2D3139;font-weight:600;">Bumblebee</div>
         </td></tr>
         <tr><td style="padding:16px 32px 0;text-align:center;">
           <div style="font-size:17px;color:#2D3139;font-weight:600;">You're invited to ${workspaceName}</div>
           <div style="font-size:13px;color:#6b7280;margin-top:10px;line-height:1.6;">
-            ${inviterName} invited you to join <b>${workspaceName}</b> on THOTH
+            ${inviterName} invited you to join <b>${workspaceName}</b> on Bumblebee
             as <b>${role}</b>.<br/>Click below to accept — it takes a minute.
           </div>
         </td></tr>
@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
         ? admin.from("profiles").select("full_name, email").eq("id", inv.invited_by).maybeSingle()
         : Promise.resolve({ data: null }),
     ]);
-    const workspaceName = ws?.name ?? "a THOTH workspace";
+    const workspaceName = ws?.name ?? "a Bumblebee workspace";
     const inviterName = inviter?.full_name || inviter?.email || "A teammate";
 
     const origin = req.headers.get("origin") || Deno.env.get("SITE_URL") || "";
@@ -110,14 +110,14 @@ Deno.serve(async (req) => {
     // ── 1) Resend ──────────────────────────────────────────
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (resendKey) {
-      const from = Deno.env.get("RESEND_FROM") || "THOTH <onboarding@resend.dev>";
+      const from = Deno.env.get("RESEND_FROM") || "Bumblebee <onboarding@resend.dev>";
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
           from,
           to: [inv.email],
-          subject: `You're invited to ${workspaceName} on THOTH`,
+          subject: `You're invited to ${workspaceName} on Bumblebee`,
           html: emailHtml({ workspaceName, inviterName, role: inv.role, link }),
         }),
       });

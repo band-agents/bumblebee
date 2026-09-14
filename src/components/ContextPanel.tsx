@@ -17,10 +17,10 @@ const TYPE_ICONS: Record<EntityType, React.ElementType> = {
 };
 
 const TYPE_BG: Record<EntityType, string> = {
-  work:         "bg-amber-50 text-amber-700",
+  work:         "bg-warning/10 text-warning",
   deal:         "bg-emerald-50 text-emerald-700",
   person:       "bg-blue-50 text-blue-700",
-  organization: "bg-violet-50 text-violet-700",
+  organization: "bg-chart-4/10 text-chart-4",
   invoice:      "bg-rose-50 text-rose-700",
   resource:     "bg-cyan-50 text-cyan-700",
 };
@@ -85,10 +85,10 @@ export function ContextPanel({ open, onClose, entityType, entityId, titleEn, tit
                 {(() => { const I = TYPE_ICONS[entityType]; return <I size={14} strokeWidth={1.75} />; })()}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-foreground truncate leading-tight">
+                <p className="text-body font-semibold text-foreground truncate leading-tight">
                   {ar ? titleAr : titleEn}
                 </p>
-                <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                <p className="text-micro text-muted-foreground leading-tight mt-0.5">
                   {ar ? TYPE_LABELS[entityType].ar : TYPE_LABELS[entityType].en}
                   {total > 0 && ` · ${total} ${ar ? "اتصال" : total === 1 ? "connection" : "connections"}`}
                 </p>
@@ -108,7 +108,7 @@ export function ContextPanel({ open, onClose, entityType, entityId, titleEn, tit
                   <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
                     <Brain size={20} strokeWidth={1.5} className="text-muted-foreground/40" />
                   </div>
-                  <p className="text-[13px] text-muted-foreground/60">
+                  <p className="text-body text-muted-foreground/60">
                     {ar ? "لا توجد اتصالات بعد" : "No connections yet"}
                   </p>
                 </div>
@@ -123,10 +123,10 @@ export function ContextPanel({ open, onClose, entityType, entityId, titleEn, tit
                     <div key={type}>
                       <div className="flex items-center gap-2 px-5 pt-4 pb-2">
                         <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: dotColor }} />
-                        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                        <span className="text-micro font-semibold uppercase tracking-widest text-muted-foreground/60">
                           {ar ? typeLbl.ar : typeLbl.en}
                         </span>
-                        <span className="text-[10px] text-muted-foreground/40 ms-auto tabular-nums">{group.length}</span>
+                        <span className="text-micro text-muted-foreground/40 ms-auto tabular-nums">{group.length}</span>
                       </div>
                       {group.map((meta) => (
                         <button
@@ -138,12 +138,12 @@ export function ContextPanel({ open, onClose, entityType, entityId, titleEn, tit
                             <Icon size={12} strokeWidth={1.75} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-[12.5px] text-foreground truncate">{ar ? meta.titleAr : meta.titleEn}</p>
+                            <p className="text-caption text-foreground truncate">{ar ? meta.titleAr : meta.titleEn}</p>
                             {meta.subtitleEn && (
-                              <p className="text-[11px] text-muted-foreground truncate">{ar ? meta.subtitleAr : meta.subtitleEn}</p>
+                              <p className="text-micro text-muted-foreground truncate">{ar ? meta.subtitleAr : meta.subtitleEn}</p>
                             )}
                           </div>
-                          <ArrowUpRight size={12} className="shrink-0 text-muted-foreground/20 group-hover:text-primary/50 transition-colors" />
+                          <ArrowUpRight size={12} className="shrink-0 text-muted-foreground/20 group-hover:text-brand-ink/50 transition-colors" />
                         </button>
                       ))}
                     </div>
@@ -156,7 +156,7 @@ export function ContextPanel({ open, onClose, entityType, entityId, titleEn, tit
             <div className="px-5 py-3 border-t border-border/30 shrink-0">
               <button
                 onClick={() => { onClose(); navigate("/memory"); }}
-                className="w-full flex items-center justify-center gap-2 h-8 rounded-lg border border-border/60 text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                className="w-full flex items-center justify-center gap-2 h-8 rounded-lg border border-border/60 text-caption text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
               >
                 <Brain size={12} strokeWidth={1.75} />
                 {ar ? "فتح رسم المعرفة" : "Open Knowledge Graph"}

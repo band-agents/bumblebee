@@ -2,7 +2,7 @@
  * Shopify Kit — storefront app suite hub
  * عدة شوبيفاي — مركز تطبيقات المتجر
  *
- * App-store style gallery for the THOTH storefront apps that run on the
+ * App-store style gallery for the Bumblebee storefront apps that run on the
  * connected Shopify store: Wallet (store credit), Wishlist, Reviews.
  * Each card enables/disables the app and links into its full console.
  */
@@ -71,7 +71,7 @@ const APPS: KitApp[] = [
     tagEn: "Social proof engine", tagAr: "محرك الإثبات الاجتماعي",
     descEn: "Collect gorgeous photo reviews on autopilot, moderate with one tap, reward reviewers with loyalty points, and show it all off in a widget you fully control.",
     descAr: "اجمع تقييمات بالصور تلقائيًا، وأدرها بلمسة، وكافئ المقيّمين بنقاط الولاء، واعرضها في ودجت تتحكم فيه بالكامل.",
-    gradient: "from-amber-400 to-orange-500", accent: "text-amber-600", chipBg: "bg-amber-50 text-amber-700",
+    gradient: "from-warning/20 to-orange-500", accent: "text-warning", chipBg: "bg-warning/10 text-warning",
     path: "/shopify/kit/reviews",
     featuresEn: ["Photo reviews", "Auto-requests", "Loyalty rewards", "SEO rich snippets"],
     featuresAr: ["تقييمات بالصور", "طلبات تلقائية", "مكافآت الولاء", "نتائج بحث غنية"],
@@ -115,7 +115,7 @@ export default function ShopifyKitPage() {
   // Store connection comes from the Integration hub's saved state.
   const storeConn = (() => {
     try {
-      const raw = localStorage.getItem("thoth_shopify_integration");
+      const raw = localStorage.getItem("bumblebee_shopify_integration");
       if (!raw) return null;
       const p = JSON.parse(raw);
       return p?.store_url ? { url: p.store_url as string, connected: p.status === "connected" } : null;
@@ -134,7 +134,7 @@ export default function ShopifyKitPage() {
   return (
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[1020px] mx-auto">
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
@@ -142,17 +142,17 @@ export default function ShopifyKitPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "شوبيفاي" : "Shopify"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "شوبيفاي" : "Shopify"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "عدة شوبيفاي" : "Shopify Kit"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-1.5 max-w-[520px]">
+          <p className="text-body text-muted-foreground mt-1.5 max-w-[520px]">
             {ar
-              ? "تطبيقات متجر من ثوث تعمل مباشرة على واجهة متجرك — بدون تطبيقات خارجية، بيانات واحدة، تجربة واحدة."
-              : "THOTH-native storefront apps running directly on your store — no third-party apps, one data source, one experience."}
+              ? "تطبيقات متجر من بامبلبي تعمل مباشرة على واجهة متجرك — بدون تطبيقات خارجية، بيانات واحدة، تجربة واحدة."
+              : "Bumblebee-native storefront apps running directly on your store — no third-party apps, one data source, one experience."}
           </p>
         </div>
-        <span className="text-[11px] text-muted-foreground border border-border/50 rounded-full px-3 py-1.5 whitespace-nowrap">
+        <span className="text-micro text-muted-foreground border border-border/50 rounded-full px-3 py-1.5 whitespace-nowrap">
           {enabledCount}/{APPS.length} {ar ? "مفعّل" : "enabled"}
         </span>
       </div>
@@ -163,17 +163,17 @@ export default function ShopifyKitPage() {
           {storeConn?.connected ? <Wifi size={15} /> : <WifiOff size={15} />}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-foreground truncate">
+          <p className="text-body font-medium text-foreground truncate">
             {storeConn?.connected
               ? (ar ? "المتجر متصل" : "Store connected")
               : (ar ? "لا يوجد متجر متصل" : "No store connected")}
           </p>
-          <p className="text-[11px] text-muted-foreground truncate">
+          <p className="text-micro text-muted-foreground truncate">
             {storeConn?.url || (ar ? "اربط متجرك لتشغيل التطبيقات على الواجهة" : "Connect your store to run these apps on your storefront")}
           </p>
         </div>
         <Link href="/shopify/integration"
-          className="inline-flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-border/60 text-[12px] text-foreground hover:bg-muted transition-colors whitespace-nowrap">
+          className="inline-flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-border/60 text-caption text-foreground hover:bg-muted transition-colors whitespace-nowrap">
           <Store size={12} />{storeConn?.connected ? (ar ? "إدارة الاتصال" : "Manage") : (ar ? "اتصال" : "Connect")}
         </Link>
       </div>
@@ -195,29 +195,29 @@ export default function ShopifyKitPage() {
                 {/* Body */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <h2 className="text-[17px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <h2 className="text-title font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? app.nameAr : app.nameEn}
                     </h2>
-                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${app.chipBg}`}>
+                    <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${app.chipBg}`}>
                       {ar ? app.tagAr : app.tagEn}
                     </span>
                     <span className="flex items-center gap-1.5 ms-auto">
-                      <span className={`text-[10px] ${on ? app.accent : "text-muted-foreground"}`}>
+                      <span className={`text-micro ${on ? app.accent : "text-muted-foreground"}`}>
                         {on ? (ar ? "مفعّل" : "Enabled") : (ar ? "موقوف" : "Off")}
                       </span>
                       <Toggle on={on} onChange={(v) => toggleApp(app.key, ar ? app.nameAr : app.nameEn, v)}
-                        accentBg={app.key === "wallet" ? "bg-emerald-500" : app.key === "wishlist" ? "bg-rose-500" : "bg-amber-500"} />
+                        accentBg={app.key === "wallet" ? "bg-emerald-500" : app.key === "wishlist" ? "bg-rose-500" : "bg-warning"} />
                     </span>
                   </div>
 
-                  <p className="text-[12.5px] text-muted-foreground leading-relaxed mt-1.5 max-w-[560px]">
+                  <p className="text-caption text-muted-foreground leading-relaxed mt-1.5 max-w-[560px]">
                     {ar ? app.descAr : app.descEn}
                   </p>
 
                   {/* Feature chips */}
                   <div className="flex flex-wrap gap-1.5 mt-3">
                     {(ar ? app.featuresAr : app.featuresEn).map(f => (
-                      <span key={f} className="text-[10.5px] px-2 py-1 rounded-md bg-muted/60 text-muted-foreground">{f}</span>
+                      <span key={f} className="text-micro px-2 py-1 rounded-md bg-muted/60 text-muted-foreground">{f}</span>
                     ))}
                   </div>
 
@@ -226,15 +226,15 @@ export default function ShopifyKitPage() {
                     <div className="flex gap-6">
                       {app.stats.map((s, i) => (
                         <div key={i}>
-                          <p className={`text-[15px] font-medium tabular-nums ${on ? app.accent : "text-muted-foreground"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                          <p className={`text-body-lg font-medium tabular-nums ${on ? app.accent : "text-muted-foreground"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                             {ar ? s.valAr : s.valEn}
                           </p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5">{ar ? s.labelAr : s.labelEn}</p>
+                          <p className="text-micro text-muted-foreground mt-0.5">{ar ? s.labelAr : s.labelEn}</p>
                         </div>
                       ))}
                     </div>
                     <Link href={app.path}
-                      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[12.5px] font-medium hover:opacity-90 transition-opacity">
+                      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity">
                       {ar ? "فتح التطبيق" : "Open app"}<ArrowUpRight size={13} />
                     </Link>
                   </div>
@@ -247,7 +247,7 @@ export default function ShopifyKitPage() {
 
       {/* Coming soon */}
       <div className="mt-8">
-        <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-3 flex items-center gap-1.5">
+        <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-3 flex items-center gap-1.5">
           <Sparkles size={11} />{ar ? "قريبًا في العدة" : "Coming to the kit"}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -259,8 +259,8 @@ export default function ShopifyKitPage() {
                   <Icon size={15} />
                 </div>
                 <div>
-                  <p className="text-[12.5px] text-foreground">{ar ? cs.ar : cs.en}</p>
-                  <p className="text-[10px] text-muted-foreground">{ar ? "قريبًا" : "Coming soon"}</p>
+                  <p className="text-caption text-foreground">{ar ? cs.ar : cs.en}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "قريبًا" : "Coming soon"}</p>
                 </div>
               </div>
             );

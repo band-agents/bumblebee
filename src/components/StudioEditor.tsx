@@ -212,7 +212,7 @@ function SlashCommandMenu({
             onChange={(e) => setFilter(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={ar ? "ابحث عن блок..." : "Search blocks..."}
-            className="w-full pl-9 pr-3 py-2.5 text-[13px] bg-muted/40 rounded-xl border-0 outline-none placeholder:text-muted-foreground/50 font-medium"
+            className="w-full pl-9 pr-3 py-2.5 text-body bg-muted/40 rounded-xl border-0 outline-none placeholder:text-muted-foreground/50 font-medium"
           />
         </div>
       </div>
@@ -222,7 +222,7 @@ function SlashCommandMenu({
         <div className="flex items-center gap-1 px-3 py-2 border-b border-border/20 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveCategory(null)}
-            className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
+            className={`px-2.5 py-1 rounded-lg text-micro font-medium whitespace-nowrap transition-all ${
               !activeCategory ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted/50"
             }`}
           >
@@ -232,7 +232,7 @@ function SlashCommandMenu({
             <button
               key={cat.id}
               onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
-              className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
+              className={`px-2.5 py-1 rounded-lg text-micro font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
                 activeCategory === cat.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted/50"
               }`}
             >
@@ -248,7 +248,7 @@ function SlashCommandMenu({
         {filtered.length === 0 && (
           <div className="px-4 py-6 text-center">
             <Search size={20} className="mx-auto text-muted-foreground/20 mb-2" />
-            <p className="text-[12px] text-muted-foreground/60">{ar ? "لا توجد نتائج" : "No results found"}</p>
+            <p className="text-caption text-muted-foreground/60">{ar ? "لا توجد نتائج" : "No results found"}</p>
           </div>
         )}
 
@@ -256,7 +256,7 @@ function SlashCommandMenu({
           <div key={group.category || "all"}>
             {group.category && !filter && (
               <div className="px-4 pt-2 pb-1">
-                <span className="text-[9px] font-semibold text-muted-foreground/50 uppercase tracking-wider">
+                <span className="text-micro font-semibold text-muted-foreground/50 uppercase tracking-wider">
                   {ar ? CATEGORIES.find(c => c.id === group.category)?.labelAr : CATEGORIES.find(c => c.id === group.category)?.label}
                 </span>
               </div>
@@ -274,20 +274,20 @@ function SlashCommandMenu({
                   }`}
                 >
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                    isSelected ? "bg-primary/10 text-primary" : "bg-muted/50 text-muted-foreground"
+                    isSelected ? "bg-primary/10 text-brand-ink" : "bg-muted/50 text-muted-foreground"
                   }`}>
                     <bt.icon size={16} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-medium text-foreground">
+                    <p className="text-body font-medium text-foreground">
                       {ar ? bt.labelAr : bt.label}
                     </p>
-                    <p className="text-[10px] text-muted-foreground/70 truncate">
+                    <p className="text-micro text-muted-foreground/70 truncate">
                       {ar ? bt.descriptionAr : bt.description}
                     </p>
                   </div>
                   {bt.shortcut && (
-                    <span className="text-[9px] font-mono text-muted-foreground/40 bg-muted/50 px-1.5 py-0.5 rounded shrink-0">
+                    <span className="text-micro font-mono text-muted-foreground/40 bg-muted/50 px-1.5 py-0.5 rounded shrink-0">
                       {bt.shortcut}
                     </span>
                   )}
@@ -300,7 +300,7 @@ function SlashCommandMenu({
 
       {/* Footer */}
       <div className="px-4 py-2 border-t border-border/20 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-[9px] text-muted-foreground/40">
+        <div className="flex items-center gap-2 text-micro text-muted-foreground/40">
           <span className="px-1.5 py-0.5 rounded bg-muted/50 font-mono">↑↓</span>
           <span>{ar ? "تنقل" : "Navigate"}</span>
           <span className="px-1.5 py-0.5 rounded bg-muted/50 font-mono">↵</span>
@@ -308,7 +308,7 @@ function SlashCommandMenu({
           <span className="px-1.5 py-0.5 rounded bg-muted/50 font-mono">esc</span>
           <span>{ar ? "إغلاق" : "Close"}</span>
         </div>
-        <span className="text-[9px] text-muted-foreground/30">{filtered.length} {ar ? "خيار" : "options"}</span>
+        <span className="text-micro text-muted-foreground/30">{filtered.length} {ar ? "خيار" : "options"}</span>
       </div>
     </motion.div>
   );
@@ -356,12 +356,12 @@ function BlockActions({
               className="absolute top-full mt-1 w-52 bg-background border border-border/60 rounded-xl shadow-xl p-1.5 z-50"
               style={{ [isRtl ? "right" : "left"]: 0 }}
             >
-              <p className="px-2 py-1 text-[9px] font-semibold text-muted-foreground/50 uppercase tracking-wider">{ar ? "تحويل إلى" : "Convert to"}</p>
+              <p className="px-2 py-1 text-micro font-semibold text-muted-foreground/50 uppercase tracking-wider">{ar ? "تحويل إلى" : "Convert to"}</p>
               {BLOCK_TYPES.filter((bt) => bt.type !== block.type).slice(0, 10).map((bt) => (
                 <button
                   key={bt.type}
                   onClick={() => { onConvert(bt.type); setShowConvert(false); }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 text-[12px] rounded-lg hover:bg-accent/60 transition-colors"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 text-caption rounded-lg hover:bg-accent/60 transition-colors"
                 >
                   <bt.icon size={13} className="text-muted-foreground" />
                   {ar ? bt.labelAr : bt.label}
@@ -423,21 +423,21 @@ function BlockRenderer({
     case "h1":
       return (
         <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-          className="w-full text-[28px] font-bold tracking-tight bg-transparent border-0 outline-none resize-none leading-tight placeholder:text-muted-foreground/30"
+          className="w-full text-display font-bold tracking-tight bg-transparent border-0 outline-none resize-none leading-tight placeholder:text-muted-foreground/30"
           style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }} rows={1}
           placeholder={isRtl ? "عنوان رئيسي" : "Heading 1"} />
       );
     case "h2":
       return (
         <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-          className="w-full text-[22px] font-semibold tracking-tight bg-transparent border-0 outline-none resize-none leading-tight placeholder:text-muted-foreground/30"
+          className="w-full text-heading font-semibold tracking-tight bg-transparent border-0 outline-none resize-none leading-tight placeholder:text-muted-foreground/30"
           style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }} rows={1}
           placeholder={isRtl ? "عنوان فرعي" : "Heading 2"} />
       );
     case "h3":
       return (
         <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-          className="w-full text-[17px] font-semibold bg-transparent border-0 outline-none resize-none leading-snug placeholder:text-muted-foreground/30"
+          className="w-full text-title font-semibold bg-transparent border-0 outline-none resize-none leading-snug placeholder:text-muted-foreground/30"
           rows={1} placeholder={isRtl ? "عنوان فرعي" : "Heading 3"} />
       );
     case "bullet_list":
@@ -445,7 +445,7 @@ function BlockRenderer({
         <div className="flex items-start gap-2.5">
           <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground/40 shrink-0" />
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className="flex-1 text-[14px] bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
+            className="flex-1 text-body-lg bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
             rows={1} placeholder={isRtl ? "عنصر قائمة" : "List item"} />
         </div>
       );
@@ -453,9 +453,9 @@ function BlockRenderer({
       const num = block.metadata?.number ?? block.order + 1;
       return (
         <div className="flex items-start gap-2">
-          <span className="mt-0.5 text-[14px] font-medium text-muted-foreground/60 w-5 text-right shrink-0">{num}.</span>
+          <span className="mt-0.5 text-body-lg font-medium text-muted-foreground/60 w-5 text-right shrink-0">{num}.</span>
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className="flex-1 text-[14px] bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
+            className="flex-1 text-body-lg bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
             rows={1} placeholder={isRtl ? "عنصر قائمة" : "List item"} />
         </div>
       );
@@ -472,7 +472,7 @@ function BlockRenderer({
             {block.metadata?.checked && <Check size={11} strokeWidth={3} />}
           </button>
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className={`flex-1 text-[14px] bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30 transition-all ${
+            className={`flex-1 text-body-lg bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30 transition-all ${
               block.metadata?.checked ? "line-through text-muted-foreground" : ""
             }`} rows={1} placeholder={isRtl ? "عنصر قائمة تحقق" : "To-do"} />
         </div>
@@ -483,7 +483,7 @@ function BlockRenderer({
       return (
         <div className="border-l-[3px] border-primary/40 pl-4 py-1">
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className="w-full text-[14px] italic text-muted-foreground/80 bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
+            className="w-full text-body-lg italic text-muted-foreground/80 bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
             rows={1} placeholder={isRtl ? "اكتب اقتباس..." : "Type a quote..."} />
         </div>
       );
@@ -491,7 +491,7 @@ function BlockRenderer({
       const icon = block.metadata?.icon || "💡";
       const colorMap: Record<string, string> = {
         primary: "bg-primary/5 border-primary/20",
-        amber: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800/40",
+        amber: "bg-warning/10 dark:bg-warning/30 border-warning/30 dark:border-warning/30",
         red: "bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/40",
         green: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/40",
         blue: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800/40",
@@ -499,9 +499,9 @@ function BlockRenderer({
       const colorClass = colorMap[block.metadata?.color || "primary"] || colorMap.primary;
       return (
         <div className={`flex items-start gap-3 px-4 py-3 rounded-xl border ${colorClass}`}>
-          <span className="text-[18px] mt-0.5 shrink-0 cursor-pointer">{icon}</span>
+          <span className="text-title mt-0.5 shrink-0 cursor-pointer">{icon}</span>
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className="flex-1 text-[13.5px] bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/40"
+            className="flex-1 text-body bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/40"
             rows={1} placeholder={isRtl ? "نص التنبيه..." : "Callout text..."} />
         </div>
       );
@@ -510,14 +510,14 @@ function BlockRenderer({
       return (
         <div className="bg-zinc-900 dark:bg-zinc-950 rounded-xl p-4 border border-zinc-800/50">
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className="w-full text-[13px] font-mono text-zinc-200 bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-zinc-600"
+            className="w-full text-body font-mono text-zinc-200 bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-zinc-600"
             rows={3} spellCheck={false} placeholder={isRtl ? "أدخل الكود..." : "Enter code..."} />
         </div>
       );
     case "toggle":
       return (
         <div>
-          <button onClick={() => setToggleOpen(!toggleOpen)} className="flex items-center gap-1.5 text-[14px] font-medium hover:text-primary transition-colors">
+          <button onClick={() => setToggleOpen(!toggleOpen)} className="flex items-center gap-1.5 text-body-lg font-medium hover:text-brand-ink transition-colors">
             <motion.span animate={{ rotate: toggleOpen ? 90 : 0 }} transition={{ duration: 0.15 }}>
               <ChevronRight size={15} />
             </motion.span>
@@ -528,7 +528,7 @@ function BlockRenderer({
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }} className="overflow-hidden ml-6 mt-1">
                 <textarea value={block.metadata?.content || ""} onChange={(e) => { onUpdate(text); block.metadata = { ...block.metadata, content: e.target.value }; }}
-                  className="w-full text-[13.5px] text-muted-foreground bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/40"
+                  className="w-full text-body text-muted-foreground bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/40"
                   rows={2} placeholder={isRtl ? "محتوى مطوي..." : "Collapsed content..."} />
               </motion.div>
             )}
@@ -539,32 +539,32 @@ function BlockRenderer({
       return (
         <div className="border-2 border-dashed border-border/50 rounded-xl p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer">
           <Image size={24} className="mx-auto text-muted-foreground/30 mb-2" />
-          <p className="text-[12px] text-muted-foreground/60">{isRtl ? "اسحب صورة هنا أو انقر للرفع" : "Drag image here or click to upload"}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-1">PNG, JPG, GIF, SVG, WebP</p>
+          <p className="text-caption text-muted-foreground/60">{isRtl ? "اسحب صورة هنا أو انقر للرفع" : "Drag image here or click to upload"}</p>
+          <p className="text-micro text-muted-foreground/40 mt-1">PNG, JPG, GIF, SVG, WebP</p>
         </div>
       );
     case "video":
       return (
         <div className="border-2 border-dashed border-border/50 rounded-xl p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer">
           <Video size={24} className="mx-auto text-muted-foreground/30 mb-2" />
-          <p className="text-[12px] text-muted-foreground/60">{isRtl ? "أدرج رابط فيديو" : "Embed a video URL"}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-1">YouTube, Vimeo, MP4</p>
+          <p className="text-caption text-muted-foreground/60">{isRtl ? "أدرج رابط فيديو" : "Embed a video URL"}</p>
+          <p className="text-micro text-muted-foreground/40 mt-1">YouTube, Vimeo, MP4</p>
         </div>
       );
     case "file":
       return (
         <div className="border-2 border-dashed border-border/50 rounded-xl p-6 text-center hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer">
           <Paperclip size={20} className="mx-auto text-muted-foreground/30 mb-2" />
-          <p className="text-[12px] text-muted-foreground/60">{isRtl ? "اسحب ملف هنا أو انقر للرفع" : "Drag file here or click to upload"}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-1">PDF, DOC, XLS, ZIP, etc.</p>
+          <p className="text-caption text-muted-foreground/60">{isRtl ? "اسحب ملف هنا أو انقر للرفع" : "Drag file here or click to upload"}</p>
+          <p className="text-micro text-muted-foreground/40 mt-1">PDF, DOC, XLS, ZIP, etc.</p>
         </div>
       );
     case "embed":
       return (
         <div className="border-2 border-dashed border-border/50 rounded-xl p-6 text-center hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer">
           <Link2 size={20} className="mx-auto text-muted-foreground/30 mb-2" />
-          <p className="text-[12px] text-muted-foreground/60">{isRtl ? "أدرج رابط للمحتوى" : "Paste a link to embed content"}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-1">Figma, Google Maps, Twitter, etc.</p>
+          <p className="text-caption text-muted-foreground/60">{isRtl ? "أدرج رابط للمحتوى" : "Paste a link to embed content"}</p>
+          <p className="text-micro text-muted-foreground/40 mt-1">Figma, Google Maps, Twitter, etc.</p>
         </div>
       );
     case "table":
@@ -575,9 +575,9 @@ function BlockRenderer({
               <div key={col} className="divide-y divide-border/30">
                 {[0, 1, 2].map(row => (
                   <div key={row} className="px-3 py-2 min-h-[36px]">
-                    {row === 0 && col === 0 && <span className="text-[11px] text-muted-foreground/40">{isRtl ? "العمود ١" : "Column 1"}</span>}
-                    {row === 0 && col === 1 && <span className="text-[11px] text-muted-foreground/40">{isRtl ? "العمود ٢" : "Column 2"}</span>}
-                    {row === 0 && col === 2 && <span className="text-[11px] text-muted-foreground/40">{isRtl ? "العمود ٣" : "Column 3"}</span>}
+                    {row === 0 && col === 0 && <span className="text-micro text-muted-foreground/40">{isRtl ? "العمود ١" : "Column 1"}</span>}
+                    {row === 0 && col === 1 && <span className="text-micro text-muted-foreground/40">{isRtl ? "العمود ٢" : "Column 2"}</span>}
+                    {row === 0 && col === 2 && <span className="text-micro text-muted-foreground/40">{isRtl ? "العمود ٣" : "Column 3"}</span>}
                   </div>
                 ))}
               </div>
@@ -589,19 +589,19 @@ function BlockRenderer({
       return (
         <div className="border border-border/40 rounded-xl p-5 text-center bg-muted/20">
           <Database size={20} className="mx-auto text-muted-foreground/30 mb-2" />
-          <p className="text-[12px] text-muted-foreground/60">{isRtl ? "قاعدة بيانات جديدة" : "New Database"}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-1">{isRtl ? "انقر لإنشاء قاعدة بيانات" : "Click to create a database"}</p>
+          <p className="text-caption text-muted-foreground/60">{isRtl ? "قاعدة بيانات جديدة" : "New Database"}</p>
+          <p className="text-micro text-muted-foreground/40 mt-1">{isRtl ? "انقر لإنشاء قاعدة بيانات" : "Click to create a database"}</p>
         </div>
       );
     case "ai_block":
       return (
         <div className="border border-primary/20 rounded-xl p-5 bg-gradient-to-br from-primary/5 to-transparent">
           <div className="flex items-center gap-2 mb-2">
-            <Sparkles size={14} className="text-primary" />
-            <span className="text-[12px] font-medium text-primary">{isRtl ? "مولد الذكاء الاصطناعي" : "AI Generator"}</span>
+            <Sparkles size={14} className="text-brand-ink" />
+            <span className="text-caption font-medium text-brand-ink">{isRtl ? "مولد الذكاء الاصطناعي" : "AI Generator"}</span>
           </div>
           <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-            className="w-full text-[13px] bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-primary/40"
+            className="w-full text-body bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-brand-ink/40"
             rows={2} placeholder={isRtl ? "اكتب ما تريد إنشاءه..." : "What do you want to generate..."} />
         </div>
       );
@@ -622,8 +622,8 @@ function BlockRenderer({
       const WidgetIcon = cfg.icon;
       const colorMap: Record<string, string> = {
         primary: "border-primary/20 bg-primary/5", emerald: "border-emerald-200 bg-emerald-50",
-        blue: "border-blue-200 bg-blue-50", amber: "border-amber-200 bg-amber-50",
-        violet: "border-violet-200 bg-violet-50", cyan: "border-cyan-200 bg-cyan-50",
+        blue: "border-blue-200 bg-blue-50", amber: "border-warning/30 bg-warning/10",
+        violet: "border-chart-4/30 bg-chart-4/10", cyan: "border-cyan-200 bg-cyan-50",
         pink: "border-pink-200 bg-pink-50", orange: "border-orange-200 bg-orange-50",
       };
       return (
@@ -631,15 +631,15 @@ function BlockRenderer({
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <WidgetIcon size={14} className={`text-${cfg.color}-600`} />
-              <span className="text-[12px] font-semibold text-foreground">{widgetLabel}</span>
+              <span className="text-caption font-semibold text-foreground">{widgetLabel}</span>
             </div>
-            <span className="text-[9px] px-2 py-0.5 rounded-full bg-white/60 text-muted-foreground font-medium">LIVE</span>
+            <span className="text-micro px-2 py-0.5 rounded-full bg-white/60 text-muted-foreground font-medium">LIVE</span>
           </div>
-          <p className="text-[11px] text-muted-foreground leading-relaxed">{cfg.data}</p>
+          <p className="text-micro text-muted-foreground leading-relaxed">{cfg.data}</p>
           <div className="flex items-center gap-1.5 mt-2">
             {Object.entries(widgetConfigs).slice(0, 4).map(([key, w]) => (
               <button key={key} onClick={() => { block.metadata = { ...block.metadata, widget_type: key }; }}
-                className={`text-[8px] px-2 py-0.5 rounded-full transition-all ${widgetType === key ? "bg-white/80 text-foreground font-medium" : "bg-white/40 text-muted-foreground hover:bg-white/60"}`}>
+                className={`text-micro px-2 py-0.5 rounded-full transition-all ${widgetType === key ? "bg-white/80 text-foreground font-medium" : "bg-white/40 text-muted-foreground hover:bg-white/60"}`}>
                 {isRtl ? w.labelAr : w.label}
               </button>
             ))}
@@ -650,7 +650,7 @@ function BlockRenderer({
     default:
       return (
         <textarea ref={textareaRef} value={text} onChange={(e) => { onUpdate(e.target.value); autoResize(e.target); }}
-          className="w-full text-[14px] bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
+          className="w-full text-body-lg bg-transparent border-0 outline-none resize-none leading-relaxed placeholder:text-muted-foreground/30"
           rows={1} placeholder={isRtl ? "اكتب '/' للأوامر..." : "Type '/' for commands..."} />
       );
   }
@@ -770,11 +770,11 @@ export default function StudioEditor({ blocks: initialBlocks, onBlocksChange }: 
   return (
     <div className="relative">
       {/* Autosave indicator */}
-      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mb-4">
+      <div className="flex items-center gap-1.5 text-micro text-muted-foreground mb-4">
         {saveStatus === "saving" ? (
           <Loader2 size={12} className="animate-spin" />
         ) : (
-          <div className={`w-1.5 h-1.5 rounded-full transition-colors ${saveStatus === "saved" ? "bg-emerald-500" : "bg-amber-500"}`} />
+          <div className={`w-1.5 h-1.5 rounded-full transition-colors ${saveStatus === "saved" ? "bg-emerald-500" : "bg-warning"}`} />
         )}
         <span>{saveLabel}</span>
       </div>
@@ -823,7 +823,7 @@ export default function StudioEditor({ blocks: initialBlocks, onBlocksChange }: 
       <div className="mt-4 pl-14">
         <button
           onClick={() => addBlock("text")}
-          className="flex items-center gap-2 text-[13px] text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors group"
+          className="flex items-center gap-2 text-body text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors group"
         >
           <div className="w-6 h-6 rounded-lg border border-dashed border-border/40 group-hover:border-border/60 flex items-center justify-center transition-colors">
             <Plus size={13} />

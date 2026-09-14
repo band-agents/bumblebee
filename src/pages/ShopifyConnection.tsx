@@ -33,7 +33,7 @@ type EntityKey = "products" | "inventory" | "orders" | "customers" | "loyalty" |
 
 interface SyncConfig {
   entities: Record<EntityKey, SyncDirection>;
-  conflict_policy: "latest" | "shopify" | "thoth";
+  conflict_policy: "latest" | "shopify" | "bumblebee";
   auto_sync: boolean;
   sync_interval_minutes: number;
 }
@@ -76,21 +76,21 @@ const ENTITIES: EntityDef[] = [
     key: "products", icon: Package, en: "Products & Variants", ar: "المنتجات",
     descEn: "Catalog, prices, images, SKUs", descAr: "الكتالوج والأسعار والصور وأكواد SKU",
     canImport: true, canExport: true,
-    importEn: "Bring your Shopify catalog into THOTH", importAr: "استيراد كتالوج شوبيفاي إلى ثوث",
-    exportEn: "Publish THOTH products to your store", exportAr: "نشر منتجات ثوث في متجرك",
+    importEn: "Bring your Shopify catalog into Bumblebee", importAr: "استيراد كتالوج شوبيفاي إلى بامبلبي",
+    exportEn: "Publish Bumblebee products to your store", exportAr: "نشر منتجات بامبلبي في متجرك",
   },
   {
     key: "inventory", icon: Boxes, en: "Inventory Levels", ar: "مستويات المخزون",
     descEn: "Stock quantities, matched by SKU", descAr: "الكميات — تتطابق بكود SKU",
     canImport: true, canExport: true,
-    importEn: "Shopify stock counts update THOTH inventory", importAr: "مخزون شوبيفاي يحدّث مخزون ثوث",
-    exportEn: "THOTH stock counts update your store", exportAr: "مخزون ثوث يحدّث متجرك",
+    importEn: "Shopify stock counts update Bumblebee inventory", importAr: "مخزون شوبيفاي يحدّث مخزون بامبلبي",
+    exportEn: "Bumblebee stock counts update your store", exportAr: "مخزون بامبلبي يحدّث متجرك",
   },
   {
     key: "orders", icon: ShoppingCart, en: "Orders & Refunds", ar: "الطلبات والمرتجعات",
     descEn: "Live via webhooks + history backfill", descAr: "مباشر عبر الويب هوك + استيراد القديم",
     canImport: true, canExport: false,
-    importEn: "Every store order lands in THOTH instantly", importAr: "كل طلب في المتجر يوصل لثوث فورًا",
+    importEn: "Every store order lands in Bumblebee instantly", importAr: "كل طلب في المتجر يوصل لبامبلبي فورًا",
     exportEn: "", exportAr: "",
     noteEn: "Orders are placed by customers in Shopify, so they only flow in. Loyalty points are awarded automatically.",
     noteAr: "الطلبات بيعملها العملاء في شوبيفاي، فبتدخل في اتجاه واحد. نقاط الولاء بتتحسب تلقائيًا.",
@@ -99,8 +99,8 @@ const ENTITIES: EntityDef[] = [
     key: "customers", icon: Users, en: "Customers", ar: "العملاء",
     descEn: "Profiles, emails, purchase history", descAr: "الملفات والإيميلات وسجل الشراء",
     canImport: true, canExport: true,
-    importEn: "Store customers become THOTH contacts", importAr: "عملاء المتجر يبقوا جهات اتصال في ثوث",
-    exportEn: "THOTH writes loyalty data to their profiles", exportAr: "ثوث يكتب بيانات الولاء في ملفاتهم",
+    importEn: "Store customers become Bumblebee contacts", importAr: "عملاء المتجر يبقوا جهات اتصال في بامبلبي",
+    exportEn: "Bumblebee writes loyalty data to their profiles", exportAr: "بامبلبي يكتب بيانات الولاء في ملفاتهم",
   },
   {
     key: "loyalty", icon: Gift, en: "Loyalty Program", ar: "برنامج الولاء",
@@ -108,13 +108,13 @@ const ENTITIES: EntityDef[] = [
     canImport: false, canExport: true,
     importEn: "", importAr: "",
     exportEn: "Points & tiers appear on Shopify customer profiles; redemptions create discount codes", exportAr: "النقاط والمستويات تظهر في شوبيفاي، والاستبدالات تنشئ أكواد خصم",
-    noteEn: "THOTH owns the loyalty math — it can only flow out.", noteAr: "ثوث هو مصدر حسابات الولاء — بتطلع في اتجاه واحد بس.",
+    noteEn: "Bumblebee owns the loyalty math — it can only flow out.", noteAr: "بامبلبي هو مصدر حسابات الولاء — بتطلع في اتجاه واحد بس.",
   },
   {
     key: "analytics", icon: BarChart3, en: "Sales Analytics", ar: "تحليلات المبيعات",
     descEn: "Revenue, AOV, top products, channels", descAr: "الإيرادات ومتوسط الطلب وأفضل المنتجات",
     canImport: true, canExport: false,
-    importEn: "Store performance feeds THOTH dashboards", importAr: "أداء المتجر يغذي لوحات ثوث",
+    importEn: "Store performance feeds Bumblebee dashboards", importAr: "أداء المتجر يغذي لوحات بامبلبي",
     exportEn: "", exportAr: "",
     noteEn: "Computed from imported orders — read-only by nature.", noteAr: "محسوبة من الطلبات المستوردة — قراءة فقط بطبيعتها.",
   },
@@ -126,7 +126,7 @@ const REQUIRED_SCOPES = [
   "write_price_rules", "write_discounts",
 ];
 
-const LS_KEY = "thoth_shopify_integration";
+const LS_KEY = "bumblebee_shopify_integration";
 
 /** Accepts my-store.myshopify.com, https://..., or the admin URL
  *  (admin.shopify.com/store/my-store) and returns the API host. */
@@ -144,14 +144,14 @@ const cardCls = "border border-border/40 rounded-xl bg-background";
 function DirectionPill({ dir, ar }: { dir: SyncDirection; ar: boolean }) {
   const map = {
     off: { icon: Ban, en: "Off", ar: "موقوف", cls: "bg-muted text-muted-foreground" },
-    import: { icon: ArrowLeft, en: "Shopify → THOTH", ar: "شوبيفاي ← ثوث", cls: "bg-blue-50 text-blue-600" },
-    export: { icon: ArrowRight, en: "THOTH → Shopify", ar: "ثوث ← شوبيفاي", cls: "bg-violet-50 text-violet-600" },
+    import: { icon: ArrowLeft, en: "Shopify → Bumblebee", ar: "شوبيفاي ← بامبلبي", cls: "bg-blue-50 text-blue-600" },
+    export: { icon: ArrowRight, en: "Bumblebee → Shopify", ar: "بامبلبي ← شوبيفاي", cls: "bg-chart-4/10 text-chart-4" },
     both: { icon: ArrowLeftRight, en: "Two-way", ar: "اتجاهين", cls: "bg-emerald-50 text-emerald-700" },
   } as const;
   const m = map[dir];
   const Icon = m.icon;
   return (
-    <span className={`inline-flex items-center gap-1.5 text-[10.5px] font-medium px-2.5 py-1 rounded-full ${m.cls}`}>
+    <span className={`inline-flex items-center gap-1.5 text-micro font-medium px-2.5 py-1 rounded-full ${m.cls}`}>
       <Icon size={10} /> {ar ? m.ar : m.en}
     </span>
   );
@@ -387,7 +387,7 @@ export default function ShopifyConnectionPage() {
             <button key={o.dir} disabled={!o.enabled}
               onClick={() => setEntityDir(ent.key, o.dir)}
               title={!o.enabled ? (ar ? "غير متاح لهذا النوع" : "Not available for this data type") : undefined}
-              className={`flex-1 flex items-center justify-center gap-1 px-1.5 py-2 text-[10px] font-medium whitespace-nowrap transition-colors ${
+              className={`flex-1 flex items-center justify-center gap-1 px-1.5 py-2 text-micro font-medium whitespace-nowrap transition-colors ${
                 active ? "bg-foreground text-background" :
                 o.enabled ? "text-muted-foreground hover:bg-muted/50" : "text-muted-foreground/30 cursor-not-allowed"
               }`}>
@@ -405,10 +405,10 @@ export default function ShopifyConnectionPage() {
       <div className="space-y-4">
         {/* Presets */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-muted-foreground">{ar ? "إعدادات جاهزة:" : "Quick presets:"}</span>
+          <span className="text-micro text-muted-foreground">{ar ? "إعدادات جاهزة:" : "Quick presets:"}</span>
           {PRESETS.map((p) => (
             <button key={p.key} onClick={() => setConfig((c) => ({ ...c, entities: { ...p.entities } }))}
-              className="flex items-center gap-1.5 h-7 px-3 rounded-full border border-border/60 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+              className="flex items-center gap-1.5 h-7 px-3 rounded-full border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
               <p.icon size={11} /> {ar ? p.ar : p.en}
             </button>
           ))}
@@ -426,21 +426,21 @@ export default function ShopifyConnectionPage() {
                     <Icon size={15} className="text-foreground/70" />
                   </div>
                   <div className="flex-1 min-w-[200px]">
-                    <p className="text-[13px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? ent.ar : ent.en}</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{ar ? ent.descAr : ent.descEn}</p>
+                    <p className="text-body font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? ent.ar : ent.en}</p>
+                    <p className="text-micro text-muted-foreground mt-0.5">{ar ? ent.descAr : ent.descEn}</p>
                     {/* Plain-language explanation of what the chosen direction does */}
                     {dir !== "off" && (
                       <div className="mt-2 space-y-1">
                         {(dir === "import" || dir === "both") && ent.importEn && (
-                          <p className="text-[10.5px] text-blue-600 flex items-center gap-1.5"><ArrowLeft size={9} className="shrink-0" />{ar ? ent.importAr : ent.importEn}</p>
+                          <p className="text-micro text-blue-600 flex items-center gap-1.5"><ArrowLeft size={9} className="shrink-0" />{ar ? ent.importAr : ent.importEn}</p>
                         )}
                         {(dir === "export" || dir === "both") && ent.exportEn && (
-                          <p className="text-[10.5px] text-violet-600 flex items-center gap-1.5"><ArrowRight size={9} className="shrink-0" />{ar ? ent.exportAr : ent.exportEn}</p>
+                          <p className="text-micro text-chart-4 flex items-center gap-1.5"><ArrowRight size={9} className="shrink-0" />{ar ? ent.exportAr : ent.exportEn}</p>
                         )}
                       </div>
                     )}
                     {ent.noteEn && (
-                      <p className="text-[10px] text-muted-foreground/70 mt-1.5 flex items-start gap-1"><HelpCircle size={9} className="shrink-0 mt-0.5" />{ar ? ent.noteAr : ent.noteEn}</p>
+                      <p className="text-micro text-muted-foreground/70 mt-1.5 flex items-start gap-1"><HelpCircle size={9} className="shrink-0 mt-0.5" />{ar ? ent.noteAr : ent.noteEn}</p>
                     )}
                   </div>
                   <div className="w-full md:w-[300px] shrink-0">
@@ -460,19 +460,19 @@ export default function ShopifyConnectionPage() {
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[900px] mx-auto">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
 
       {/* Header */}
       <div className="mb-8">
-        <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "التكاملات" : "Integrations"}</p>
-        <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+        <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "التكاملات" : "Integrations"}</p>
+        <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
           {ar ? "تكامل شوبيفاي" : "Shopify Integration"}
         </h1>
-        <p className="text-[12px] text-muted-foreground mt-1">
-          {ar ? "اربط متجرك واختار إيه اللي يتبادل بين ثوث وشوبيفاي — وفي أي اتجاه" : "Connect your store and choose exactly what flows between THOTH and Shopify — and in which direction"}
+        <p className="text-caption text-muted-foreground mt-1">
+          {ar ? "اربط متجرك واختار إيه اللي يتبادل بين بامبلبي وشوبيفاي — وفي أي اتجاه" : "Connect your store and choose exactly what flows between Bumblebee and Shopify — and in which direction"}
         </p>
       </div>
 
@@ -493,7 +493,7 @@ export default function ShopifyConnectionPage() {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2.5 mb-1">
-                <h2 className="text-[18px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <h2 className="text-title font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {isConnected ? (ar ? "متصل بشوبيفاي" : "Connected to Shopify") :
                    status === "error" ? (ar ? "خطأ في الاتصال" : "Connection Error") :
                    (ar ? "غير متصل" : "Not Connected")}
@@ -504,23 +504,23 @@ export default function ShopifyConnectionPage() {
                 }`} />
               </div>
               {isConnected ? (
-                <div className="flex items-center gap-4 text-[12px] text-muted-foreground">
+                <div className="flex items-center gap-4 text-caption text-muted-foreground">
                   <span className="flex items-center gap-1"><Globe size={11} />{storeUrl}</span>
                   {lastSync && <span className="flex items-center gap-1"><Clock size={11} />{ar ? "آخر مزامنة:" : "Last sync:"} {new Date(lastSync).toLocaleString(ar ? "ar" : "en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>}
                 </div>
               ) : (
-                <p className="text-[12px] text-muted-foreground">{ar ? "اتبع الخطوات تحت — الإعداد ياخد ٥ دقايق ومش محتاج خبرة تقنية" : "Follow the steps below — setup takes 5 minutes, no technical skills needed"}</p>
+                <p className="text-caption text-muted-foreground">{ar ? "اتبع الخطوات تحت — الإعداد ياخد ٥ دقايق ومش محتاج خبرة تقنية" : "Follow the steps below — setup takes 5 minutes, no technical skills needed"}</p>
               )}
             </div>
             {isConnected && (
               <div className="flex items-center gap-2 shrink-0">
                 <button onClick={() => handleSyncEntity("all")} disabled={!!busy}
-                  className="h-8 px-3 rounded-lg bg-foreground text-background text-[11px] font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity disabled:opacity-50">
+                  className="h-8 px-3 rounded-lg bg-foreground text-background text-micro font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity disabled:opacity-50">
                   {busy === "all" ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
                   {ar ? "زامن الكل" : "Sync All"}
                 </button>
                 <button onClick={handleDisconnect}
-                  className="h-8 px-3 rounded-lg border border-rose-200 text-[11px] font-medium text-rose-500 hover:bg-rose-50 flex items-center gap-1.5 transition-colors">
+                  className="h-8 px-3 rounded-lg border border-rose-200 text-micro font-medium text-rose-500 hover:bg-rose-50 flex items-center gap-1.5 transition-colors">
                   <XCircle size={12} />{ar ? "قطع" : "Disconnect"}
                 </button>
               </div>
@@ -542,11 +542,11 @@ export default function ShopifyConnectionPage() {
               <div key={s.n} className="flex items-center gap-2">
                 {i > 0 && <div className={`w-8 h-px ${step > i ? "bg-foreground" : "bg-border"}`} />}
                 <button onClick={() => step > s.n && setStep(s.n)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-micro font-medium transition-colors ${
                     step === s.n ? "bg-foreground text-background" :
                     step > s.n ? "bg-emerald-50 text-emerald-700 cursor-pointer" : "bg-muted/50 text-muted-foreground"
                   }`}>
-                  {step > s.n ? <Check size={11} /> : <span className="w-4 h-4 rounded-full bg-background/20 flex items-center justify-center text-[9px]">{s.n}</span>}
+                  {step > s.n ? <Check size={11} /> : <span className="w-4 h-4 rounded-full bg-background/20 flex items-center justify-center text-micro">{s.n}</span>}
                   {ar ? s.ar : s.en}
                 </button>
               </div>
@@ -558,20 +558,20 @@ export default function ShopifyConnectionPage() {
             <div className={cardCls + " mb-6"}>
               <div className="px-5 py-4 border-b border-border/30 flex items-center gap-2">
                 <Store size={14} className="text-muted-foreground" />
-                <h3 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "بيانات المتجر" : "Your Store Details"}</h3>
+                <h3 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "بيانات المتجر" : "Your Store Details"}</h3>
               </div>
               <div className="px-5 py-5 space-y-4">
                 <div>
-                  <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+                  <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                     <Globe size={11} className="inline mr-1" />{ar ? "رابط المتجر" : "Store URL"}
                   </label>
                   <input type="text" value={storeUrl} onChange={(e) => setStoreUrl(e.target.value)} placeholder="my-store.myshopify.com"
-                    className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                  <p className="text-[10px] text-muted-foreground mt-1">{ar ? "هو نفس الرابط اللي بتدخل منه على لوحة تحكم شوبيفاي" : "The same address you use to open your Shopify admin"}</p>
+                    className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "هو نفس الرابط اللي بتدخل منه على لوحة تحكم شوبيفاي" : "The same address you use to open your Shopify admin"}</p>
                 </div>
                 {/* Auth method */}
                 <div>
-                  <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+                  <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                     <Key size={11} className="inline mr-1" />{ar ? "طريقة الربط" : "Connection Method"}
                   </label>
                   <div className="flex rounded-xl border border-border/60 overflow-hidden mb-3">
@@ -580,7 +580,7 @@ export default function ShopifyConnectionPage() {
                       { v: "legacy" as const, en: "Legacy access token (shpat_)", ar: "رمز وصول قديم (shpat_)" },
                     ]).map((o) => (
                       <button key={o.v} type="button" onClick={() => setAuthMode(o.v)}
-                        className={`flex-1 px-3 py-2 text-[11px] font-medium transition-colors ${authMode === o.v ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted/50"}`}>
+                        className={`flex-1 px-3 py-2 text-micro font-medium transition-colors ${authMode === o.v ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted/50"}`}>
                         {ar ? o.ar : o.en}
                       </button>
                     ))}
@@ -589,21 +589,21 @@ export default function ShopifyConnectionPage() {
                     <div className="space-y-3">
                       <div>
                         <input type="text" value={clientId} onChange={(e) => setClientId(e.target.value)} placeholder={ar ? "Client ID — معرف العميل" : "Client ID"}
-                          className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono" />
+                          className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 font-mono" />
                       </div>
                       <div>
                         <input type="password" value={clientSecret} onChange={(e) => setClientSecret(e.target.value)} placeholder={ar ? "Secret — الرمز السري (shpss_...)" : "Secret (shpss_...)"}
-                          className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono" />
+                          className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 font-mono" />
                       </div>
-                      <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                        <Shield size={9} />{ar ? "ثوث يبدّلهم تلقائيًا برمز وصول مؤقت ويجدده كل ٢٤ ساعة — في الخادم فقط" : "THOTH exchanges these for a temporary access token and auto-renews it every 24h — server-side only"}
+                      <p className="text-micro text-muted-foreground flex items-center gap-1">
+                        <Shield size={9} />{ar ? "بامبلبي يبدّلهم تلقائيًا برمز وصول مؤقت ويجدده كل ٢٤ ساعة — في الخادم فقط" : "Bumblebee exchanges these for a temporary access token and auto-renews it every 24h — server-side only"}
                       </p>
                     </div>
                   ) : (
                     <div>
                       <input type="password" value={accessToken} onChange={(e) => setAccessToken(e.target.value)} placeholder="shpat_xxxxxxxxxxxxx"
-                        className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono" />
-                      <p className="text-[10px] text-muted-foreground mt-1.5 flex items-center gap-1">
+                        className="w-full h-10 px-3.5 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 font-mono" />
+                      <p className="text-micro text-muted-foreground mt-1.5 flex items-center gap-1">
                         <Shield size={9} />{ar ? "للتطبيقات المخصصة القديمة اللي لسه شغالة — يُخزن مشفرًا في الخادم فقط" : "For older custom apps that still work — stored encrypted server-side only"}
                       </p>
                     </div>
@@ -613,7 +613,7 @@ export default function ShopifyConnectionPage() {
                 {/* Non-tech guide */}
                 <button onClick={() => setShowGuide(!showGuide)}
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-blue-50/50 border border-blue-200/40 text-start hover:bg-blue-50 transition-colors">
-                  <span className="flex items-center gap-2 text-[12px] font-medium text-blue-700">
+                  <span className="flex items-center gap-2 text-caption font-medium text-blue-700">
                     <HelpCircle size={13} />{authMode === "dashboard"
                       ? (ar ? "منين أجيب Client ID والـ Secret؟ (دليل خطوة بخطوة)" : "Where do I find my Client ID & Secret? (step-by-step guide)")
                       : (ar ? "منين أجيب رمز الوصول؟ (دليل خطوة بخطوة)" : "Where do I find my access token? (step-by-step guide)")}
@@ -624,13 +624,13 @@ export default function ShopifyConnectionPage() {
                   <div className="px-4 py-4 rounded-xl bg-muted/20 border border-border/30 space-y-2.5">
                     {(authMode === "dashboard" ? (ar ? [
                       "افتح dev.shopify.com وسجّل دخول بنفس إيميل متجرك",
-                      "من قسم Apps اضغط «Create app» → «Start from Dev Dashboard» وسمّيه THOTH",
+                      "من قسم Apps اضغط «Create app» → «Start from Dev Dashboard» وسمّيه Bumblebee",
                       "في تبويب Versions ضيف صلاحيات Admin API الموجودة تحت، وانشر النسخة (Release)",
                       "من صفحة Home اضغط «Install app» واختار متجرك",
                       "روح Settings → Credentials → انسخ الـ Client ID والـ Secret (shpss_) هنا",
                     ] : [
                       "Open dev.shopify.com and sign in with your store's email",
-                      "In Apps, click “Create app” → “Start from Dev Dashboard” and name it THOTH",
+                      "In Apps, click “Create app” → “Start from Dev Dashboard” and name it Bumblebee",
                       "In the Versions tab, add the Admin API permissions listed below, then release the version",
                       "From the app's Home page, click “Install app” and pick your store",
                       "Go to Settings → Credentials → copy the Client ID and Secret (shpss_) here",
@@ -644,18 +644,18 @@ export default function ShopifyConnectionPage() {
                       "Starting fresh? Use the “Dev Dashboard app” method instead — it's Shopify's current approach",
                     ])).map((s, i) => (
                       <div key={i} className="flex items-start gap-2.5">
-                        <span className="w-5 h-5 rounded-full bg-foreground text-background text-[10px] font-semibold flex items-center justify-center shrink-0">{i + 1}</span>
-                        <p className="text-[11.5px] text-foreground/80 leading-relaxed">{s}</p>
+                        <span className="w-5 h-5 rounded-full bg-foreground text-background text-micro font-semibold flex items-center justify-center shrink-0">{i + 1}</span>
+                        <p className="text-micro text-foreground/80 leading-relaxed">{s}</p>
                       </div>
                     ))}
                     <div className="pt-2 border-t border-border/30">
-                      <p className="text-[10.5px] font-medium text-muted-foreground mb-1.5">{ar ? "صلاحيات Admin API المطلوبة:" : "Admin API permissions THOTH needs:"}</p>
+                      <p className="text-micro font-medium text-muted-foreground mb-1.5">{ar ? "صلاحيات Admin API المطلوبة:" : "Admin API permissions Bumblebee needs:"}</p>
                       <div className="flex flex-wrap gap-1.5">
-                        {REQUIRED_SCOPES.map((s) => <code key={s} className="text-[9.5px] font-mono px-2 py-0.5 rounded-md bg-background border border-border/40">{s}</code>)}
+                        {REQUIRED_SCOPES.map((s) => <code key={s} className="text-micro font-mono px-2 py-0.5 rounded-md bg-background border border-border/40">{s}</code>)}
                       </div>
                     </div>
                     <a href="https://shopify.dev/docs/apps/build/authentication/access-tokens/generate-app-access-tokens-admin" target="_blank" rel="noopener noreferrer"
-                      className="text-[11px] text-primary hover:underline inline-flex items-center gap-1">
+                      className="text-micro text-brand-ink hover:underline inline-flex items-center gap-1">
                       {ar ? "الدليل الرسمي من شوبيفاي" : "Official Shopify guide"}<ExternalLink size={9} />
                     </a>
                   </div>
@@ -664,7 +664,7 @@ export default function ShopifyConnectionPage() {
                 <div className="flex justify-end pt-1">
                   <button onClick={() => { setStoreUrl(normalizeStoreUrl(storeUrl)); setStep(2); }}
                     disabled={!storeUrl.trim() || (!isDemoMode && (authMode === "dashboard" ? (!clientId.trim() || !clientSecret.trim()) : !accessToken.trim()))}
-                    className="h-10 px-6 rounded-xl bg-foreground text-background text-[13px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-40">
+                    className="h-10 px-6 rounded-xl bg-foreground text-background text-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-40">
                     {ar ? "التالي: اختار البيانات" : "Next: Choose Data"} <ChevronRight size={14} />
                   </button>
                 </div>
@@ -676,21 +676,21 @@ export default function ShopifyConnectionPage() {
           {step === 2 && (
             <div className="mb-6">
               <div className="mb-4 px-1">
-                <h3 className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <h3 className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {ar ? "إيه اللي يتبادل — وفي أي اتجاه؟" : "What should sync — and which way?"}
                 </h3>
-                <p className="text-[12px] text-muted-foreground leading-relaxed">
+                <p className="text-caption text-muted-foreground leading-relaxed">
                   {ar
-                    ? "لكل نوع بيانات، اختار: استيراد (شوبيفاي ← ثوث)، تصدير (ثوث ← شوبيفاي)، اتجاهين، أو موقوف. تقدر تغير ده في أي وقت."
-                    : "For each data type, choose: Import (Shopify → THOTH), Export (THOTH → Shopify), Two-way, or Off. You can change this anytime."}
+                    ? "لكل نوع بيانات، اختار: استيراد (شوبيفاي ← بامبلبي)، تصدير (بامبلبي ← شوبيفاي)، اتجاهين، أو موقوف. تقدر تغير ده في أي وقت."
+                    : "For each data type, choose: Import (Shopify → Bumblebee), Export (Bumblebee → Shopify), Two-way, or Off. You can change this anytime."}
                 </p>
               </div>
               <FlowMatrix />
               <div className="flex justify-between pt-5">
-                <button onClick={() => setStep(1)} className="h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors flex items-center gap-2">
+                <button onClick={() => setStep(1)} className="h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors flex items-center gap-2">
                   <ChevronLeft size={14} /> {ar ? "رجوع" : "Back"}
                 </button>
-                <button onClick={() => setStep(3)} className="h-10 px-6 rounded-xl bg-foreground text-background text-[13px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <button onClick={() => setStep(3)} className="h-10 px-6 rounded-xl bg-foreground text-background text-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity">
                   {ar ? "التالي: راجع" : "Next: Review"} <ChevronRight size={14} />
                 </button>
               </div>
@@ -703,8 +703,8 @@ export default function ShopifyConnectionPage() {
               {/* Flow summary */}
               <div className={cardCls}>
                 <div className="px-5 py-4 border-b border-border/30">
-                  <h3 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "ملخص تدفق البيانات" : "Data Flow Summary"}</h3>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">{storeUrl} ⇄ THOTH</p>
+                  <h3 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "ملخص تدفق البيانات" : "Data Flow Summary"}</h3>
+                  <p className="text-micro text-muted-foreground mt-0.5">{storeUrl} ⇄ Bumblebee</p>
                 </div>
                 <div className="divide-y divide-border/25">
                   {ENTITIES.map((ent) => {
@@ -712,7 +712,7 @@ export default function ShopifyConnectionPage() {
                     return (
                       <div key={ent.key} className="flex items-center gap-3 px-5 py-3">
                         <Icon size={14} className="text-muted-foreground shrink-0" />
-                        <p className="flex-1 text-[12.5px] font-medium">{ar ? ent.ar : ent.en}</p>
+                        <p className="flex-1 text-caption font-medium">{ar ? ent.ar : ent.en}</p>
                         <DirectionPill dir={config.entities[ent.key]} ar={ar} />
                       </div>
                     );
@@ -723,18 +723,18 @@ export default function ShopifyConnectionPage() {
               {/* Conflict policy — only matters if something is two-way */}
               {anyTwoWay && (
                 <div className={cardCls + " p-5"}>
-                  <h3 className="text-[13px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <h3 className="text-body font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {ar ? "لو نفس السجل اتعدل في المكانين؟" : "If the same record changed in both places?"}
                   </h3>
-                  <p className="text-[11px] text-muted-foreground mb-3">{ar ? "بيحصل أحيانًا مع المزامنة باتجاهين — اختار مين يكسب." : "This happens with two-way sync — choose who wins."}</p>
+                  <p className="text-micro text-muted-foreground mb-3">{ar ? "بيحصل أحيانًا مع المزامنة باتجاهين — اختار مين يكسب." : "This happens with two-way sync — choose who wins."}</p>
                   <div className="grid grid-cols-3 gap-2">
                     {([
                       { v: "latest" as const, en: "Latest edit wins", ar: "آخر تعديل يكسب" },
                       { v: "shopify" as const, en: "Shopify wins", ar: "شوبيفاي يكسب" },
-                      { v: "thoth" as const, en: "THOTH wins", ar: "ثوث يكسب" },
+                      { v: "bumblebee" as const, en: "Bumblebee wins", ar: "بامبلبي يكسب" },
                     ]).map((o) => (
                       <button key={o.v} onClick={() => setConfig((c) => ({ ...c, conflict_policy: o.v }))}
-                        className={`h-10 rounded-xl text-[12px] font-medium border transition-colors ${
+                        className={`h-10 rounded-xl text-caption font-medium border transition-colors ${
                           config.conflict_policy === o.v ? "bg-foreground text-background border-foreground" : "border-border/60 text-muted-foreground hover:bg-muted/50"
                         }`}>{ar ? o.ar : o.en}</button>
                     ))}
@@ -745,13 +745,13 @@ export default function ShopifyConnectionPage() {
               {/* Auto sync */}
               <div className={cardCls + " p-5 flex items-center justify-between gap-4"}>
                 <div>
-                  <h3 className="text-[13px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مزامنة تلقائية" : "Automatic sync"}</h3>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">{ar ? "الطلبات بتوصل فورًا عبر الويب هوك — ده للباقي (منتجات، مخزون، عملاء)" : "Orders arrive instantly via webhooks — this covers the rest (products, stock, customers)"}</p>
+                  <h3 className="text-body font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مزامنة تلقائية" : "Automatic sync"}</h3>
+                  <p className="text-micro text-muted-foreground mt-0.5">{ar ? "الطلبات بتوصل فورًا عبر الويب هوك — ده للباقي (منتجات، مخزون، عملاء)" : "Orders arrive instantly via webhooks — this covers the rest (products, stock, customers)"}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <select value={config.auto_sync ? String(config.sync_interval_minutes) : "off"}
                     onChange={(e) => setConfig((c) => e.target.value === "off" ? { ...c, auto_sync: false } : { ...c, auto_sync: true, sync_interval_minutes: parseInt(e.target.value) })}
-                    className="h-9 rounded-xl border border-border/60 bg-background px-3 text-[12px] cursor-pointer focus:outline-none">
+                    className="h-9 rounded-xl border border-border/60 bg-background px-3 text-caption cursor-pointer focus:outline-none">
                     <option value="15">{ar ? "كل ١٥ دقيقة" : "Every 15 min"}</option>
                     <option value="30">{ar ? "كل ٣٠ دقيقة" : "Every 30 min"}</option>
                     <option value="60">{ar ? "كل ساعة" : "Every hour"}</option>
@@ -763,16 +763,16 @@ export default function ShopifyConnectionPage() {
               {error && (
                 <div className="flex items-start gap-2.5 p-4 rounded-xl border border-rose-200/60 bg-rose-50/40">
                   <AlertTriangle size={14} className="text-rose-500 shrink-0 mt-0.5" />
-                  <p className="text-[12px] text-rose-600">{error}</p>
+                  <p className="text-caption text-rose-600">{error}</p>
                 </div>
               )}
 
               <div className="flex justify-between">
-                <button onClick={() => setStep(2)} className="h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors flex items-center gap-2">
+                <button onClick={() => setStep(2)} className="h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors flex items-center gap-2">
                   <ChevronLeft size={14} /> {ar ? "رجوع" : "Back"}
                 </button>
                 <button onClick={handleConnect} disabled={busy === "connect"}
-                  className="h-10 px-7 rounded-xl bg-foreground text-background text-[13px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50">
+                  className="h-10 px-7 rounded-xl bg-foreground text-background text-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50">
                   {busy === "connect" ? <Loader2 size={14} className="animate-spin" /> : <Wifi size={14} />}
                   {ar ? "اتصل وفعّل المزامنة" : "Connect & Start Syncing"}
                 </button>
@@ -789,10 +789,10 @@ export default function ShopifyConnectionPage() {
           <div className={cardCls + " mb-6"}>
             <div className="px-5 py-4 border-b border-border/30 flex items-center justify-between">
               <div>
-                <h3 className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تدفق البيانات" : "Data Flow"}</h3>
-                <p className="text-[11px] text-muted-foreground mt-0.5">{ar ? `${activeFlows.length} أنواع بيانات نشطة` : `${activeFlows.length} active data flows`}</p>
+                <h3 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تدفق البيانات" : "Data Flow"}</h3>
+                <p className="text-micro text-muted-foreground mt-0.5">{ar ? `${activeFlows.length} أنواع بيانات نشطة` : `${activeFlows.length} active data flows`}</p>
               </div>
-              <button onClick={() => setEditingFlows(true)} className="text-[11px] text-primary hover:underline flex items-center gap-1">
+              <button onClick={() => setEditingFlows(true)} className="text-micro text-brand-ink hover:underline flex items-center gap-1">
                 <Settings size={10} />{ar ? "عدّل الاتجاهات" : "Edit directions"}
               </button>
             </div>
@@ -804,13 +804,13 @@ export default function ShopifyConnectionPage() {
                   <div key={ent.key} className={`flex items-center gap-3 px-5 py-3.5 ${dir === "off" ? "opacity-45" : ""}`}>
                     <Icon size={14} className="text-muted-foreground shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12.5px] font-medium">{ar ? ent.ar : ent.en}</p>
-                      <p className="text-[10.5px] text-muted-foreground truncate">{ar ? ent.descAr : ent.descEn}</p>
+                      <p className="text-caption font-medium">{ar ? ent.ar : ent.en}</p>
+                      <p className="text-micro text-muted-foreground truncate">{ar ? ent.descAr : ent.descEn}</p>
                     </div>
                     <DirectionPill dir={dir} ar={ar} />
                     {dir !== "off" && (
                       <button onClick={() => handleSyncEntity(ent.key)} disabled={!!busy}
-                        className="h-7 px-2.5 rounded-lg border border-border/60 text-[10.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 flex items-center gap-1 transition-colors disabled:opacity-40 shrink-0">
+                        className="h-7 px-2.5 rounded-lg border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 flex items-center gap-1 transition-colors disabled:opacity-40 shrink-0">
                         {busy === ent.key ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
                         {ar ? "زامن" : "Sync"}
                       </button>
@@ -830,9 +830,9 @@ export default function ShopifyConnectionPage() {
             ].map((link) => (
               <button key={link.path} onClick={() => navigate(link.path)}
                 className="border border-border/40 rounded-xl p-4 text-start hover:border-primary/30 hover:bg-muted/15 transition-all group">
-                <link.icon size={16} className="text-muted-foreground group-hover:text-primary transition-colors mb-2" />
-                <p className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors">{ar ? link.titleAr : link.titleEn}</p>
-                <p className="text-[11px] text-muted-foreground">{ar ? link.descAr : link.descEn}</p>
+                <link.icon size={16} className="text-muted-foreground group-hover:text-brand-ink transition-colors mb-2" />
+                <p className="text-body font-medium text-foreground group-hover:text-brand-ink transition-colors">{ar ? link.titleAr : link.titleEn}</p>
+                <p className="text-micro text-muted-foreground">{ar ? link.descAr : link.descEn}</p>
               </button>
             ))}
           </div>
@@ -843,17 +843,17 @@ export default function ShopifyConnectionPage() {
       {isConnected && editingFlows && (
         <div className="mb-6">
           <div className="mb-4 px-1">
-            <h3 className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "عدّل اتجاهات المزامنة" : "Edit Sync Directions"}
             </h3>
           </div>
           <FlowMatrix />
           <div className="flex justify-end gap-3 pt-5">
-            <button onClick={() => setEditingFlows(false)} className="h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+            <button onClick={() => setEditingFlows(false)} className="h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
               {ar ? "إلغاء" : "Cancel"}
             </button>
             <button onClick={handleSaveFlows} disabled={busy === "save"}
-              className="h-10 px-6 rounded-xl bg-foreground text-background text-[13px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50">
+              className="h-10 px-6 rounded-xl bg-foreground text-background text-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50">
               {busy === "save" ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
               {ar ? "احفظ" : "Save Directions"}
             </button>
@@ -866,10 +866,10 @@ export default function ShopifyConnectionPage() {
         <div className="flex items-start gap-3">
           <Shield size={16} className="text-muted-foreground shrink-0 mt-0.5" />
           <div>
-            <h3 className="text-[13px] font-medium text-foreground mb-1.5" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body font-medium text-foreground mb-1.5" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "الأمان والبنية" : "Security & Architecture"}
             </h3>
-            <div className="space-y-1.5 text-[11px] text-muted-foreground">
+            <div className="space-y-1.5 text-micro text-muted-foreground">
               <p>{ar ? "رمز الوصول يُخزن مشفرًا في قاعدة البيانات ولا يُرسل أبدًا للواجهة الأمامية." : "Access token stored encrypted in database — never sent to frontend."}</p>
               <p>{ar ? "كل مكالمات Shopify API تتم عبر Supabase Edge Functions في الخادم." : "All Shopify API calls go through Supabase Edge Functions (server-side)."}</p>
               <p>{ar ? "الويب هوك محمي بتحقق HMAC — الطلبات غير الموقعة تُرفض." : "Webhooks protected by HMAC validation — unsigned requests are rejected."}</p>

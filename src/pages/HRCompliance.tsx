@@ -35,8 +35,8 @@ const cardV = {
 
 const TYPE_META: Record<string, { en: string; ar: string; icon: typeof ShieldCheck; color: string; bg: string; border: string }> = {
   contract: { en: "Contract", ar: "عقد", icon: FileText, color: "text-blue-400", bg: "bg-blue-500/15", border: "border-blue-500/30" },
-  document: { en: "Document", ar: "مستند", icon: FileText, color: "text-violet-400", bg: "bg-violet-500/15", border: "border-violet-500/30" },
-  safety: { en: "Safety", ar: "سلامة", icon: HardHat, color: "text-amber-400", bg: "bg-amber-500/15", border: "border-amber-500/30" },
+  document: { en: "Document", ar: "مستند", icon: FileText, color: "text-chart-4", bg: "bg-chart-4/15", border: "border-chart-4/30" },
+  safety: { en: "Safety", ar: "سلامة", icon: HardHat, color: "text-warning", bg: "bg-warning/15", border: "border-warning/30" },
   insurance: { en: "Insurance", ar: "تأمين", icon: ShieldCheck, color: "text-emerald-400", bg: "bg-emerald-500/15", border: "border-emerald-500/30" },
   tax: { en: "Tax", ar: "ضرائب", icon: Landmark, color: "text-cyan-400", bg: "bg-cyan-500/15", border: "border-cyan-500/30" },
   inspection: { en: "Inspection", ar: "تفتيش", icon: Eye, color: "text-rose-400", bg: "bg-rose-500/15", border: "border-rose-500/30" },
@@ -44,11 +44,11 @@ const TYPE_META: Record<string, { en: string; ar: string; icon: typeof ShieldChe
 
 const STATUS_META: Record<string, { en: string; ar: string; cls: string; dot: string }> = {
   compliant: { en: "Compliant", ar: "ممتثل", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30", dot: "bg-emerald-400" },
-  expiring: { en: "Expiring", ar: "ينتهي قريباً", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30", dot: "bg-amber-400" },
+  expiring: { en: "Expiring", ar: "ينتهي قريباً", cls: "bg-warning/15 text-warning border-warning/30", dot: "bg-warning" },
   overdue: { en: "Overdue", ar: "متأخر", cls: "bg-red-500/15 text-red-400 border-red-500/30", dot: "bg-red-400" },
   non_compliant: { en: "Non-Compliant", ar: "غير ممتثل", cls: "bg-red-500/15 text-red-400 border-red-500/30", dot: "bg-red-400" },
   reported: { en: "Reported", ar: "تم الإبلاغ", cls: "bg-blue-500/15 text-blue-400 border-blue-500/30", dot: "bg-blue-400" },
-  investigating: { en: "Investigating", ar: "قيد التحقيق", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30", dot: "bg-amber-400" },
+  investigating: { en: "Investigating", ar: "قيد التحقيق", cls: "bg-warning/15 text-warning border-warning/30", dot: "bg-warning" },
   resolved: { en: "Resolved", ar: "تم الحل", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30", dot: "bg-emerald-400" },
   closed: { en: "Closed", ar: "مغلق", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30", dot: "bg-gray-400" },
 };
@@ -56,13 +56,13 @@ const STATUS_META: Record<string, { en: string; ar: string; cls: string; dot: st
 const PRIORITY_META: Record<string, { en: string; ar: string; cls: string }> = {
   low: { en: "Low", ar: "منخفض", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
   medium: { en: "Medium", ar: "متوسط", cls: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
-  high: { en: "High", ar: "عالي", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
+  high: { en: "High", ar: "عالي", cls: "bg-warning/15 text-warning border-warning/30" },
   critical: { en: "Critical", ar: "حرج", cls: "bg-red-500/15 text-red-400 border-red-500/30" },
 };
 
 const SEVERITY_META: Record<string, { en: string; ar: string; cls: string }> = {
   minor: { en: "Minor", ar: "بسيط", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
-  moderate: { en: "Moderate", ar: "متوسط", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
+  moderate: { en: "Moderate", ar: "متوسط", cls: "bg-warning/15 text-warning border-warning/30" },
   major: { en: "Major", ar: "كبير", cls: "bg-orange-500/15 text-orange-400 border-orange-500/30" },
   critical: { en: "Critical", ar: "حرج", cls: "bg-red-500/15 text-red-400 border-red-500/30" },
 };
@@ -94,7 +94,7 @@ const FILTER_STATUSES = [
 
 function statusBadge(key: string, ar: boolean, size?: "sm" | "md") {
   const s = STATUS_META[key] || STATUS_META.compliant;
-  const px = size === "sm" ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-0.5 text-xs";
+  const px = size === "sm" ? "px-2 py-0.5 text-micro" : "px-2.5 py-0.5 text-caption";
   return (
     <span className={`inline-flex items-center gap-1.5 ${px} rounded-full font-medium border ${s.cls}`}>
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
@@ -106,7 +106,7 @@ function statusBadge(key: string, ar: boolean, size?: "sm" | "md") {
 function priorityBadge(key: string, ar: boolean) {
   const p = PRIORITY_META[key] || PRIORITY_META.low;
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${p.cls}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-micro font-medium border ${p.cls}`}>
       {ar ? p.ar : p.en}
     </span>
   );
@@ -116,7 +116,7 @@ function typeBadge(key: string, ar: boolean) {
   const t = TYPE_META[key] || TYPE_META.contract;
   const Icon = t.icon;
   return (
-    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${t.bg} ${t.border} ${t.color}`}>
+    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-micro font-medium border ${t.bg} ${t.border} ${t.color}`}>
       <Icon size={11} />
       {ar ? t.ar : t.en}
     </span>
@@ -126,7 +126,7 @@ function typeBadge(key: string, ar: boolean) {
 function severityBadge(key: string, ar: boolean) {
   const s = SEVERITY_META[key] || SEVERITY_META.minor;
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${s.cls}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-micro font-medium border ${s.cls}`}>
       {ar ? s.ar : s.en}
     </span>
   );
@@ -196,14 +196,14 @@ export default function HRCompliance() {
       <div className="sticky top-0 z-30 bg-[#0a0e1a]/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-[1440px] mx-auto px-6 md:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 border border-violet-500/30 flex items-center justify-center">
-              <ShieldCheck size={18} className="text-violet-400" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-chart-4/20 to-indigo-500/20 border border-chart-4/30 flex items-center justify-center">
+              <ShieldCheck size={18} className="text-chart-4" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold" style={serif}>
+              <h1 className="text-title font-semibold" style={serif}>
                 {ar ? "قانون العمل والامتثال" : "Employment Law & Compliance"}
               </h1>
-              <p className="text-[11px] text-white/40">
+              <p className="text-micro text-white/40">
                 {ar ? "تتبع الامتثال التنظيمي وسلامة مكان العمل" : "Regulatory compliance & workplace safety tracking"}
               </p>
             </div>
@@ -213,9 +213,9 @@ export default function HRCompliance() {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`px-3 py-1.5 rounded-xl text-[11px] font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-micro font-medium transition-all ${
                   tab === t
-                    ? "bg-violet-500/20 text-violet-400 border border-violet-500/30"
+                    ? "bg-chart-4/20 text-chart-4 border border-chart-4/30"
                     : "text-white/40 hover:text-white/60 border border-transparent"
                 }`}
               >
@@ -246,9 +246,9 @@ export default function HRCompliance() {
               label: ar ? "عناصر تنتهي قريباً" : "Expiring Items",
               value: expiringCount,
               icon: Clock,
-              gradient: "from-amber-500/20 to-orange-500/20",
-              border: "border-amber-500/20",
-              iconColor: "text-amber-400",
+              gradient: "from-warning/20 to-orange-500/20",
+              border: "border-warning/30",
+              iconColor: "text-warning",
             },
             {
               label: ar ? "عناصر متأخرة" : "Overdue Items",
@@ -262,9 +262,9 @@ export default function HRCompliance() {
               label: ar ? "حوادث السنة" : "Safety Incidents YTD",
               value: HR_METRICS.safety_incidents_ytd,
               icon: ShieldAlert,
-              gradient: "from-violet-500/20 to-indigo-500/20",
-              border: "border-violet-500/20",
-              iconColor: "text-violet-400",
+              gradient: "from-chart-4/20 to-indigo-500/20",
+              border: "border-chart-4/30",
+              iconColor: "text-chart-4",
             },
             {
               label: ar ? "أيام منذ آخر حادث" : "Days Since Last Incident",
@@ -284,10 +284,10 @@ export default function HRCompliance() {
               className={`rounded-2xl bg-gradient-to-br ${kpi.gradient} border ${kpi.border} p-4 hover:shadow-lg transition-shadow`}
             >
               <kpi.icon size={16} className={`${kpi.iconColor} mb-2`} />
-              <p className="text-2xl font-bold" style={serif}>
+              <p className="text-display font-bold" style={serif}>
                 {kpi.value}
               </p>
-              <p className="text-[11px] text-white/40 mt-1 font-medium">
+              <p className="text-micro text-white/40 mt-1 font-medium">
                 {kpi.label}
               </p>
             </motion.div>
@@ -306,14 +306,14 @@ export default function HRCompliance() {
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2">
                 <Filter size={14} className="text-white/40" />
-                <span className="text-[11px] text-white/40 font-medium">
+                <span className="text-micro text-white/40 font-medium">
                   {ar ? "الفلاتر" : "Filters"}
                 </span>
               </div>
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="h-8 px-3 rounded-lg border border-white/10 bg-white/5 text-[11px] text-white/80 outline-none focus:border-violet-500/50"
+                className="h-8 px-3 rounded-lg border border-white/10 bg-white/5 text-micro text-white/80 outline-none focus:border-chart-4/30"
               >
                 {FILTER_TYPES.map((t) => (
                   <option key={t.key} value={t.key} className="bg-[#0a0e1a]">
@@ -324,7 +324,7 @@ export default function HRCompliance() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="h-8 px-3 rounded-lg border border-white/10 bg-white/5 text-[11px] text-white/80 outline-none focus:border-violet-500/50"
+                className="h-8 px-3 rounded-lg border border-white/10 bg-white/5 text-micro text-white/80 outline-none focus:border-chart-4/30"
               >
                 {FILTER_STATUSES.map((s) => (
                   <option key={s.key} value={s.key} className="bg-[#0a0e1a]">
@@ -332,7 +332,7 @@ export default function HRCompliance() {
                   </option>
                 ))}
               </select>
-              <span className="text-[11px] text-white/30 ml-auto">
+              <span className="text-micro text-white/30 ml-auto">
                 {totalItems} {ar ? "عنصر" : "items"} · {compliantItems} {ar ? "ممتثل" : "compliant"}
               </span>
             </div>
@@ -365,14 +365,14 @@ export default function HRCompliance() {
                     </div>
                     {statusBadge(item.status, ar)}
                   </div>
-                  <h3 className="text-sm font-semibold text-white/90 mb-1 group-hover:text-white transition-colors">
+                  <h3 className="text-body font-semibold text-white/90 mb-1 group-hover:text-white transition-colors">
                     {ar ? item.title_ar : item.title}
                   </h3>
-                  <p className="text-[11px] text-white/40 mb-3">
+                  <p className="text-micro text-white/40 mb-3">
                     {ar ? item.entity_ar : item.entity}
                   </p>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-[10px] text-white/30">
+                    <div className="flex items-center gap-3 text-micro text-white/30">
                       <span className="flex items-center gap-1">
                         <Calendar size={10} />
                         {ar ? "الاستحقاق" : "Due"}: {fmtDate(item.due_date, ar)}
@@ -383,16 +383,16 @@ export default function HRCompliance() {
                           : ar ? `متأخر ${Math.abs(daysLeft)} يوم` : `${Math.abs(daysLeft)}d overdue`}
                       </span>
                     </div>
-                    <ArrowUpRight size={14} className="text-white/20 group-hover:text-violet-400 transition-colors" />
+                    <ArrowUpRight size={14} className="text-white/20 group-hover:text-chart-4 transition-colors" />
                   </div>
-                  <div className="mt-2 pt-2 border-t border-white/5 text-[10px] text-white/25">
+                  <div className="mt-2 pt-2 border-t border-white/5 text-micro text-white/25">
                     {ar ? "آخر فحص" : "Last checked"}: {fmtDate(item.last_checked, ar)}
                   </div>
                 </motion.div>
               );
             })}
             {filteredItems.length === 0 && (
-              <div className="col-span-2 text-center py-16 text-white/30 text-sm">
+              <div className="col-span-2 text-center py-16 text-white/30 text-body">
                 {ar ? "لا توجد عناصر مطابقة" : "No matching items"}
               </div>
             )}
@@ -420,10 +420,10 @@ export default function HRCompliance() {
                         <Icon size={18} className="text-white/60" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-white/90">
+                        <h3 className="text-body font-semibold text-white/90">
                           {ar ? incident.title_ar : incident.title}
                         </h3>
-                        <p className="text-[11px] text-white/40">{incident.employee_name}</p>
+                        <p className="text-micro text-white/40">{incident.employee_name}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -441,18 +441,18 @@ export default function HRCompliance() {
                       { label: ar ? "أبلغ عنده" : "Reported By", value: incident.reported_by },
                     ].map((field, j) => (
                       <div key={j} className="bg-white/[0.03] rounded-xl px-3 py-2 border border-white/5">
-                        <p className="text-[10px] text-white/30 mb-0.5">{field.label}</p>
-                        <p className="text-xs text-white/70 font-medium">{field.value}</p>
+                        <p className="text-micro text-white/30 mb-0.5">{field.label}</p>
+                        <p className="text-caption text-white/70 font-medium">{field.value}</p>
                       </div>
                     ))}
                   </div>
 
                   {incident.corrective_actions && (
                     <div className="bg-white/[0.02] rounded-xl px-4 py-3 border border-white/5">
-                      <p className="text-[10px] text-white/30 mb-1 font-medium">
+                      <p className="text-micro text-white/30 mb-1 font-medium">
                         {ar ? "الإجراءات التصحيحية" : "Corrective Actions"}
                       </p>
-                      <p className="text-xs text-white/50 leading-relaxed">
+                      <p className="text-caption text-white/50 leading-relaxed">
                         {ar ? incident.corrective_actions_ar : incident.corrective_actions}
                       </p>
                     </div>
@@ -473,8 +473,8 @@ export default function HRCompliance() {
             className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-6"
           >
             <div className="flex items-center gap-2 mb-6">
-              <BarChart3 size={16} className="text-violet-400" />
-              <h2 className="text-sm font-semibold text-white/80" style={serif}>
+              <BarChart3 size={16} className="text-chart-4" />
+              <h2 className="text-body font-semibold text-white/80" style={serif}>
                 {ar ? "الامتثال حسب النوع" : "Compliance by Type"}
               </h2>
             </div>
@@ -491,12 +491,12 @@ export default function HRCompliance() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Icon size={14} className={t.color} />
-                          <span className="text-xs text-white/70 font-medium">
+                          <span className="text-caption text-white/70 font-medium">
                             {ar ? t.ar : t.en}
                           </span>
-                          <span className="text-[10px] text-white/30">({data.total})</span>
+                          <span className="text-micro text-white/30">({data.total})</span>
                         </div>
-                        <span className="text-[11px] text-white/40">
+                        <span className="text-micro text-white/40">
                           {compliantPct.toFixed(0)}% {ar ? "ممتثل" : "compliant"}
                         </span>
                       </div>
@@ -511,7 +511,7 @@ export default function HRCompliance() {
                           initial={{ width: 0 }}
                           animate={{ width: `${(data.expiring / data.total) * 100}%` }}
                           transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-                          className="h-full bg-amber-500/60"
+                          className="h-full bg-warning/60"
                         />
                         <motion.div
                           initial={{ width: 0 }}
@@ -535,13 +535,13 @@ export default function HRCompliance() {
             <div className="flex flex-wrap items-center gap-4 mt-6 pt-4 border-t border-white/5">
               {[
                 { label: ar ? "ممتثل" : "Compliant", color: "bg-emerald-500/60" },
-                { label: ar ? "ينتهي قريباً" : "Expiring", color: "bg-amber-500/60" },
+                { label: ar ? "ينتهي قريباً" : "Expiring", color: "bg-warning/60" },
                 { label: ar ? "متأخر" : "Overdue", color: "bg-red-500/60" },
                 { label: ar ? "غير ممتثل" : "Non-Compliant", color: "bg-red-700/60" },
               ].map((l) => (
                 <div key={l.label} className="flex items-center gap-1.5">
                   <span className={`w-2.5 h-2.5 rounded-sm ${l.color}`} />
-                  <span className="text-[10px] text-white/40">{l.label}</span>
+                  <span className="text-micro text-white/40">{l.label}</span>
                 </div>
               ))}
             </div>
@@ -551,12 +551,12 @@ export default function HRCompliance() {
               {[
                 { label: ar ? "إجمالي العناصر" : "Total Items", value: HR_COMPLIANCE.length },
                 { label: ar ? "ممتثل" : "Compliant", value: HR_COMPLIANCE.filter((i) => i.status === "compliant").length, color: "text-emerald-400" },
-                { label: ar ? "ينتهي قريباً" : "Expiring", value: HR_COMPLIANCE.filter((i) => i.status === "expiring").length, color: "text-amber-400" },
+                { label: ar ? "ينتهي قريباً" : "Expiring", value: HR_COMPLIANCE.filter((i) => i.status === "expiring").length, color: "text-warning" },
                 { label: ar ? "متأخر" : "Overdue", value: HR_COMPLIANCE.filter((i) => i.status === "overdue").length, color: "text-red-400" },
               ].map((s, i) => (
                 <div key={i} className="text-center">
-                  <p className={`text-xl font-bold ${s.color || "text-white/80"}`} style={serif}>{s.value}</p>
-                  <p className="text-[10px] text-white/30 mt-1">{s.label}</p>
+                  <p className={`text-heading font-bold ${s.color || "text-white/80"}`} style={serif}>{s.value}</p>
+                  <p className="text-micro text-white/30 mt-1">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -595,10 +595,10 @@ export default function HRCompliance() {
                     );
                   })()}
                   <div>
-                    <h3 className="text-sm font-semibold text-white/90" style={serif}>
+                    <h3 className="text-body font-semibold text-white/90" style={serif}>
                       {ar ? selectedItem.title_ar : selectedItem.title}
                     </h3>
-                    <p className="text-[11px] text-white/40">
+                    <p className="text-micro text-white/40">
                       {ar ? selectedItem.entity_ar : selectedItem.entity}
                     </p>
                   </div>
@@ -622,20 +622,20 @@ export default function HRCompliance() {
 
                 {/* Description */}
                 <div className="bg-white/[0.03] rounded-xl px-4 py-3 border border-white/5">
-                  <p className="text-[10px] text-white/30 mb-1 font-medium">
+                  <p className="text-micro text-white/30 mb-1 font-medium">
                     {ar ? "الوصف" : "Description"}
                   </p>
-                  <p className="text-xs text-white/60 leading-relaxed">
+                  <p className="text-caption text-white/60 leading-relaxed">
                     {ar ? selectedItem.description_ar : selectedItem.description}
                   </p>
                 </div>
 
                 {/* Notes */}
                 <div className="bg-white/[0.03] rounded-xl px-4 py-3 border border-white/5">
-                  <p className="text-[10px] text-white/30 mb-1 font-medium">
+                  <p className="text-micro text-white/30 mb-1 font-medium">
                     {ar ? "ملاحظات" : "Notes"}
                   </p>
-                  <p className="text-xs text-white/60 leading-relaxed">
+                  <p className="text-caption text-white/60 leading-relaxed">
                     {ar ? selectedItem.notes_ar : selectedItem.notes}
                   </p>
                 </div>
@@ -648,8 +648,8 @@ export default function HRCompliance() {
                     { label: ar ? "الفحص القادم" : "Next Check", value: fmtDate(selectedItem.next_check, ar) },
                   ].map((d, i) => (
                     <div key={i} className="bg-white/[0.03] rounded-xl px-3 py-2 border border-white/5 text-center">
-                      <p className="text-[10px] text-white/30 mb-0.5">{d.label}</p>
-                      <p className="text-xs text-white/70 font-medium">{d.value}</p>
+                      <p className="text-micro text-white/30 mb-0.5">{d.label}</p>
+                      <p className="text-caption text-white/70 font-medium">{d.value}</p>
                     </div>
                   ))}
                 </div>
@@ -659,7 +659,7 @@ export default function HRCompliance() {
               <div className="p-5 border-t border-white/5 flex justify-end">
                 <button
                   onClick={() => setSelectedItem(null)}
-                  className="h-9 px-5 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-white/60 hover:bg-white/10 transition-all"
+                  className="h-9 px-5 rounded-xl bg-white/5 border border-white/10 text-caption font-medium text-white/60 hover:bg-white/10 transition-all"
                 >
                   {ar ? "إغلاق" : "Close"}
                 </button>

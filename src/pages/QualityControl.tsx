@@ -32,7 +32,7 @@ const INSPECTION_STATUSES = [
   { value: "in_progress", en: "In Progress", ar: "جاري الفحص",  pill: "bg-blue-50 text-blue-600",     icon: Eye },
   { value: "passed",      en: "Passed",      ar: "ناجح",        pill: "bg-emerald-50 text-emerald-600", icon: ThumbsUp },
   { value: "failed",      en: "Failed",      ar: "فاشل",        pill: "bg-rose-50 text-rose-600",     icon: ThumbsDown },
-  { value: "conditional", en: "Conditional",  ar: "مشروط",       pill: "bg-amber-50 text-amber-600",   icon: AlertTriangle },
+  { value: "conditional", en: "Conditional",  ar: "مشروط",       pill: "bg-warning/10 text-warning",   icon: AlertTriangle },
 ] as const;
 
 const INSPECTION_TYPES = [
@@ -46,7 +46,7 @@ const INSPECTION_TYPES = [
 const SEVERITIES = [
   { value: "critical", en: "Critical", ar: "حرج",    color: "bg-rose-100 text-rose-700" },
   { value: "major",    en: "Major",    ar: "كبير",   color: "bg-orange-100 text-orange-700" },
-  { value: "minor",    en: "Minor",    ar: "صغير",   color: "bg-amber-100 text-amber-700" },
+  { value: "minor",    en: "Minor",    ar: "صغير",   color: "bg-warning/15 text-warning" },
   { value: "cosmetic", en: "Cosmetic", ar: "تجميلي", color: "bg-zinc-100 text-zinc-600" },
 ] as const;
 
@@ -64,7 +64,7 @@ const DEFECT_CATEGORIES = [
 
 const DEFECT_STATUSES = [
   { value: "open",          en: "Open",          ar: "مفتوح",       color: "bg-rose-50 text-rose-600" },
-  { value: "rework",        en: "In Rework",     ar: "جاري الإصلاح", color: "bg-amber-50 text-amber-600" },
+  { value: "rework",        en: "In Rework",     ar: "جاري الإصلاح", color: "bg-warning/10 text-warning" },
   { value: "re_inspected",  en: "Re-Inspected",  ar: "تم إعادة الفحص", color: "bg-blue-50 text-blue-600" },
   { value: "accepted",      en: "Accepted",      ar: "مقبول",       color: "bg-emerald-50 text-emerald-600" },
   { value: "rejected",      en: "Rejected",      ar: "مرفوض",       color: "bg-rose-100 text-rose-700" },
@@ -85,9 +85,9 @@ const DEFAULT_CHECKLIST = [
 
 // ─── Helpers ──────────────────────────────────────────────
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function genInspNumber(): string {
   const d = new Date();
@@ -141,7 +141,7 @@ function InspectionModal({ onClose, onSaved, prodOrders, ar, workspaceId }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "فحص جودة جديد" : "New QC Inspection"}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "فحص جودة جديد" : "New QC Inspection"}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
@@ -164,10 +164,10 @@ function InspectionModal({ onClose, onSaved, prodOrders, ar, workspaceId }: {
             <input className={inputCls} value={customerName} onChange={e => setCustomerName(e.target.value)} /></div>
           <div><label className={labelCls}>{ar ? "المفتش" : "Inspector"}</label>
             <input className={inputCls} value={inspectorName} onChange={e => setInspectorName(e.target.value)} /></div>
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSubmit} disabled={loading} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "أنشئ الفحص" : "Create"}
           </button>
@@ -225,7 +225,7 @@ function DefectModal({ onClose, onSaved, inspectionId, editDefect, ar, workspace
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editDefect ? (ar ? "تعديل العيب" : "Edit Defect") : (ar ? "تسجيل عيب" : "Log Defect")}
           </h3>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -249,7 +249,7 @@ function DefectModal({ onClose, onSaved, inspectionId, editDefect, ar, workspace
             <textarea className={inputCls + " h-16 py-2 resize-none"} value={description} onChange={e => setDescription(e.target.value)} /></div>
           <div><label className={labelCls}>{ar ? "صورة العيب" : "Defect Photo"}</label>
             <div className="flex items-center gap-3">
-              <label className="text-[11px] text-blue-600 font-medium cursor-pointer hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200">
+              <label className="text-micro text-blue-600 font-medium cursor-pointer hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200">
                 <Camera size={11} /> {ar ? "رفع صورة" : "Upload"}
                 <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
               </label>
@@ -258,7 +258,7 @@ function DefectModal({ onClose, onSaved, inspectionId, editDefect, ar, workspace
           </div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading || !title.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "حفظ" : "Save"}
           </button>
@@ -353,31 +353,31 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{insp.inspection_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-            {typeDef && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? typeDef.ar : typeDef.en}</span>}
+            <span className="text-micro font-mono text-muted-foreground">{insp.inspection_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            {typeDef && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? typeDef.ar : typeDef.en}</span>}
             {insp.overall_score != null && (
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${insp.overall_score >= 80 ? "bg-emerald-50 text-emerald-600" : insp.overall_score >= 60 ? "bg-amber-50 text-amber-600" : "bg-rose-50 text-rose-600"}`}>
+              <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${insp.overall_score >= 80 ? "bg-emerald-50 text-emerald-600" : insp.overall_score >= 60 ? "bg-warning/10 text-warning" : "bg-rose-50 text-rose-600"}`}>
                 {insp.overall_score}%
               </span>
             )}
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {po ? po.title : insp.customer_name || insp.inspection_number}
           </h2>
-          <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+          <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
             {insp.customer_name && <span className="flex items-center gap-1"><Building2 size={10} />{insp.customer_name}</span>}
             {insp.inspector_name && <span className="flex items-center gap-1"><User size={10} />{insp.inspector_name}</span>}
             {po && <span className="flex items-center gap-1"><FileText size={10} />{po.po_number}</span>}
           </div>
         </div>
         <div className="flex gap-2 shrink-0 flex-wrap">
-          {insp.status === "pending" && <button onClick={() => updateStatus("in_progress")} className="text-[11px] text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><Eye size={11} /> {ar ? "ابدأ الفحص" : "Start"}</button>}
+          {insp.status === "pending" && <button onClick={() => updateStatus("in_progress")} className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><Eye size={11} /> {ar ? "ابدأ الفحص" : "Start"}</button>}
           {insp.status === "in_progress" && (
             <>
-              <button onClick={() => updateStatus("passed")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><ThumbsUp size={11} /> {ar ? "ناجح" : "Pass"}</button>
-              <button onClick={() => updateStatus("failed")} className="text-[11px] text-rose-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-rose-200"><ThumbsDown size={11} /> {ar ? "فاشل" : "Fail"}</button>
-              <button onClick={() => updateStatus("conditional")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200"><AlertTriangle size={11} /> {ar ? "مشروط" : "Conditional"}</button>
+              <button onClick={() => updateStatus("passed")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><ThumbsUp size={11} /> {ar ? "ناجح" : "Pass"}</button>
+              <button onClick={() => updateStatus("failed")} className="text-micro text-rose-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-rose-200"><ThumbsDown size={11} /> {ar ? "فاشل" : "Fail"}</button>
+              <button onClick={() => updateStatus("conditional")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><AlertTriangle size={11} /> {ar ? "مشروط" : "Conditional"}</button>
             </>
           )}
         </div>
@@ -385,9 +385,9 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
 
       {/* Summary chips */}
       <div className="flex gap-3 mb-5 flex-wrap">
-        <span className="text-[11px] bg-emerald-50 text-emerald-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><CheckCircle2 size={10} />{passedItems} {ar ? "ناجح" : "passed"}</span>
-        {failedItems > 0 && <span className="text-[11px] bg-rose-50 text-rose-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><XCircle size={10} />{failedItems} {ar ? "فاشل" : "failed"}</span>}
-        {openDefects > 0 && <span className="text-[11px] bg-amber-50 text-amber-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><Bug size={10} />{openDefects} {ar ? "عيب مفتوح" : "open defects"}</span>}
+        <span className="text-micro bg-emerald-50 text-emerald-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><CheckCircle2 size={10} />{passedItems} {ar ? "ناجح" : "passed"}</span>
+        {failedItems > 0 && <span className="text-micro bg-rose-50 text-rose-600 rounded-lg px-3 py-1.5 flex items-center gap-1"><XCircle size={10} />{failedItems} {ar ? "فاشل" : "failed"}</span>}
+        {openDefects > 0 && <span className="text-micro bg-warning/10 text-warning rounded-lg px-3 py-1.5 flex items-center gap-1"><Bug size={10} />{openDefects} {ar ? "عيب مفتوح" : "open defects"}</span>}
       </div>
 
       {/* Tabs */}
@@ -397,8 +397,8 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
           { id: "defects" as const, en: `Defects (${defects.length})`, ar: `العيوب (${defects.length})`, icon: Bug },
         ].map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5
-              ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+            className={`px-3 py-2 rounded-lg text-caption font-medium transition-colors flex items-center gap-1.5
+              ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <t.icon size={13} />{ar ? t.ar : t.en}
           </button>
         ))}
@@ -427,7 +427,7 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
                       <XCircle size={13} />
                     </button>
                   </div>
-                  <span className="text-[12.5px] flex-1">{ar ? item.label_ar : item.label_en}</span>
+                  <span className="text-caption flex-1">{ar ? item.label_ar : item.label_en}</span>
                 </div>
               ))}
             </div>
@@ -437,13 +437,13 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
           {tab === "defects" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[14px] font-semibold">{ar ? "سجل العيوب" : "Defect Log"}</h3>
-                <button onClick={() => { setEditDef(null); setDefModal(true); }} className={btnPrimary + " h-9 text-[12px]"}><Plus size={13} /> {ar ? "سجّل عيب" : "Log Defect"}</button>
+                <h3 className="text-body-lg font-semibold">{ar ? "سجل العيوب" : "Defect Log"}</h3>
+                <button onClick={() => { setEditDef(null); setDefModal(true); }} className={btnPrimary + " h-9 text-caption"}><Plus size={13} /> {ar ? "سجّل عيب" : "Log Defect"}</button>
               </div>
               {defects.length === 0 ? (
                 <div className="py-12 text-center">
                   <ShieldCheck size={28} className="text-emerald-300 mx-auto mb-2" />
-                  <p className="text-[13px] text-muted-foreground/50">{ar ? "مفيش عيوب — ممتاز!" : "No defects — excellent!"}</p>
+                  <p className="text-body text-muted-foreground/50">{ar ? "مفيش عيوب — ممتاز!" : "No defects — excellent!"}</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -457,27 +457,27 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
                           {d.photo_url && <img src={d.photo_url} alt="" className="w-16 h-16 rounded-lg object-cover border shrink-0" />}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1 flex-wrap">
-                              <span className="text-[10px] font-mono text-muted-foreground">{d.defect_number}</span>
-                              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${sevDef.color}`}>{ar ? sevDef.ar : sevDef.en}</span>
-                              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${dstDef.color}`}>{ar ? dstDef.ar : dstDef.en}</span>
-                              {catDef && <span className="text-[9px] text-muted-foreground">{ar ? catDef.ar : catDef.en}</span>}
+                              <span className="text-micro font-mono text-muted-foreground">{d.defect_number}</span>
+                              <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${sevDef.color}`}>{ar ? sevDef.ar : sevDef.en}</span>
+                              <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${dstDef.color}`}>{ar ? dstDef.ar : dstDef.en}</span>
+                              {catDef && <span className="text-micro text-muted-foreground">{ar ? catDef.ar : catDef.en}</span>}
                             </div>
-                            <p className="text-[13px] font-medium">{d.title}</p>
-                            {d.location && <p className="text-[10.5px] text-muted-foreground mt-0.5">{ar ? "المكان:" : "Location:"} {d.location}</p>}
-                            {d.description && <p className="text-[10.5px] text-muted-foreground mt-0.5">{d.description}</p>}
-                            {d.rework_notes && <p className="text-[10.5px] text-amber-600 mt-1">{ar ? "ملاحظات الإصلاح:" : "Rework:"} {d.rework_notes}</p>}
+                            <p className="text-body font-medium">{d.title}</p>
+                            {d.location && <p className="text-micro text-muted-foreground mt-0.5">{ar ? "المكان:" : "Location:"} {d.location}</p>}
+                            {d.description && <p className="text-micro text-muted-foreground mt-0.5">{d.description}</p>}
+                            {d.rework_notes && <p className="text-micro text-warning mt-1">{ar ? "ملاحظات الإصلاح:" : "Rework:"} {d.rework_notes}</p>}
                           </div>
                           <div className="flex flex-col gap-1 shrink-0">
-                            {d.status === "open" && <button onClick={() => updateDefectStatus(d.id, "rework")} className="text-[10px] text-amber-600 px-2 py-1 rounded border border-amber-200 hover:opacity-70">{ar ? "إصلاح" : "Rework"}</button>}
-                            {d.status === "rework" && <button onClick={() => updateDefectStatus(d.id, "re_inspected")} className="text-[10px] text-blue-600 px-2 py-1 rounded border border-blue-200 hover:opacity-70">{ar ? "إعادة فحص" : "Re-inspect"}</button>}
+                            {d.status === "open" && <button onClick={() => updateDefectStatus(d.id, "rework")} className="text-micro text-warning px-2 py-1 rounded border border-warning/30 hover:opacity-70">{ar ? "إصلاح" : "Rework"}</button>}
+                            {d.status === "rework" && <button onClick={() => updateDefectStatus(d.id, "re_inspected")} className="text-micro text-blue-600 px-2 py-1 rounded border border-blue-200 hover:opacity-70">{ar ? "إعادة فحص" : "Re-inspect"}</button>}
                             {d.status === "re_inspected" && (
                               <>
-                                <button onClick={() => updateDefectStatus(d.id, "accepted")} className="text-[10px] text-emerald-600 px-2 py-1 rounded border border-emerald-200 hover:opacity-70">{ar ? "مقبول" : "Accept"}</button>
-                                <button onClick={() => updateDefectStatus(d.id, "rejected")} className="text-[10px] text-rose-600 px-2 py-1 rounded border border-rose-200 hover:opacity-70">{ar ? "مرفوض" : "Reject"}</button>
+                                <button onClick={() => updateDefectStatus(d.id, "accepted")} className="text-micro text-emerald-600 px-2 py-1 rounded border border-emerald-200 hover:opacity-70">{ar ? "مقبول" : "Accept"}</button>
+                                <button onClick={() => updateDefectStatus(d.id, "rejected")} className="text-micro text-rose-600 px-2 py-1 rounded border border-rose-200 hover:opacity-70">{ar ? "مرفوض" : "Reject"}</button>
                               </>
                             )}
-                            <button onClick={() => { setEditDef(d); setDefModal(true); }} className="text-[10px] text-muted-foreground px-2 py-1 rounded border border-border/60 hover:opacity-70">{ar ? "تعديل" : "Edit"}</button>
-                            <button onClick={() => deleteDefect(d.id)} className="text-[10px] text-rose-400 px-2 py-1 rounded hover:opacity-70">{ar ? "حذف" : "Delete"}</button>
+                            <button onClick={() => { setEditDef(d); setDefModal(true); }} className="text-micro text-muted-foreground px-2 py-1 rounded border border-border/60 hover:opacity-70">{ar ? "تعديل" : "Edit"}</button>
+                            <button onClick={() => deleteDefect(d.id)} className="text-micro text-rose-400 px-2 py-1 rounded hover:opacity-70">{ar ? "حذف" : "Delete"}</button>
                           </div>
                         </div>
                       </div>
@@ -555,7 +555,7 @@ export default function QualityControl() {
       inspection_number: i.inspection_number, customer_name: i.customer_name,
       inspector_name: i.inspector_name, inspection_type: i.inspection_type,
       status: i.status, overall_score: i.overall_score,
-    })), `thoth-qc-inspections-${new Date().toISOString().slice(0, 10)}.csv`);
+    })), `bumblebee-qc-inspections-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   if (selected) {
@@ -570,10 +570,10 @@ export default function QualityControl() {
     <div className="max-w-4xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "مراقبة الجودة" : "Quality Control"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "فحوصات الجودة وتتبع العيوب" : "QC Inspections & Defect Tracking"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "فحوصات الجودة وتتبع العيوب" : "QC Inspections & Defect Tracking"}</p>
         </div>
         <button onClick={() => setModal(true)} className={btnPrimary + " h-10"}><Plus size={14} /> {ar ? "فحص جديد" : "New Inspection"}</button>
       </div>
@@ -586,8 +586,8 @@ export default function QualityControl() {
           { label: ar ? "فاشل/مشروط" : "Failed/Conditional", value: failed, color: failed > 0 ? "text-rose-600" : "text-zinc-400" },
         ].map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
-            <p className="text-[11px] text-muted-foreground mb-1">{s.label}</p>
-            <p className={`text-[20px] font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+            <p className="text-micro text-muted-foreground mb-1">{s.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -599,7 +599,7 @@ export default function QualityControl() {
         </div>
         <div className="flex gap-1">
           {[{ v: "all", en: "All", ar: "الكل" }, ...INSPECTION_STATUSES.map(s => ({ v: s.value, en: s.en, ar: s.ar }))].map(g => (
-            <button key={g.v} onClick={() => setFilterStatus(g.v)} className={`px-3 py-2 rounded-lg text-[11px] font-medium ${filterStatus === g.v ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
+            <button key={g.v} onClick={() => setFilterStatus(g.v)} className={`px-3 py-2 rounded-lg text-micro font-medium ${filterStatus === g.v ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
           ))}
         </div>
         <button onClick={handleExport} className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground"><Download size={14} /></button>
@@ -610,12 +610,12 @@ export default function QualityControl() {
       ) : inspections.length === 0 ? (
         <div className="py-16 text-center">
           <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4"><ShieldCheck size={22} className="text-muted-foreground/30" /></div>
-          <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش فحوصات لسه" : "No inspections yet"}</h3>
-          <p className="text-[13px] text-muted-foreground">{ar ? "أنشئ أول فحص جودة لأمر تشغيل." : "Create your first QC inspection for a production order."}</p>
+          <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش فحوصات لسه" : "No inspections yet"}</h3>
+          <p className="text-body text-muted-foreground">{ar ? "أنشئ أول فحص جودة لأمر تشغيل." : "Create your first QC inspection for a production order."}</p>
           <button onClick={() => setModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "فحص جديد" : "New Inspection"}</button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+        <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
       ) : (
         <div className="space-y-3">
           {filtered.map(insp => {
@@ -630,15 +630,15 @@ export default function QualityControl() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-[10.5px] font-mono text-muted-foreground">{insp.inspection_number}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                      {typeDef && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? typeDef.ar : typeDef.en}</span>}
-                      {insp.overall_score != null && <span className={`text-[10px] font-medium ${insp.overall_score >= 80 ? "text-emerald-600" : insp.overall_score >= 60 ? "text-amber-600" : "text-rose-600"}`}>{insp.overall_score}%</span>}
+                      <span className="text-micro font-mono text-muted-foreground">{insp.inspection_number}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                      {typeDef && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? typeDef.ar : typeDef.en}</span>}
+                      {insp.overall_score != null && <span className={`text-micro font-medium ${insp.overall_score >= 80 ? "text-emerald-600" : insp.overall_score >= 60 ? "text-warning" : "text-rose-600"}`}>{insp.overall_score}%</span>}
                     </div>
-                    <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {po ? po.title : insp.customer_name || insp.inspection_number}
                     </p>
-                    <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+                    <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
                       {insp.customer_name && <span className="flex items-center gap-1"><Building2 size={9} />{insp.customer_name}</span>}
                       {insp.inspector_name && <span className="flex items-center gap-1"><User size={9} />{insp.inspector_name}</span>}
                       {po && <span className="flex items-center gap-1"><FileText size={9} />{po.po_number}</span>}

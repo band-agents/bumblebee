@@ -213,7 +213,7 @@ const MENU: TreeNode[] = [
   { id: "mobile-apps", icon: Smartphone, labelEn: "Mobile Apps", labelAr: "تطبيقات", path: "/mobile-apps" },
 ];
 
-// ─── THOTH symbol ─────────────────────────────────────────
+// ─── Bumblebee symbol ─────────────────────────────────────────
 
 function getInitials(name: string): string {
   return name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
@@ -248,7 +248,7 @@ function NavItem({ icon: Icon, label, path, isActive, collapsed, onClick }: NavI
         transition-all duration-150 select-none
         ${collapsed ? "justify-center" : ""}
         ${isActive
-          ? "thoth-primary-selected text-primary"
+          ? "bb-primary-selected text-brand-ink"
           : "text-muted-foreground hover:text-foreground hover:bg-sidebar-accent"
         }
       `}
@@ -259,7 +259,7 @@ function NavItem({ icon: Icon, label, path, isActive, collapsed, onClick }: NavI
         className="shrink-0"
       />
       {!collapsed && (
-        <span className="text-[13px] leading-none truncate">{label}</span>
+        <span className="text-body truncate">{label}</span>
       )}
       {/* Collapsed tooltip */}
       {collapsed && (
@@ -267,7 +267,7 @@ function NavItem({ icon: Icon, label, path, isActive, collapsed, onClick }: NavI
           pointer-events-none absolute start-full ms-2.5 z-50
           px-2.5 py-1.5 rounded-lg
           bg-popover border border-border text-foreground shadow-md
-          text-[12px] whitespace-nowrap
+          text-caption whitespace-nowrap
           opacity-0 group-hover:opacity-100
           translate-x-0 transition-opacity duration-150
         ">
@@ -311,7 +311,7 @@ function NavGroup({ node, collapsed, currentPath, ar, industry, onNavClick }: {
         className={`group w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-150 select-none ${anyActive && !open ? "text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-sidebar-accent"}`}
       >
         <Icon size={15} strokeWidth={anyActive ? 2 : 1.75} className="shrink-0" />
-        <span className="text-[13px] leading-none truncate flex-1 text-start">{term(industry, node.id, node.labelEn, node.labelAr, ar)}</span>
+        <span className="text-body truncate flex-1 text-start">{term(industry, node.id, node.labelEn, node.labelAr, ar)}</span>
         <ChevronRight size={13} className={`shrink-0 transition-transform duration-200 ${open ? "rotate-90" : ""} ${ar ? "rotate-180" : ""}`} style={ar ? { transform: open ? "rotate(90deg)" : "rotate(180deg)" } : undefined} />
       </button>
       <div className={`overflow-hidden transition-all duration-200 ${open ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"}`}>
@@ -333,7 +333,7 @@ function SectionLabel({ label, collapsed }: { label: string; collapsed: boolean 
     return <div className="my-1 border-t border-border/30 mx-1" />;
   }
   return (
-    <p className="px-3 pt-3 pb-1 text-[9px] text-muted-foreground/40 tracking-[0.1em] uppercase font-medium">
+    <p className="px-3 pt-3 pb-1 text-micro text-muted-foreground/40 tracking-[0.1em] uppercase font-medium">
       {label}
     </p>
   );
@@ -363,7 +363,7 @@ function SidebarContent({
   const enabledModules = isDemoMode
     ? (onboardingData?.enabled_modules ?? wsModules)
     : (wsModules ?? onboardingData?.enabled_modules);
-  const companyName = (wsSettings?.company_name as string) || onboardingData?.companyName || workspace?.name || "THOTH";
+  const companyName = (wsSettings?.company_name as string) || onboardingData?.companyName || workspace?.name || "Bumblebee";
   const industry = (wsSettings?.industry as string) || onboardingData?.industry || "";
   const country = (wsSettings?.country as string) || "";
   const city = (wsSettings?.city as string) || "";
@@ -384,7 +384,7 @@ function SidebarContent({
   }
 
   return (
-    <div className="flex flex-col h-full thoth-glass relative">
+    <div className="flex flex-col h-full bb-glass relative">
 
       {/* Logo row */}
       <div className="h-[56px] flex items-center px-4 shrink-0 overflow-hidden">
@@ -535,9 +535,9 @@ function SidebarContent({
         <div
           className="
             w-8 h-8 rounded-lg shrink-0
-            bg-primary/10 text-primary
+            bg-primary/10 text-brand-ink
             flex items-center justify-center
-            text-[10px] font-semibold tracking-wide select-none
+            text-micro font-semibold tracking-wide select-none
           "
           aria-label={companyName}
         >
@@ -545,11 +545,11 @@ function SidebarContent({
         </div>
         {!collapsed && (
           <div className="flex flex-col min-w-0">
-            <span className="text-[12.5px] font-medium text-foreground truncate leading-tight">
+            <span className="text-caption font-medium text-foreground truncate leading-tight">
               {companyName}
             </span>
             {locationLabel && (
-              <span className="text-[11px] text-muted-foreground truncate leading-tight mt-0.5">
+              <span className="text-micro text-muted-foreground truncate leading-tight mt-0.5">
                 {locationLabel}
               </span>
             )}

@@ -101,7 +101,7 @@ const DEFAULT_STYLE: BlockStyle = {
   borderColor: "#e5e5e5",
 };
 
-const TEMPLATE_STORAGE_KEY = "thoth_quotation_templates";
+const TEMPLATE_STORAGE_KEY = "bumblebee_quotation_templates";
 
 const COLORS = ["#1a1a1a", "#ffffff", "#f8f9fa", "#e9ecef", "#dee2e6", "#0d6efd", "#198754", "#dc3545", "#ffc107", "#6f42c1", "#0dcaf0", "#fd7e14"];
 
@@ -173,14 +173,14 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
         );
       case "logo":
         return (
-          <div className="flex items-center justify-center h-full border-2 border-dashed border-border/40 rounded-lg text-[10px] text-muted-foreground">
+          <div className="flex items-center justify-center h-full border-2 border-dashed border-border/40 rounded-lg text-micro text-muted-foreground">
             {block.content ? <img src={block.content} alt="Logo" className="max-h-full object-contain" /> : "Logo"}
           </div>
         );
       case "customer_info":
         return (
-          <div className="h-full text-[10px] leading-relaxed">
-            <p className="font-semibold text-[11px] mb-1">Customer Details</p>
+          <div className="h-full text-micro leading-relaxed">
+            <p className="font-semibold text-micro mb-1">Customer Details</p>
             <p>Name: ____________________</p>
             <p>Company: _________________</p>
             <p>Phone: ___________________</p>
@@ -191,7 +191,7 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
       case "line_items_table":
         return (
           <div className="h-full overflow-hidden">
-            <table className="w-full text-[10px] border-collapse">
+            <table className="w-full text-micro border-collapse">
               <thead>
                 <tr className="bg-muted/50">
                   <th className="text-left p-1.5 border border-border/30">#</th>
@@ -217,11 +217,11 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
         );
       case "totals":
         return (
-          <div className="h-full p-2 space-y-1.5 text-[11px]">
+          <div className="h-full p-2 space-y-1.5 text-micro">
             <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-medium">4,000</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Discount (10%)</span><span className="text-rose-500">-400</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Tax (14%)</span><span>504</span></div>
-            <div className="border-t border-border/30 pt-1.5 flex justify-between font-semibold text-[12px]"><span>Grand Total</span><span className="text-primary">4,104</span></div>
+            <div className="border-t border-border/30 pt-1.5 flex justify-between font-semibold text-caption"><span>Grand Total</span><span className="text-brand-ink">4,104</span></div>
           </div>
         );
       case "text_block":
@@ -233,8 +233,8 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
       case "terms":
         return (
           <div className="h-full">
-            <p className="font-semibold text-[11px] mb-1">Terms & Conditions</p>
-            <p className="text-[9px] leading-relaxed text-muted-foreground">
+            <p className="font-semibold text-micro mb-1">Terms & Conditions</p>
+            <p className="text-micro leading-relaxed text-muted-foreground">
               {block.content || "Payment terms, warranty, delivery conditions..."}
             </p>
           </div>
@@ -243,8 +243,8 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
         return (
           <div className="h-full flex flex-col justify-end">
             <div className="border-t border-border/40 pt-1 mt-8">
-              <p className="text-[10px] text-muted-foreground">Authorized Signature</p>
-              <p className="text-[9px] text-muted-foreground/60">Date: _______________</p>
+              <p className="text-micro text-muted-foreground">Authorized Signature</p>
+              <p className="text-micro text-muted-foreground/60">Date: _______________</p>
             </div>
           </div>
         );
@@ -252,7 +252,7 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
         return <div className="w-full h-full bg-border/40" />;
       case "image":
         return (
-          <div className="flex items-center justify-center h-full border-2 border-dashed border-border/40 rounded-lg text-[10px] text-muted-foreground">
+          <div className="flex items-center justify-center h-full border-2 border-dashed border-border/40 rounded-lg text-micro text-muted-foreground">
             {block.content ? <img src={block.content} alt="" className="max-h-full object-contain" /> : "Image"}
           </div>
         );
@@ -289,29 +289,29 @@ function PropertyPanel({ block, onUpdate, onClose, codeSettings, ar }: {
     <div className="w-[280px] border-l border-border/40 bg-background overflow-auto">
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-[13px] font-medium">{ar ? "خصائص" : "Properties"}</h3>
+          <h3 className="text-body font-medium">{ar ? "خصائص" : "Properties"}</h3>
           <button onClick={onClose} className="w-6 h-6 rounded flex items-center justify-center hover:bg-muted"><X size={12} /></button>
         </div>
 
         {/* Position */}
         <div>
-          <p className="text-[10px] text-muted-foreground mb-2">{ar ? "الموضع والحجم" : "Position & Size"}</p>
+          <p className="text-micro text-muted-foreground mb-2">{ar ? "الموضع والحجم" : "Position & Size"}</p>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[9px] text-muted-foreground/60">X</label>
-              <input type="number" value={block.x} onChange={e => onUpdate(block!.id, { x: parseInt(e.target.value) || 0 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-[11px] w-full" />
+              <label className="text-micro text-muted-foreground/60">X</label>
+              <input type="number" value={block.x} onChange={e => onUpdate(block!.id, { x: parseInt(e.target.value) || 0 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-micro w-full" />
             </div>
             <div>
-              <label className="text-[9px] text-muted-foreground/60">Y</label>
-              <input type="number" value={block.y} onChange={e => onUpdate(block!.id, { y: parseInt(e.target.value) || 0 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-[11px] w-full" />
+              <label className="text-micro text-muted-foreground/60">Y</label>
+              <input type="number" value={block.y} onChange={e => onUpdate(block!.id, { y: parseInt(e.target.value) || 0 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-micro w-full" />
             </div>
             <div>
-              <label className="text-[9px] text-muted-foreground/60">{ar ? "العرض" : "Width"}</label>
-              <input type="number" value={block.width} onChange={e => onUpdate(block!.id, { width: parseInt(e.target.value) || 100 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-[11px] w-full" />
+              <label className="text-micro text-muted-foreground/60">{ar ? "العرض" : "Width"}</label>
+              <input type="number" value={block.width} onChange={e => onUpdate(block!.id, { width: parseInt(e.target.value) || 100 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-micro w-full" />
             </div>
             <div>
-              <label className="text-[9px] text-muted-foreground/60">{ar ? "الارتفاع" : "Height"}</label>
-              <input type="number" value={block.height} onChange={e => onUpdate(block!.id, { height: parseInt(e.target.value) || 50 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-[11px] w-full" />
+              <label className="text-micro text-muted-foreground/60">{ar ? "الارتفاع" : "Height"}</label>
+              <input type="number" value={block.height} onChange={e => onUpdate(block!.id, { height: parseInt(e.target.value) || 50 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-micro w-full" />
             </div>
           </div>
         </div>
@@ -319,11 +319,11 @@ function PropertyPanel({ block, onUpdate, onClose, codeSettings, ar }: {
         {/* Text Content */}
         {(block.type === "header" || block.type === "text_block" || block.type === "terms") && (
           <div>
-            <p className="text-[10px] text-muted-foreground mb-2">{ar ? "المحتوى" : "Content"}</p>
+            <p className="text-micro text-muted-foreground mb-2">{ar ? "المحتوى" : "Content"}</p>
             <textarea
               value={block.content || ""}
               onChange={e => onUpdate(block!.id, { content: e.target.value })}
-              className="w-full h-20 px-2.5 py-1.5 rounded-lg border border-border/50 bg-background text-[11px] resize-none focus:outline-none focus:ring-1 focus:ring-primary/20"
+              className="w-full h-20 px-2.5 py-1.5 rounded-lg border border-border/50 bg-background text-micro resize-none focus:outline-none focus:ring-1 focus:ring-brand-ink/20"
               placeholder={ar ? "أدخل النص..." : "Enter text..."}
             />
           </div>
@@ -331,15 +331,15 @@ function PropertyPanel({ block, onUpdate, onClose, codeSettings, ar }: {
 
         {/* Font */}
         <div>
-          <p className="text-[10px] text-muted-foreground mb-2">{ar ? "الخط" : "Typography"}</p>
+          <p className="text-micro text-muted-foreground mb-2">{ar ? "الخط" : "Typography"}</p>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[9px] text-muted-foreground/60">{ar ? "الحجم" : "Size"}</label>
-              <input type="number" value={block.style.fontSize || 13} onChange={e => updateStyle({ fontSize: parseInt(e.target.value) || 13 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-[11px] w-full" />
+              <label className="text-micro text-muted-foreground/60">{ar ? "الحجم" : "Size"}</label>
+              <input type="number" value={block.style.fontSize || 13} onChange={e => updateStyle({ fontSize: parseInt(e.target.value) || 13 })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-micro w-full" />
             </div>
             <div>
-              <label className="text-[9px] text-muted-foreground/60">{ar ? "الوزن" : "Weight"}</label>
-              <select value={block.style.fontWeight || "normal"} onChange={e => updateStyle({ fontWeight: e.target.value })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-[11px] w-full">
+              <label className="text-micro text-muted-foreground/60">{ar ? "الوزن" : "Weight"}</label>
+              <select value={block.style.fontWeight || "normal"} onChange={e => updateStyle({ fontWeight: e.target.value })} className="h-7 px-2 rounded-lg border border-border/50 bg-background text-micro w-full">
                 <option value="normal">Normal</option>
                 <option value="bold">Bold</option>
                 <option value="lighter">Light</option>
@@ -351,8 +351,8 @@ function PropertyPanel({ block, onUpdate, onClose, codeSettings, ar }: {
               <button
                 key={align}
                 onClick={() => updateStyle({ textAlign: align })}
-                className={`flex-1 h-7 rounded-lg border text-[10px] flex items-center justify-center transition-colors ${
-                  block.style.textAlign === align ? "border-primary bg-primary/10 text-primary" : "border-border/50 text-muted-foreground hover:bg-muted"
+                className={`flex-1 h-7 rounded-lg border text-micro flex items-center justify-center transition-colors ${
+                  block.style.textAlign === align ? "border-primary bg-primary/10 text-brand-ink" : "border-border/50 text-muted-foreground hover:bg-muted"
                 }`}
               >
                 {align === "left" ? <AlignLeft size={11} /> : align === "center" ? <AlignCenter size={11} /> : <AlignRight size={11} />}
@@ -363,29 +363,29 @@ function PropertyPanel({ block, onUpdate, onClose, codeSettings, ar }: {
 
         {/* Colors */}
         <div>
-          <p className="text-[10px] text-muted-foreground mb-2">{ar ? "الألوان" : "Colors"}</p>
+          <p className="text-micro text-muted-foreground mb-2">{ar ? "الألوان" : "Colors"}</p>
           <div className="space-y-2">
             <div>
-              <label className="text-[9px] text-muted-foreground/60">{ar ? "لون النص" : "Text Color"}</label>
+              <label className="text-micro text-muted-foreground/60">{ar ? "لون النص" : "Text Color"}</label>
               <div className="flex gap-1 flex-wrap mt-1">
                 {COLORS.map(c => (
                   <button
                     key={c}
                     onClick={() => updateStyle({ color: c })}
-                    className={`w-5 h-5 rounded-md border ${block.style.color === c ? "border-primary ring-1 ring-primary" : "border-border/40"}`}
+                    className={`w-5 h-5 rounded-md border ${block.style.color === c ? "border-primary ring-1 ring-brand-ink" : "border-border/40"}`}
                     style={{ backgroundColor: c }}
                   />
                 ))}
               </div>
             </div>
             <div>
-              <label className="text-[9px] text-muted-foreground/60">{ar ? "لون الخلفية" : "Background"}</label>
+              <label className="text-micro text-muted-foreground/60">{ar ? "لون الخلفية" : "Background"}</label>
               <div className="flex gap-1 flex-wrap mt-1">
                 {COLORS.map(c => (
                   <button
                     key={c}
                     onClick={() => updateStyle({ bgColor: c })}
-                    className={`w-5 h-5 rounded-md border ${block.style.bgColor === c ? "border-primary ring-1 ring-primary" : "border-border/40"}`}
+                    className={`w-5 h-5 rounded-md border ${block.style.bgColor === c ? "border-primary ring-1 ring-brand-ink" : "border-border/40"}`}
                     style={{ backgroundColor: c }}
                   />
                 ))}
@@ -396,7 +396,7 @@ function PropertyPanel({ block, onUpdate, onClose, codeSettings, ar }: {
 
         {/* Visibility */}
         <div className="flex items-center justify-between">
-          <span className="text-[11px]">{ar ? "مرئي" : "Visible"}</span>
+          <span className="text-micro">{ar ? "مرئي" : "Visible"}</span>
           <button
             onClick={() => onUpdate(block!.id, { visible: !block!.visible })}
             className={`w-10 h-5 rounded-full transition-colors ${block.visible ? "bg-primary" : "bg-muted"}`}
@@ -630,11 +630,11 @@ export default function QuotationDesignerPage() {
             <ArrowLeft size={16} />
           </Link>
           <div>
-            <h1 className="text-[15px] font-semibold flex items-center gap-2">
-              <LayoutTemplate size={15} className="text-primary" />
+            <h1 className="text-body-lg font-semibold flex items-center gap-2">
+              <LayoutTemplate size={15} className="text-brand-ink" />
               {ar ? "مصمم عروض الأسعار" : "Quotation Designer"}
             </h1>
-            <p className="text-[11px] text-muted-foreground">{ar ? "اسحب وأفلت الكتل لتصميم القالب" : "Drag & drop blocks to design your template"}</p>
+            <p className="text-micro text-muted-foreground">{ar ? "اسحب وأفلت الكتل لتصميم القالب" : "Drag & drop blocks to design your template"}</p>
           </div>
         </div>
 
@@ -644,17 +644,17 @@ export default function QuotationDesignerPage() {
             value={templateName}
             onChange={e => setTemplateName(e.target.value)}
             placeholder={ar ? "اسم القالب..." : "Template name..."}
-            className="h-8 px-3 rounded-lg border border-border/50 bg-background text-[12px] w-[160px] focus:outline-none focus:ring-1 focus:ring-primary/20"
+            className="h-8 px-3 rounded-lg border border-border/50 bg-background text-caption w-[160px] focus:outline-none focus:ring-1 focus:ring-brand-ink/20"
           />
-          <button onClick={saveTemplate} disabled={!templateName.trim() || saving} className="inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground text-[12px] font-medium px-3 py-1.5 hover:opacity-90 disabled:opacity-40">
+          <button onClick={saveTemplate} disabled={!templateName.trim() || saving} className="inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground text-caption font-medium px-3 py-1.5 hover:opacity-90 disabled:opacity-40">
             {saving ? <CheckCircle2 size={12} /> : <Save size={12} />}
             {saving ? (ar ? "تم" : "Saved") : (ar ? "حفظ" : "Save")}
           </button>
-          <button onClick={() => setShowTemplateList(!showTemplateList)} className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 text-[12px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50">
+          <button onClick={() => setShowTemplateList(!showTemplateList)} className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 text-caption font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50">
             <FileText size={12} />
             {ar ? "القوالب" : "Templates"}
           </button>
-          <button onClick={handlePrint} className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 text-[12px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50">
+          <button onClick={handlePrint} className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 text-caption font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50">
             <Download size={12} />
             PDF
           </button>
@@ -665,18 +665,18 @@ export default function QuotationDesignerPage() {
       {showTemplateList && (
         <div className="absolute top-[52px] right-4 z-40 w-[300px] bg-background border border-border/60 rounded-xl shadow-xl max-h-[300px] overflow-auto">
           <div className="p-3 border-b border-border/30">
-            <p className="text-[12px] font-medium">{ar ? "القوالب المحفوظة" : "Saved Templates"}</p>
+            <p className="text-caption font-medium">{ar ? "القوالب المحفوظة" : "Saved Templates"}</p>
           </div>
           {templates.length === 0 ? (
-            <div className="p-6 text-center text-[12px] text-muted-foreground">
+            <div className="p-6 text-center text-caption text-muted-foreground">
               {ar ? "لا توجد قوالب محفوظة" : "No saved templates yet"}
             </div>
           ) : (
             templates.map(tpl => (
               <div key={tpl.id} className="flex items-center justify-between px-3 py-2.5 hover:bg-muted/30 border-b border-border/20 last:border-b-0">
                 <button onClick={() => loadTemplate(tpl.id)} className="text-left flex-1">
-                  <p className="text-[12px] font-medium">{tpl.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{tpl.blocks.length} blocks · {new Date(tpl.updatedAt).toLocaleDateString()}</p>
+                  <p className="text-caption font-medium">{tpl.name}</p>
+                  <p className="text-micro text-muted-foreground">{tpl.blocks.length} blocks · {new Date(tpl.updatedAt).toLocaleDateString()}</p>
                 </button>
                 <button onClick={() => deleteTemplate(tpl.id)} className="w-6 h-6 rounded flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-500">
                   <Trash2 size={11} />
@@ -691,7 +691,7 @@ export default function QuotationDesignerPage() {
         {/* Block palette */}
         <div className="w-[200px] border-r border-border/40 bg-background overflow-auto shrink-0">
           <div className="p-3">
-            <p className="text-[10px] text-muted-foreground mb-2 uppercase tracking-wider">{ar ? "الكتل" : "Blocks"}</p>
+            <p className="text-micro text-muted-foreground mb-2 uppercase tracking-wider">{ar ? "الكتل" : "Blocks"}</p>
             <div className="space-y-1">
               {BLOCK_TYPES.map(bt => {
                 const Icon = bt.icon;
@@ -700,7 +700,7 @@ export default function QuotationDesignerPage() {
                     key={bt.type}
                     draggable
                     onDragStart={e => handlePaletteDragStart(e, bt.type)}
-                    className="flex items-center gap-2 px-2.5 py-2 rounded-lg cursor-grab hover:bg-muted/50 transition-colors text-[12px] border border-transparent hover:border-border/30"
+                    className="flex items-center gap-2 px-2.5 py-2 rounded-lg cursor-grab hover:bg-muted/50 transition-colors text-caption border border-transparent hover:border-border/30"
                   >
                     <GripVertical size={10} className="text-muted-foreground/40 shrink-0" />
                     <Icon size={13} className="text-muted-foreground/60 shrink-0" />
@@ -736,7 +736,7 @@ export default function QuotationDesignerPage() {
               </div>
             ))}
             {blocks.length === 0 && (
-              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/40 text-[13px]">
+              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/40 text-body">
                 {ar ? "اسحب الكتل من اليسار" : "Drag blocks from the left panel"}
               </div>
             )}

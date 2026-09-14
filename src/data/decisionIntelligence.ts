@@ -1,5 +1,5 @@
 /**
- * THOTH Sprint 21 — Decision Intelligence Layer
+ * Bumblebee Sprint 21 — Decision Intelligence Layer
  *
  * Ten deterministic engines built on top of the Memory Graph.
  * No AI API calls — all insights derived from user data.

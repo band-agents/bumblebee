@@ -67,9 +67,9 @@ export const KIND_LABELS: Record<ActivityKind, { en: string; ar: string }> = {
 };
 
 export const MODULE_META: Record<ActivityModule, { en: string; ar: string; dot: string; subtle: string }> = {
-  people:        { en: "People",        ar: "الأشخاص",   dot: "bg-violet-400",  subtle: "text-violet-600" },
+  people:        { en: "People",        ar: "الأشخاص",   dot: "bg-chart-4",  subtle: "text-chart-4" },
   finance:       { en: "Finance",       ar: "المالية",   dot: "bg-emerald-500", subtle: "text-emerald-700" },
-  sales:         { en: "Sales",         ar: "المبيعات",  dot: "bg-amber-500",   subtle: "text-amber-600" },
+  sales:         { en: "Sales",         ar: "المبيعات",  dot: "bg-warning",   subtle: "text-warning" },
   operations:    { en: "Operations",    ar: "العمليات",  dot: "bg-orange-400",  subtle: "text-orange-600" },
   work:          { en: "Work",          ar: "العمل",     dot: "bg-blue-400",    subtle: "text-blue-600" },
   organizations: { en: "Organizations", ar: "المنظمات",  dot: "bg-cyan-400",    subtle: "text-cyan-600" },
@@ -81,8 +81,8 @@ export const MODULE_META: Record<ActivityModule, { en: string; ar: string; dot: 
 const A = {
   nour:   { authorEn: "Nour Al-Haddad",  authorAr: "نور الحداد",  authorColor: "bg-emerald-100 text-emerald-700" },
   tariq:  { authorEn: "Tariq Nassar",    authorAr: "طارق نصار",   authorColor: "bg-cyan-100 text-cyan-700" },
-  rana:   { authorEn: "Rana Khalil",     authorAr: "رنا خليل",    authorColor: "bg-violet-100 text-violet-700" },
-  hassan: { authorEn: "Hassan Younis",   authorAr: "حسن يونس",    authorColor: "bg-amber-100 text-amber-700" },
+  rana:   { authorEn: "Rana Khalil",     authorAr: "رنا خليل",    authorColor: "bg-chart-4/15 text-chart-4" },
+  hassan: { authorEn: "Hassan Younis",   authorAr: "حسن يونس",    authorColor: "bg-warning/15 text-warning" },
   system: { authorEn: "System",          authorAr: "النظام",      authorColor: "bg-muted text-muted-foreground" },
 };
 
@@ -155,7 +155,7 @@ export const ACTIVITY_EVENTS: ActivityEvent[] = [
     titleEn: "Mia Johansson added as contractor", titleAr: "تمت إضافة ميا يوهانسن كمتعاقدة",
     entityType: "person", entityId: "p16",
     entityNameEn: "Freelance · UX / Product Design", entityNameAr: "مستقل · تصميم المنتج",
-    detailEn: "Working on THOTH interface and design system", detailAr: "تعمل على واجهة ثوث ونظام التصميم",
+    detailEn: "Working on Bumblebee interface and design system", detailAr: "تعمل على واجهة بامبلبي ونظام التصميم",
     ...A.rana, timeEn: "2:00 PM", timeAr: "٢:٠٠ م",
     dateGroupEn: "Yesterday", dateGroupAr: "أمس",
   },
@@ -526,7 +526,7 @@ export function generateCrossModuleEvents(): ActivityEvent[] {
       detailAr: `المرحلة: ${STAGE_META[d.stage].ar} · ${formatCurrency(d.value, d.currency)}`,
       authorEn: d.ownerEn,
       authorAr: d.ownerAr,
-      authorColor: isWon ? "bg-emerald-100 text-emerald-700" : isLost ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700",
+      authorColor: isWon ? "bg-emerald-100 text-emerald-700" : isLost ? "bg-rose-100 text-rose-700" : "bg-warning/15 text-warning",
       valueEn: formatCurrency(d.value, d.currency),
       valueAr: formatCurrency(d.value, d.currency),
       timeEn: d.createdEn,

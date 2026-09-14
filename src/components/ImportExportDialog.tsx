@@ -7,8 +7,8 @@ import { useState, useRef } from "react";
 import { X, Upload, Download, FileText, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { type ImportColumn, type ImportResult, validateAndImport, downloadTemplate } from "../lib/import-export";
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium px-4 py-2 hover:opacity-90 transition-opacity";
-const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-[11px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-caption font-medium px-4 py-2 hover:opacity-90 transition-opacity";
+const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-micro font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
 
 interface Props {
   title: string;
@@ -53,7 +53,7 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
       <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[550px] max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="px-6 py-4 border-b border-border/40 flex items-center justify-between shrink-0">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             <Upload size={15} className="inline mr-2" />{title}
           </h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={16} /></button>
@@ -67,8 +67,8 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
               {/* Template download */}
               <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-muted/30 border border-border/30">
                 <div>
-                  <p className="text-[12px] font-medium">{ar ? "حمّل القالب أولاً" : "Download template first"}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{ar ? "استخدم الأعمدة الصحيحة" : "Use correct column headers"}</p>
+                  <p className="text-caption font-medium">{ar ? "حمّل القالب أولاً" : "Download template first"}</p>
+                  <p className="text-micro text-muted-foreground mt-0.5">{ar ? "استخدم الأعمدة الصحيحة" : "Use correct column headers"}</p>
                 </div>
                 <button onClick={() => downloadTemplate(columns, templateFilename)} className={btnSecondary}>
                   <Download size={11} /> {ar ? "قالب CSV" : "CSV Template"}
@@ -81,17 +81,17 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
                 className="border-2 border-dashed border-border/50 rounded-xl p-8 text-center cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all"
               >
                 <FileText size={24} className="mx-auto mb-3 text-muted-foreground/40" />
-                <p className="text-[13px] font-medium">{ar ? "اختر ملف CSV" : "Select CSV file"}</p>
-                <p className="text-[11px] text-muted-foreground mt-1">{ar ? "أو اسحب وأفلت هنا" : "or drag and drop here"}</p>
+                <p className="text-body font-medium">{ar ? "اختر ملف CSV" : "Select CSV file"}</p>
+                <p className="text-micro text-muted-foreground mt-1">{ar ? "أو اسحب وأفلت هنا" : "or drag and drop here"}</p>
                 <input ref={fileRef} type="file" accept=".csv" onChange={handleFile} className="hidden" />
               </div>
 
               {/* Expected columns */}
               <div>
-                <p className="text-[10px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2">{ar ? "الأعمدة المطلوبة" : "Expected Columns"}</p>
+                <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-2">{ar ? "الأعمدة المطلوبة" : "Expected Columns"}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {columns.map(c => (
-                    <span key={c.key} className={`text-[10px] px-2 py-1 rounded ${c.required ? "bg-primary/10 text-primary font-medium" : "bg-muted text-muted-foreground"}`}>
+                    <span key={c.key} className={`text-micro px-2 py-1 rounded ${c.required ? "bg-primary/10 text-brand-ink font-medium" : "bg-muted text-muted-foreground"}`}>
                       {c.header}{c.required ? " *" : ""}
                     </span>
                   ))}
@@ -105,21 +105,21 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
               {/* Summary */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="text-center px-3 py-3 rounded-xl bg-muted/30">
-                  <p className="text-[18px] font-medium text-foreground tabular-nums">{result.total}</p>
-                  <p className="text-[10px] text-muted-foreground">{ar ? "إجمالي الصفوف" : "Total Rows"}</p>
+                  <p className="text-title font-medium text-foreground tabular-nums">{result.total}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "إجمالي الصفوف" : "Total Rows"}</p>
                 </div>
                 <div className="text-center px-3 py-3 rounded-xl bg-emerald-50">
-                  <p className="text-[18px] font-medium text-emerald-600 tabular-nums">{result.success}</p>
-                  <p className="text-[10px] text-emerald-600">{ar ? "صالح" : "Valid"}</p>
+                  <p className="text-title font-medium text-emerald-600 tabular-nums">{result.success}</p>
+                  <p className="text-micro text-emerald-600">{ar ? "صالح" : "Valid"}</p>
                 </div>
                 <div className="text-center px-3 py-3 rounded-xl bg-rose-50">
-                  <p className="text-[18px] font-medium text-rose-500 tabular-nums">{result.failed}</p>
-                  <p className="text-[10px] text-rose-500">{ar ? "فشل" : "Failed"}</p>
+                  <p className="text-title font-medium text-rose-500 tabular-nums">{result.failed}</p>
+                  <p className="text-micro text-rose-500">{ar ? "فشل" : "Failed"}</p>
                 </div>
               </div>
 
               {result.duplicates > 0 && (
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-[11px]">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-warning/10 border border-warning/30 text-warning text-micro">
                   <AlertCircle size={12} />{result.duplicates} {ar ? "مكرر تم تجاهله" : "duplicates skipped"}
                 </div>
               )}
@@ -128,21 +128,21 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
               {result.errors.length > 0 && (
                 <div className="max-h-[150px] overflow-auto border border-border/40 rounded-xl divide-y divide-border/25">
                   {result.errors.slice(0, 10).map((err, i) => (
-                    <div key={i} className="px-3 py-2 flex items-center gap-2 text-[11px]">
+                    <div key={i} className="px-3 py-2 flex items-center gap-2 text-micro">
                       <span className="text-muted-foreground tabular-nums shrink-0">Row {err.row}</span>
                       <span className="text-rose-600">{err.message}</span>
                     </div>
                   ))}
-                  {result.errors.length > 10 && <div className="px-3 py-2 text-[10px] text-muted-foreground">+{result.errors.length - 10} more errors</div>}
+                  {result.errors.length > 10 && <div className="px-3 py-2 text-micro text-muted-foreground">+{result.errors.length - 10} more errors</div>}
                 </div>
               )}
 
               {/* Preview rows */}
               {result.validRows.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-semibold text-muted-foreground mb-1.5">{ar ? "معاينة (أول 5 صفوف)" : "Preview (first 5 rows)"}</p>
+                  <p className="text-micro font-semibold text-muted-foreground mb-1.5">{ar ? "معاينة (أول 5 صفوف)" : "Preview (first 5 rows)"}</p>
                   <div className="overflow-auto max-h-[120px] border border-border/40 rounded-xl">
-                    <table className="w-full text-[10px]">
+                    <table className="w-full text-micro">
                       <thead>
                         <tr className="bg-muted/30">
                           {columns.slice(0, 5).map(c => <th key={c.key} className="px-2 py-1.5 text-left font-medium">{c.header}</th>)}
@@ -165,8 +165,8 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
           {step === "result" && result && (
             <div className="text-center py-6">
               <CheckCircle2 size={32} className="mx-auto mb-3 text-emerald-500" />
-              <p className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تم الاستيراد بنجاح!" : "Import Complete!"}</p>
-              <p className="text-[12px] text-muted-foreground mt-1">{result.success} {ar ? "صف تم استيراده" : "rows imported successfully"}</p>
+              <p className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تم الاستيراد بنجاح!" : "Import Complete!"}</p>
+              <p className="text-caption text-muted-foreground mt-1">{result.success} {ar ? "صف تم استيراده" : "rows imported successfully"}</p>
             </div>
           )}
         </div>

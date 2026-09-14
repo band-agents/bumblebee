@@ -29,18 +29,18 @@ import { CsvImport } from "../components/CsvImport";
 
 type Resource = Database["public"]["Tables"]["resources"]["Row"];
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
-const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-[11px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-micro font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
 
 // ─── Taxonomy ────────────────────────────────────────────
 
 const ASSET_TYPES = [
   { value: "equipment", en: "Equipment", ar: "معدات",  icon: Wrench,    color: "bg-blue-100 text-blue-600" },
   { value: "vehicle",   en: "Vehicle",   ar: "مركبة",  icon: Car,       color: "bg-cyan-100 text-cyan-600" },
-  { value: "facility",  en: "Facility",  ar: "منشأة",  icon: Building2,  color: "bg-violet-100 text-violet-600" },
+  { value: "facility",  en: "Facility",  ar: "منشأة",  icon: Building2,  color: "bg-chart-4/15 text-chart-4" },
   { value: "license",   en: "License",   ar: "ترخيص",  icon: Key,        color: "bg-emerald-100 text-emerald-700" },
   { value: "other",     en: "Other",     ar: "أخرى",   icon: Box,        color: "bg-slate-100 text-slate-600" },
 ] as const;
@@ -48,7 +48,7 @@ const ASSET_TYPES = [
 const ASSET_STATUSES = [
   { value: "active",      en: "Active",      ar: "نشط",    pill: "bg-emerald-100 text-emerald-700" },
   { value: "idle",        en: "Idle",        ar: "خامل",   pill: "bg-slate-100 text-slate-600" },
-  { value: "maintenance", en: "Maintenance", ar: "صيانة",  pill: "bg-amber-100 text-amber-700" },
+  { value: "maintenance", en: "Maintenance", ar: "صيانة",  pill: "bg-warning/15 text-warning" },
   { value: "retired",     en: "Retired",     ar: "متقاعد", pill: "bg-rose-100 text-rose-600" },
 ];
 
@@ -231,14 +231,14 @@ function AssetModal({ initial, nextTag, ar, currency, onClose, onSaved }: {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-xl w-full max-w-[640px] max-h-[90vh] overflow-auto" onClick={e => e.stopPropagation()}>
         <div className="sticky top-0 bg-background/95 backdrop-blur px-6 py-4 border-b border-border/40 flex items-center justify-between">
-          <h2 className="text-[16px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {initial ? (ar ? "تعديل الأصل" : "Edit Asset") : (ar ? "إضافة أصل" : "Add Asset")}
           </h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={15} /></button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {error && <div className="text-[12px] text-rose-600 bg-rose-50 px-3 py-2 rounded-lg">{error}</div>}
+          {error && <div className="text-caption text-rose-600 bg-rose-50 px-3 py-2 rounded-lg">{error}</div>}
 
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
@@ -270,7 +270,7 @@ function AssetModal({ initial, nextTag, ar, currency, onClose, onSaved }: {
 
           {/* Financials */}
           <div className="pt-2 border-t border-border/30">
-            <p className="text-[11px] font-semibold text-muted-foreground mb-2.5">{ar ? "القيمة والإهلاك" : "Value & Depreciation"}</p>
+            <p className="text-micro font-semibold text-muted-foreground mb-2.5">{ar ? "القيمة والإهلاك" : "Value & Depreciation"}</p>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className={labelCls}>{ar ? "تاريخ الشراء" : "Purchase Date"}</label>
@@ -292,16 +292,16 @@ function AssetModal({ initial, nextTag, ar, currency, onClose, onSaved }: {
             {(parseFloat(form.purchaseCost) > 0 && form.purchaseDate) && (
               <div className="mt-3 p-3 rounded-xl bg-muted/40 border border-border/30 grid grid-cols-3 gap-2 text-center">
                 <div>
-                  <p className="text-[10px] text-muted-foreground">{ar ? "القيمة الدفترية" : "Book Value"}</p>
-                  <p className="text-[14px] font-semibold text-emerald-600">{currency} {Math.round(preview.book).toLocaleString()}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "القيمة الدفترية" : "Book Value"}</p>
+                  <p className="text-body-lg font-semibold text-emerald-600">{currency} {Math.round(preview.book).toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-muted-foreground">{ar ? "الإهلاك السنوي" : "Annual Dep."}</p>
-                  <p className="text-[14px] font-semibold">{currency} {Math.round(preview.annual).toLocaleString()}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "الإهلاك السنوي" : "Annual Dep."}</p>
+                  <p className="text-body-lg font-semibold">{currency} {Math.round(preview.annual).toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-muted-foreground">{ar ? "نسبة العمر" : "Life Used"}</p>
-                  <p className="text-[14px] font-semibold">{Math.round(preview.agePct * 100)}%</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "نسبة العمر" : "Life Used"}</p>
+                  <p className="text-body-lg font-semibold">{Math.round(preview.agePct * 100)}%</p>
                 </div>
               </div>
             )}
@@ -309,7 +309,7 @@ function AssetModal({ initial, nextTag, ar, currency, onClose, onSaved }: {
 
           {/* Status & assignment */}
           <div className="pt-2 border-t border-border/30">
-            <p className="text-[11px] font-semibold text-muted-foreground mb-2.5">{ar ? "الحالة والتخصيص" : "Status & Assignment"}</p>
+            <p className="text-micro font-semibold text-muted-foreground mb-2.5">{ar ? "الحالة والتخصيص" : "Status & Assignment"}</p>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className={labelCls}>{ar ? "الحالة" : "Status"}</label>
@@ -451,13 +451,13 @@ export default function InventoryEquipmentPage() {
               <ArrowLeft size={16} />
             </Link>
             <div>
-              <h1 className="text-[22px] font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h1 className="text-heading font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
                 <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center">
                   <Wrench size={16} className="text-blue-600" />
                 </div>
                 {ar ? "الأصول" : "Assets"}
               </h1>
-              <p className="text-[13px] text-muted-foreground mt-1 ml-[46px]">
+              <p className="text-body text-muted-foreground mt-1 ml-[46px]">
                 {ar ? `${items.length} أصل ثابت` : `${items.length} fixed assets`}
               </p>
             </div>
@@ -474,15 +474,15 @@ export default function InventoryEquipmentPage() {
           {[
             { label: ar ? "إجمالي الأصول" : "Total Assets", value: stats.total, icon: Box, color: "bg-blue-100 text-blue-600" },
             { label: ar ? "القيمة الدفترية" : "Book Value", value: `${currency} ${Math.round(stats.bookValue).toLocaleString()}`, icon: DollarSign, color: "bg-emerald-100 text-emerald-700" },
-            { label: ar ? "الإهلاك السنوي" : "Annual Depreciation", value: `${currency} ${Math.round(stats.annualDep).toLocaleString()}`, icon: TrendingDown, color: "bg-amber-100 text-amber-700" },
+            { label: ar ? "الإهلاك السنوي" : "Annual Depreciation", value: `${currency} ${Math.round(stats.annualDep).toLocaleString()}`, icon: TrendingDown, color: "bg-warning/15 text-warning" },
             { label: ar ? "تنبيهات" : "Alerts", value: stats.maintenance + stats.alerts, icon: ShieldAlert, color: "bg-rose-100 text-rose-600" },
           ].map((s, i) => (
             <div key={i} className="p-4 rounded-xl border border-border/40 bg-background">
               <div className="flex items-center gap-2 mb-2">
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${s.color}`}><s.icon size={13} /></div>
-                <span className="text-[11px] text-muted-foreground">{s.label}</span>
+                <span className="text-micro text-muted-foreground">{s.label}</span>
               </div>
-              <p className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+              <p className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
             </div>
           ))}
         </div>
@@ -491,13 +491,13 @@ export default function InventoryEquipmentPage() {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 max-w-[300px]">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث في الأصول..." : "Search assets..."} className={inputCls + " h-9 pl-9 text-[12px]"} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث في الأصول..." : "Search assets..."} className={inputCls + " h-9 pl-9 text-caption"} />
           </div>
-          <select value={filterType} onChange={e => setFilterType(e.target.value)} className={selectCls + " h-9 w-[150px] text-[12px]"}>
+          <select value={filterType} onChange={e => setFilterType(e.target.value)} className={selectCls + " h-9 w-[150px] text-caption"}>
             <option value="">{ar ? "كل الأنواع" : "All Types"}</option>
             {ASSET_TYPES.map(t => <option key={t.value} value={t.value}>{ar ? t.ar : t.en}</option>)}
           </select>
-          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={selectCls + " h-9 w-[140px] text-[12px]"}>
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={selectCls + " h-9 w-[140px] text-caption"}>
             <option value="">{ar ? "كل الحالات" : "All Statuses"}</option>
             {ASSET_STATUSES.map(s => <option key={s.value} value={s.value}>{ar ? s.ar : s.en}</option>)}
           </select>
@@ -509,8 +509,8 @@ export default function InventoryEquipmentPage() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <Wrench size={32} className="mx-auto text-muted-foreground/30 mb-3" />
-            <p className="text-[14px] text-muted-foreground">{ar ? "لا توجد أصول" : "No assets found"}</p>
-            <p className="text-[12px] text-muted-foreground/60 mt-1">{ar ? "اضغط 'إضافة أصل' للبدء" : "Click 'Add Asset' to get started"}</p>
+            <p className="text-body-lg text-muted-foreground">{ar ? "لا توجد أصول" : "No assets found"}</p>
+            <p className="text-caption text-muted-foreground/60 mt-1">{ar ? "اضغط 'إضافة أصل' للبدء" : "Click 'Add Asset' to get started"}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -528,34 +528,34 @@ export default function InventoryEquipmentPage() {
                     <div className="flex items-center gap-2.5">
                       <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${typeDef.color}`}><Icon size={15} /></div>
                       <div>
-                        <p className="text-[13px] font-medium leading-tight">{r.name_en}</p>
-                        <p className="text-[10px] text-muted-foreground font-mono">{m.asset_tag || "No tag"}</p>
+                        <p className="text-body font-medium leading-tight">{r.name_en}</p>
+                        <p className="text-micro text-muted-foreground font-mono">{m.asset_tag || "No tag"}</p>
                       </div>
                     </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${statusDef?.pill || ""}`}>{ar ? statusDef?.ar : statusDef?.en}</span>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${statusDef?.pill || ""}`}>{ar ? statusDef?.ar : statusDef?.en}</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-[10px] mb-3">
-                    <div><span className="text-muted-foreground">{ar ? "القيمة الدفترية" : "Book Value"}</span><p className="font-semibold text-[12px]">{m.purchase_cost ? `${currency} ${Math.round(d.book).toLocaleString()}` : "-"}</p></div>
+                  <div className="grid grid-cols-2 gap-2 text-micro mb-3">
+                    <div><span className="text-muted-foreground">{ar ? "القيمة الدفترية" : "Book Value"}</span><p className="font-semibold text-caption">{m.purchase_cost ? `${currency} ${Math.round(d.book).toLocaleString()}` : "-"}</p></div>
                     <div><span className="text-muted-foreground">{ar ? "مُخصص لـ" : "Assigned"}</span><p className="font-medium truncate">{m.assigned_to || m.assigned_dept || "-"}</p></div>
                   </div>
 
                   {m.purchase_cost ? (
                     <div className="mb-2.5">
-                      <div className="flex items-center justify-between text-[9px] text-muted-foreground mb-1">
+                      <div className="flex items-center justify-between text-micro text-muted-foreground mb-1">
                         <span>{ar ? "الإهلاك" : "Depreciation"}</span>
                         <span>{Math.round(d.agePct * 100)}%</span>
                       </div>
                       <div className="h-1.5 rounded-full bg-muted/60 overflow-hidden">
-                        <div className="h-full rounded-full bg-amber-400" style={{ width: `${Math.round(d.agePct * 100)}%` }} />
+                        <div className="h-full rounded-full bg-warning" style={{ width: `${Math.round(d.agePct * 100)}%` }} />
                       </div>
                     </div>
                   ) : null}
 
-                  <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex items-center justify-between text-micro">
                     <div className="flex items-center gap-1.5 text-muted-foreground">
                       {warrantyDays !== null && warrantyDays <= 30 ? (
-                        <span className="inline-flex items-center gap-1 text-amber-600"><Clock size={10} />{warrantyDays < 0 ? (ar ? "ضمان منتهٍ" : "Warranty ended") : `${warrantyDays}${ar ? "ي ضمان" : "d warranty"}`}</span>
+                        <span className="inline-flex items-center gap-1 text-warning"><Clock size={10} />{warrantyDays < 0 ? (ar ? "ضمان منتهٍ" : "Warranty ended") : `${warrantyDays}${ar ? "ي ضمان" : "d warranty"}`}</span>
                       ) : m.condition ? (
                         <span className="inline-flex items-center gap-1"><Activity size={10} />{CONDITIONS.find(c => c.value === m.condition)?.[ar ? "ar" : "en"]}</span>
                       ) : <span />}

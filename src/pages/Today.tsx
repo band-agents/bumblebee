@@ -59,7 +59,7 @@ function Section({ en, ar, lang, children }: { en: string; ar: string; lang: "en
   return (
     <section className="mb-10">
       <div className="flex items-center gap-4 mb-6">
-        <h2 className="text-[11px] font-semibold text-muted-foreground tracking-[0.1em] uppercase shrink-0">
+        <h2 className="text-micro font-semibold text-muted-foreground tracking-[0.1em] uppercase shrink-0">
           {lang === "ar" ? ar : en}
         </h2>
         <div className="flex-1 h-px bg-border/40" />
@@ -81,8 +81,8 @@ function StepCard({ step, icon: Icon, titleEn, titleAr, descEn, descAr, ar, done
         ? "bg-emerald-50/40 border-emerald-200/50 hover:border-emerald-300/60"
         : "bg-background border-border/40 hover:border-primary/30 hover:shadow-sm"
     }`}>
-      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-[13px] font-semibold ${
-        done ? "bg-emerald-100 text-emerald-700" : "bg-primary/8 text-primary"
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-body font-semibold ${
+        done ? "bg-emerald-100 text-emerald-700" : "bg-primary/8 text-brand-ink"
       }`}>
         {done ? <CheckCircle2 size={16} strokeWidth={2} /> : step}
       </div>
@@ -90,12 +90,12 @@ function StepCard({ step, icon: Icon, titleEn, titleAr, descEn, descAr, ar, done
         <Icon size={15} strokeWidth={1.75} className={done ? "text-emerald-600" : "text-muted-foreground"} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className={`text-[13px] font-medium leading-snug ${done ? "text-emerald-800" : "text-foreground"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+        <p className={`text-body font-medium leading-snug ${done ? "text-emerald-800" : "text-foreground"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? titleAr : titleEn}
         </p>
-        <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{ar ? descAr : descEn}</p>
+        <p className="text-micro text-muted-foreground leading-snug mt-0.5">{ar ? descAr : descEn}</p>
       </div>
-      <ArrowRight size={14} className="shrink-0 text-muted-foreground/30 group-hover:text-primary/60 transition-colors" />
+      <ArrowRight size={14} className="shrink-0 text-muted-foreground/30 group-hover:text-brand-ink/60 transition-colors" />
     </button>
   );
 }
@@ -112,12 +112,12 @@ function DataRow({ icon: Icon, labelEn, labelAr, count, ar, color, onView, onExp
         <Icon size={14} strokeWidth={1.75} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-medium text-foreground">{ar ? labelAr : labelEn}</p>
+        <p className="text-body font-medium text-foreground">{ar ? labelAr : labelEn}</p>
       </div>
-      <span className="text-[16px] font-semibold text-foreground tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
+      <span className="text-title font-semibold text-foreground tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
         {count}
       </span>
-      <button onClick={onView} className="text-[11px] text-primary hover:text-primary/70 font-medium transition-colors shrink-0">
+      <button onClick={onView} className="text-micro text-brand-ink hover:text-brand-ink/70 font-medium transition-colors shrink-0">
         {ar ? "عرض" : "View"}
       </button>
       {onExport && count > 0 && (
@@ -136,7 +136,7 @@ function DataStatus({ ar }: { ar: boolean }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50/50 border border-emerald-200/40 rounded-lg">
       <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-      <span className="text-[11px] text-emerald-700 font-medium">
+      <span className="text-micro text-emerald-700 font-medium">
         {ar ? "بياناتك محفوظة · Supabase" : "Data saved · Live"}
       </span>
     </div>
@@ -152,11 +152,11 @@ function MetricsRow({ metrics, ar }: { metrics: MetricData[]; ar: boolean }) {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border/30 rounded-xl overflow-hidden border border-border/30">
       {metrics.map((h, i) => (
         <div key={i} className="bg-background px-6 py-5 flex flex-col gap-2.5 hover:bg-muted/20 transition-colors duration-150">
-          <p className="text-[11px] text-muted-foreground tracking-wide">{ar ? h.labelAr : h.labelEn}</p>
-          <span className="text-[22px] font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+          <p className="text-micro text-muted-foreground tracking-wide">{ar ? h.labelAr : h.labelEn}</p>
+          <span className="text-heading font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
             {h.value}
           </span>
-          <p className="text-[11px] text-muted-foreground/60">{ar ? h.subAr : h.subEn}</p>
+          <p className="text-micro text-muted-foreground/60">{ar ? h.subAr : h.subEn}</p>
         </div>
       ))}
     </div>
@@ -167,8 +167,8 @@ function MetricsRow({ metrics, ar }: { metrics: MetricData[]; ar: boolean }) {
 
 function WorkItemsList({ items, ar }: { items: Tables["work_items"]["Row"][]; ar: boolean }) {
   const statusStyles: Record<string, string> = {
-    in_progress: "bg-primary/8 text-primary",
-    review: "bg-amber-50 text-amber-700 border border-amber-200/60",
+    in_progress: "bg-primary/8 text-brand-ink",
+    review: "bg-warning/10 text-warning border border-warning/30",
     todo: "bg-muted text-muted-foreground",
     blocked: "bg-rose-50 text-rose-600 border border-rose-200/60",
     done: "bg-emerald-50 text-emerald-700 border border-emerald-200/60",
@@ -179,18 +179,18 @@ function WorkItemsList({ items, ar }: { items: Tables["work_items"]["Row"][]; ar
       {items.slice(0, 5).map((item) => (
         <div key={item.id} className="flex items-center gap-5 px-5 py-4 bg-background hover:bg-muted/20 transition-colors duration-150 group cursor-default">
           <div className="shrink-0 w-[38px] flex flex-col items-center gap-1">
-            <span className="text-[15px] font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <span className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
               {item.progress}
             </span>
-            <span className="text-[10px] text-muted-foreground/60">%</span>
+            <span className="text-micro text-muted-foreground/60">%</span>
           </div>
           <div className="w-px self-stretch bg-border/40 shrink-0" />
           <div className="flex-1 min-w-0 flex flex-col gap-2">
             <div className="flex items-start justify-between gap-3">
-              <h3 className="text-[13.5px] font-medium text-foreground truncate leading-snug" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h3 className="text-body font-medium text-foreground truncate leading-snug" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? (item.title_ar ?? item.title_en) : item.title_en}
               </h3>
-              <span className={`shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-full ${statusStyles[item.status] ?? "bg-muted text-muted-foreground"}`}>
+              <span className={`shrink-0 text-micro font-medium px-2.5 py-1 rounded-full ${statusStyles[item.status] ?? "bg-muted text-muted-foreground"}`}>
                 {item.status.replace("_", " ")}
               </span>
             </div>
@@ -214,7 +214,7 @@ export default function Today() {
 
   const ar = lang === "ar";
   const settings = workspace?.settings as Record<string, unknown> | undefined;
-  const companyName = (settings?.company_name as string) || workspace?.name || "THOTH";
+  const companyName = (settings?.company_name as string) || workspace?.name || "Bumblebee";
   const currency = (settings?.currency as string) || "SAR";
   const greeting = getGreeting(lang);
   const dateStr = formatDate(lang);
@@ -287,7 +287,7 @@ export default function Today() {
   ];
 
   // Export helpers
-  const exp = (rows: Record<string, unknown>[], name: string) => exportCSV(rows, `thoth-${name}-${new Date().toISOString().slice(0, 10)}.csv`);
+  const exp = (rows: Record<string, unknown>[], name: string) => exportCSV(rows, `bumblebee-${name}-${new Date().toISOString().slice(0, 10)}.csv`);
 
   return (
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[960px] mx-auto">
@@ -296,11 +296,11 @@ export default function Today() {
       <div className="mb-10">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-3">{dateStr}</p>
-            <h1 className="text-[30px] font-medium text-foreground leading-tight mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-3">{dateStr}</p>
+            <h1 className="text-display font-medium text-foreground leading-tight mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {greeting}, {companyName}
             </h1>
-            <p className="text-[13.5px] text-muted-foreground leading-relaxed max-w-[480px]">
+            <p className="text-body text-muted-foreground leading-relaxed max-w-[480px]">
               {ar ? "كل اللي يهمك في شغلك النهاردة، في لمحة واحدة." : "Everything that matters in your business today, at a glance."}
             </p>
           </div>
@@ -318,21 +318,21 @@ export default function Today() {
           <div className="bg-background border border-border/40 rounded-2xl p-8 mb-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Zap size={18} className="text-primary" />
+                <Zap size={18} className="text-brand-ink" />
               </div>
               <div>
-                <p className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-                  {ar ? "أهلاً بيك في ثوث" : "Welcome to THOTH"}
+                <p className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  {ar ? "أهلاً بيك في بامبلبي" : "Welcome to Bumblebee"}
                 </p>
-                <p className="text-[12px] text-muted-foreground">
+                <p className="text-caption text-muted-foreground">
                   {ar ? "مساحة عملك جاهزة. ابدأ من هنا." : "Your workspace is ready. Start here."}
                 </p>
               </div>
             </div>
-            <p className="text-[13px] text-muted-foreground leading-relaxed max-w-[520px]">
+            <p className="text-body text-muted-foreground leading-relaxed max-w-[520px]">
               {ar
-                ? "ثوث بيساعدك تدير شغلك — العملاء، المبيعات، الحسابات، والمهام. اتبع الخطوات دي عشان تبدأ."
-                : "THOTH helps you manage your business — customers, sales, finance, and work. Follow these steps to get started."}
+                ? "بامبلبي بيساعدك تدير شغلك — العملاء، المبيعات، الحسابات، والمهام. اتبع الخطوات دي عشان تبدأ."
+                : "Bumblebee helps you manage your business — customers, sales, finance, and work. Follow these steps to get started."}
             </p>
           </div>
 
@@ -366,16 +366,16 @@ export default function Today() {
           <div className="mt-2 mb-8">
             <button onClick={() => navigate("/roadmap")}
               className="group flex items-center gap-3 px-5 py-4 bg-primary/5 border border-primary/15 rounded-xl hover:bg-primary/8 transition-all w-full text-start">
-              <Map size={16} className="text-primary shrink-0" />
+              <Map size={16} className="text-brand-ink shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
-                  {ar ? "شوف خارطة طريق ثوث" : "View THOTH ERP Roadmap"}
+                <p className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  {ar ? "شوف خارطة طريق بامبلبي" : "View Bumblebee ERP Roadmap"}
                 </p>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-micro text-muted-foreground">
                   {ar ? "الأقسام المتاحة واللي جاية قريب" : "See what's live and what's coming next"}
                 </p>
               </div>
-              <ArrowRight size={14} className="text-primary/50 group-hover:text-primary transition-colors shrink-0" />
+              <ArrowRight size={14} className="text-brand-ink/50 group-hover:text-brand-ink transition-colors shrink-0" />
             </button>
           </div>
         </>
@@ -393,13 +393,13 @@ export default function Today() {
                 color="text-emerald-600 bg-emerald-50" ar={ar} onView={() => navigate("/organizations")}
                 onExport={() => exp(orgs, "organizations")} />
               <DataRow icon={Users} labelEn="People" labelAr="الأشخاص" count={people.length}
-                color="text-violet-600 bg-violet-50" ar={ar} onView={() => navigate("/people")}
+                color="text-chart-4 bg-chart-4/10" ar={ar} onView={() => navigate("/people")}
                 onExport={() => exp(people, "people")} />
               <DataRow icon={Briefcase} labelEn="Work Items" labelAr="المهام" count={workItems.length}
                 color="text-blue-600 bg-blue-50" ar={ar} onView={() => navigate("/work")}
                 onExport={() => exp(workItems, "work-items")} />
               <DataRow icon={ShoppingBag} labelEn="Deals" labelAr="الصفقات" count={deals.length}
-                color="text-amber-600 bg-amber-50" ar={ar} onView={() => navigate("/sales")}
+                color="text-warning bg-warning/10" ar={ar} onView={() => navigate("/sales")}
                 onExport={() => exp(deals, "deals")} />
               <DataRow icon={FileText} labelEn="Invoices" labelAr="الفواتير" count={invoices.length}
                 color="text-cyan-600 bg-cyan-50" ar={ar} onView={() => navigate("/finance")}
@@ -411,7 +411,7 @@ export default function Today() {
                 color="text-orange-600 bg-orange-50" ar={ar} onView={() => navigate("/resources")}
                 onExport={() => exp(resources, "resources")} />
             </div>
-            <p className="text-[11px] text-muted-foreground/50 mt-3 text-center">
+            <p className="text-micro text-muted-foreground/50 mt-3 text-center">
               {ar ? `${totalRecords} سجل إجمالي في مساحة عملك` : `${totalRecords} total records in your workspace`}
             </p>
           </Section>
@@ -431,13 +431,13 @@ export default function Today() {
                   <div key={inv.id} className="flex items-center gap-4 px-5 py-4 rounded-xl border bg-rose-50/60 border-rose-100 group cursor-default hover:shadow-sm transition-all duration-150">
                     <div className="w-1 self-stretch rounded-full bg-rose-400 shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <span className="text-[10.5px] font-semibold tracking-wide uppercase text-rose-600">
+                      <span className="text-micro font-semibold tracking-wide uppercase text-rose-600">
                         {ar ? "متأخر" : "Overdue"}
                       </span>
-                      <p className="text-[13.5px] font-medium text-foreground mt-0.5 leading-snug" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      <p className="text-body font-medium text-foreground mt-0.5 leading-snug" style={{ fontFamily: "var(--app-font-serif)" }}>
                         {inv.number} — {ar ? (inv.org_name_ar ?? inv.org_name_en) : inv.org_name_en}
                       </p>
-                      <p className="text-[11px] text-muted-foreground mt-1">
+                      <p className="text-micro text-muted-foreground mt-1">
                         {fmtCurrency(Number(inv.amount), inv.currency, ar ? "ar-SA" : "en-SA")}
                       </p>
                     </div>
@@ -465,9 +465,9 @@ export default function Today() {
                   <button key={item.en} onClick={() => navigate(item.path)}
                     className="group flex flex-col items-center gap-2 px-3 py-4 rounded-xl border border-border/40 bg-background hover:border-primary/30 hover:shadow-sm transition-all">
                     <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center group-hover:bg-primary/12 transition-colors">
-                      <I size={15} className="text-primary" strokeWidth={1.75} />
+                      <I size={15} className="text-brand-ink" strokeWidth={1.75} />
                     </div>
-                    <span className="text-[11.5px] font-medium text-foreground">{ar ? item.ar : item.en}</span>
+                    <span className="text-micro font-medium text-foreground">{ar ? item.ar : item.en}</span>
                   </button>
                 );
               })}

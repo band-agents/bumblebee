@@ -69,7 +69,7 @@ const EMPLOYEE_TYPES = [
 
 const EMP_STATUSES = [
   { value: "active", en: "Active", ar: "نشط", color: "bg-emerald-100 text-emerald-700", dot: "bg-emerald-500" },
-  { value: "on_leave", en: "On Leave", ar: "إجازة", color: "bg-amber-100 text-amber-700", dot: "bg-amber-500" },
+  { value: "on_leave", en: "On Leave", ar: "إجازة", color: "bg-warning/15 text-warning", dot: "bg-warning" },
   { value: "inactive", en: "Inactive", ar: "غير نشط", color: "bg-slate-100 text-slate-500", dot: "bg-slate-400" },
 ];
 
@@ -82,10 +82,10 @@ const INVITE_ROLES = [
 
 // ─── Shared UI ───────────────────────────────────────────
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
 
 function inits(name: string) {
   return name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
@@ -131,7 +131,7 @@ function AddEmployeeModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[480px] overflow-hidden">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "ضيف موظف" : "Add Employee"}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
@@ -176,9 +176,9 @@ function AddEmployeeModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
               </select>
             </div>
           </div>
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
           <div className="flex gap-3 pt-1">
-            <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+            <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
             <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
               {loading && <Loader2 size={12} className="animate-spin" />}
               {ar ? "ضيف" : "Add Employee"}
@@ -273,7 +273,7 @@ function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[420px] overflow-hidden">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "ابعت دعوة" : "Invite Team Member"}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
@@ -284,12 +284,12 @@ function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
               <CheckCircle2 size={24} className="text-emerald-500" />
             </div>
             <div className="text-center">
-              <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {emailState === "sent"
                   ? (ar ? "الدعوة اتبعتت" : "Invitation Sent")
                   : (ar ? "الدعوة جاهزة" : "Invitation Ready")}
               </p>
-              <p className="text-[12px] text-muted-foreground mt-1">
+              <p className="text-caption text-muted-foreground mt-1">
                 {emailState === "sent"
                   ? (ar ? `بعتنا إيميل لـ ${form.email}. تقدر كمان تبعتله اللينك بنفسك.` : `We emailed ${form.email}. You can also share the link directly.`)
                   : emailState === "demo"
@@ -298,13 +298,13 @@ function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
               </p>
             </div>
             <div className="w-full flex items-center gap-2 bg-muted/40 border border-border/50 rounded-xl p-2 pl-3">
-              <span className="flex-1 text-[11px] text-muted-foreground truncate font-mono" dir="ltr">{inviteLink}</span>
-              <button onClick={copyLink} className="shrink-0 h-8 px-3 rounded-lg bg-foreground text-background text-[11.5px] font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity">
+              <span className="flex-1 text-micro text-muted-foreground truncate font-mono" dir="ltr">{inviteLink}</span>
+              <button onClick={copyLink} className="shrink-0 h-8 px-3 rounded-lg bg-foreground text-background text-micro font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity">
                 {copied ? <CheckCircle2 size={12} /> : <Copy size={12} />}
                 {copied ? (ar ? "اتنسخ" : "Copied") : (ar ? "انسخ" : "Copy")}
               </button>
             </div>
-            <p className="text-[10.5px] text-muted-foreground/70 text-center">
+            <p className="text-micro text-muted-foreground/70 text-center">
               {ar ? "اللينك صالح ٧ أيام وبيشتغل لمرة واحدة." : "The link is valid for 7 days and works once."}
             </p>
             <button onClick={onClose} className={btnPrimary + " h-10 w-full"}>
@@ -324,16 +324,16 @@ function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
               </select>
             </div>
             {error && (
-              <div className="flex items-start gap-2 bg-rose-50 border border-rose-200 rounded-xl p-3 text-[11.5px] text-rose-600">
+              <div className="flex items-start gap-2 bg-rose-50 border border-rose-200 rounded-xl p-3 text-micro text-rose-600">
                 <AlertCircle size={13} className="shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}
-            <div className="bg-muted/30 rounded-xl p-3 text-[11px] text-muted-foreground">
+            <div className="bg-muted/30 rounded-xl p-3 text-micro text-muted-foreground">
               {ar ? "هيوصلهم إيميل فيه لينك الانضمام — وتقدر كمان تنسخ اللينك وتبعته بنفسك." : "They'll receive an email with a join link — you can also copy the link and send it yourself."}
             </div>
             <div className="flex gap-3 pt-1">
-              <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+              <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
               <button type="submit" disabled={status === "sending"} className={btnPrimary + " flex-1 h-10"}>
                 {status === "sending" && <Loader2 size={12} className="animate-spin" />}
                 <Mail size={14} /> {ar ? "ابعت دعوة" : "Send Invite"}
@@ -357,35 +357,35 @@ function EmployeeCard({ person, ar }: { person: Person; ar: boolean }) {
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all group">
       <div className="flex items-start gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-[11px] font-semibold shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-primary/10 text-brand-ink flex items-center justify-center text-micro font-semibold shrink-0">
           {inits(ar ? (person.name_ar ?? person.name_en) : person.name_en)}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[14px] font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? (person.name_ar ?? person.name_en) : person.name_en}
           </p>
           {(hr.job_title || person.role_en) && (
-            <p className="text-[11.5px] text-muted-foreground truncate mt-0.5">{hr.job_title || (ar ? person.role_ar : person.role_en)}</p>
+            <p className="text-micro text-muted-foreground truncate mt-0.5">{hr.job_title || (ar ? person.role_ar : person.role_en)}</p>
           )}
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           <div className={`w-1.5 h-1.5 rounded-full ${st.dot}`} />
-          <span className="text-[10px] text-muted-foreground">{ar ? st.ar : st.en}</span>
+          <span className="text-micro text-muted-foreground">{ar ? st.ar : st.en}</span>
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {dept && (
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
+          <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
             {ar ? dept.ar : dept.en}
           </span>
         )}
         {empType && (
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/8 text-primary font-medium">
+          <span className="text-micro px-2 py-0.5 rounded-full bg-primary/8 text-brand-ink font-medium">
             {ar ? empType.ar : empType.en}
           </span>
         )}
       </div>
-      <div className="flex flex-col gap-1 mt-3 text-[11px] text-muted-foreground">
+      <div className="flex flex-col gap-1 mt-3 text-micro text-muted-foreground">
         {person.email && (
           <span className="flex items-center gap-1.5 truncate"><Mail size={10} className="shrink-0 text-muted-foreground/50" />{person.email}</span>
         )}
@@ -477,7 +477,7 @@ export default function Team() {
         status: hr.status, joined_date: hr.joined_date,
       };
     });
-    exportCSV(rows, `thoth-team-${new Date().toISOString().slice(0, 10)}.csv`);
+    exportCSV(rows, `bumblebee-team-${new Date().toISOString().slice(0, 10)}.csv`);
   };
 
   if (loading) {
@@ -494,22 +494,22 @@ export default function Team() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Users size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">
+            <Users size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">
               {ar ? "الفريق" : "Team"}
             </p>
           </div>
           <div className="flex items-start justify-between gap-4 mb-5">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "إدارة الفريق" : "Team Management"}
             </h1>
             <div className="flex items-center gap-2 shrink-0">
               {teamMembers.length > 0 && (
-                <button onClick={exportTeam} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={exportTeam} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
-              <button onClick={() => setInviteModal(true)} className="flex items-center gap-2 h-9 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setInviteModal(true)} className="flex items-center gap-2 h-9 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
                 <Mail size={14} /> {ar ? "ابعت دعوة" : "Invite"}
               </button>
               <button onClick={() => setAddModal(true)} className={btnPrimary + " h-9"}>
@@ -521,16 +521,16 @@ export default function Team() {
           {/* Metrics */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { icon: Users, value: teamMembers.length, label: ar ? "إجمالي الفريق" : "Team Size", color: "text-primary" },
+              { icon: Users, value: teamMembers.length, label: ar ? "إجمالي الفريق" : "Team Size", color: "text-brand-ink" },
               { icon: CheckCircle2, value: activeCount, label: ar ? "نشط" : "Active", color: "text-emerald-600" },
-              { icon: Clock, value: onLeaveCount, label: ar ? "إجازة" : "On Leave", color: "text-amber-600" },
-              { icon: Building2, value: uniqueDepts, label: ar ? "أقسام" : "Departments", color: "text-violet-600" },
+              { icon: Clock, value: onLeaveCount, label: ar ? "إجازة" : "On Leave", color: "text-warning" },
+              { icon: Building2, value: uniqueDepts, label: ar ? "أقسام" : "Departments", color: "text-chart-4" },
               { icon: Briefcase, value: activeWork.length, label: ar ? "شغل مفتوح" : "Open Work", color: "text-blue-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <m.icon size={14} strokeWidth={1.75} className={m.color + " mb-2"} />
-                <p className="text-[20px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{m.value}</p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-heading font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{m.value}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -545,7 +545,7 @@ export default function Team() {
             { id: "all" as const, en: "All People", ar: "كل الأشخاص", count: people.length },
           ].map((t) => (
             <button key={t.id} onClick={() => { setTab(t.id); setSearch(""); }}
-              className={`px-4 py-3 text-[12px] font-medium border-b-2 transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`px-4 py-3 text-caption font-medium border-b-2 transition-all ${tab === t.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               {ar ? t.ar : t.en} <span className="text-muted-foreground/40 ml-1">{t.count}</span>
             </button>
           ))}
@@ -561,10 +561,10 @@ export default function Team() {
               <Users size={24} className="text-muted-foreground/40" />
             </div>
             <div className="text-center max-w-[400px]">
-              <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "مفيش أعضاء فريق لسه" : "No team members yet"}
               </p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">
+              <p className="text-body text-muted-foreground leading-relaxed">
                 {ar
                   ? "ضيف أول موظف أو ابعت دعوة لحد من فريقك. ممكن كمان تستورد بيانات الموظفين من ملف CSV."
                   : "Add your first employee or invite a team member. You can also import employee data from a CSV file."}
@@ -574,7 +574,7 @@ export default function Team() {
               <button onClick={() => setAddModal(true)} className={btnPrimary + " h-10"}>
                 <Plus size={14} /> {ar ? "ضيف موظف" : "Add Employee"}
               </button>
-              <button onClick={() => setInviteModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setInviteModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
                 <Mail size={14} /> {ar ? "ابعت دعوة" : "Invite"}
               </button>
             </div>
@@ -586,7 +586,7 @@ export default function Team() {
               <div className="relative flex-1 max-w-[300px]">
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
                 <input value={search} onChange={(e) => setSearch(e.target.value)}
-                  placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+                  placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
               </div>
             </div>
 
@@ -594,7 +594,7 @@ export default function Team() {
               {/* Employee grid */}
               <div className="lg:col-span-2">
                 {filtered.length === 0 ? (
-                  <div className="py-16 text-center text-[13px] text-muted-foreground">{ar ? "مفيش نتائج" : "No results found"}</div>
+                  <div className="py-16 text-center text-body text-muted-foreground">{ar ? "مفيش نتائج" : "No results found"}</div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {filtered.map((p) => <EmployeeCard key={p.id} person={p} ar={ar} />)}
@@ -607,13 +607,13 @@ export default function Team() {
                 {/* Departments */}
                 {deptCounts.length > 0 && (
                   <div className="border border-border/40 rounded-xl p-4 bg-background">
-                    <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "الأقسام" : "Departments"}</p>
+                    <p className="text-micro font-medium text-foreground mb-3">{ar ? "الأقسام" : "Departments"}</p>
                     {deptCounts.map(([dept, count]) => {
                       const d = DEPARTMENTS.find((dd) => dd.en === dept);
                       return (
                         <div key={dept} className="flex items-center justify-between py-1.5">
-                          <span className="text-[12px] text-muted-foreground">{d ? (ar ? d.ar : d.en) : dept}</span>
-                          <span className="text-[12px] font-medium tabular-nums">{count}</span>
+                          <span className="text-caption text-muted-foreground">{d ? (ar ? d.ar : d.en) : dept}</span>
+                          <span className="text-caption font-medium tabular-nums">{count}</span>
                         </div>
                       );
                     })}
@@ -622,27 +622,27 @@ export default function Team() {
 
                 {/* Workload summary */}
                 <div className="border border-border/40 rounded-xl p-4 bg-background">
-                  <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "حجم الشغل" : "Workload"}</p>
+                  <p className="text-micro font-medium text-foreground mb-3">{ar ? "حجم الشغل" : "Workload"}</p>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[12px] text-muted-foreground">{ar ? "مهام مفتوحة" : "Open tasks"}</span>
-                      <span className="text-[12px] font-medium tabular-nums">{activeWork.length}</span>
+                      <span className="text-caption text-muted-foreground">{ar ? "مهام مفتوحة" : "Open tasks"}</span>
+                      <span className="text-caption font-medium tabular-nums">{activeWork.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-[12px] text-rose-500">{ar ? "متأخرة" : "Overdue"}</span>
-                      <span className="text-[12px] font-medium tabular-nums text-rose-500">{overdueWork.length}</span>
+                      <span className="text-caption text-rose-500">{ar ? "متأخرة" : "Overdue"}</span>
+                      <span className="text-caption font-medium tabular-nums text-rose-500">{overdueWork.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-[12px] text-emerald-600">{ar ? "خلصت الأسبوع ده" : "Done this week"}</span>
-                      <span className="text-[12px] font-medium tabular-nums text-emerald-600">{completedWeek.length}</span>
+                      <span className="text-caption text-emerald-600">{ar ? "خلصت الأسبوع ده" : "Done this week"}</span>
+                      <span className="text-caption font-medium tabular-nums text-emerald-600">{completedWeek.length}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Roles guide */}
                 <div className="border border-border/40 rounded-xl p-4 bg-background">
-                  <p className="text-[11px] font-medium text-foreground mb-3">{ar ? "الصلاحيات" : "Roles"}</p>
-                  <div className="space-y-2 text-[11px]">
+                  <p className="text-micro font-medium text-foreground mb-3">{ar ? "الصلاحيات" : "Roles"}</p>
+                  <div className="space-y-2 text-micro">
                     {[
                       { en: "Owner — Full control", ar: "مالك — تحكم كامل", icon: Shield },
                       { en: "Admin — Manage workspace", ar: "مسؤول — إدارة مساحة العمل", icon: Shield },

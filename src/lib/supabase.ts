@@ -19,7 +19,7 @@ function createSupabaseClient(): SupabaseClient<Database> | null {
       },
     });
   } catch (err) {
-    console.warn("[THOTH] Supabase init failed — falling back to demo mode", err);
+    console.warn("[Bumblebee] Supabase init failed — falling back to demo mode", err);
     return null;
   }
 }

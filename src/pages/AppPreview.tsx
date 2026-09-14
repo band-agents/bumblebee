@@ -40,7 +40,7 @@ function timeAgo(dateStr: string | null, ar: boolean): string {
 const buildStatusMeta: Record<string, { en: string; ar: string; color: string; bg: string; dot: string }> = {
   pending: { en: "Pending", ar: "قيد الانتظار", color: "text-muted-foreground", bg: "bg-muted/40", dot: "bg-muted-foreground" },
   building: { en: "Building", ar: "جارٍ البناء", color: "text-blue-500", bg: "bg-blue-500/10", dot: "bg-blue-500 animate-pulse" },
-  testing: { en: "Testing", ar: "جارٍ الاختبار", color: "text-amber-500", bg: "bg-amber-500/10", dot: "bg-amber-500 animate-pulse" },
+  testing: { en: "Testing", ar: "جارٍ الاختبار", color: "text-warning", bg: "bg-warning/10", dot: "bg-warning animate-pulse" },
   ready: { en: "Ready", ar: "جاهز", color: "text-emerald-500", bg: "bg-emerald-500/10", dot: "bg-emerald-500" },
   failed: { en: "Failed", ar: "فشل", color: "text-red-500", bg: "bg-red-500/10", dot: "bg-red-500" },
 };
@@ -65,7 +65,7 @@ function IPhoneMockup({ app }: { app: MobileApp }) {
         <div className="rounded-[30px] overflow-hidden bg-white" style={{ aspectRatio: "9/19.5" }}>
           {/* Status bar */}
           <div className="h-[44px] flex items-end justify-between px-6 pb-1" style={{ backgroundColor: app.primary_color }}>
-            <span className="text-[10px] text-white/80 font-medium">9:41</span>
+            <span className="text-micro text-white/80 font-medium">9:41</span>
             <div className="flex items-center gap-1">
               <div className="w-3.5 h-2 border border-white/60 rounded-sm" />
               <div className="w-1 h-2 bg-white/60 rounded-sm" />
@@ -77,10 +77,10 @@ function IPhoneMockup({ app }: { app: MobileApp }) {
 
           {/* App header */}
           <div className="px-4 py-3" style={{ backgroundColor: app.primary_color }}>
-            <p className="text-[14px] font-bold text-white" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <p className="text-body-lg font-bold text-white" style={{ fontFamily: "var(--app-font-serif)" }}>
               {app.name}
             </p>
-            <p className="text-[10px] text-white/70 mt-0.5">{app.app_store_name}</p>
+            <p className="text-micro text-white/70 mt-0.5">{app.app_store_name}</p>
           </div>
 
           {/* Fake content */}
@@ -88,7 +88,7 @@ function IPhoneMockup({ app }: { app: MobileApp }) {
             {/* Hero banner */}
             <div className="rounded-xl overflow-hidden" style={{ backgroundColor: app.secondary_color + "30", height: 90 }}>
               <div className="w-full h-full flex items-center justify-center">
-                <span className="text-[10px] font-medium" style={{ color: app.primary_color }}>
+                <span className="text-micro font-medium" style={{ color: app.primary_color }}>
                   {ar ? "مجموعة الصيف ٢٠٢٦" : "Summer 2026 Collection"}
                 </span>
               </div>
@@ -112,7 +112,7 @@ function IPhoneMockup({ app }: { app: MobileApp }) {
               {["All", "Bridal", "Evening"].map((cat, i) => (
                 <span
                   key={cat}
-                  className="px-2.5 py-1 rounded-full text-[8px] font-medium"
+                  className="px-2.5 py-1 rounded-full text-micro font-medium"
                   style={{
                     backgroundColor: i === 0 ? app.primary_color : app.primary_color + "15",
                     color: i === 0 ? "white" : app.primary_color,
@@ -127,7 +127,7 @@ function IPhoneMockup({ app }: { app: MobileApp }) {
           {/* Bottom nav */}
           <div className="absolute bottom-0 left-0 right-0 h-[50px] bg-white border-t border-gray-100 flex items-center justify-around px-4">
             {["🏠", "🔍", "🛒", "👤"].map((icon, i) => (
-              <span key={i} className="text-[16px]">{icon}</span>
+              <span key={i} className="text-title">{icon}</span>
             ))}
           </div>
         </div>
@@ -155,7 +155,7 @@ function FeatureChecklist({ app, ar }: { app: MobileApp; ar: boolean }) {
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
         <CheckCircle2 size={14} strokeWidth={1.75} className="text-emerald-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "قائمة المميزات" : "Feature Checklist"}
         </h3>
       </div>
@@ -165,7 +165,7 @@ function FeatureChecklist({ app, ar }: { app: MobileApp; ar: boolean }) {
           return (
             <div key={key} className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted/20 transition-colors">
               <Icon size={13} className={enabled ? "text-emerald-500" : "text-muted-foreground/40"} />
-              <span className={`flex-1 text-[12px] ${enabled ? "text-foreground" : "text-muted-foreground/50 line-through"}`}>
+              <span className={`flex-1 text-caption ${enabled ? "text-foreground" : "text-muted-foreground/50 line-through"}`}>
                 {ar ? labelAr : labelEn}
               </span>
               {enabled ? (
@@ -188,7 +188,7 @@ function AppStoreListing({ app, ar }: { app: MobileApp; ar: boolean }) {
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
         <Package size={14} strokeWidth={1.75} className="text-blue-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "معاينة متجر التطبيقات" : "App Store Listing"}
         </h3>
       </div>
@@ -197,45 +197,45 @@ function AppStoreListing({ app, ar }: { app: MobileApp; ar: boolean }) {
       <div className="rounded-xl border border-border/30 p-4 bg-muted/10">
         <div className="flex items-start gap-3 mb-3">
           <div
-            className="w-14 h-14 rounded-[14px] flex items-center justify-center text-2xl shrink-0"
+            className="w-14 h-14 rounded-[14px] flex items-center justify-center text-display shrink-0"
             style={{ backgroundColor: app.primary_color + "15", border: `1px solid ${app.primary_color}30` }}
           >
             👗
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <p className="text-body font-medium text-foreground truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? app.app_store_name_ar : app.app_store_name}
             </p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{app.app_category}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{app.app_category}</p>
             <div className="flex items-center gap-1.5 mt-1.5">
               <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map(s => (
-                  <Star key={s} size={10} className={s <= 4 ? "text-amber-400 fill-amber-400" : "text-muted-foreground/30"} />
+                  <Star key={s} size={10} className={s <= 4 ? "text-warning fill-warning" : "text-muted-foreground/30"} />
                 ))}
               </div>
-              <span className="text-[10px] text-muted-foreground">4.8 (2.1K)</span>
+              <span className="text-micro text-muted-foreground">4.8 (2.1K)</span>
             </div>
           </div>
         </div>
 
-        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-3">
+        <p className="text-micro text-muted-foreground leading-relaxed line-clamp-3">
           {ar ? app.app_description_ar : app.app_description}
         </p>
 
         <div className="flex flex-wrap gap-1.5 mt-3">
           {app.app_keywords.slice(0, 6).map((kw, i) => (
-            <span key={i} className="px-2 py-0.5 rounded-full bg-muted/40 text-[9px] text-muted-foreground">
+            <span key={i} className="px-2 py-0.5 rounded-full bg-muted/40 text-micro text-muted-foreground">
               {kw}
             </span>
           ))}
         </div>
 
         <div className="flex items-center gap-3 mt-3 pt-3 border-t border-border/25">
-          <span className="text-[10px] text-muted-foreground">v{app.app_version}</span>
-          <span className="text-[10px] text-muted-foreground">•</span>
-          <span className="text-[10px] text-muted-foreground">{app.platform.toUpperCase()}</span>
-          <span className="text-[10px] text-muted-foreground">•</span>
-          <span className="text-[10px] text-muted-foreground">{formatNumber(app.total_downloads)} {ar ? "تنزيل" : "downloads"}</span>
+          <span className="text-micro text-muted-foreground">v{app.app_version}</span>
+          <span className="text-micro text-muted-foreground">•</span>
+          <span className="text-micro text-muted-foreground">{app.platform.toUpperCase()}</span>
+          <span className="text-micro text-muted-foreground">•</span>
+          <span className="text-micro text-muted-foreground">{formatNumber(app.total_downloads)} {ar ? "تنزيل" : "downloads"}</span>
         </div>
       </div>
     </div>
@@ -252,7 +252,7 @@ function BuildStatusIndicator({ app, ar }: { app: MobileApp; ar: boolean }) {
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
         <Hammer size={14} strokeWidth={1.75} className="text-blue-500" />
-        <h3 className="text-[13px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+        <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "حالة البناء" : "Build Status"}
         </h3>
       </div>
@@ -261,19 +261,19 @@ function BuildStatusIndicator({ app, ar }: { app: MobileApp; ar: boolean }) {
         <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${bsm.dot}`} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className={`text-[12px] font-medium ${bsm.color}`}>
+            <span className={`text-caption font-medium ${bsm.color}`}>
               {ar ? bsm.ar : bsm.en}
             </span>
-            <span className="text-[10px] text-muted-foreground font-mono">v{app.app_version}</span>
+            <span className="text-micro text-muted-foreground font-mono">v{app.app_version}</span>
           </div>
-          <p className="text-[10px] text-muted-foreground mt-0.5">
+          <p className="text-micro text-muted-foreground mt-0.5">
             {ar ? "آخر بناء:" : "Last build:"} {timeAgo(app.last_build_date, ar)}
           </p>
         </div>
       </div>
 
       {latestBuild && (
-        <div className="space-y-2 text-[11px] text-muted-foreground">
+        <div className="space-y-2 text-micro text-muted-foreground">
           <div className="flex justify-between">
             <span>{ar ? "حجم البناء" : "Build Size"}</span>
             <span className="font-medium text-foreground tabular-nums">
@@ -309,7 +309,7 @@ export default function AppPreview() {
   if (!app) {
     return (
       <div className="min-h-full flex items-center justify-center">
-        <p className="text-[13px] text-muted-foreground">{ar ? "لا توجد تطبيقات" : "No apps found"}</p>
+        <p className="text-body text-muted-foreground">{ar ? "لا توجد تطبيقات" : "No apps found"}</p>
       </div>
     );
   }
@@ -327,10 +327,10 @@ export default function AppPreview() {
             <ArrowLeft size={16} className="text-muted-foreground" />
           </button>
           <div>
-            <h1 className="text-[22px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+            <h1 className="text-heading font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
               {ar ? "معاينة التطبيق" : "App Preview"}
             </h1>
-            <p className="text-[12px] text-muted-foreground mt-0.5">
+            <p className="text-caption text-muted-foreground mt-0.5">
               {ar ? "كيف يبدو تطبيقك على الهاتف" : "How your app looks on mobile"}
             </p>
           </div>
@@ -341,7 +341,7 @@ export default function AppPreview() {
           <select
             value={selectedAppId}
             onChange={e => setSelectedAppId(e.target.value)}
-            className="px-3 py-2 rounded-xl bg-background border border-border/40 text-[12px] text-foreground"
+            className="px-3 py-2 rounded-xl bg-background border border-border/40 text-caption text-foreground"
           >
             {MOBILE_APPS.map(a => (
               <option key={a.id} value={a.id}>{ar ? a.name_ar : a.name}</option>
@@ -368,7 +368,7 @@ export default function AppPreview() {
             <motion.button
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity"
             >
               <Hammer size={14} />
               {ar ? "بناء التطبيق" : "Build App"}
@@ -377,7 +377,7 @@ export default function AppPreview() {
               <motion.button
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 text-emerald-600 text-[11px] font-medium hover:bg-emerald-500/20 transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 text-emerald-600 text-micro font-medium hover:bg-emerald-500/20 transition-colors"
               >
                 <ExternalLink size={12} />
                 {ar ? "نشر" : "Publish"}
@@ -385,7 +385,7 @@ export default function AppPreview() {
               <motion.button
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/10 text-blue-600 text-[11px] font-medium hover:bg-blue-500/20 transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/10 text-blue-600 text-micro font-medium hover:bg-blue-500/20 transition-colors"
               >
                 <Send size={12} />
                 {ar ? "إشعار تجريبي" : "Test Push"}

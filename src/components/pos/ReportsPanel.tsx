@@ -74,8 +74,8 @@ export function ReportsPanel({ branchId, onClose }: { branchId: string; onClose:
   const paymentMethods = [
     { label: "Cash", labelAr: "نقداً", value: stats.cash, icon: Banknote, color: "bg-emerald-500" },
     { label: "Card", labelAr: "بطاقة", value: stats.card, icon: CreditCard, color: "bg-blue-500" },
-    { label: "Mobile", labelAr: "موبايل", value: stats.mobile, icon: Smartphone, color: "bg-violet-500" },
-    { label: "Split", labelAr: "مقسم", value: stats.split, icon: RefreshCw, color: "bg-amber-500" },
+    { label: "Mobile", labelAr: "موبايل", value: stats.mobile, icon: Smartphone, color: "bg-chart-4" },
+    { label: "Split", labelAr: "مقسم", value: stats.split, icon: RefreshCw, color: "bg-warning" },
   ];
 
   const periods = [
@@ -91,7 +91,7 @@ export function ReportsPanel({ branchId, onClose }: { branchId: string; onClose:
         {/* Header */}
         <div className="shrink-0 px-5 py-4 border-b border-border/40">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
               {lang === "ar" ? "التقارير" : "Sales Reports"}
             </h3>
             <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
@@ -103,7 +103,7 @@ export function ReportsPanel({ branchId, onClose }: { branchId: string; onClose:
               <button
                 key={p.id}
                 onClick={() => setPeriod(p.id)}
-                className={`flex-1 h-7 rounded-md text-[11px] font-medium transition-colors ${
+                className={`flex-1 h-7 rounded-md text-micro font-medium transition-colors ${
                   period === p.id ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -116,56 +116,56 @@ export function ReportsPanel({ branchId, onClose }: { branchId: string; onClose:
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
           {loading ? (
             <div className="flex items-center justify-center h-32">
-              <div className="animate-pulse text-[13px] text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</div>
+              <div className="animate-pulse text-body text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</div>
             </div>
           ) : (
             <>
               {/* Revenue Card */}
               <div className="p-5 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/10">
                 <div className="flex items-center gap-2 mb-1">
-                  <TrendingUp size={14} className="text-primary" />
-                  <span className="text-[11px] text-primary font-medium">{lang === "ar" ? "إجمالي الإيرادات" : "Total Revenue"}</span>
+                  <TrendingUp size={14} className="text-brand-ink" />
+                  <span className="text-micro text-brand-ink font-medium">{lang === "ar" ? "إجمالي الإيرادات" : "Total Revenue"}</span>
                 </div>
-                <p className="text-[28px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <p className="text-display font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {formatEGP(stats.total)}
                 </p>
                 <div className="flex items-center gap-4 mt-2">
-                  <span className="text-[11px] text-muted-foreground">{stats.count} {lang === "ar" ? "معاملة" : "transactions"}</span>
-                  <span className="text-[11px] text-muted-foreground">•</span>
-                  <span className="text-[11px] text-muted-foreground">{lang === "ar" ? "متوسط" : "avg"} {formatEGP(stats.avg)}</span>
+                  <span className="text-micro text-muted-foreground">{stats.count} {lang === "ar" ? "معاملة" : "transactions"}</span>
+                  <span className="text-micro text-muted-foreground">•</span>
+                  <span className="text-micro text-muted-foreground">{lang === "ar" ? "متوسط" : "avg"} {formatEGP(stats.avg)}</span>
                 </div>
               </div>
 
               {/* Quick Stats */}
               <div className="grid grid-cols-3 gap-2">
                 <div className="p-3 rounded-xl bg-muted/30 text-center">
-                  <p className="text-[12px] font-bold text-foreground">{formatEGP(stats.discount)}</p>
-                  <p className="text-[9px] text-muted-foreground mt-0.5">{lang === "ar" ? "الخصومات" : "Discounts"}</p>
+                  <p className="text-caption font-bold text-foreground">{formatEGP(stats.discount)}</p>
+                  <p className="text-micro text-muted-foreground mt-0.5">{lang === "ar" ? "الخصومات" : "Discounts"}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-muted/30 text-center">
-                  <p className="text-[12px] font-bold text-foreground">{formatEGP(stats.tax)}</p>
-                  <p className="text-[9px] text-muted-foreground mt-0.5">{lang === "ar" ? "الضريبة" : "Tax"}</p>
+                  <p className="text-caption font-bold text-foreground">{formatEGP(stats.tax)}</p>
+                  <p className="text-micro text-muted-foreground mt-0.5">{lang === "ar" ? "الضريبة" : "Tax"}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-primary/5 text-center">
-                  <p className="text-[12px] font-bold text-primary">{stats.loyalty}</p>
-                  <p className="text-[9px] text-muted-foreground mt-0.5">{lang === "ar" ? "نقاط" : "Points"}</p>
+                  <p className="text-caption font-bold text-brand-ink">{stats.loyalty}</p>
+                  <p className="text-micro text-muted-foreground mt-0.5">{lang === "ar" ? "نقاط" : "Points"}</p>
                 </div>
               </div>
 
               {/* Payment Breakdown */}
               <div>
-                <h4 className="text-[12px] font-medium text-foreground mb-3">{lang === "ar" ? "طرق الدفع" : "Payment Methods"}</h4>
+                <h4 className="text-caption font-medium text-foreground mb-3">{lang === "ar" ? "طرق الدفع" : "Payment Methods"}</h4>
                 <div className="space-y-2">
                   {paymentMethods.map((pm) => {
                     const pct = stats.total > 0 ? (pm.value / stats.total) * 100 : 0;
                     return (
                       <div key={pm.label} className="flex items-center gap-3">
                         <div className={`w-2 h-2 rounded-full ${pm.color}`} />
-                        <span className="text-[11px] text-muted-foreground w-16">{lang === "ar" ? pm.labelAr : pm.label}</span>
+                        <span className="text-micro text-muted-foreground w-16">{lang === "ar" ? pm.labelAr : pm.label}</span>
                         <div className="flex-1 h-1.5 rounded-full bg-muted/60 overflow-hidden">
                           <div className={`h-full rounded-full ${pm.color}`} style={{ width: `${pct}%` }} />
                         </div>
-                        <span className="text-[11px] font-medium text-foreground w-20 text-right">{formatEGP(pm.value)}</span>
+                        <span className="text-micro font-medium text-foreground w-20 text-right">{formatEGP(pm.value)}</span>
                       </div>
                     );
                   })}
@@ -174,33 +174,33 @@ export function ReportsPanel({ branchId, onClose }: { branchId: string; onClose:
 
               {/* Top Products */}
               <div>
-                <h4 className="text-[12px] font-medium text-foreground mb-3">{lang === "ar" ? "الأكثر مبيعاً" : "Top Products"}</h4>
+                <h4 className="text-caption font-medium text-foreground mb-3">{lang === "ar" ? "الأكثر مبيعاً" : "Top Products"}</h4>
                 {topProducts.length > 0 ? (
                   <div className="space-y-2">
                     {topProducts.map((p, i) => (
                       <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30 transition-colors">
-                        <span className="w-5 h-5 rounded-md bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground">
+                        <span className="w-5 h-5 rounded-md bg-muted flex items-center justify-center text-micro font-bold text-muted-foreground">
                           {i + 1}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[12px] font-medium text-foreground truncate">{p.name}</p>
-                          <p className="text-[10px] text-muted-foreground">{p.qty} {lang === "ar" ? "قطع" : "units"}</p>
+                          <p className="text-caption font-medium text-foreground truncate">{p.name}</p>
+                          <p className="text-micro text-muted-foreground">{p.qty} {lang === "ar" ? "قطع" : "units"}</p>
                         </div>
-                        <span className="text-[12px] font-semibold text-foreground">{formatEGP(p.revenue)}</span>
+                        <span className="text-caption font-semibold text-foreground">{formatEGP(p.revenue)}</span>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="text-center py-4">
                     <BarChart3 size={18} className="mx-auto text-muted-foreground/20 mb-2" />
-                    <p className="text-[11px] text-muted-foreground">{lang === "ar" ? "لا توجد بيانات" : "No data"}</p>
+                    <p className="text-micro text-muted-foreground">{lang === "ar" ? "لا توجد بيانات" : "No data"}</p>
                   </div>
                 )}
               </div>
 
               {/* Recent Transactions */}
               <div>
-                <h4 className="text-[12px] font-medium text-foreground mb-3">{lang === "ar" ? "آخر المعاملات" : "Recent Transactions"}</h4>
+                <h4 className="text-caption font-medium text-foreground mb-3">{lang === "ar" ? "آخر المعاملات" : "Recent Transactions"}</h4>
                 <div className="space-y-2">
                   {filteredTxns.slice(0, 5).map((txn) => (
                     <div key={txn.id} className="flex items-center justify-between p-2.5 rounded-xl border border-border/30">
@@ -211,13 +211,13 @@ export function ReportsPanel({ branchId, onClose }: { branchId: string; onClose:
                            <Smartphone size={12} />}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[11px] font-medium text-foreground truncate">{txn.customer_name || lang === "ar" ? "عميل" : "Walk-in"}</p>
-                          <p className="text-[10px] text-muted-foreground">{txn.transaction_number}</p>
+                          <p className="text-micro font-medium text-foreground truncate">{txn.customer_name || lang === "ar" ? "عميل" : "Walk-in"}</p>
+                          <p className="text-micro text-muted-foreground">{txn.transaction_number}</p>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="text-[12px] font-semibold text-foreground">{formatEGP(txn.total)}</p>
-                        <p className="text-[9px] text-muted-foreground">{new Date(txn.created_at).toLocaleTimeString()}</p>
+                        <p className="text-caption font-semibold text-foreground">{formatEGP(txn.total)}</p>
+                        <p className="text-micro text-muted-foreground">{new Date(txn.created_at).toLocaleTimeString()}</p>
                       </div>
                     </div>
                   ))}

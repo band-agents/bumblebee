@@ -78,7 +78,7 @@ export default function StudioSidebar() {
         <div className="py-4 space-y-1">
           <button
             onClick={() => setCollapsed(false)}
-            className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white"
+            className="w-8 h-8 rounded-lg bg-gradient-to-br from-chart-4/20 to-indigo-600 flex items-center justify-center text-white"
             title={lang === "ar" ? "توسيع" : "Expand"}
           >
             <PanelLeftOpen size={14} />
@@ -93,7 +93,7 @@ export default function StudioSidebar() {
                 onClick={() => setLocation(section.path)}
                 title={lang === "ar" ? section.ar : section.en}
                 className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-150 ${
-                  active ? "bg-accent/60 text-primary" : "text-muted-foreground hover:bg-accent/30 hover:text-foreground"
+                  active ? "bg-accent/60 text-brand-ink" : "text-muted-foreground hover:bg-accent/30 hover:text-foreground"
                 }`}
               >
                 <section.icon size={16} />
@@ -105,7 +105,7 @@ export default function StudioSidebar() {
           {STUDIO_MEMBERS.slice(0, 4).map(member => (
             <div
               key={member.id}
-              className="w-7 h-7 rounded-full mx-auto flex items-center justify-center text-[9px] font-bold text-white"
+              className="w-7 h-7 rounded-full mx-auto flex items-center justify-center text-micro font-bold text-white"
               style={{ backgroundColor: member.avatar }}
               title={lang === "ar" ? member.name_ar : member.name}
             >
@@ -123,10 +123,10 @@ export default function StudioSidebar() {
       <div className="px-4 py-4 border-b border-border/30">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-sm shadow-violet-500/20">
-              <span className="text-white text-xs font-bold">S</span>
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-chart-4/20 to-indigo-600 flex items-center justify-center shadow-sm shadow-chart-4/20">
+              <span className="text-white text-caption font-bold">S</span>
             </div>
-            <span className="text-sm font-semibold tracking-tight">
+            <span className="text-body font-semibold tracking-tight">
               {lang === "ar" ? "الاستوديو" : "Studio"}
             </span>
           </div>
@@ -149,23 +149,23 @@ export default function StudioSidebar() {
         </div>
 
         {/* Cmd+K hint */}
-        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-border/30 bg-muted/30 text-muted-foreground/50 text-[11px] cursor-pointer hover:bg-accent/30 hover:text-muted-foreground transition-colors"
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-border/30 bg-muted/30 text-muted-foreground/50 text-micro cursor-pointer hover:bg-accent/30 hover:text-muted-foreground transition-colors"
           onClick={() => window.dispatchEvent(new CustomEvent("studio:search-toggle"))}
         >
           <Search size={11} />
           <span className="flex-1">{lang === "ar" ? "بحث..." : "Search..."}</span>
-          <kbd className="px-1.5 py-0.5 rounded bg-background/60 border border-border/30 text-[9px] font-mono">⌘K</kbd>
+          <kbd className="px-1.5 py-0.5 rounded bg-background/60 border border-border/30 text-micro font-mono">⌘K</kbd>
         </div>
       </div>
 
       {/* Quick Actions */}
       <div className="px-3 py-3 border-b border-border/20">
         <div className="grid grid-cols-2 gap-1.5">
-          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-violet-500/8 to-indigo-500/8 border border-violet-500/15 text-[11px] font-medium text-violet-600 dark:text-violet-400 hover:from-violet-500/15 hover:to-indigo-500/15 transition-all">
+          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-chart-4/20 to-indigo-500/8 border border-chart-4/30 text-micro font-medium text-chart-4 dark:text-chart-4 hover:from-chart-4/20 hover:to-indigo-500/15 transition-all">
             <FileText size={12} />
             <span>{lang === "ar" ? "صفحة جديدة" : "New Page"}</span>
           </button>
-          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-emerald-500/8 to-teal-500/8 border border-emerald-500/15 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 hover:from-emerald-500/15 hover:to-teal-500/15 transition-all">
+          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-emerald-500/8 to-teal-500/8 border border-emerald-500/15 text-micro font-medium text-emerald-600 dark:text-emerald-400 hover:from-emerald-500/15 hover:to-teal-500/15 transition-all">
             <Database size={12} />
             <span>{lang === "ar" ? "قاعدة بيانات" : "New Database"}</span>
           </button>
@@ -180,13 +180,13 @@ export default function StudioSidebar() {
             <button
               key={section.id}
               onClick={() => setLocation(section.path)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] transition-all duration-150 ${
+              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-body transition-all duration-150 ${
                 active
                   ? "bg-accent/60 text-foreground font-medium"
                   : "text-muted-foreground hover:bg-accent/30 hover:text-foreground"
               }`}
             >
-              <section.icon size={15} className={active ? "text-primary" : ""} />
+              <section.icon size={15} className={active ? "text-brand-ink" : ""} />
               <span>{lang === "ar" ? section.ar : section.en}</span>
             </button>
           );
@@ -197,7 +197,7 @@ export default function StudioSidebar() {
 
         {/* Folder Tree Header */}
         <div className="px-3 py-1.5">
-          <span className="text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest">
+          <span className="text-micro font-semibold text-muted-foreground/70 uppercase tracking-widest">
             {lang === "ar" ? "المجلدات" : "Folders"}
           </span>
         </div>
@@ -207,7 +207,7 @@ export default function StudioSidebar() {
           <div key={folder.id}>
             <button
               onClick={() => toggleFolder(folder.id)}
-              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-colors group relative`}
+              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-body text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-colors group relative`}
             >
               {/* Colored left border */}
               <div
@@ -221,9 +221,9 @@ export default function StudioSidebar() {
               >
                 <ChevronRight size={12} />
               </motion.span>
-              <span className="text-sm">{folder.icon}</span>
+              <span className="text-body">{folder.icon}</span>
               <span className="flex-1 text-start truncate">{lang === "ar" ? folder.name_ar : folder.name}</span>
-              <span className="text-[10px] text-muted-foreground/40 tabular-nums">{folder.page_ids.length}</span>
+              <span className="text-micro text-muted-foreground/40 tabular-nums">{folder.page_ids.length}</span>
             </button>
 
             <AnimatePresence>
@@ -244,13 +244,13 @@ export default function StudioSidebar() {
                     {folder.page_ids.map(pageId => (
                       <button
                         key={pageId}
-                        className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-[12.5px] text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-colors group"
+                        className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-caption text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-colors group"
                       >
                         <GripVertical size={10} className="text-muted-foreground/30 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-                        <span className="text-xs">{getPageIcon(pageId)}</span>
+                        <span className="text-caption">{getPageIcon(pageId)}</span>
                         <span className="flex-1 truncate text-start">{getPageTitle(pageId)}</span>
                         {isPageFavorite(pageId) && (
-                          <Star size={10} className="text-amber-400 fill-amber-400 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <Star size={10} className="text-warning fill-warning shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                         )}
                       </button>
                     ))}
@@ -271,13 +271,13 @@ export default function StudioSidebar() {
             <button
               key={section.id}
               onClick={() => setLocation(section.path)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] transition-all duration-150 ${
+              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-body transition-all duration-150 ${
                 active
                   ? "bg-accent/60 text-foreground font-medium"
                   : "text-muted-foreground hover:bg-accent/30 hover:text-foreground"
               }`}
             >
-              <section.icon size={15} className={active ? "text-primary" : ""} />
+              <section.icon size={15} className={active ? "text-brand-ink" : ""} />
               <span>{lang === "ar" ? section.ar : section.en}</span>
             </button>
           );
@@ -287,16 +287,16 @@ export default function StudioSidebar() {
       {/* Member Avatars */}
       <div className="px-4 py-3 border-t border-border/30">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-wider">
+          <span className="text-micro font-semibold text-muted-foreground/60 uppercase tracking-wider">
             {lang === "ar" ? "الأعضاء" : "Members"}
           </span>
-          <span className="text-[10px] text-muted-foreground/40 tabular-nums">{STUDIO_MEMBERS.length}</span>
+          <span className="text-micro text-muted-foreground/40 tabular-nums">{STUDIO_MEMBERS.length}</span>
         </div>
         <div className="flex items-center -space-x-2">
           {STUDIO_MEMBERS.slice(0, 5).map(member => (
             <div
               key={member.id}
-              className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-bold text-white border-2 border-card/80 relative group cursor-pointer"
+              className="w-7 h-7 rounded-full flex items-center justify-center text-micro font-bold text-white border-2 border-card/80 relative group cursor-pointer"
               style={{ backgroundColor: member.avatar }}
               title={lang === "ar" ? member.name_ar : member.name}
             >
@@ -307,7 +307,7 @@ export default function StudioSidebar() {
             </div>
           ))}
           {STUDIO_MEMBERS.length > 5 && (
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-muted-foreground bg-muted border-2 border-card/80">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-micro font-medium text-muted-foreground bg-muted border-2 border-card/80">
               +{STUDIO_MEMBERS.length - 5}
             </div>
           )}

@@ -33,12 +33,12 @@ interface NotificationTemplate {
 
 const TRIGGER_META: Record<NotificationTrigger, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   points_earned:   { en: "Points Earned",     ar: "نقاط مكتسبة",    icon: Star,          color: "text-emerald-600",  bg: "bg-emerald-50" },
-  tier_upgrade:    { en: "Tier Upgrade",       ar: "ترقية مستوى",    icon: Crown,         color: "text-amber-600",    bg: "bg-amber-50" },
+  tier_upgrade:    { en: "Tier Upgrade",       ar: "ترقية مستوى",    icon: Crown,         color: "text-warning",    bg: "bg-warning/10" },
   points_expiring: { en: "Points Expiring",    ar: "نقاط ستنتهي",    icon: AlertTriangle, color: "text-rose-500",     bg: "bg-rose-50" },
   birthday:        { en: "Birthday",           ar: "عيد ميلاد",      icon: Gift,          color: "text-pink-600",     bg: "bg-pink-50" },
-  redemption:      { en: "Redemption",         ar: "استبدال",        icon: Gift,          color: "text-violet-600",   bg: "bg-violet-50" },
+  redemption:      { en: "Redemption",         ar: "استبدال",        icon: Gift,          color: "text-chart-4",   bg: "bg-chart-4/10" },
   campaign_start:  { en: "Campaign Start",     ar: "بدء حملة",       icon: Calendar,      color: "text-blue-600",     bg: "bg-blue-50" },
-  welcome:         { en: "Welcome",            ar: "ترحيب",          icon: MessageCircle, color: "text-primary",      bg: "bg-primary/10" },
+  welcome:         { en: "Welcome",            ar: "ترحيب",          icon: MessageCircle, color: "text-brand-ink",      bg: "bg-primary/10" },
 };
 
 const TEMPLATES: NotificationTemplate[] = [
@@ -144,7 +144,7 @@ function TemplatePreviewModal({ template, ar, onClose }: {
       .replace(/\{\{tier\}\}/g, previewLang === "en" ? "Gold" : "ذهبي")
       .replace(/\{\{multiplier\}\}/g, "1.5")
       .replace(/\{\{discount\}\}/g, "EGP 50")
-      .replace(/\{\{code\}\}/g, "THOTH-LM00-X4Y5Z6")
+      .replace(/\{\{code\}\}/g, "BEE-LM00-X4Y5Z6")
       .replace(/\{\{expiry\}\}/g, "Jul 4, 2026")
       .replace(/\{\{date\}\}/g, "Jun 25, 2026")
       .replace(/\{\{campaign_name\}\}/g, previewLang === "en" ? "Eid Double Points" : "نقاط مضاعفة في العيد")
@@ -158,7 +158,7 @@ function TemplatePreviewModal({ template, ar, onClose }: {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[420px]" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border/40 flex items-center justify-between">
-          <h2 className="text-[14px] font-medium flex items-center gap-2" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-body-lg font-medium flex items-center gap-2" style={{ fontFamily: "var(--app-font-serif)" }}>
             <Eye size={14} className="text-muted-foreground" />
             {ar ? "معاينة الرسالة" : "Message Preview"}
           </h2>
@@ -169,27 +169,27 @@ function TemplatePreviewModal({ template, ar, onClose }: {
           {/* Language toggle */}
           <div className="flex items-center gap-2 mb-4">
             <button onClick={() => setPreviewLang("en")}
-              className={`text-[11px] px-3 py-1.5 rounded-lg ${previewLang === "en" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>EN</button>
+              className={`text-micro px-3 py-1.5 rounded-lg ${previewLang === "en" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>EN</button>
             <button onClick={() => setPreviewLang("ar")}
-              className={`text-[11px] px-3 py-1.5 rounded-lg ${previewLang === "ar" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>AR</button>
+              className={`text-micro px-3 py-1.5 rounded-lg ${previewLang === "ar" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>AR</button>
           </div>
 
           {/* WhatsApp-style bubble */}
           <div className={`${template.channel === "whatsapp" ? "bg-[#DCF8C6]" : "bg-blue-50"} rounded-xl rounded-tl-sm p-4 max-w-[320px] shadow-sm`}>
-            <p className={`text-[13px] leading-relaxed text-foreground ${previewLang === "ar" ? "text-right" : ""}`} dir={previewLang === "ar" ? "rtl" : "ltr"}>
+            <p className={`text-body leading-relaxed text-foreground ${previewLang === "ar" ? "text-right" : ""}`} dir={previewLang === "ar" ? "rtl" : "ltr"}>
               {renderPreview(previewLang === "en" ? template.templateEn : template.templateAr)}
             </p>
-            <p className="text-[9px] text-muted-foreground/60 text-right mt-2 tabular-nums">
+            <p className="text-micro text-muted-foreground/60 text-right mt-2 tabular-nums">
               {template.channel === "whatsapp" ? "WhatsApp" : "SMS"} · 10:30 AM
             </p>
           </div>
 
           {/* Variables legend */}
           <div className="mt-4 pt-3 border-t border-border/20">
-            <p className="text-[9px] text-muted-foreground uppercase tracking-wide mb-2">{ar ? "المتغيرات المتاحة" : "Available Variables"}</p>
+            <p className="text-micro text-muted-foreground uppercase tracking-wide mb-2">{ar ? "المتغيرات المتاحة" : "Available Variables"}</p>
             <div className="flex flex-wrap gap-1.5">
               {["{{name}}", "{{points}}", "{{balance}}", "{{tier}}", "{{code}}", "{{date}}"].map(v => (
-                <code key={v} className="text-[9px] bg-muted/40 px-1.5 py-0.5 rounded font-mono text-muted-foreground">{v}</code>
+                <code key={v} className="text-micro bg-muted/40 px-1.5 py-0.5 rounded font-mono text-muted-foreground">{v}</code>
               ))}
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function LoyaltyNotificationsPage() {
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[960px] mx-auto">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
@@ -234,8 +234,8 @@ export default function LoyaltyNotificationsPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "الإشعارات" : "Notifications"}
           </h1>
         </div>
@@ -250,12 +250,12 @@ export default function LoyaltyNotificationsPage() {
               <MessageCircle size={18} className="text-[#25D366]" />
             </div>
             <div className="flex-1">
-              <p className="text-[13px] font-medium">WhatsApp Business API</p>
-              <p className="text-[10.5px] text-muted-foreground">{ar ? "غير متصل — يتطلب إعداد Meta Business" : "Not connected — requires Meta Business setup"}</p>
+              <p className="text-body font-medium">WhatsApp Business API</p>
+              <p className="text-micro text-muted-foreground">{ar ? "غير متصل — يتطلب إعداد Meta Business" : "Not connected — requires Meta Business setup"}</p>
             </div>
-            <div className="w-2 h-2 rounded-full bg-amber-400" />
+            <div className="w-2 h-2 rounded-full bg-warning" />
           </div>
-          <p className="text-[9.5px] text-muted-foreground/60 mt-2 ms-[52px]">{ar ? "سيعمل عبر Supabase Edge Function عند التفعيل" : "Will run via Supabase Edge Function when configured"}</p>
+          <p className="text-micro text-muted-foreground/60 mt-2 ms-[52px]">{ar ? "سيعمل عبر Supabase Edge Function عند التفعيل" : "Will run via Supabase Edge Function when configured"}</p>
         </div>
 
         {/* SMS */}
@@ -265,44 +265,44 @@ export default function LoyaltyNotificationsPage() {
               <Smartphone size={18} className="text-blue-500" />
             </div>
             <div className="flex-1">
-              <p className="text-[13px] font-medium">SMS Gateway</p>
-              <p className="text-[10.5px] text-muted-foreground">{ar ? "غير متصل — يتطلب إعداد Twilio أو بديل محلي" : "Not connected — requires Twilio or local gateway"}</p>
+              <p className="text-body font-medium">SMS Gateway</p>
+              <p className="text-micro text-muted-foreground">{ar ? "غير متصل — يتطلب إعداد Twilio أو بديل محلي" : "Not connected — requires Twilio or local gateway"}</p>
             </div>
-            <div className="w-2 h-2 rounded-full bg-amber-400" />
+            <div className="w-2 h-2 rounded-full bg-warning" />
           </div>
-          <p className="text-[9.5px] text-muted-foreground/60 mt-2 ms-[52px]">{ar ? "قوالب الرسائل جاهزة — فقط أضف بيانات الاتصال" : "Templates ready — just add API credentials"}</p>
+          <p className="text-micro text-muted-foreground/60 mt-2 ms-[52px]">{ar ? "قوالب الرسائل جاهزة — فقط أضف بيانات الاتصال" : "Templates ready — just add API credentials"}</p>
         </div>
       </div>
 
       {/* Summary */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <Bell size={14} className="text-primary mb-2" />
-          <p className="text-[20px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{enabledCount}/{templates.length}</p>
-          <p className="text-[10px] text-muted-foreground">{ar ? "قوالب مفعلة" : "Templates Active"}</p>
+          <Bell size={14} className="text-brand-ink mb-2" />
+          <p className="text-heading font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{enabledCount}/{templates.length}</p>
+          <p className="text-micro text-muted-foreground">{ar ? "قوالب مفعلة" : "Templates Active"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
           <Send size={14} className="text-emerald-500 mb-2" />
-          <p className="text-[20px] font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{totalSent}</p>
-          <p className="text-[10px] text-muted-foreground">{ar ? "إجمالي المرسل" : "Total Sent"}</p>
+          <p className="text-heading font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{totalSent}</p>
+          <p className="text-micro text-muted-foreground">{ar ? "إجمالي المرسل" : "Total Sent"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
           <MessageCircle size={14} className="text-[#25D366] mb-2" />
-          <p className="text-[20px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{whatsappCount}</p>
-          <p className="text-[10px] text-muted-foreground">{ar ? "قوالب واتساب" : "WhatsApp Templates"}</p>
+          <p className="text-heading font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{whatsappCount}</p>
+          <p className="text-micro text-muted-foreground">{ar ? "قوالب واتساب" : "WhatsApp Templates"}</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-5">
         <select value={filterTrigger} onChange={e => setFilterTrigger(e.target.value)}
-          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption focus:outline-none focus:ring-2 focus:ring-brand-ink/20 cursor-pointer">
           <option value="all">{ar ? "كل المحفزات" : "All Triggers"}</option>
           {(Object.keys(TRIGGER_META) as NotificationTrigger[]).map(t => (
             <option key={t} value={t}>{ar ? TRIGGER_META[t].ar : TRIGGER_META[t].en}</option>
           ))}
         </select>
-        <span className="text-[11px] text-muted-foreground ms-auto">{filtered.length} {ar ? "قالب" : "templates"}</span>
+        <span className="text-micro text-muted-foreground ms-auto">{filtered.length} {ar ? "قالب" : "templates"}</span>
       </div>
 
       {/* Templates list */}
@@ -322,15 +322,15 @@ export default function LoyaltyNotificationsPage() {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <h3 className="text-[13px] font-medium truncate">{ar ? tpl.nameAr : tpl.nameEn}</h3>
-                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${tpl.channel === "whatsapp" ? "bg-[#25D366]/10 text-[#25D366]" : "bg-blue-50 text-blue-600"}`}>
+                    <h3 className="text-body font-medium truncate">{ar ? tpl.nameAr : tpl.nameEn}</h3>
+                    <span className={`text-micro font-medium px-1.5 py-0.5 rounded-full ${tpl.channel === "whatsapp" ? "bg-[#25D366]/10 text-[#25D366]" : "bg-blue-50 text-blue-600"}`}>
                       {tpl.channel === "whatsapp" ? "WhatsApp" : "SMS"}
                     </span>
                   </div>
-                  <p className="text-[10.5px] text-muted-foreground truncate max-w-[400px]">
+                  <p className="text-micro text-muted-foreground truncate max-w-[400px]">
                     {ar ? tpl.templateAr.substring(0, 80) : tpl.templateEn.substring(0, 80)}...
                   </p>
-                  <div className="flex items-center gap-3 mt-1 text-[9.5px] text-muted-foreground">
+                  <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
                     <span>{tpl.totalSent} {ar ? "مرسل" : "sent"}</span>
                     {tpl.lastSent && (
                       <span className="flex items-center gap-1">
@@ -360,10 +360,10 @@ export default function LoyaltyNotificationsPage() {
 
       {/* Integration notes */}
       <div className="mt-6 bg-muted/15 border border-border/30 rounded-xl p-5">
-        <h3 className="text-[13px] font-medium text-foreground mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <h3 className="text-body font-medium text-foreground mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? "إعداد التكامل" : "Integration Setup"}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10.5px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-micro">
           <div>
             <p className="font-medium text-foreground mb-1 flex items-center gap-1.5">
               <MessageCircle size={11} className="text-[#25D366]" />WhatsApp Business API
@@ -373,7 +373,7 @@ export default function LoyaltyNotificationsPage() {
               <li>{ar ? "إعداد WhatsApp Business API" : "Set up WhatsApp Business API"}</li>
               <li>{ar ? "إضافة رقم الهاتف وتأكيده" : "Add and verify phone number"}</li>
               <li>{ar ? "تقديم القوالب للموافقة من Meta" : "Submit templates for Meta approval"}</li>
-              <li>{ar ? "إضافة API Token في إعدادات THOTH" : "Add API Token in THOTH settings"}</li>
+              <li>{ar ? "إضافة API Token في إعدادات Bumblebee" : "Add API Token in Bumblebee settings"}</li>
             </ol>
           </div>
           <div>
@@ -389,7 +389,7 @@ export default function LoyaltyNotificationsPage() {
           </div>
         </div>
 
-        <div className="mt-4 pt-3 border-t border-border/20 flex items-center gap-2 text-[10px] text-muted-foreground">
+        <div className="mt-4 pt-3 border-t border-border/20 flex items-center gap-2 text-micro text-muted-foreground">
           <Shield size={10} />
           {ar ? "جميع بيانات الاتصال مشفرة ومخزنة في Supabase. لا تُرسل أي رسائل بدون موافقة العميل." : "All credentials encrypted in Supabase. No messages sent without customer opt-in consent."}
         </div>

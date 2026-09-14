@@ -32,8 +32,8 @@ type WorkItem = Database["public"]["Tables"]["work_items"]["Row"];
 
 const COST_TYPES = [
   { value: "material",    en: "Material",     ar: "خامات",     color: "bg-blue-50 text-blue-600",    icon: Package },
-  { value: "labor",       en: "Labor",        ar: "عمالة",     color: "bg-amber-50 text-amber-600",  icon: User },
-  { value: "overhead",    en: "Overhead",     ar: "مصاريف عامة", color: "bg-purple-50 text-purple-600", icon: Building2 },
+  { value: "labor",       en: "Labor",        ar: "عمالة",     color: "bg-warning/10 text-warning",  icon: User },
+  { value: "overhead",    en: "Overhead",     ar: "مصاريف عامة", color: "bg-chart-4/10 text-chart-4", icon: Building2 },
   { value: "subcontract", en: "Subcontract",  ar: "مقاولة باطن", color: "bg-cyan-50 text-cyan-600",   icon: Hammer },
   { value: "transport",   en: "Transport",    ar: "نقل",       color: "bg-indigo-50 text-indigo-600", icon: Truck },
   { value: "other",       en: "Other",        ar: "أخرى",      color: "bg-zinc-100 text-zinc-600",   icon: Layers },
@@ -46,9 +46,9 @@ const BRANCH_TYPES = [
   { value: "office",    en: "Office",    ar: "مكتب" },
 ] as const;
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function fmtMoney(n: number) { return n.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
 
@@ -89,7 +89,7 @@ function CostModal({ onClose, onSaved, prodOrders, salesOrders, ar, wid }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "بند تكلفة جديد" : "New Cost Entry"}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "بند تكلفة جديد" : "New Cost Entry"}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
@@ -129,7 +129,7 @@ function CostModal({ onClose, onSaved, prodOrders, salesOrders, ar, wid }: {
             <input className={inputCls} value={notes} onChange={e => setNotes(e.target.value)} /></div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading || !desc.trim() || !unitCost} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "حفظ" : "Save"}
           </button>
@@ -173,7 +173,7 @@ function BranchModal({ onClose, onSaved, editBranch, ar, wid }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editBranch ? (ar ? "تعديل فرع" : "Edit Branch") : (ar ? "فرع جديد" : "New Branch")}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -203,7 +203,7 @@ function BranchModal({ onClose, onSaved, editBranch, ar, wid }: {
           </div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading || !name.trim() || !code.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "حفظ" : "Save"}
           </button>
@@ -240,27 +240,27 @@ function DocumentGenerator({ salesOrders, costEntries, ar }: {
         <div className="border border-border/40 rounded-xl p-6 bg-white print:border-0 print:shadow-none print:p-0" id="print-area">
           <div className="flex items-start justify-between mb-6 pb-4 border-b border-border/30">
             <div>
-              <h2 className="text-[20px] font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>THOTH</h2>
-              <p className="text-[11px] text-muted-foreground">{ar ? "نظام إدارة مصانع الأثاث" : "Furniture Manufacturing ERP"}</p>
+              <h2 className="text-heading font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>Bumblebee</h2>
+              <p className="text-micro text-muted-foreground">{ar ? "نظام إدارة مصانع الأثاث" : "Furniture Manufacturing ERP"}</p>
             </div>
             <div className="text-right">
-              <p className="text-[16px] font-semibold">{ar ? "فاتورة / كشف حساب" : "Invoice / Statement"}</p>
-              <p className="text-[11px] text-muted-foreground">{new Date().toLocaleDateString()}</p>
+              <p className="text-title font-semibold">{ar ? "فاتورة / كشف حساب" : "Invoice / Statement"}</p>
+              <p className="text-micro text-muted-foreground">{new Date().toLocaleDateString()}</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-6 mb-6">
             <div>
-              <p className="text-[10px] text-muted-foreground mb-1">{ar ? "العميل" : "Customer"}</p>
-              <p className="text-[14px] font-medium">{(so as any).customer_name || "—"}</p>
+              <p className="text-micro text-muted-foreground mb-1">{ar ? "العميل" : "Customer"}</p>
+              <p className="text-body-lg font-medium">{(so as any).customer_name || "—"}</p>
             </div>
             <div>
-              <p className="text-[10px] text-muted-foreground mb-1">{ar ? "رقم الأمر" : "Order #"}</p>
-              <p className="text-[14px] font-medium">{(so as any).order_number || so.id.slice(0, 8)}</p>
+              <p className="text-micro text-muted-foreground mb-1">{ar ? "رقم الأمر" : "Order #"}</p>
+              <p className="text-body-lg font-medium">{(so as any).order_number || so.id.slice(0, 8)}</p>
             </div>
           </div>
-          <p className="text-[13px] font-semibold mb-2">{so.title}</p>
+          <p className="text-body font-semibold mb-2">{so.title}</p>
           {costs.length > 0 && (
-            <table className="w-full text-[12px] mb-4">
+            <table className="w-full text-caption mb-4">
               <thead>
                 <tr className="border-b border-border/40 text-muted-foreground text-left">
                   <th className="py-2 font-medium">{ar ? "البند" : "Item"}</th>
@@ -292,12 +292,12 @@ function DocumentGenerator({ salesOrders, costEntries, ar }: {
               </tfoot>
             </table>
           )}
-          {costs.length === 0 && <p className="text-[12px] text-muted-foreground py-4">{ar ? "مفيش بنود تكلفة مسجلة لهذا الأمر" : "No cost entries for this order"}</p>}
+          {costs.length === 0 && <p className="text-caption text-muted-foreground py-4">{ar ? "مفيش بنود تكلفة مسجلة لهذا الأمر" : "No cost entries for this order"}</p>}
         </div>
       ) : (
         <div className="py-16 text-center">
           <FileText size={28} className="text-muted-foreground/20 mx-auto mb-2" />
-          <p className="text-[13px] text-muted-foreground/50">{ar ? "اختر أمر بيع لإنشاء المستند" : "Select a sales order to generate document"}</p>
+          <p className="text-body text-muted-foreground/50">{ar ? "اختر أمر بيع لإنشاء المستند" : "Select a sales order to generate document"}</p>
         </div>
       )}
     </div>
@@ -309,8 +309,8 @@ function DocumentGenerator({ salesOrders, costEntries, ar }: {
 function WorkshopBoard({ prodOrders, ar }: { prodOrders: ProdOrder[]; ar: boolean }) {
   const stages = [
     { key: "cutting",     en: "Cutting",      ar: "التقطيع",   color: "border-blue-300 bg-blue-50" },
-    { key: "edgebanding", en: "Edgebanding",   ar: "الكنار",    color: "border-amber-300 bg-amber-50" },
-    { key: "drilling",    en: "Drilling",      ar: "التخريم",   color: "border-purple-300 bg-purple-50" },
+    { key: "edgebanding", en: "Edgebanding",   ar: "الكنار",    color: "border-warning/30 bg-warning/10" },
+    { key: "drilling",    en: "Drilling",      ar: "التخريم",   color: "border-chart-4/30 bg-chart-4/10" },
     { key: "assembly",    en: "Assembly",      ar: "التجميع",   color: "border-cyan-300 bg-cyan-50" },
     { key: "finishing",   en: "Finishing",      ar: "الدهان",    color: "border-orange-300 bg-orange-50" },
     { key: "qc",          en: "QC",            ar: "الجودة",    color: "border-emerald-300 bg-emerald-50" },
@@ -325,11 +325,11 @@ function WorkshopBoard({ prodOrders, ar }: { prodOrders: ProdOrder[]; ar: boolea
 
   return (
     <div>
-      <p className="text-[12px] text-muted-foreground mb-4">{ar ? "لوحة الورشة — عرض مباشر لحالة الإنتاج" : "Workshop Board — live production status overview"}</p>
+      <p className="text-caption text-muted-foreground mb-4">{ar ? "لوحة الورشة — عرض مباشر لحالة الإنتاج" : "Workshop Board — live production status overview"}</p>
       {activeOrders.length === 0 ? (
         <div className="py-16 text-center">
           <Factory size={28} className="text-muted-foreground/20 mx-auto mb-2" />
-          <p className="text-[13px] text-muted-foreground/50">{ar ? "مفيش أوامر إنتاج نشطة" : "No active production orders"}</p>
+          <p className="text-body text-muted-foreground/50">{ar ? "مفيش أوامر إنتاج نشطة" : "No active production orders"}</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -337,16 +337,16 @@ function WorkshopBoard({ prodOrders, ar }: { prodOrders: ProdOrder[]; ar: boolea
             const orders = activeOrders.filter(p => getStage(p) === stage.key);
             return (
               <div key={stage.key} className={`border-2 rounded-xl p-3 min-h-[120px] ${stage.color}`}>
-                <p className="text-[11px] font-semibold mb-2 text-center">{ar ? stage.ar : stage.en}</p>
-                <p className="text-[18px] font-bold text-center mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>{orders.length}</p>
+                <p className="text-micro font-semibold mb-2 text-center">{ar ? stage.ar : stage.en}</p>
+                <p className="text-title font-bold text-center mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>{orders.length}</p>
                 {orders.slice(0, 3).map(o => (
                   <div key={o.id} className="bg-white/80 rounded-lg px-2 py-1.5 mb-1.5 border border-white">
-                    <p className="text-[10px] font-mono text-muted-foreground">{o.po_number}</p>
-                    <p className="text-[11px] font-medium truncate">{o.title}</p>
-                    {o.customer_name && <p className="text-[9px] text-muted-foreground truncate">{o.customer_name}</p>}
+                    <p className="text-micro font-mono text-muted-foreground">{o.po_number}</p>
+                    <p className="text-micro font-medium truncate">{o.title}</p>
+                    {o.customer_name && <p className="text-micro text-muted-foreground truncate">{o.customer_name}</p>}
                   </div>
                 ))}
-                {orders.length > 3 && <p className="text-[9px] text-center text-muted-foreground">+{orders.length - 3} {ar ? "أكثر" : "more"}</p>}
+                {orders.length > 3 && <p className="text-micro text-center text-muted-foreground">+{orders.length - 3} {ar ? "أكثر" : "more"}</p>}
               </div>
             );
           })}
@@ -355,11 +355,11 @@ function WorkshopBoard({ prodOrders, ar }: { prodOrders: ProdOrder[]; ar: boolea
 
       {/* Summary bar */}
       <div className="mt-6 flex items-center gap-4 flex-wrap">
-        <span className="text-[12px] font-medium">{ar ? "إجمالي نشط:" : "Total Active:"} {activeOrders.length}</span>
+        <span className="text-caption font-medium">{ar ? "إجمالي نشط:" : "Total Active:"} {activeOrders.length}</span>
         {stages.map(s => {
           const c = activeOrders.filter(p => getStage(p) === s.key).length;
           if (c === 0) return null;
-          return <span key={s.key} className="text-[11px] text-muted-foreground">{ar ? s.ar : s.en}: {c}</span>;
+          return <span key={s.key} className="text-micro text-muted-foreground">{ar ? s.ar : s.en}: {c}</span>;
         })}
       </div>
     </div>
@@ -425,7 +425,7 @@ export default function AdvancedTools() {
       date: c.date, type: c.cost_type, description: c.description,
       quantity: c.quantity, unit_cost: c.unit_cost, total: c.total_cost,
       supplier: c.supplier,
-    })), `thoth-costs-${new Date().toISOString().slice(0, 10)}.csv`);
+    })), `bumblebee-costs-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   async function deleteBranch(id: string) {
@@ -444,10 +444,10 @@ export default function AdvancedTools() {
     <div className="max-w-5xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "أدوات متقدمة" : "Advanced Tools"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "تحليل التكاليف والأرباح والمستندات" : "Cost Analysis, Profit Reports & Documents"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "تحليل التكاليف والأرباح والمستندات" : "Cost Analysis, Profit Reports & Documents"}</p>
         </div>
       </div>
 
@@ -461,7 +461,7 @@ export default function AdvancedTools() {
           { id: "branches" as const, en: "Branches", ar: "الفروع", icon: Building2 },
         ].map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-4 py-2.5 rounded-xl text-[13px] font-medium transition-colors flex items-center gap-2 whitespace-nowrap
+            className={`px-4 py-2.5 rounded-xl text-body font-medium transition-colors flex items-center gap-2 whitespace-nowrap
               ${tab === t.id ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
             <t.icon size={15} />{ar ? t.ar : t.en}
           </button>
@@ -483,10 +483,10 @@ export default function AdvancedTools() {
                     <div key={ct.value} className={`border rounded-xl p-3 ${ct.color}`}>
                       <div className="flex items-center gap-1.5 mb-1">
                         <CtIcon size={12} />
-                        <span className="text-[10px] font-medium">{ar ? ct.ar : ct.en}</span>
+                        <span className="text-micro font-medium">{ar ? ct.ar : ct.en}</span>
                       </div>
-                      <p className="text-[16px] font-bold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtMoney(ct.total)}</p>
-                      <p className="text-[9px] opacity-60">{ct.count} {ar ? "بند" : "entries"}</p>
+                      <p className="text-title font-bold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtMoney(ct.total)}</p>
+                      <p className="text-micro opacity-60">{ct.count} {ar ? "بند" : "entries"}</p>
                     </div>
                   );
                 })}
@@ -495,7 +495,7 @@ export default function AdvancedTools() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex gap-1 overflow-x-auto">
                   {[{ v: "all", en: "All", ar: "الكل" }, ...COST_TYPES.map(t => ({ v: t.value, en: t.en, ar: t.ar }))].map(g => (
-                    <button key={g.v} onClick={() => setFilterType(g.v)} className={`px-2.5 py-2 rounded-lg text-[11px] font-medium whitespace-nowrap ${filterType === g.v ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
+                    <button key={g.v} onClick={() => setFilterType(g.v)} className={`px-2.5 py-2 rounded-lg text-micro font-medium whitespace-nowrap ${filterType === g.v ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
                   ))}
                 </div>
                 <div className="flex gap-2 shrink-0">
@@ -507,7 +507,7 @@ export default function AdvancedTools() {
               {filteredCosts.length === 0 ? (
                 <div className="py-16 text-center">
                   <Calculator size={28} className="text-muted-foreground/20 mx-auto mb-2" />
-                  <p className="text-[13px] text-muted-foreground/50">{ar ? "مفيش بنود تكاليف لسه" : "No cost entries yet"}</p>
+                  <p className="text-body text-muted-foreground/50">{ar ? "مفيش بنود تكاليف لسه" : "No cost entries yet"}</p>
                   <button onClick={() => setCostModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "أضف بند" : "Add Entry"}</button>
                 </div>
               ) : (
@@ -519,23 +519,23 @@ export default function AdvancedTools() {
                       <div key={c.id} className="flex items-center gap-3 px-4 py-3 border border-border/40 rounded-xl bg-background">
                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${ct.color}`}><CtIcon size={14} /></div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[13px] font-medium">{c.description}</p>
-                          <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                          <p className="text-body font-medium">{c.description}</p>
+                          <div className="flex items-center gap-2 text-micro text-muted-foreground">
                             <span>{ar ? ct.ar : ct.en}</span>
                             {c.supplier && <span>• {c.supplier}</span>}
                             {c.date && <span>• {c.date}</span>}
                           </div>
                         </div>
                         <div className="text-right shrink-0">
-                          <p className="text-[14px] font-semibold tabular-nums">{fmtMoney(c.total_cost)} <span className="text-[10px] text-muted-foreground">EGP</span></p>
-                          <p className="text-[9px] text-muted-foreground">{c.quantity} × {fmtMoney(c.unit_cost)}</p>
+                          <p className="text-body-lg font-semibold tabular-nums">{fmtMoney(c.total_cost)} <span className="text-micro text-muted-foreground">EGP</span></p>
+                          <p className="text-micro text-muted-foreground">{c.quantity} × {fmtMoney(c.unit_cost)}</p>
                         </div>
                         <button onClick={() => deleteCost(c.id)} className="text-rose-400 hover:opacity-70 p-1 shrink-0"><Trash2 size={12} /></button>
                       </div>
                     );
                   })}
                   <div className="flex justify-end pt-2">
-                    <span className="text-[14px] font-bold">{ar ? "الإجمالي:" : "Total:"} {fmtMoney(filteredCosts.reduce((s, c) => s + c.total_cost, 0))} EGP</span>
+                    <span className="text-body-lg font-bold">{ar ? "الإجمالي:" : "Total:"} {fmtMoney(filteredCosts.reduce((s, c) => s + c.total_cost, 0))} EGP</span>
                   </div>
                 </div>
               )}
@@ -547,37 +547,37 @@ export default function AdvancedTools() {
             <div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                 <div className="border border-border/40 rounded-xl p-4 bg-background">
-                  <p className="text-[11px] text-muted-foreground mb-1">{ar ? "إجمالي الإيرادات" : "Total Revenue"}</p>
-                  <p className="text-[20px] font-semibold tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtMoney(soRevenue)}</p>
-                  <p className="text-[9px] text-muted-foreground">{salesOrders.length} {ar ? "أمر بيع" : "orders"}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "إجمالي الإيرادات" : "Total Revenue"}</p>
+                  <p className="text-heading font-semibold tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtMoney(soRevenue)}</p>
+                  <p className="text-micro text-muted-foreground">{salesOrders.length} {ar ? "أمر بيع" : "orders"}</p>
                 </div>
                 <div className="border border-border/40 rounded-xl p-4 bg-background">
-                  <p className="text-[11px] text-muted-foreground mb-1">{ar ? "إجمالي التكاليف" : "Total Costs"}</p>
-                  <p className="text-[20px] font-semibold tabular-nums text-rose-600" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtMoney(totalCosts)}</p>
-                  <p className="text-[9px] text-muted-foreground">{costEntries.length} {ar ? "بند" : "entries"}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "إجمالي التكاليف" : "Total Costs"}</p>
+                  <p className="text-heading font-semibold tabular-nums text-rose-600" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtMoney(totalCosts)}</p>
+                  <p className="text-micro text-muted-foreground">{costEntries.length} {ar ? "بند" : "entries"}</p>
                 </div>
                 <div className="border border-border/40 rounded-xl p-4 bg-background">
-                  <p className="text-[11px] text-muted-foreground mb-1">{ar ? "صافي الربح" : "Gross Profit"}</p>
-                  <p className={`text-[20px] font-semibold tabular-nums ${grossProfit >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "صافي الربح" : "Gross Profit"}</p>
+                  <p className={`text-heading font-semibold tabular-nums ${grossProfit >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                     {fmtMoney(grossProfit)}
                   </p>
-                  <p className="text-[9px] text-muted-foreground flex items-center gap-0.5">
+                  <p className="text-micro text-muted-foreground flex items-center gap-0.5">
                     {grossProfit >= 0 ? <ArrowUpRight size={9} className="text-emerald-500" /> : <ArrowDownRight size={9} className="text-rose-500" />}
                     EGP
                   </p>
                 </div>
                 <div className="border border-border/40 rounded-xl p-4 bg-background">
-                  <p className="text-[11px] text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
-                  <p className={`text-[20px] font-semibold tabular-nums ${marginPct >= 20 ? "text-emerald-600" : marginPct >= 10 ? "text-amber-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
+                  <p className={`text-heading font-semibold tabular-nums ${marginPct >= 20 ? "text-emerald-600" : marginPct >= 10 ? "text-warning" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                     {marginPct}%
                   </p>
-                  <p className="text-[9px] text-muted-foreground">{marginPct >= 20 ? (ar ? "ممتاز" : "Healthy") : marginPct >= 10 ? (ar ? "مقبول" : "Fair") : (ar ? "منخفض" : "Low")}</p>
+                  <p className="text-micro text-muted-foreground">{marginPct >= 20 ? (ar ? "ممتاز" : "Healthy") : marginPct >= 10 ? (ar ? "مقبول" : "Fair") : (ar ? "منخفض" : "Low")}</p>
                 </div>
               </div>
 
               {/* Cost breakdown bar */}
               <div className="border border-border/40 rounded-xl p-5 mb-6">
-                <h3 className="text-[14px] font-semibold mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "توزيع التكاليف" : "Cost Breakdown"}</h3>
+                <h3 className="text-body-lg font-semibold mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "توزيع التكاليف" : "Cost Breakdown"}</h3>
                 {totalCosts > 0 ? (
                   <div className="space-y-3">
                     {costByType.filter(ct => ct.total > 0).sort((a, b) => b.total - a.total).map(ct => {
@@ -585,8 +585,8 @@ export default function AdvancedTools() {
                       return (
                         <div key={ct.value}>
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[12px] font-medium">{ar ? ct.ar : ct.en}</span>
-                            <span className="text-[12px] text-muted-foreground">{fmtMoney(ct.total)} EGP ({pct}%)</span>
+                            <span className="text-caption font-medium">{ar ? ct.ar : ct.en}</span>
+                            <span className="text-caption text-muted-foreground">{fmtMoney(ct.total)} EGP ({pct}%)</span>
                           </div>
                           <div className="h-2 bg-muted rounded-full overflow-hidden">
                             <div className={`h-full rounded-full ${ct.color.split(" ")[0].replace("50", "400")}`} style={{ width: `${pct}%` }} />
@@ -596,15 +596,15 @@ export default function AdvancedTools() {
                     })}
                   </div>
                 ) : (
-                  <p className="text-[12px] text-muted-foreground/50 py-4">{ar ? "أضف بنود تكلفة لعرض التوزيع" : "Add cost entries to see breakdown"}</p>
+                  <p className="text-caption text-muted-foreground/50 py-4">{ar ? "أضف بنود تكلفة لعرض التوزيع" : "Add cost entries to see breakdown"}</p>
                 )}
               </div>
 
               {/* Per-order profit */}
               <div className="border border-border/40 rounded-xl p-5">
-                <h3 className="text-[14px] font-semibold mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "ربح كل أمر" : "Per-Order Profit"}</h3>
+                <h3 className="text-body-lg font-semibold mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "ربح كل أمر" : "Per-Order Profit"}</h3>
                 {salesOrders.length === 0 ? (
-                  <p className="text-[12px] text-muted-foreground/50 py-4">{ar ? "مفيش أوامر بيع" : "No sales orders"}</p>
+                  <p className="text-caption text-muted-foreground/50 py-4">{ar ? "مفيش أوامر بيع" : "No sales orders"}</p>
                 ) : (
                   <div className="space-y-2">
                     {salesOrders.slice(0, 10).map(so => {
@@ -615,16 +615,16 @@ export default function AdvancedTools() {
                       return (
                         <div key={so.id} className="flex items-center gap-3 px-4 py-3 border border-border/30 rounded-xl">
                           <div className="flex-1 min-w-0">
-                            <p className="text-[13px] font-medium truncate">{so.title}</p>
-                            <p className="text-[10px] text-muted-foreground">{(so as any).order_number || so.id.slice(0, 8)}</p>
+                            <p className="text-body font-medium truncate">{so.title}</p>
+                            <p className="text-micro text-muted-foreground">{(so as any).order_number || so.id.slice(0, 8)}</p>
                           </div>
-                          <div className="text-right text-[11px] space-y-0.5">
+                          <div className="text-right text-micro space-y-0.5">
                             <p className="text-emerald-600">{ar ? "إيراد:" : "Rev:"} {fmtMoney(rev)}</p>
                             <p className="text-rose-500">{ar ? "تكلفة:" : "Cost:"} {fmtMoney(cost)}</p>
                           </div>
                           <div className="text-right shrink-0 w-20">
-                            <p className={`text-[14px] font-bold tabular-nums ${profit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{fmtMoney(profit)}</p>
-                            <p className={`text-[10px] ${margin >= 20 ? "text-emerald-500" : "text-amber-500"}`}>{margin}%</p>
+                            <p className={`text-body-lg font-bold tabular-nums ${profit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{fmtMoney(profit)}</p>
+                            <p className={`text-micro ${margin >= 20 ? "text-emerald-500" : "text-warning"}`}>{margin}%</p>
                           </div>
                         </div>
                       );
@@ -645,13 +645,13 @@ export default function AdvancedTools() {
           {tab === "branches" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[14px] font-semibold">{ar ? "إدارة الفروع" : "Branch Management"}</h3>
+                <h3 className="text-body-lg font-semibold">{ar ? "إدارة الفروع" : "Branch Management"}</h3>
                 <button onClick={() => { setEditBranch(null); setBranchModal(true); }} className={btnPrimary + " h-10"}><Plus size={14} /> {ar ? "فرع جديد" : "New Branch"}</button>
               </div>
               {branches.length === 0 ? (
                 <div className="py-16 text-center">
                   <Building2 size={28} className="text-muted-foreground/20 mx-auto mb-2" />
-                  <p className="text-[13px] text-muted-foreground/50">{ar ? "مفيش فروع لسه" : "No branches yet"}</p>
+                  <p className="text-body text-muted-foreground/50">{ar ? "مفيش فروع لسه" : "No branches yet"}</p>
                   <button onClick={() => setBranchModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "أضف فرع" : "Add Branch"}</button>
                 </div>
               ) : (
@@ -663,18 +663,18 @@ export default function AdvancedTools() {
                         <div className="flex items-start justify-between mb-2">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="text-[10px] font-mono text-muted-foreground">{b.branch_code}</span>
-                              {bt && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? bt.ar : bt.en}</span>}
-                              {!b.is_active && <span className="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full">{ar ? "غير نشط" : "Inactive"}</span>}
+                              <span className="text-micro font-mono text-muted-foreground">{b.branch_code}</span>
+                              {bt && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? bt.ar : bt.en}</span>}
+                              {!b.is_active && <span className="text-micro bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full">{ar ? "غير نشط" : "Inactive"}</span>}
                             </div>
-                            <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar && b.name_ar ? b.name_ar : b.name}</p>
+                            <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar && b.name_ar ? b.name_ar : b.name}</p>
                           </div>
                           <div className="flex gap-1">
                             <button onClick={() => { setEditBranch(b); setBranchModal(true); }} className="p-1.5 rounded-lg hover:bg-muted/50 text-muted-foreground"><Edit3 size={12} /></button>
                             <button onClick={() => deleteBranch(b.id)} className="p-1.5 rounded-lg hover:bg-muted/50 text-rose-400"><Trash2 size={12} /></button>
                           </div>
                         </div>
-                        <div className="space-y-1 text-[11px] text-muted-foreground">
+                        <div className="space-y-1 text-micro text-muted-foreground">
                           {b.address && <p className="flex items-center gap-1"><MapPin size={10} />{b.address}</p>}
                           {b.phone && <p className="flex items-center gap-1"><Phone size={10} />{b.phone}</p>}
                           {b.manager_name && <p className="flex items-center gap-1"><User size={10} />{b.manager_name}</p>}

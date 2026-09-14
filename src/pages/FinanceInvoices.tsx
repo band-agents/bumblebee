@@ -21,7 +21,7 @@ const STATUS_META: Record<string, { en: string; ar: string; pill: string; dot: s
   draft:     { en: "Draft",     ar: "مسودة",   pill: "bg-slate-100 text-slate-600",  dot: "bg-slate-400" },
   sent:      { en: "Sent",      ar: "مُرسلة",  pill: "bg-blue-100 text-blue-600",    dot: "bg-blue-500" },
   viewed:    { en: "Viewed",    ar: "تمت المشاهدة", pill: "bg-blue-100 text-blue-500", dot: "bg-blue-400" },
-  partial:   { en: "Partial",   ar: "مدفوعة جزئياً", pill: "bg-amber-100 text-amber-600", dot: "bg-amber-500" },
+  partial:   { en: "Partial",   ar: "مدفوعة جزئياً", pill: "bg-warning/15 text-warning", dot: "bg-warning" },
   paid:      { en: "Paid",      ar: "مدفوعة",  pill: "bg-emerald-100 text-emerald-600", dot: "bg-emerald-500" },
   overdue:   { en: "Overdue",   ar: "متأخرة",  pill: "bg-rose-100 text-rose-600",    dot: "bg-rose-500" },
   cancelled: { en: "Cancelled", ar: "ملغاة",   pill: "bg-slate-100 text-slate-500",  dot: "bg-slate-400" },
@@ -39,9 +39,9 @@ const STATUS_FILTERS: { value: string; en: string; ar: string }[] = [
 
 // ─── Shared UI ────────────────────────────────────────────
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
 
 // ═══════════════════════════════════════════════════════════
 // Detail Modal
@@ -87,13 +87,13 @@ function InvoiceDetailModal({
           <div className="flex items-center justify-between px-6 py-4 border-b border-border/40">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center">
-                <Receipt size={16} strokeWidth={1.75} className="text-primary" />
+                <Receipt size={16} strokeWidth={1.75} className="text-brand-ink" />
               </div>
               <div>
-                <h2 className="text-[16px] font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <h2 className="text-title font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {invoice.invoice_number}
                 </h2>
-                <p className="text-[11px] text-muted-foreground">{invoice.title}</p>
+                <p className="text-micro text-muted-foreground">{invoice.title}</p>
               </div>
             </div>
             <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
@@ -105,17 +105,17 @@ function InvoiceDetailModal({
           <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
             {/* Status + Dates */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${s.pill}`}>
+              <span className={`text-micro font-medium px-2.5 py-1 rounded-full ${s.pill}`}>
                 {ar ? s.ar : s.en}
               </span>
-              <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+              <span className="text-micro text-muted-foreground flex items-center gap-1">
                 <Calendar size={10} /> {ar ? "تاريخ الإصدار:" : "Issued:"} {invoice.issue_date}
               </span>
-              <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+              <span className="text-micro text-muted-foreground flex items-center gap-1">
                 <Clock size={10} /> {ar ? "الاستحقاق:" : "Due:"} {invoice.due_date}
               </span>
               {invoice.paid_date && (
-                <span className="text-[11px] text-emerald-600 flex items-center gap-1">
+                <span className="text-micro text-emerald-600 flex items-center gap-1">
                   <CheckCircle2 size={10} /> {ar ? "تم الدفع:" : "Paid:"} {invoice.paid_date}
                 </span>
               )}
@@ -123,16 +123,16 @@ function InvoiceDetailModal({
 
             {/* Customer */}
             <div className="bg-muted/20 rounded-xl px-4 py-3">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{ar ? "العميل" : "Customer"}</p>
-              <p className="text-[13px] font-medium text-foreground">{ar ? invoice.customer_name_ar : invoice.customer_name}</p>
-              <p className="text-[11px] text-muted-foreground">{invoice.customer_email} · {invoice.customer_phone}</p>
+              <p className="text-micro text-muted-foreground uppercase tracking-wider mb-1">{ar ? "العميل" : "Customer"}</p>
+              <p className="text-body font-medium text-foreground">{ar ? invoice.customer_name_ar : invoice.customer_name}</p>
+              <p className="text-micro text-muted-foreground">{invoice.customer_email} · {invoice.customer_phone}</p>
             </div>
 
             {/* Items */}
             <div>
-              <p className="text-[11px] font-medium text-foreground mb-2">{ar ? "البنود" : "Items"}</p>
+              <p className="text-micro font-medium text-foreground mb-2">{ar ? "البنود" : "Items"}</p>
               <div className="border border-border/40 rounded-xl overflow-hidden">
-                <table className="w-full text-[12px]">
+                <table className="w-full text-caption">
                   <thead>
                     <tr className="bg-muted/30 border-b border-border/30">
                       <th className="text-start px-4 py-2.5 font-medium text-muted-foreground">{ar ? "الوصف" : "Description"}</th>
@@ -158,32 +158,32 @@ function InvoiceDetailModal({
             {/* Totals */}
             <div className="flex justify-end">
               <div className="w-[260px] space-y-1.5">
-                <div className="flex justify-between text-[12px]">
+                <div className="flex justify-between text-caption">
                   <span className="text-muted-foreground">{ar ? "المجموع الفرعي" : "Subtotal"}</span>
                   <span className="text-foreground tabular-nums">{fmtEGP(invoice.subtotal)}</span>
                 </div>
                 {invoice.discount > 0 && (
-                  <div className="flex justify-between text-[12px]">
+                  <div className="flex justify-between text-caption">
                     <span className="text-muted-foreground">{ar ? "الخصم" : "Discount"}</span>
                     <span className="text-rose-500 tabular-nums">-{fmtEGP(invoice.discount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-[12px]">
+                <div className="flex justify-between text-caption">
                   <span className="text-muted-foreground">{ar ? "الضريبة" : "Tax"} ({invoice.tax_rate}%)</span>
                   <span className="text-foreground tabular-nums">{fmtEGP(invoice.tax_amount)}</span>
                 </div>
-                <div className="border-t border-border/40 pt-1.5 flex justify-between text-[14px]">
+                <div className="border-t border-border/40 pt-1.5 flex justify-between text-body-lg">
                   <span className="font-medium text-foreground">{ar ? "الإجمالي" : "Total"}</span>
                   <span className="font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtEGP(invoice.total)}</span>
                 </div>
                 {invoice.paid_amount > 0 && (
-                  <div className="flex justify-between text-[12px]">
+                  <div className="flex justify-between text-caption">
                     <span className="text-emerald-600">{ar ? "المدفوع" : "Paid"}</span>
                     <span className="text-emerald-600 tabular-nums">{fmtEGP(invoice.paid_amount)}</span>
                   </div>
                 )}
                 {invoice.balance > 0 && (
-                  <div className="flex justify-between text-[12px]">
+                  <div className="flex justify-between text-caption">
                     <span className="text-rose-500">{ar ? "المتبقي" : "Balance"}</span>
                     <span className="text-rose-500 tabular-nums font-medium">{fmtEGP(invoice.balance)}</span>
                   </div>
@@ -194,7 +194,7 @@ function InvoiceDetailModal({
             {/* Payment History */}
             {invPayments.length > 0 && (
               <div>
-                <p className="text-[11px] font-medium text-foreground mb-2">{ar ? "سجل الدفع" : "Payment History"}</p>
+                <p className="text-micro font-medium text-foreground mb-2">{ar ? "سجل الدفع" : "Payment History"}</p>
                 <div className="border border-border/40 rounded-xl overflow-hidden">
                   <div className="divide-y divide-border/20">
                     {invPayments.map((pay) => {
@@ -205,10 +205,10 @@ function InvoiceDetailModal({
                             <CreditCard size={14} strokeWidth={1.75} className="text-emerald-600" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-[12px] text-foreground">{ar ? pm.ar : pm.en} · {pay.reference}</p>
-                            <p className="text-[10px] text-muted-foreground">{pay.date} · {pay.recorded_by}</p>
+                            <p className="text-caption text-foreground">{ar ? pm.ar : pm.en} · {pay.reference}</p>
+                            <p className="text-micro text-muted-foreground">{pay.date} · {pay.recorded_by}</p>
                           </div>
-                          <p className="text-[13px] font-semibold text-emerald-600 tabular-nums shrink-0">{fmtEGP(pay.amount)}</p>
+                          <p className="text-body font-semibold text-emerald-600 tabular-nums shrink-0">{fmtEGP(pay.amount)}</p>
                         </div>
                       );
                     })}
@@ -220,8 +220,8 @@ function InvoiceDetailModal({
             {/* Notes */}
             {(invoice.notes || invoice.notes_ar) && (
               <div className="bg-muted/20 rounded-xl px-4 py-3">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{ar ? "ملاحظات" : "Notes"}</p>
-                <p className="text-[12px] text-foreground">{ar ? invoice.notes_ar : invoice.notes}</p>
+                <p className="text-micro text-muted-foreground uppercase tracking-wider mb-1">{ar ? "ملاحظات" : "Notes"}</p>
+                <p className="text-caption text-foreground">{ar ? invoice.notes_ar : invoice.notes}</p>
               </div>
             )}
           </div>
@@ -274,9 +274,9 @@ function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void 
         <div className="flex items-center justify-between px-6 py-4 border-b border-border/40">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center">
-              <Plus size={16} strokeWidth={1.75} className="text-primary" />
+              <Plus size={16} strokeWidth={1.75} className="text-brand-ink" />
             </div>
-            <h2 className="text-[16px] font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h2 className="text-title font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "إنشاء فاتورة جديدة" : "Create New Invoice"}
             </h2>
           </div>
@@ -305,7 +305,7 @@ function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void 
             <div className="flex items-center justify-between mb-2">
               <label className={labelCls + " !mb-0"}>{ar ? "البنود" : "Items"}</label>
               <button onClick={addItem}
-                className="text-[11px] text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
+                className="text-micro text-brand-ink hover:text-brand-ink/80 font-medium flex items-center gap-1 transition-colors">
                 <Plus size={12} /> {ar ? "إضافة بند" : "Add Item"}
               </button>
             </div>
@@ -347,21 +347,21 @@ function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void 
 
           {/* Totals */}
           <div className="border-t border-border/40 pt-3 space-y-1.5">
-            <div className="flex justify-between text-[12px]">
+            <div className="flex justify-between text-caption">
               <span className="text-muted-foreground">{ar ? "المجموع الفرعي" : "Subtotal"}</span>
               <span className="tabular-nums">{fmtEGP(subtotal)}</span>
             </div>
             {(Number(discount) || 0) > 0 && (
-              <div className="flex justify-between text-[12px]">
+              <div className="flex justify-between text-caption">
                 <span className="text-muted-foreground">{ar ? "الخصم" : "Discount"}</span>
                 <span className="text-rose-500 tabular-nums">-{fmtEGP(Number(discount))}</span>
               </div>
             )}
-            <div className="flex justify-between text-[12px]">
+            <div className="flex justify-between text-caption">
               <span className="text-muted-foreground">{ar ? "الضريبة" : "Tax"} ({taxRate}%)</span>
               <span className="tabular-nums">{fmtEGP(taxAmt)}</span>
             </div>
-            <div className="border-t border-border/40 pt-1.5 flex justify-between text-[15px]">
+            <div className="border-t border-border/40 pt-1.5 flex justify-between text-body-lg">
               <span className="font-medium">{ar ? "الإجمالي" : "Total"}</span>
               <span className="font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtEGP(total)}</span>
             </div>
@@ -371,7 +371,7 @@ function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void 
         {/* Footer */}
         <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-border/40">
           <button onClick={onClose}
-            className="px-4 py-2 rounded-xl text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            className="px-4 py-2 rounded-xl text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
             {ar ? "إلغاء" : "Cancel"}
           </button>
           <button
@@ -444,17 +444,17 @@ export default function FinanceInvoices() {
 
   const SortIcon = ({ field }: { field: typeof sortField }) => (
     <span className="inline-flex flex-col -space-y-0.5 ms-1">
-      <ChevronUp size={10} className={`${sortField === field && sortAsc ? "text-primary" : "text-muted-foreground/30"}`} />
-      <ChevronDown size={10} className={`${sortField === field && !sortAsc ? "text-primary" : "text-muted-foreground/30"}`} />
+      <ChevronUp size={10} className={`${sortField === field && sortAsc ? "text-brand-ink" : "text-muted-foreground/30"}`} />
+      <ChevronDown size={10} className={`${sortField === field && !sortAsc ? "text-brand-ink" : "text-muted-foreground/30"}`} />
     </span>
   );
 
   const kpis = [
-    { label: ar ? "إجمالي الفواتير" : "Total Invoiced", value: fmtEGP(totalInvoiced), icon: FileText, color: "text-primary", bg: "bg-primary/8" },
+    { label: ar ? "إجمالي الفواتير" : "Total Invoiced", value: fmtEGP(totalInvoiced), icon: FileText, color: "text-brand-ink", bg: "bg-primary/8" },
     { label: ar ? "المحصل" : "Total Collected", value: fmtEGP(totalCollected), icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: "+8%", up: true },
-    { label: ar ? "المعلق" : "Outstanding", value: fmtEGP(totalOutstanding), icon: Clock, color: "text-amber-500", bg: "bg-amber-50" },
+    { label: ar ? "المعلق" : "Outstanding", value: fmtEGP(totalOutstanding), icon: Clock, color: "text-warning", bg: "bg-warning/10" },
     { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(totalOverdue), icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-50" },
-    { label: ar ? "نسبة التحصيل" : "Collection Rate", value: `${collectionRate}%`, icon: TrendingUp, color: "text-violet-600", bg: "bg-violet-50" },
+    { label: ar ? "نسبة التحصيل" : "Collection Rate", value: `${collectionRate}%`, icon: TrendingUp, color: "text-chart-4", bg: "bg-chart-4/10" },
   ];
 
   return (
@@ -463,21 +463,21 @@ export default function FinanceInvoices() {
       <div className="border-b border-border/40 px-8 md:px-10 py-8"
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1200px]">
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
             {ar ? "المالية" : "Finance"}
           </p>
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight"
+            <h1 className="text-display font-medium text-foreground leading-tight"
               style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "الفواتير" : "Invoices"}
             </h1>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 h-9 px-3.5 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              <button className="flex items-center gap-2 h-9 px-3.5 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 <Download size={13} strokeWidth={1.75} />
                 {ar ? "تصدير" : "Export"}
               </button>
               <button onClick={() => setShowCreate(true)}
-                className="flex items-center gap-2 h-9 px-4 rounded-xl bg-foreground text-background text-[12px] font-medium hover:opacity-90 transition-opacity">
+                className="flex items-center gap-2 h-9 px-4 rounded-xl bg-foreground text-background text-caption font-medium hover:opacity-90 transition-opacity">
                 <Plus size={13} strokeWidth={2} />
                 {ar ? "فاتورة جديدة" : "New Invoice"}
               </button>
@@ -493,16 +493,16 @@ export default function FinanceInvoices() {
                     <m.icon size={14} strokeWidth={1.75} className={m.color} />
                   </div>
                   {m.trend && (
-                    <span className={`text-[10px] font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
                       {m.trend}
                     </span>
                   )}
                 </div>
-                <p className="text-[17px] font-medium text-foreground leading-none tabular-nums mb-1"
+                <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1"
                   style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                   {m.value}
                 </p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -517,14 +517,14 @@ export default function FinanceInvoices() {
               <Search size={13} strokeWidth={1.75} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
               <input type="search" value={search} onChange={(e) => setSearch(e.target.value)}
                 placeholder={ar ? "بحث بالفاتورة أو العميل…" : "Search invoices or customers…"}
-                className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
+                className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
             </div>
 
             <div className="h-5 w-px bg-border/60 hidden sm:block" />
             <div className="flex items-center gap-1.5 flex-wrap">
               {STATUS_FILTERS.map((f) => (
                 <button key={f.value} onClick={() => setStatusFilter(f.value)}
-                  className={`h-7 px-3 rounded-lg text-[12px] font-medium border transition-all ${statusFilter === f.value ? "bg-primary/8 text-primary border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
+                  className={`h-7 px-3 rounded-lg text-caption font-medium border transition-all ${statusFilter === f.value ? "bg-primary/8 text-brand-ink border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
                   {ar ? f.ar : f.en}
                 </button>
               ))}
@@ -532,7 +532,7 @@ export default function FinanceInvoices() {
 
             {search && (
               <button onClick={() => setSearch("")}
-                className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
+                className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
                 <X size={11} strokeWidth={2} />{ar ? "مسح" : "Clear"}
               </button>
             )}
@@ -542,13 +542,13 @@ export default function FinanceInvoices() {
 
       {/* ── Table ── */}
       <div className="px-8 md:px-10 py-6 max-w-[1200px]">
-        <p className="text-[12px] text-muted-foreground mb-4">
+        <p className="text-caption text-muted-foreground mb-4">
           {ar ? `${filtered.length} فاتورة` : `${filtered.length} invoice${filtered.length !== 1 ? "s" : ""}`}
         </p>
 
         <div className="border border-border/40 rounded-xl overflow-hidden bg-background">
           <div className="overflow-x-auto">
-            <table className="w-full text-[12px]">
+            <table className="w-full text-caption">
               <thead>
                 <tr className="bg-muted/30 border-b border-border/30">
                   <th className="text-start px-5 py-3 font-medium text-muted-foreground whitespace-nowrap">
@@ -593,16 +593,16 @@ export default function FinanceInvoices() {
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2.5">
                           <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center shrink-0">
-                            <Receipt size={13} strokeWidth={1.75} className="text-primary" />
+                            <Receipt size={13} strokeWidth={1.75} className="text-brand-ink" />
                           </div>
-                          <span className="font-mono text-foreground group-hover:text-primary transition-colors">{inv.invoice_number}</span>
+                          <span className="font-mono text-foreground group-hover:text-brand-ink transition-colors">{inv.invoice_number}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3.5">
-                        <p className="text-[12px] font-medium text-foreground truncate max-w-[140px]">
+                        <p className="text-caption font-medium text-foreground truncate max-w-[140px]">
                           {ar ? inv.customer_name_ar : inv.customer_name}
                         </p>
-                        <p className="text-[10px] text-muted-foreground truncate max-w-[140px]">{inv.title}</p>
+                        <p className="text-micro text-muted-foreground truncate max-w-[140px]">{inv.title}</p>
                       </td>
                       <td className="px-4 py-3.5 text-muted-foreground tabular-nums whitespace-nowrap">{inv.issue_date}</td>
                       <td className="px-4 py-3.5 text-muted-foreground tabular-nums whitespace-nowrap">{inv.due_date}</td>
@@ -618,7 +618,7 @@ export default function FinanceInvoices() {
                         {fmtEGP(inv.balance)}
                       </td>
                       <td className="px-4 py-3.5 text-center">
-                        <span className={`inline-flex items-center gap-1.5 text-[10px] font-medium px-2.5 py-1 rounded-full ${s.pill}`}>
+                        <span className={`inline-flex items-center gap-1.5 text-micro font-medium px-2.5 py-1 rounded-full ${s.pill}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
                           {ar ? s.ar : s.en}
                         </span>
@@ -645,7 +645,7 @@ export default function FinanceInvoices() {
                 {filtered.length === 0 && (
                   <tr>
                     <td colSpan={9} className="px-6 py-14 text-center">
-                      <p className="text-[13px] text-muted-foreground/60">
+                      <p className="text-body text-muted-foreground/60">
                         {ar ? "لا توجد فواتير" : "No invoices found"}
                       </p>
                     </td>

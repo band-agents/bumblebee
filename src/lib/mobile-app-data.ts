@@ -159,29 +159,29 @@ export interface AppBuild {
 
 export const MOBILE_APPS: MobileApp[] = [
   {
-    id: "app01", workspace_id: W, name: "THOTH Fashion", name_ar: "ثوت فاشون",
-    website_url: "https://thothfashion.com", platform: "both", status: "published",
+    id: "app01", workspace_id: W, name: "Bumblebee Fashion", name_ar: "ثوت فاشون",
+    website_url: "https://bumblebeefashion.com", platform: "both", status: "published",
     app_icon_url: "/app-icon.png", splash_screen_color: "#1E3A5F", primary_color: "#1E3A5F", secondary_color: "#C9A96E",
     splash_screen_type: "animated", splash_screen_url: "/splash.mp4",
-    app_store_name: "THOTH Fashion — Premium Egyptian Fashion", app_store_name_ar: "ثوت فاشون — أزياء مصرية فاخرة",
+    app_store_name: "Bumblebee Fashion — Premium Egyptian Fashion", app_store_name_ar: "ثوت فاشون — أزياء مصرية فاخرة",
     app_description: "Shop the finest Egyptian bridal, evening wear, and custom fashion. Premium quality, timeless elegance.", app_description_ar: "تسوق أرقى الأزياء المصرية للعروس والسهرة والخياطة المخصصة. جودة فاخرة وأناقة خالدة.",
     app_keywords: ["fashion", "egyptian", "bridal", "evening wear", "custom", "premium", "أزياء", "مصرية", "عروس"],
     app_category: "Shopping", app_version: "2.1.0",
     push_notifications_enabled: true, deep_linking_enabled: true, offline_mode_enabled: true,
     in_app_purchases_enabled: false, loyalty_integration: true, chat_support_enabled: true, analytics_enabled: true,
-    shopify_store_url: "https://thothfashion.myshopify.com", shopify_api_key: "shp_xxxx", shopify_webhook_secret: "whsec_xxxx", shopify_connected: true,
+    shopify_store_url: "https://bumblebeefashion.myshopify.com", shopify_api_key: "shp_xxxx", shopify_webhook_secret: "whsec_xxxx", shopify_connected: true,
     last_build_date: d(3), last_build_status: "ready", build_count: 12,
     total_downloads: 8420, active_users: 3200, daily_active_users: 850, monthly_active_users: 3200,
     avg_session_duration: 4.2, retention_rate_7d: 45, retention_rate_30d: 28,
     created_at: d(120), updated_at: d(3),
   },
   {
-    id: "app02", workspace_id: W, name: "THOTH Wholesale", name_ar: "ثوت بالجملة",
-    website_url: "https://wholesale.thothfashion.com", platform: "both", status: "draft",
+    id: "app02", workspace_id: W, name: "Bumblebee Wholesale", name_ar: "ثوت بالجملة",
+    website_url: "https://wholesale.bumblebeefashion.com", platform: "both", status: "draft",
     app_icon_url: "/wholesale-icon.png", splash_screen_color: "#059669", primary_color: "#059669", secondary_color: "#10B981",
     splash_screen_type: "color", splash_screen_url: "",
-    app_store_name: "THOTH Wholesale Portal", app_store_name_ar: "بوابة ثوت بالجملة",
-    app_description: "B2B wholesale portal for THOTH Fashion retailers. Browse catalog, place bulk orders, track shipments.", app_description_ar: "بوابة الجملة لتجار ثوت فاشون. تصفح الكتالوج وطلب بالجملة وتتبع الشحنات.",
+    app_store_name: "Bumblebee Wholesale Portal", app_store_name_ar: "بوابة ثوت بالجملة",
+    app_description: "B2B wholesale portal for Bumblebee Fashion retailers. Browse catalog, place bulk orders, track shipments.", app_description_ar: "بوابة الجملة لتجار ثوت فاشون. تصفح الكتالوج وطلب بالجملة وتتبع الشحنات.",
     app_keywords: ["wholesale", "b2b", "fashion", "bulk orders", "أزياء", "جملة", "تجزئة"],
     app_category: "Business", app_version: "1.0.0",
     push_notifications_enabled: true, deep_linking_enabled: true, offline_mode_enabled: false,
@@ -215,7 +215,7 @@ export const APP_FEATURES: AppFeature[] = [
   { id: "f01", name: "Push Notifications", name_ar: "الإشعارات الفورية", description: "Send targeted push notifications to users", description_ar: "إرسال إشعارات فورية مستهدفة للمستخدمين", icon: "🔔", category: "engagement", enabled: true, premium: false, config: { max_per_day: 3, quiet_hours_start: "22:00", quiet_hours_end: "08:00" } },
   { id: "f02", name: "Deep Linking", name_ar: "الربط العميق", description: "Direct users to specific content inside the app", description_ar: "توجيه المستخدمين إلى محتوى محدد داخل التطبيق", icon: "🔗", category: "core", enabled: true, premium: false, config: {} },
   { id: "f03", name: "Offline Mode", name_ar: "وضع عدم الاتصال", description: "Cache content for offline browsing", description_ar: "تخزين المحتوى للتصفح بدون اتصال", icon: "📡", category: "core", enabled: true, premium: true, config: { cache_duration: 24, cache_pages: ["home", "products", "collections"] } },
-  { id: "f04", name: "Loyalty Integration", name_ar: "تكامل الولاء", description: "Sync THOTH loyalty program with the app", description_ar: "مزامنة برنامج ولاء ثوت مع التطبيق", icon: "🎁", category: "engagement", enabled: true, premium: false, config: { points_per_egp: 10, redeem_enabled: true } },
+  { id: "f04", name: "Loyalty Integration", name_ar: "تكامل الولاء", description: "Sync Bumblebee loyalty program with the app", description_ar: "مزامنة برنامج ولاء ثوت مع التطبيق", icon: "🎁", category: "engagement", enabled: true, premium: false, config: { points_per_egp: 10, redeem_enabled: true } },
   { id: "f05", name: "In-App Chat", name_ar: "المحادثة داخل التطبيق", description: "Live chat support for customers", description_ar: "دعم المحادثة المباشرة للعملاء", icon: "💬", category: "engagement", enabled: true, premium: true, config: { auto_reply: true, business_hours: "10:00-19:00" } },
   { id: "f06", name: "Analytics Dashboard", name_ar: "لوحة تحليلات", description: "Track app usage, downloads, and engagement", description_ar: "تتبع استخدام التطبيق والتنزيلات والتفاعل", icon: "📊", category: "analytics", enabled: true, premium: false, config: {} },
   { id: "f07", name: "Product Reviews", name_ar: "تقييمات المنتجات", description: "Allow users to rate and review products in-app", description_ar: "السماح للمستخدمين بتقييم المنتجات داخل التطبيق", icon: "⭐", category: "commerce", enabled: true, premium: false, config: { require_purchase: true } },
@@ -261,11 +261,11 @@ export const APP_ANALYTICS: AppAnalytics = {
 // ═══════════════════════════════════════════════════════════
 
 export const DEEP_LINKS: DeepLink[] = [
-  { id: "dl01", workspace_id: W, app_id: "app01", name: "Home", name_ar: "الرئيسية", type: "page", url_pattern: "thoth://home", target_url: "/", fallback_url: "https://thothfashion.com", active: true, usage_count: 45000, created_at: d(120) },
-  { id: "dl02", workspace_id: W, app_id: "app01", name: "Summer Collection", name_ar: "مجموعة الصيف", type: "collection", url_pattern: "thoth://collection/summer-2026", target_url: "/collection/summer-2026", fallback_url: "https://thothfashion.com/collection/summer-2026", active: true, usage_count: 12000, created_at: d(30) },
-  { id: "dl03", workspace_id: W, app_id: "app01", name: "Flash Sale", name_ar: "عرض خاطف", type: "promo", url_pattern: "thoth://sale/flash", target_url: "/sale/flash", fallback_url: "https://thothfashion.com/sale", active: true, usage_count: 8500, created_at: d(15) },
-  { id: "dl04", workspace_id: W, app_id: "app01", name: "Loyalty Redeem", name_ar: "استبدال النقاط", type: "page", url_pattern: "thoth://loyalty/redeem", target_url: "/loyalty/redeem", fallback_url: "https://thothfashion.com/loyalty", active: true, usage_count: 3200, created_at: d(60) },
-  { id: "dl05", workspace_id: W, app_id: "app01", name: "Cart", name_ar: "السلة", type: "checkout", url_pattern: "thoth://cart", target_url: "/cart", fallback_url: "https://thothfashion.com/cart", active: true, usage_count: 15000, created_at: d(120) },
+  { id: "dl01", workspace_id: W, app_id: "app01", name: "Home", name_ar: "الرئيسية", type: "page", url_pattern: "bumblebee://home", target_url: "/", fallback_url: "https://bumblebeefashion.com", active: true, usage_count: 45000, created_at: d(120) },
+  { id: "dl02", workspace_id: W, app_id: "app01", name: "Summer Collection", name_ar: "مجموعة الصيف", type: "collection", url_pattern: "bumblebee://collection/summer-2026", target_url: "/collection/summer-2026", fallback_url: "https://bumblebeefashion.com/collection/summer-2026", active: true, usage_count: 12000, created_at: d(30) },
+  { id: "dl03", workspace_id: W, app_id: "app01", name: "Flash Sale", name_ar: "عرض خاطف", type: "promo", url_pattern: "bumblebee://sale/flash", target_url: "/sale/flash", fallback_url: "https://bumblebeefashion.com/sale", active: true, usage_count: 8500, created_at: d(15) },
+  { id: "dl04", workspace_id: W, app_id: "app01", name: "Loyalty Redeem", name_ar: "استبدال النقاط", type: "page", url_pattern: "bumblebee://loyalty/redeem", target_url: "/loyalty/redeem", fallback_url: "https://bumblebeefashion.com/loyalty", active: true, usage_count: 3200, created_at: d(60) },
+  { id: "dl05", workspace_id: W, app_id: "app01", name: "Cart", name_ar: "السلة", type: "checkout", url_pattern: "bumblebee://cart", target_url: "/cart", fallback_url: "https://bumblebeefashion.com/cart", active: true, usage_count: 15000, created_at: d(120) },
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -273,9 +273,9 @@ export const DEEP_LINKS: DeepLink[] = [
 // ═══════════════════════════════════════════════════════════
 
 export const APP_BUILDS: AppBuild[] = [
-  { id: "ab01", workspace_id: W, app_id: "app01", version: "2.1.0", status: "ready", platform: "both", build_size: 28500000, build_url: "https://builds.thoth.app/v2.1.0", error_log: null, started_at: d(5), completed_at: d(3), triggered_by: "Ahmed Ali" },
-  { id: "ab02", workspace_id: W, app_id: "app01", version: "2.0.0", status: "ready", platform: "both", build_size: 27800000, build_url: "https://builds.thoth.app/v2.0.0", error_log: null, started_at: d(30), completed_at: d(28), triggered_by: "Ahmed Ali" },
-  { id: "ab03", workspace_id: W, app_id: "app01", version: "1.9.0", status: "ready", platform: "ios", build_size: 24200000, build_url: "https://builds.thoth.app/v1.9.0-ios", error_log: null, started_at: d(60), completed_at: d(58), triggered_by: "Ahmed Ali" },
+  { id: "ab01", workspace_id: W, app_id: "app01", version: "2.1.0", status: "ready", platform: "both", build_size: 28500000, build_url: "https://builds.bumblebee.app/v2.1.0", error_log: null, started_at: d(5), completed_at: d(3), triggered_by: "Ahmed Ali" },
+  { id: "ab02", workspace_id: W, app_id: "app01", version: "2.0.0", status: "ready", platform: "both", build_size: 27800000, build_url: "https://builds.bumblebee.app/v2.0.0", error_log: null, started_at: d(30), completed_at: d(28), triggered_by: "Ahmed Ali" },
+  { id: "ab03", workspace_id: W, app_id: "app01", version: "1.9.0", status: "ready", platform: "ios", build_size: 24200000, build_url: "https://builds.bumblebee.app/v1.9.0-ios", error_log: null, started_at: d(60), completed_at: d(58), triggered_by: "Ahmed Ali" },
   { id: "ab04", workspace_id: W, app_id: "app02", version: "1.0.0", status: "pending", platform: "both", build_size: null, build_url: null, error_log: null, started_at: d(1), completed_at: null, triggered_by: "Sara Mahmoud" },
 ];
 

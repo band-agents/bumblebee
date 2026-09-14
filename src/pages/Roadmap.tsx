@@ -20,13 +20,13 @@ const PHASES: Phase[] = [
     titleEn: "CRM", titleAr: "إدارة العملاء",
     descEn: "Customer database, contacts, organizations, relationship tracking, health scoring, and activity timelines.",
     descAr: "قاعدة بيانات العملاء، جهات الاتصال، الشركات، تتبع العلاقات، ومؤشرات الصحة.",
-    icon: Users, color: "text-violet-600 bg-violet-50", status: "live",
+    icon: Users, color: "text-chart-4 bg-chart-4/10", status: "live",
   },
   {
     titleEn: "Sales & Deals", titleAr: "المبيعات والصفقات",
     descEn: "Deal pipeline, opportunity tracking, stage management, win/loss analysis, and revenue forecasting.",
     descAr: "خط أنابيب الصفقات، تتبع الفرص، إدارة المراحل، وتوقعات الإيرادات.",
-    icon: ShoppingBag, color: "text-amber-600 bg-amber-50", status: "live",
+    icon: ShoppingBag, color: "text-warning bg-warning/10", status: "live",
   },
   {
     titleEn: "Quotations", titleAr: "عروض الأسعار",
@@ -86,19 +86,19 @@ const PHASES: Phase[] = [
     titleEn: "Reports & Analytics", titleAr: "التقارير والتحليلات",
     descEn: "Executive overview, sales pipeline, finance summary, operations metrics, HR capacity, purchasing spend, and inventory reports.",
     descAr: "نظرة تنفيذية، تقارير المبيعات والحسابات والعمليات والفريق والمشتريات والمخزون.",
-    icon: BarChart3, color: "text-purple-600 bg-purple-50", status: "live",
+    icon: BarChart3, color: "text-chart-4 bg-chart-4/10", status: "live",
   },
   {
     titleEn: "Executive Intelligence", titleAr: "الذكاء التنفيذي",
     descEn: "AI-powered insights, risk detection, forecasting, decision support, and natural language search.",
     descAr: "رؤى ذكية، رصد المخاطر، التوقعات، ودعم القرارات بالذكاء الاصطناعي.",
-    icon: Brain, color: "text-primary bg-primary/8", status: "planned",
+    icon: Brain, color: "text-brand-ink bg-primary/8", status: "planned",
   },
 ];
 
 const STATUS_STYLE: Record<string, { labelEn: string; labelAr: string; cls: string; icon: React.ElementType }> = {
   live:     { labelEn: "Live",     labelAr: "متاح", cls: "bg-emerald-100 text-emerald-700 border-emerald-200", icon: CheckCircle2 },
-  building: { labelEn: "Building", labelAr: "قيد البناء", cls: "bg-amber-100 text-amber-700 border-amber-200", icon: Wrench },
+  building: { labelEn: "Building", labelAr: "قيد البناء", cls: "bg-warning/15 text-warning border-warning/30", icon: Wrench },
   planned:  { labelEn: "Planned",  labelAr: "مخطط", cls: "bg-muted text-muted-foreground border-border", icon: Clock },
 };
 
@@ -115,24 +115,24 @@ export default function Roadmap() {
       {/* Header */}
       <div className="mb-10">
         <div className="flex items-center gap-2.5 mb-3">
-          <Map size={14} strokeWidth={1.75} className="text-primary" />
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">
+          <Map size={14} strokeWidth={1.75} className="text-brand-ink" />
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">
             {ar ? "خارطة الطريق" : "Product Roadmap"}
           </p>
         </div>
-        <h1 className="text-[28px] font-medium text-foreground leading-tight mb-3" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
-          {ar ? "خارطة طريق ثوث ERP" : "THOTH ERP Roadmap"}
+        <h1 className="text-display font-medium text-foreground leading-tight mb-3" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          {ar ? "خارطة طريق بامبلبي ERP" : "Bumblebee ERP Roadmap"}
         </h1>
-        <p className="text-[13.5px] text-muted-foreground leading-relaxed max-w-[560px]">
+        <p className="text-body text-muted-foreground leading-relaxed max-w-[560px]">
           {ar
-            ? "ثوث بيتبني خطوة بخطوة ليكون نظام إدارة أعمال متكامل. هنا هتلاقي الأقسام اللي شغالة دلوقتي واللي جاية."
-            : "THOTH is being built step by step into a complete business operating system. Here you'll find what's live today and what's coming next."}
+            ? "بامبلبي بيتبني خطوة بخطوة ليكون نظام إدارة أعمال متكامل. هنا هتلاقي الأقسام اللي شغالة دلوقتي واللي جاية."
+            : "Bumblebee is being built step by step into a complete business operating system. Here you'll find what's live today and what's coming next."}
         </p>
         <div className="flex items-center gap-4 mt-4">
-          <span className="text-[12px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-medium">
+          <span className="text-caption text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-medium">
             {liveCount} {ar ? "متاح" : "live"}
           </span>
-          <span className="text-[12px] text-muted-foreground bg-muted border border-border px-2.5 py-1 rounded-full font-medium">
+          <span className="text-caption text-muted-foreground bg-muted border border-border px-2.5 py-1 rounded-full font-medium">
             {plannedCount} {ar ? "مخطط" : "planned"}
           </span>
         </div>
@@ -153,15 +153,15 @@ export default function Roadmap() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2.5 mb-1.5">
-                  <h3 className="text-[15px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <h3 className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {ar ? phase.titleAr : phase.titleEn}
                   </h3>
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${st.cls}`}>
+                  <span className={`inline-flex items-center gap-1 text-micro font-medium px-2 py-0.5 rounded-full border ${st.cls}`}>
                     <StIcon size={10} strokeWidth={2} />
                     {ar ? st.labelAr : st.labelEn}
                   </span>
                 </div>
-                <p className="text-[12.5px] text-muted-foreground leading-relaxed">
+                <p className="text-caption text-muted-foreground leading-relaxed">
                   {ar ? phase.descAr : phase.descEn}
                 </p>
               </div>
@@ -173,11 +173,11 @@ export default function Roadmap() {
       {/* Footer note */}
       <div className="mt-10 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary/5 border border-primary/15 rounded-xl">
-          <Sparkles size={14} className="text-primary" />
-          <p className="text-[12px] text-foreground/70">
+          <Sparkles size={14} className="text-brand-ink" />
+          <p className="text-caption text-foreground/70">
             {ar
-              ? "ثوث بيتطور باستمرار. رأيك يساعدنا نبني اللي يفيدك."
-              : "THOTH is evolving continuously. Your feedback helps us build what matters to you."}
+              ? "بامبلبي بيتطور باستمرار. رأيك يساعدنا نبني اللي يفيدك."
+              : "Bumblebee is evolving continuously. Your feedback helps us build what matters to you."}
           </p>
         </div>
       </div>

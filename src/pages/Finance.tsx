@@ -134,16 +134,16 @@ function FinancePage() {
       {/* ── Dashboard Header ── */}
       <div className="border-b border-border/40 px-8 md:px-10 py-8" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "المالية" : "Finance"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-6" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "المالية" : "Finance"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-6" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "لوحة المالية" : "Financial Overview"}
           </h1>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
               { icon: DollarSign,    value: fmt(revenue),        label: ar ? "الإيرادات" : "Revenue",       color: "text-emerald-600", trend: "+12%", up: true },
-              { icon: FileText,      value: fmt(outstanding),    label: ar ? "فواتير معلقة" : "Outstanding", color: "text-amber-500",   trend: null, up: false },
-              { icon: CreditCard,    value: fmt(paymentsTotal),  label: ar ? "مدفوعات مستلمة" : "Received",  color: "text-primary",     trend: "+8%", up: true },
+              { icon: FileText,      value: fmt(outstanding),    label: ar ? "فواتير معلقة" : "Outstanding", color: "text-warning",   trend: null, up: false },
+              { icon: CreditCard,    value: fmt(paymentsTotal),  label: ar ? "مدفوعات مستلمة" : "Received",  color: "text-brand-ink",     trend: "+8%", up: true },
               { icon: ArrowDownRight,value: fmt(expensesTotal),  label: ar ? "المصروفات" : "Expenses",      color: "text-rose-500",    trend: "-3%", up: false },
               { icon: Wallet,        value: fmt(cashPosition),   label: ar ? "الموقف النقدي" : "Cash Position", color: cashPosition >= 0 ? "text-emerald-600" : "text-rose-500", trend: null, up: cashPosition >= 0 },
               { icon: PiggyBank,     value: fmt(profitEstimate), label: ar ? "تقدير الربح" : "Profit Est.",  color: profitEstimate >= 0 ? "text-emerald-600" : "text-rose-500", trend: null, up: profitEstimate >= 0 },
@@ -152,13 +152,13 @@ function FinancePage() {
                 <div className="flex items-center justify-between mb-2">
                   <m.icon size={14} strokeWidth={1.75} className={m.color} />
                   {m.trend && (
-                    <span className={`text-[10px] font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
                       {m.trend}
                     </span>
                   )}
                 </div>
-                <p className="text-[17px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -170,7 +170,7 @@ function FinancePage() {
         <div className="px-8 md:px-10 flex items-center gap-0">
           {FIN_TABS.map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); setSearch(""); setStatusFilter("all"); }}
-              className={`px-4 py-3 text-[12px] font-medium whitespace-nowrap border-b-2 transition-all ${activeTab === tab.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground hover:border-border/60"}`}>
+              className={`px-4 py-3 text-caption font-medium whitespace-nowrap border-b-2 transition-all ${activeTab === tab.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground hover:border-border/60"}`}>
               {ar ? tab.ar : tab.en}
             </button>
           ))}
@@ -185,7 +185,7 @@ function FinancePage() {
             <Search size={13} strokeWidth={1.75} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input type="search" value={search} onChange={(e) => setSearch(e.target.value)}
               placeholder={ar ? "بحث…" : `Search ${activeTab}…`}
-              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
+              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
           </div>
 
           {activeTab === "invoices" && (
@@ -194,7 +194,7 @@ function FinancePage() {
               <div className="flex items-center gap-1.5 flex-wrap">
                 {INV_STATUS_FILTERS.map((f) => (
                   <button key={f.value} onClick={() => setStatusFilter(f.value as InvoiceStatus | "all")}
-                    className={`h-7 px-3 rounded-lg text-[12px] font-medium border transition-all ${statusFilter === f.value ? "bg-primary/8 text-primary border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
+                    className={`h-7 px-3 rounded-lg text-caption font-medium border transition-all ${statusFilter === f.value ? "bg-primary/8 text-brand-ink border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
                     {ar ? f.ar : f.en}
                   </button>
                 ))}
@@ -203,7 +203,7 @@ function FinancePage() {
           )}
 
           {search && (
-            <button onClick={() => setSearch("")} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
+            <button onClick={() => setSearch("")} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
               <X size={11} strokeWidth={2} />{ar ? "مسح" : "Clear"}
             </button>
           )}
@@ -212,7 +212,7 @@ function FinancePage() {
         {/* ── INVOICES TAB ── */}
         {activeTab === "invoices" && (
           <>
-            <p className="text-[12px] text-muted-foreground mb-4">{ar ? `${filteredInv.length} فاتورة` : `${filteredInv.length} invoice${filteredInv.length !== 1 ? "s" : ""}`}</p>
+            <p className="text-caption text-muted-foreground mb-4">{ar ? `${filteredInv.length} فاتورة` : `${filteredInv.length} invoice${filteredInv.length !== 1 ? "s" : ""}`}</p>
             <div className="border border-border/40 rounded-xl overflow-hidden bg-background divide-y divide-border/25">
               {filteredInv.map((inv) => {
                 const m = im(inv);
@@ -222,31 +222,31 @@ function FinancePage() {
                   <div key={inv.id} onClick={() => navigate(`/finance/${inv.id}`)}
                     className="flex items-center gap-4 px-5 py-4 hover:bg-muted/15 transition-colors cursor-pointer group">
                     <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center shrink-0">
-                      <Receipt size={16} strokeWidth={1.75} className="text-primary" />
+                      <Receipt size={16} strokeWidth={1.75} className="text-brand-ink" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2.5 mb-0.5">
-                        <span className="text-[11px] font-mono text-muted-foreground">{inv.number}</span>
-                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${sm.pill}`}>{ar ? sm.ar : sm.en}</span>
+                        <span className="text-micro font-mono text-muted-foreground">{inv.number}</span>
+                        <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${sm.pill}`}>{ar ? sm.ar : sm.en}</span>
                       </div>
-                      <h4 className="text-[13px] font-medium text-foreground truncate group-hover:text-primary transition-colors">{ar ? ((m.titleAr as string) || inv.org_name_en) : ((m.titleEn as string) || inv.org_name_en)}</h4>
-                      <div className="flex items-center gap-3 text-[11px] text-muted-foreground mt-0.5">
+                      <h4 className="text-body font-medium text-foreground truncate group-hover:text-brand-ink transition-colors">{ar ? ((m.titleAr as string) || inv.org_name_en) : ((m.titleEn as string) || inv.org_name_en)}</h4>
+                      <div className="flex items-center gap-3 text-micro text-muted-foreground mt-0.5">
                         <span className="flex items-center gap-1"><Building2 size={10} strokeWidth={1.75} className="text-muted-foreground/50" />{ar ? (inv.org_name_ar || inv.org_name_en) : inv.org_name_en}</span>
                         <span className="flex items-center gap-1"><Calendar size={10} strokeWidth={1.75} className="text-muted-foreground/50" />{ar ? ((m.dueDateAr as string) || inv.due_date || "") : ((m.dueDateEn as string) || inv.due_date || "")}</span>
                       </div>
                     </div>
                     <div className="text-end shrink-0">
-                      <p className="text-[14px] font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(inv.amount)}</p>
+                      <p className="text-body-lg font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(inv.amount)}</p>
                       {paid > 0 && paid < inv.amount && (
-                        <p className="text-[10px] text-emerald-600 mt-0.5">{fmt(paid)} {ar ? "مدفوع" : "paid"}</p>
+                        <p className="text-micro text-emerald-600 mt-0.5">{fmt(paid)} {ar ? "مدفوع" : "paid"}</p>
                       )}
                     </div>
-                    <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/30 group-hover:text-primary/50 transition-colors shrink-0" />
+                    <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/30 group-hover:text-brand-ink/50 transition-colors shrink-0" />
                   </div>
                 );
               })}
               {filteredInv.length === 0 && (
-                <div className="px-6 py-14 text-center"><p className="text-[13px] text-muted-foreground/60">{ar ? "لا توجد فواتير" : "No invoices found"}</p></div>
+                <div className="px-6 py-14 text-center"><p className="text-body text-muted-foreground/60">{ar ? "لا توجد فواتير" : "No invoices found"}</p></div>
               )}
             </div>
           </>
@@ -255,7 +255,7 @@ function FinancePage() {
         {/* ── PAYMENTS TAB ── */}
         {activeTab === "payments" && (
           <>
-            <p className="text-[12px] text-muted-foreground mb-4">{ar ? `${filteredPay.length} دفعة` : `${filteredPay.length} payment${filteredPay.length !== 1 ? "s" : ""}`}</p>
+            <p className="text-caption text-muted-foreground mb-4">{ar ? `${filteredPay.length} دفعة` : `${filteredPay.length} payment${filteredPay.length !== 1 ? "s" : ""}`}</p>
             <div className="border border-border/40 rounded-xl overflow-hidden bg-background divide-y divide-border/25">
               {filteredPay.filter((p) => p.amount > 0).map((pay) => {
                 const m = pym(pay);
@@ -270,15 +270,15 @@ function FinancePage() {
                       <CreditCard size={16} strokeWidth={1.75} className="text-emerald-600" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-[13px] font-medium text-foreground">{invNum}</h4>
-                      <div className="flex items-center gap-3 text-[11px] text-muted-foreground mt-0.5">
+                      <h4 className="text-body font-medium text-foreground">{invNum}</h4>
+                      <div className="flex items-center gap-3 text-micro text-muted-foreground mt-0.5">
                         <span>{ar ? mm.ar : mm.en}</span>
                         {ref && <><span className="text-border">·</span><span className="font-mono">{ref}</span></>}
                         <span className="text-border">·</span>
                         <span>{dateStr}</span>
                       </div>
                     </div>
-                    <p className="text-[14px] font-semibold text-emerald-600 tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>+{fmt(pay.amount)}</p>
+                    <p className="text-body-lg font-semibold text-emerald-600 tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>+{fmt(pay.amount)}</p>
                   </div>
                 );
               })}
@@ -289,7 +289,7 @@ function FinancePage() {
         {/* ── EXPENSES TAB ── */}
         {activeTab === "expenses" && (
           <>
-            <p className="text-[12px] text-muted-foreground mb-4">{ar ? `${filteredExp.length} مصروف` : `${filteredExp.length} expense${filteredExp.length !== 1 ? "s" : ""}`}</p>
+            <p className="text-caption text-muted-foreground mb-4">{ar ? `${filteredExp.length} مصروف` : `${filteredExp.length} expense${filteredExp.length !== 1 ? "s" : ""}`}</p>
             <div className="border border-border/40 rounded-xl overflow-hidden bg-background divide-y divide-border/25">
               {filteredExp.map((exp) => {
                 const vendorEn = ((exp as unknown as Record<string, string>).vendor_en) || "";
@@ -305,13 +305,13 @@ function FinancePage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${cm.pill}`}>{ar ? cm.ar : cm.en}</span>
-                        <div className="flex items-center gap-1"><div className={`w-1.5 h-1.5 rounded-full ${es.dot}`} /><span className="text-[10px] text-muted-foreground">{ar ? es.ar : es.en}</span></div>
+                        <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${cm.pill}`}>{ar ? cm.ar : cm.en}</span>
+                        <div className="flex items-center gap-1"><div className={`w-1.5 h-1.5 rounded-full ${es.dot}`} /><span className="text-micro text-muted-foreground">{ar ? es.ar : es.en}</span></div>
                       </div>
-                      <h4 className="text-[13px] font-medium text-foreground">{ar ? vendorAr : vendorEn}</h4>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{ar ? (exp.description_ar || exp.description_en) : exp.description_en} · {dateStr}</p>
+                      <h4 className="text-body font-medium text-foreground">{ar ? vendorAr : vendorEn}</h4>
+                      <p className="text-micro text-muted-foreground mt-0.5">{ar ? (exp.description_ar || exp.description_en) : exp.description_en} · {dateStr}</p>
                     </div>
-                    <p className="text-[14px] font-semibold text-rose-500 tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmt(exp.amount)}</p>
+                    <p className="text-body-lg font-semibold text-rose-500 tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmt(exp.amount)}</p>
                   </div>
                 );
               })}

@@ -49,8 +49,8 @@ const cardV: Variants = {
 
 const COURSE_TYPE_META: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   orientation: { en: "Orientation", ar: "تأهيل", color: "text-blue-600", bg: "bg-blue-50" },
-  technical: { en: "Technical", ar: "تقني", color: "text-violet-600", bg: "bg-violet-50" },
-  leadership: { en: "Leadership", ar: "قيادة", color: "text-amber-600", bg: "bg-amber-50" },
+  technical: { en: "Technical", ar: "تقني", color: "text-chart-4", bg: "bg-chart-4/10" },
+  leadership: { en: "Leadership", ar: "قيادة", color: "text-warning", bg: "bg-warning/10" },
   compliance: { en: "Compliance", ar: "امتثال", color: "text-rose-600", bg: "bg-rose-50" },
   soft_skills: { en: "Soft Skills", ar: "مهارات ناعمة", color: "text-teal-600", bg: "bg-teal-50" },
   safety: { en: "Safety", ar: "سلامة", color: "text-emerald-600", bg: "bg-emerald-50" },
@@ -58,14 +58,14 @@ const COURSE_TYPE_META: Record<string, { en: string; ar: string; color: string; 
 
 const COURSE_STATUS_META: Record<string, { en: string; ar: string; pill: string }> = {
   scheduled: { en: "Scheduled", ar: "مجدول", pill: "bg-blue-100 text-blue-700" },
-  in_progress: { en: "In Progress", ar: "قيد التنفيذ", pill: "bg-amber-100 text-amber-700" },
+  in_progress: { en: "In Progress", ar: "قيد التنفيذ", pill: "bg-warning/15 text-warning" },
   completed: { en: "Completed", ar: "مكتمل", pill: "bg-emerald-100 text-emerald-700" },
   cancelled: { en: "Cancelled", ar: "ملغي", pill: "bg-zinc-100 text-zinc-500" },
 };
 
 const ENROLL_STATUS_META: Record<string, { en: string; ar: string; pill: string }> = {
   enrolled: { en: "Enrolled", ar: "مسجل", pill: "bg-blue-100 text-blue-700" },
-  in_progress: { en: "In Progress", ar: "قيد التنفيذ", pill: "bg-amber-100 text-amber-700" },
+  in_progress: { en: "In Progress", ar: "قيد التنفيذ", pill: "bg-warning/15 text-warning" },
   completed: { en: "Completed", ar: "مكتمل", pill: "bg-emerald-100 text-emerald-700" },
   dropped: { en: "Dropped", ar: "منسحب", pill: "bg-rose-100 text-rose-600" },
 };
@@ -73,7 +73,7 @@ const ENROLL_STATUS_META: Record<string, { en: string; ar: string; pill: string 
 const CERT_STATUS_META: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   valid: { en: "Valid", ar: "صالح", color: "text-emerald-700", bg: "bg-emerald-100" },
   expired: { en: "Expired", ar: "منتهي", color: "text-rose-600", bg: "bg-rose-100" },
-  expiring_soon: { en: "Expiring Soon", ar: "ينتهي قريباً", color: "text-amber-600", bg: "bg-amber-100" },
+  expiring_soon: { en: "Expiring Soon", ar: "ينتهي قريباً", color: "text-warning", bg: "bg-warning/15" },
 };
 
 /* ─── Progress Bar Component ───────────────────────────────── */
@@ -86,10 +86,10 @@ function ProgressBar({ value, color }: { value: number; color?: string }) {
           initial={{ width: 0 }}
           animate={{ width: `${value}%` }}
           transition={{ duration: 0.8, ease: EASE }}
-          className={`h-full rounded-full ${color || (value >= 80 ? "bg-emerald-500" : value >= 50 ? "bg-amber-500" : "bg-blue-500")}`}
+          className={`h-full rounded-full ${color || (value >= 80 ? "bg-emerald-500" : value >= 50 ? "bg-warning" : "bg-blue-500")}`}
         />
       </div>
-      <span className="text-[10px] font-medium text-muted-foreground w-8 text-right">{value}%</span>
+      <span className="text-micro font-medium text-muted-foreground w-8 text-right">{value}%</span>
     </div>
   );
 }
@@ -176,8 +176,8 @@ export default function HRTraining() {
       label: ar ? "إجمالي التسجيلات" : "Total Enrollments",
       value: totalEnrollments,
       icon: Users,
-      color: "text-violet-600",
-      bg: "bg-violet-50/80",
+      color: "text-chart-4",
+      bg: "bg-chart-4/10",
     },
     {
       label: ar ? "نسبة الإكمال" : "Completion Rate",
@@ -190,14 +190,14 @@ export default function HRTraining() {
       label: ar ? "ساعات التدريب" : "Training Hours YTD",
       value: trainingHoursYTD,
       icon: Clock,
-      color: "text-amber-600",
-      bg: "bg-amber-50/80",
+      color: "text-warning",
+      bg: "bg-warning/10",
     },
     {
       label: ar ? "الميزانية المستخدمة" : "Budget Used",
       value: `${formatEGP(budgetUsed)} / ${formatEGP(budgetTotal)}`,
       icon: DollarSign,
-      color: budgetPct > 80 ? "text-rose-600" : "text-primary",
+      color: budgetPct > 80 ? "text-rose-600" : "text-brand-ink",
       bg: budgetPct > 80 ? "bg-rose-50/80" : "bg-primary/5",
       sub: `${budgetPct}% ${ar ? "من الإجمالي" : "of total"}`,
     },
@@ -227,18 +227,18 @@ export default function HRTraining() {
       {/* ─── Header ─────────────────────────────────────────── */}
       <motion.div variants={cardV} custom={0} initial="hidden" animate="visible" className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold" style={serif}>
+          <h1 className="text-heading font-semibold" style={serif}>
             {ar ? "التدريب والتطوير" : "Training & Development"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-body text-muted-foreground mt-1">
             {ar ? "إدارة الدورات والتسجيلات والشهادات" : "Manage courses, enrollments, and certifications"}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="h-9 px-4 rounded-xl border border-border/60 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
+          <button className="h-9 px-4 rounded-xl border border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-1.5">
             <Download size={12} /> {ar ? "تصدير" : "Export"}
           </button>
-          <button className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[11px] font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
+          <button className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-micro font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
             <Plus size={13} /> {ar ? "دورة جديدة" : "New Course"}
           </button>
         </div>
@@ -252,10 +252,10 @@ export default function HRTraining() {
             <div className="flex items-center justify-between mb-2">
               <kpi.icon size={15} className={kpi.color} />
             </div>
-            <p className="text-[18px] font-bold text-foreground" style={serif}>{kpi.value}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{kpi.label}</p>
+            <p className="text-title font-bold text-foreground" style={serif}>{kpi.value}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{kpi.label}</p>
             {"sub" in kpi && kpi.sub && (
-              <p className="text-[9px] text-muted-foreground/60 mt-0.5">{kpi.sub}</p>
+              <p className="text-micro text-muted-foreground/60 mt-0.5">{kpi.sub}</p>
             )}
           </motion.div>
         ))}
@@ -268,7 +268,7 @@ export default function HRTraining() {
         <div className="flex items-center gap-1 bg-muted/40 rounded-xl p-1">
           {(["courses", "enrollments", "certifications"] as const).map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`h-8 px-4 rounded-lg text-[11px] font-medium transition-all ${
+              className={`h-8 px-4 rounded-lg text-micro font-medium transition-all ${
                 activeTab === tab
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -284,7 +284,7 @@ export default function HRTraining() {
         <div className="relative">
           <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
           <input value={searchQ} onChange={e => setSearchQ(e.target.value)}
-            className="w-52 h-8 pl-8 pr-3 rounded-lg border border-border bg-background text-[11px] placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+            className="w-52 h-8 pl-8 pr-3 rounded-lg border border-border bg-background text-micro placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-brand-ink/30"
             placeholder={ar ? "بحث..." : "Search..."} />
         </div>
 
@@ -292,14 +292,14 @@ export default function HRTraining() {
         {activeTab === "courses" && (
           <>
             <select value={filterType} onChange={e => setFilterType(e.target.value)}
-              className="h-8 px-2 rounded-lg border border-border bg-background text-[11px] cursor-pointer">
+              className="h-8 px-2 rounded-lg border border-border bg-background text-micro cursor-pointer">
               <option value="all">{ar ? "كل الأنواع" : "All Types"}</option>
               {Object.entries(COURSE_TYPE_META).map(([key, meta]) => (
                 <option key={key} value={key}>{ar ? meta.ar : meta.en}</option>
               ))}
             </select>
             <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
-              className="h-8 px-2 rounded-lg border border-border bg-background text-[11px] cursor-pointer">
+              className="h-8 px-2 rounded-lg border border-border bg-background text-micro cursor-pointer">
               <option value="all">{ar ? "كل الحالات" : "All Status"}</option>
               {Object.entries(COURSE_STATUS_META).map(([key, meta]) => (
                 <option key={key} value={key}>{ar ? meta.ar : meta.en}</option>
@@ -314,10 +314,10 @@ export default function HRTraining() {
         <motion.div variants={cardV} custom={8} initial="hidden" animate="visible"
           className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
-              <BookOpen size={14} className="text-primary" />
+            <h3 className="text-body font-semibold flex items-center gap-2">
+              <BookOpen size={14} className="text-brand-ink" />
               {ar ? "الدورات التدريبية" : "Training Courses"}
-              <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
+              <span className="text-micro text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
                 {filteredCourses.length}
               </span>
             </h3>
@@ -333,22 +333,22 @@ export default function HRTraining() {
                   onClick={() => setSelectedCourse(course)}
                   className="p-4 rounded-xl border border-border/40 bg-background cursor-pointer hover:shadow-md transition-all group">
                   <div className="flex items-start justify-between mb-3">
-                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${typeMeta.bg} ${typeMeta.color}`}>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${typeMeta.bg} ${typeMeta.color}`}>
                       {ar ? typeMeta.ar : typeMeta.en}
                     </span>
-                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${statusMeta.pill}`}>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${statusMeta.pill}`}>
                       {ar ? statusMeta.ar : statusMeta.en}
                     </span>
                   </div>
 
-                  <h4 className="text-[13px] font-medium mb-1 group-hover:text-primary transition-colors">
+                  <h4 className="text-body font-medium mb-1 group-hover:text-brand-ink transition-colors">
                     {ar ? course.title_ar : course.title}
                   </h4>
-                  <p className="text-[10px] text-muted-foreground line-clamp-2 mb-3">
+                  <p className="text-micro text-muted-foreground line-clamp-2 mb-3">
                     {ar ? course.description_ar : course.description}
                   </p>
 
-                  <div className="space-y-2 text-[10px] text-muted-foreground">
+                  <div className="space-y-2 text-micro text-muted-foreground">
                     <div className="flex items-center gap-1.5">
                       <User size={10} />
                       <span>{ar ? course.instructor_ar : course.instructor}</span>
@@ -368,14 +368,14 @@ export default function HRTraining() {
                   </div>
 
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/30">
-                    <span className="text-[10px] text-muted-foreground">
+                    <span className="text-micro text-muted-foreground">
                       <Calendar size={10} className="inline mr-1" />
                       {course.start_date} → {course.end_date}
                     </span>
                     {course.cost > 0 ? (
-                      <span className="text-[10px] font-medium text-primary">{formatEGP(course.cost)}</span>
+                      <span className="text-micro font-medium text-brand-ink">{formatEGP(course.cost)}</span>
                     ) : (
-                      <span className="text-[10px] font-medium text-emerald-600">{ar ? "مجاني" : "Free"}</span>
+                      <span className="text-micro font-medium text-emerald-600">{ar ? "مجاني" : "Free"}</span>
                     )}
                   </div>
                 </div>
@@ -384,7 +384,7 @@ export default function HRTraining() {
           </div>
 
           {filteredCourses.length === 0 && (
-            <div className="text-center py-12 text-[12px] text-muted-foreground/40">
+            <div className="text-center py-12 text-caption text-muted-foreground/40">
               {ar ? "لا توجد دورات" : "No courses found"}
             </div>
           )}
@@ -396,17 +396,17 @@ export default function HRTraining() {
         <motion.div variants={cardV} custom={8} initial="hidden" animate="visible"
           className="rounded-xl border border-border/40 bg-background overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
-              <GraduationCap size={14} className="text-violet-500" />
+            <h3 className="text-body font-semibold flex items-center gap-2">
+              <GraduationCap size={14} className="text-chart-4" />
               {ar ? "تسجيلات الدورات" : "Course Enrollments"}
-              <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
+              <span className="text-micro text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
                 {filteredEnrollments.length}
               </span>
             </h3>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-[11px]">
+            <table className="w-full text-micro">
               <thead>
                 <tr className="border-b border-border/30 bg-muted/20">
                   <th className="text-left px-5 py-3 font-medium text-muted-foreground">{ar ? "الموظف" : "Employee"}</th>
@@ -425,7 +425,7 @@ export default function HRTraining() {
                     <tr key={enrollment.id} className="border-b border-border/20 hover:bg-muted/10 transition-colors">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-[10px] font-bold shrink-0">
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-brand-ink text-micro font-bold shrink-0">
                             {enrollment.employee_name.split(" ").map(w => w[0]).join("")}
                           </div>
                           <div>
@@ -441,7 +441,7 @@ export default function HRTraining() {
                       </td>
                       <td className="px-5 py-3">
                         {enrollment.score !== null ? (
-                          <span className={`font-medium ${enrollment.score >= 80 ? "text-emerald-600" : enrollment.score >= 60 ? "text-amber-600" : "text-rose-600"}`}>
+                          <span className={`font-medium ${enrollment.score >= 80 ? "text-emerald-600" : enrollment.score >= 60 ? "text-warning" : "text-rose-600"}`}>
                             {enrollment.score}%
                           </span>
                         ) : (
@@ -449,14 +449,14 @@ export default function HRTraining() {
                         )}
                       </td>
                       <td className="px-5 py-3">
-                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${statusMeta.pill}`}>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${statusMeta.pill}`}>
                           {ar ? statusMeta.ar : statusMeta.en}
                         </span>
                       </td>
                       <td className="px-5 py-3">
                         {enrollment.certificate_url ? (
                           <a href={enrollment.certificate_url}
-                            className="inline-flex items-center gap-1 text-[10px] text-primary hover:underline">
+                            className="inline-flex items-center gap-1 text-micro text-brand-ink hover:underline">
                             <ExternalLink size={10} />
                             {ar ? "عرض" : "View"}
                           </a>
@@ -472,7 +472,7 @@ export default function HRTraining() {
           </div>
 
           {filteredEnrollments.length === 0 && (
-            <div className="text-center py-12 text-[12px] text-muted-foreground/40">
+            <div className="text-center py-12 text-caption text-muted-foreground/40">
               {ar ? "لا توجد تسجيلات" : "No enrollments found"}
             </div>
           )}
@@ -484,17 +484,17 @@ export default function HRTraining() {
         <motion.div variants={cardV} custom={8} initial="hidden" animate="visible"
           className="rounded-xl border border-border/40 bg-background overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
-            <h3 className="text-[13px] font-semibold flex items-center gap-2">
-              <Award size={14} className="text-amber-500" />
+            <h3 className="text-body font-semibold flex items-center gap-2">
+              <Award size={14} className="text-warning" />
               {ar ? "الشهادات المهنية" : "Professional Certifications"}
-              <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
+              <span className="text-micro text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
                 {filteredCertifications.length}
               </span>
             </h3>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-[11px]">
+            <table className="w-full text-micro">
               <thead>
                 <tr className="border-b border-border/30 bg-muted/20">
                   <th className="text-left px-5 py-3 font-medium text-muted-foreground">{ar ? "الموظف" : "Employee"}</th>
@@ -516,14 +516,14 @@ export default function HRTraining() {
                       <td className="px-5 py-3">
                         <div>
                           <p className="font-medium text-foreground">{ar ? cert.name_ar : cert.name}</p>
-                          <p className="text-[9px] text-muted-foreground/60 mt-0.5">{cert.certificate_number}</p>
+                          <p className="text-micro text-muted-foreground/60 mt-0.5">{cert.certificate_number}</p>
                         </div>
                       </td>
                       <td className="px-5 py-3 text-muted-foreground">{cert.issuer}</td>
                       <td className="px-5 py-3 text-muted-foreground">{cert.issue_date}</td>
                       <td className="px-5 py-3 text-muted-foreground">{cert.expiry_date || "—"}</td>
                       <td className="px-5 py-3">
-                        <span className={`inline-flex items-center gap-1 text-[9px] px-2 py-0.5 rounded-full font-medium ${statusMeta.bg} ${statusMeta.color}`}>
+                        <span className={`inline-flex items-center gap-1 text-micro px-2 py-0.5 rounded-full font-medium ${statusMeta.bg} ${statusMeta.color}`}>
                           {cert.status === "expired" && <AlertTriangle size={9} />}
                           {cert.status === "expiring_soon" && <Clock size={9} />}
                           {cert.status === "valid" && <CheckCircle2 size={9} />}
@@ -538,7 +538,7 @@ export default function HRTraining() {
           </div>
 
           {filteredCertifications.length === 0 && (
-            <div className="text-center py-12 text-[12px] text-muted-foreground/40">
+            <div className="text-center py-12 text-caption text-muted-foreground/40">
               {ar ? "لا توجد شهادات" : "No certifications found"}
             </div>
           )}
@@ -559,17 +559,17 @@ export default function HRTraining() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/40 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <BookOpen size={18} className="text-primary" />
+                  <BookOpen size={18} className="text-brand-ink" />
                 </div>
                 <div>
-                  <h3 className="text-[15px] font-semibold" style={serif}>
+                  <h3 className="text-body-lg font-semibold" style={serif}>
                     {ar ? selectedCourse.title_ar : selectedCourse.title}
                   </h3>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${COURSE_TYPE_META[selectedCourse.type].bg} ${COURSE_TYPE_META[selectedCourse.type].color}`}>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${COURSE_TYPE_META[selectedCourse.type].bg} ${COURSE_TYPE_META[selectedCourse.type].color}`}>
                       {ar ? COURSE_TYPE_META[selectedCourse.type].ar : COURSE_TYPE_META[selectedCourse.type].en}
                     </span>
-                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${COURSE_STATUS_META[selectedCourse.status].pill}`}>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${COURSE_STATUS_META[selectedCourse.status].pill}`}>
                       {ar ? COURSE_STATUS_META[selectedCourse.status].ar : COURSE_STATUS_META[selectedCourse.status].en}
                     </span>
                   </div>
@@ -585,50 +585,50 @@ export default function HRTraining() {
             <div className="p-5 space-y-5 overflow-y-auto flex-1">
               {/* Description */}
               <div>
-                <p className="text-[10px] text-muted-foreground mb-1">{ar ? "الوصف" : "Description"}</p>
-                <p className="text-[12px] text-foreground">{ar ? selectedCourse.description_ar : selectedCourse.description}</p>
+                <p className="text-micro text-muted-foreground mb-1">{ar ? "الوصف" : "Description"}</p>
+                <p className="text-caption text-foreground">{ar ? selectedCourse.description_ar : selectedCourse.description}</p>
               </div>
 
               {/* Course Info Grid */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 rounded-xl bg-muted/30">
-                  <p className="text-[9px] text-muted-foreground mb-1">{ar ? "المدرب" : "Instructor"}</p>
-                  <p className="text-[11px] font-medium">{ar ? selectedCourse.instructor_ar : selectedCourse.instructor}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "المدرب" : "Instructor"}</p>
+                  <p className="text-micro font-medium">{ar ? selectedCourse.instructor_ar : selectedCourse.instructor}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-muted/30">
-                  <p className="text-[9px] text-muted-foreground mb-1">{ar ? "المدة" : "Duration"}</p>
-                  <p className="text-[11px] font-medium">{selectedCourse.duration_hours} {ar ? "ساعة" : "hours"}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "المدة" : "Duration"}</p>
+                  <p className="text-micro font-medium">{selectedCourse.duration_hours} {ar ? "ساعة" : "hours"}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-muted/30">
-                  <p className="text-[9px] text-muted-foreground mb-1">{ar ? "المكان" : "Location"}</p>
-                  <p className="text-[11px] font-medium">{selectedCourse.location}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "المكان" : "Location"}</p>
+                  <p className="text-micro font-medium">{selectedCourse.location}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-muted/30">
-                  <p className="text-[9px] text-muted-foreground mb-1">{ar ? "التكلفة" : "Cost"}</p>
-                  <p className="text-[11px] font-medium">
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "التكلفة" : "Cost"}</p>
+                  <p className="text-micro font-medium">
                     {selectedCourse.cost > 0 ? formatEGP(selectedCourse.cost) : (ar ? "مجاني" : "Free")}
                   </p>
                 </div>
                 <div className="p-3 rounded-xl bg-muted/30">
-                  <p className="text-[9px] text-muted-foreground mb-1">{ar ? "التواريخ" : "Dates"}</p>
-                  <p className="text-[11px] font-medium">{selectedCourse.start_date} → {selectedCourse.end_date}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "التواريخ" : "Dates"}</p>
+                  <p className="text-micro font-medium">{selectedCourse.start_date} → {selectedCourse.end_date}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-muted/30">
-                  <p className="text-[9px] text-muted-foreground mb-1">{ar ? "المسجلين" : "Enrolled"}</p>
-                  <p className="text-[11px] font-medium">{courseEnrollments.length}/{selectedCourse.max_participants}</p>
+                  <p className="text-micro text-muted-foreground mb-1">{ar ? "المسجلين" : "Enrolled"}</p>
+                  <p className="text-micro font-medium">{courseEnrollments.length}/{selectedCourse.max_participants}</p>
                 </div>
               </div>
 
               {/* Materials */}
               <div>
-                <h4 className="text-[12px] font-semibold mb-2 flex items-center gap-1.5">
-                  <FileText size={13} className="text-primary" />
+                <h4 className="text-caption font-semibold mb-2 flex items-center gap-1.5">
+                  <FileText size={13} className="text-brand-ink" />
                   {ar ? "المواد التدريبية" : "Training Materials"}
                 </h4>
                 <div className="space-y-1.5">
                   {(ar ? selectedCourse.materials_ar : selectedCourse.materials).map((mat, idx) => (
-                    <div key={idx} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20 text-[11px]">
-                      <BookOpen size={11} className="text-primary/60 shrink-0" />
+                    <div key={idx} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20 text-micro">
+                      <BookOpen size={11} className="text-brand-ink/60 shrink-0" />
                       <span>{mat}</span>
                     </div>
                   ))}
@@ -637,8 +637,8 @@ export default function HRTraining() {
 
               {/* Enrolled Participants */}
               <div>
-                <h4 className="text-[12px] font-semibold mb-2 flex items-center gap-1.5">
-                  <Users size={13} className="text-violet-500" />
+                <h4 className="text-caption font-semibold mb-2 flex items-center gap-1.5">
+                  <Users size={13} className="text-chart-4" />
                   {ar ? "المسجلون" : "Enrolled Participants"}
                 </h4>
                 {courseEnrollments.length > 0 ? (
@@ -649,12 +649,12 @@ export default function HRTraining() {
                         <div key={enrollment.id}
                           className="flex items-center justify-between p-3 rounded-xl bg-muted/20">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-[10px] font-bold shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-brand-ink text-micro font-bold shrink-0">
                               {enrollment.employee_name.split(" ").map(w => w[0]).join("")}
                             </div>
                             <div>
-                              <p className="text-[11px] font-medium">{ar ? enrollment.employee_name_ar : enrollment.employee_name}</p>
-                              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${enrollMeta.pill}`}>
+                              <p className="text-micro font-medium">{ar ? enrollment.employee_name_ar : enrollment.employee_name}</p>
+                              <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${enrollMeta.pill}`}>
                                 {ar ? enrollMeta.ar : enrollMeta.en}
                               </span>
                             </div>
@@ -667,7 +667,7 @@ export default function HRTraining() {
                     })}
                   </div>
                 ) : (
-                  <div className="text-center py-6 text-[11px] text-muted-foreground/40 rounded-xl bg-muted/10">
+                  <div className="text-center py-6 text-micro text-muted-foreground/40 rounded-xl bg-muted/10">
                     {ar ? "لا يوجد مسجلون بعد" : "No enrollments yet"}
                   </div>
                 )}
@@ -677,10 +677,10 @@ export default function HRTraining() {
             {/* Modal Footer */}
             <div className="px-5 py-3 border-t border-border/40 flex items-center justify-between shrink-0">
               <button onClick={() => setSelectedCourse(null)}
-                className="h-9 px-4 rounded-xl border border-border text-[11px] font-medium text-muted-foreground hover:bg-muted transition-colors">
+                className="h-9 px-4 rounded-xl border border-border text-micro font-medium text-muted-foreground hover:bg-muted transition-colors">
                 {ar ? "إغلاق" : "Close"}
               </button>
-              <button className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[11px] font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
+              <button className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-micro font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5">
                 <Plus size={12} /> {ar ? "تسجيل موظف" : "Enroll Employee"}
               </button>
             </div>

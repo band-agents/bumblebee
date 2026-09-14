@@ -2,9 +2,12 @@ import { Component, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { reportError } from "./lib/sentry";
 import { installGlobalErrorSurface } from "./lib/errors";
+import { migrateLegacyStorage } from "./lib/brand";
 import App from "./App";
 import "./index.css";
 
+// Carry pre-rename localStorage forward before anything reads it.
+migrateLegacyStorage();
 installGlobalErrorSurface();
 
 /**
@@ -21,7 +24,7 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string | null }) {
-    console.error("[THOTH] Uncaught render error:", error, info.componentStack);
+    console.error("[Bumblebee] Uncaught render error:", error, info.componentStack);
     reportError(error, { componentStack: info.componentStack });
   }
 
@@ -30,7 +33,7 @@ class RootErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#faf9f7", padding: 24, fontFamily: "system-ui, sans-serif" }}>
         <div style={{ maxWidth: 560, width: "100%" }}>
-          <p style={{ fontSize: 22, fontWeight: 600, marginBottom: 8, color: "#1a1a1a" }}>THOTH hit an unexpected error</p>
+          <p style={{ fontSize: 22, fontWeight: 600, marginBottom: 8, color: "#1a1a1a" }}>Bumblebee hit an unexpected error</p>
           <p style={{ fontSize: 14, color: "#666", marginBottom: 16 }}>
             Please screenshot this box and send it to support — it shows exactly what went wrong.
           </p>

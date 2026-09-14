@@ -56,10 +56,10 @@ export default function HROrg() {
       {/* Header */}
       <motion.div variants={cardV} custom={0} initial="hidden" animate="visible" className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "هيكل المؤسسة" : "Organization Structure"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-body text-muted-foreground mt-1">
             {ar ? "الأقسام والفروع وخطوط التقارير" : "Departments, branches, and reporting lines"}
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function HROrg() {
           { id: "chart" as const, en: "Org Chart", ar: "المخطط التنظيمي", icon: Users },
         ].map(t => (
           <button key={t.id} onClick={() => { setView(t.id); setSelectedDept(null); setSelectedBranch(null); }}
-            className={`px-4 py-2.5 rounded-xl text-[13px] font-medium transition-colors flex items-center gap-2
+            className={`px-4 py-2.5 rounded-xl text-body font-medium transition-colors flex items-center gap-2
               ${view === t.id ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
             <t.icon size={15} />{ar ? t.ar : t.en}
           </button>
@@ -92,12 +92,12 @@ export default function HROrg() {
                     <div className="w-4 h-4 rounded-full" style={{ backgroundColor: DEPT_COLORS[dept.id.replace("d0", "").replace("d", "")] || "#6B7280" }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-[14px] font-semibold">{ar ? dept.name_ar : dept.name}</h3>
-                    <p className="text-[11px] text-muted-foreground">{ar ? dept.head_ar : dept.head}</p>
+                    <h3 className="text-body-lg font-semibold">{ar ? dept.name_ar : dept.name}</h3>
+                    <p className="text-micro text-muted-foreground">{ar ? dept.head_ar : dept.head}</p>
                   </div>
                   <ChevronRight size={14} className={`text-muted-foreground/30 transition-transform ${selectedDept === dept.id ? "rotate-90" : ""}`} />
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                <div className="flex items-center justify-between text-micro text-muted-foreground">
                   <span className="flex items-center gap-1"><Users size={11} />{dept.employee_count} {ar ? "موظف" : "employees"}</span>
                   <span className="font-medium text-foreground">{dept.budget.toLocaleString()} EGP</span>
                 </div>
@@ -108,19 +108,19 @@ export default function HROrg() {
           {/* Selected Department Employees */}
           {selectedDept && deptEmployees.length > 0 && (
             <div className="p-5 rounded-xl border border-border/40 bg-background">
-              <h3 className="text-[13px] font-semibold mb-3">{ar ? "موظفو القسم" : "Department Members"}</h3>
+              <h3 className="text-body font-semibold mb-3">{ar ? "موظفو القسم" : "Department Members"}</h3>
               <div className="space-y-2">
                 {deptEmployees.map(emp => (
                   <div key={emp.id} onClick={() => navigate(`/hr/employees/${emp.id}`)}
                     className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0" style={{ backgroundColor: emp.avatar_color }}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-micro font-bold text-white shrink-0" style={{ backgroundColor: emp.avatar_color }}>
                       {emp.full_name.split(" ").map(w => w[0]).join("")}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-medium">{ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name}</p>
-                      <p className="text-[10px] text-muted-foreground">{ar && emp.job_title_ar ? emp.job_title_ar : emp.job_title}</p>
+                      <p className="text-caption font-medium">{ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name}</p>
+                      <p className="text-micro text-muted-foreground">{ar && emp.job_title_ar ? emp.job_title_ar : emp.job_title}</p>
                     </div>
-                    <span className="text-[10px] font-mono text-muted-foreground">{emp.employee_number}</span>
+                    <span className="text-micro font-mono text-muted-foreground">{emp.employee_number}</span>
                   </div>
                 ))}
               </div>
@@ -138,21 +138,21 @@ export default function HROrg() {
                 className={`p-6 rounded-xl border transition-all cursor-pointer hover:shadow-md ${selectedBranch === branch.id ? "border-primary bg-primary/5" : "border-border/40 bg-background"}`}>
                 <div className="flex items-start gap-4 mb-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <MapPin size={20} className="text-primary" />
+                    <MapPin size={20} className="text-brand-ink" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-[16px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? branch.name_ar : branch.name}</h3>
-                    <p className="text-[12px] text-muted-foreground mt-0.5">{branch.address}</p>
+                    <h3 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? branch.name_ar : branch.name}</h3>
+                    <p className="text-caption text-muted-foreground mt-0.5">{branch.address}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 rounded-xl bg-muted/30 text-center">
-                    <p className="text-[18px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{branch.employee_count}</p>
-                    <p className="text-[10px] text-muted-foreground">{ar ? "موظف" : "Employees"}</p>
+                    <p className="text-title font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{branch.employee_count}</p>
+                    <p className="text-micro text-muted-foreground">{ar ? "موظف" : "Employees"}</p>
                   </div>
                   <div className="p-3 rounded-xl bg-muted/30 text-center">
-                    <p className="text-[12px] font-medium text-foreground">{branch.manager}</p>
-                    <p className="text-[10px] text-muted-foreground">{ar ? "المدير" : "Manager"}</p>
+                    <p className="text-caption font-medium text-foreground">{branch.manager}</p>
+                    <p className="text-micro text-muted-foreground">{ar ? "المدير" : "Manager"}</p>
                   </div>
                 </div>
               </div>
@@ -162,19 +162,19 @@ export default function HROrg() {
           {/* Selected Branch Employees */}
           {selectedBranch && branchEmployees.length > 0 && (
             <div className="p-5 rounded-xl border border-border/40 bg-background">
-              <h3 className="text-[13px] font-semibold mb-3">{ar ? "موظفو الفرع" : "Branch Employees"}</h3>
+              <h3 className="text-body font-semibold mb-3">{ar ? "موظفو الفرع" : "Branch Employees"}</h3>
               <div className="space-y-2">
                 {branchEmployees.map(emp => (
                   <div key={emp.id} onClick={() => navigate(`/hr/employees/${emp.id}`)}
                     className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0" style={{ backgroundColor: emp.avatar_color }}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-micro font-bold text-white shrink-0" style={{ backgroundColor: emp.avatar_color }}>
                       {emp.full_name.split(" ").map(w => w[0]).join("")}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-medium">{ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name}</p>
-                      <p className="text-[10px] text-muted-foreground">{ar && emp.job_title_ar ? emp.job_title_ar : emp.job_title}</p>
+                      <p className="text-caption font-medium">{ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name}</p>
+                      <p className="text-micro text-muted-foreground">{ar && emp.job_title_ar ? emp.job_title_ar : emp.job_title}</p>
                     </div>
-                    <span className="text-[10px] text-muted-foreground">{emp.department}</span>
+                    <span className="text-micro text-muted-foreground">{emp.department}</span>
                   </div>
                 ))}
               </div>
@@ -191,11 +191,11 @@ export default function HROrg() {
             {orgChart.gm && (
               <div onClick={() => navigate(`/hr/employees/${orgChart.gm?.id}`)}
                 className="p-4 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer hover:shadow-md transition-all text-center w-[220px]">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-[16px] font-bold text-white mx-auto mb-2" style={{ backgroundColor: orgChart.gm.avatar_color }}>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-title font-bold text-white mx-auto mb-2" style={{ backgroundColor: orgChart.gm.avatar_color }}>
                   {orgChart.gm.full_name.split(" ").map(w => w[0]).join("")}
                 </div>
-                <p className="text-[14px] font-semibold">{ar && orgChart.gm.full_name_ar ? orgChart.gm.full_name_ar : orgChart.gm.full_name}</p>
-                <p className="text-[11px] text-primary font-medium">{ar && orgChart.gm.job_title_ar ? orgChart.gm.job_title_ar : orgChart.gm.job_title}</p>
+                <p className="text-body-lg font-semibold">{ar && orgChart.gm.full_name_ar ? orgChart.gm.full_name_ar : orgChart.gm.full_name}</p>
+                <p className="text-micro text-brand-ink font-medium">{ar && orgChart.gm.job_title_ar ? orgChart.gm.job_title_ar : orgChart.gm.job_title}</p>
               </div>
             )}
           </div>
@@ -217,12 +217,12 @@ export default function HROrg() {
                 <div className="w-px h-6 bg-border/60" />
                 <div onClick={() => navigate(`/hr/employees/${mgr.id}`)}
                   className="p-3 rounded-xl border border-border/40 bg-background cursor-pointer hover:shadow-md transition-all text-center w-[200px]">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-[12px] font-bold text-white mx-auto mb-2" style={{ backgroundColor: mgr.avatar_color }}>
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-caption font-bold text-white mx-auto mb-2" style={{ backgroundColor: mgr.avatar_color }}>
                     {mgr.full_name.split(" ").map(w => w[0]).join("")}
                   </div>
-                  <p className="text-[12px] font-medium">{ar && mgr.full_name_ar ? mgr.full_name_ar : mgr.full_name}</p>
-                  <p className="text-[10px] text-primary">{ar && mgr.job_title_ar ? mgr.job_title_ar : mgr.job_title}</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{mgr.department}</p>
+                  <p className="text-caption font-medium">{ar && mgr.full_name_ar ? mgr.full_name_ar : mgr.full_name}</p>
+                  <p className="text-micro text-brand-ink">{ar && mgr.job_title_ar ? mgr.job_title_ar : mgr.job_title}</p>
+                  <p className="text-micro text-muted-foreground mt-1">{mgr.department}</p>
                 </div>
 
                 {/* Report Count */}
@@ -231,7 +231,7 @@ export default function HROrg() {
                   return reports > 0 ? (
                     <div className="mt-2 text-center">
                       <div className="w-px h-4 bg-border/40 mx-auto" />
-                      <span className="text-[9px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{reports} {ar ? "تقارير" : "reports"}</span>
+                      <span className="text-micro text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{reports} {ar ? "تقارير" : "reports"}</span>
                     </div>
                   ) : null;
                 })()}

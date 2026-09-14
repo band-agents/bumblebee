@@ -28,7 +28,7 @@ export async function uploadFile(
   options?: { upsert?: boolean }
 ): Promise<UploadResult> {
   if (isDemoMode || !supabase) {
-    console.warn("[THOTH] Demo mode — file upload is a no-op");
+    console.warn("[Bumblebee] Demo mode — file upload is a no-op");
     const demoUrl = URL.createObjectURL(file);
     return { path: `demo/${file.name}`, url: demoUrl, error: null };
   }
@@ -49,7 +49,7 @@ export async function uploadFile(
 
 export async function deleteFile(bucket: BucketName, path: string): Promise<{ error: Error | null }> {
   if (isDemoMode || !supabase) {
-    console.warn("[THOTH] Demo mode — file delete is a no-op");
+    console.warn("[Bumblebee] Demo mode — file delete is a no-op");
     return { error: null };
   }
   const { error } = await supabase.storage.from(bucket).remove([path]);

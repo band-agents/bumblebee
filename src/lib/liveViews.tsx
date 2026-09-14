@@ -1,7 +1,7 @@
 /**
  * Production Mode Live Views
  *
- * Supabase-connected components shown when THOTH is running in production mode
+ * Supabase-connected components shown when Bumblebee is running in production mode
  * (VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are configured).
  *
  * Demo mode uses existing static data views. These views handle:
@@ -40,12 +40,12 @@ function inits(name: string) {
 }
 
 const inputCls =
-  "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
+  "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
 const btnPrimary =
-  "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+  "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
 const btnSecondary =
-  "flex items-center justify-center gap-2 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors";
+  "flex items-center justify-center gap-2 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors";
 
 function ModalShell({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
@@ -53,7 +53,7 @@ function ModalShell({ title, onClose, children }: { title: string; onClose: () =
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[440px] overflow-hidden">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h2>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
             <X size={14} />
           </button>
@@ -73,11 +73,11 @@ function Loading() {
 }
 
 function ErrorState({ msg }: { msg: string }) {
-  return <div className="flex items-center justify-center py-24 text-rose-500 text-[13px]">{msg}</div>;
+  return <div className="flex items-center justify-center py-24 text-rose-500 text-body">{msg}</div>;
 }
 
 function NoResults({ ar }: { ar: boolean }) {
-  return <div className="flex items-center justify-center py-24 text-muted-foreground text-[13px]">{ar ? "مفيش نتائج" : "No results found"}</div>;
+  return <div className="flex items-center justify-center py-24 text-muted-foreground text-body">{ar ? "مفيش نتائج" : "No results found"}</div>;
 }
 
 function EmptyState({ icon: Icon, title, subtitle, addLabel, onAdd }: {
@@ -89,8 +89,8 @@ function EmptyState({ icon: Icon, title, subtitle, addLabel, onAdd }: {
         <Icon size={20} className="text-muted-foreground/40" />
       </div>
       <div className="text-center">
-        <p className="text-[14px] font-medium">{title}</p>
-        <p className="text-[12px] text-muted-foreground mt-1">{subtitle}</p>
+        <p className="text-body-lg font-medium">{title}</p>
+        <p className="text-caption text-muted-foreground mt-1">{subtitle}</p>
       </div>
       <button onClick={onAdd} className={btnPrimary}>
         <Plus size={14} /> {addLabel}
@@ -106,14 +106,14 @@ function PageHeader({ breadcrumb, title, count, countLabel, addLabel, onAdd, ar,
   return (
     <div className={`flex items-start justify-between gap-4 mb-8 ${ar ? "flex-row-reverse" : ""}`}>
       <div>
-        <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{breadcrumb}</p>
-        <h1 className="text-[26px] font-medium" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>{title}</h1>
-        <p className="text-[13px] text-muted-foreground mt-1">{count} {countLabel}</p>
+        <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{breadcrumb}</p>
+        <h1 className="text-display font-medium" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>{title}</h1>
+        <p className="text-body text-muted-foreground mt-1">{count} {countLabel}</p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
         {onExport && count > 0 && (
           <button onClick={onExport} title={ar ? "صدّر CSV" : "Export CSV"}
-            className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+            className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
             <Download size={13} strokeWidth={1.75} />
             {ar ? "صدّر" : "Export"}
           </button>
@@ -133,7 +133,7 @@ function SearchBar({ value, onChange, placeholder, ar }: { value: string; onChan
       <input
         value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full h-10 ${ar ? "pr-9 pl-4" : "pl-9 pr-4"} rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30`}
+        className={`w-full h-10 ${ar ? "pr-9 pl-4" : "pl-9 pr-4"} rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30`}
       />
     </div>
   );
@@ -191,7 +191,7 @@ function AddPersonModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (p
               className={inputCls} placeholder="+966 5x" />
           </div>
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -235,7 +235,7 @@ export function PeopleLive({ workspaceId, lang }: { workspaceId: string; lang: "
         count={people.length} countLabel={ar ? "شخص" : "contacts"}
         addLabel={ar ? "ضيف شخص" : "Add Person"}
         onAdd={() => setModal(true)} ar={ar}
-        onExport={() => exportCSV(people, `thoth-people-${new Date().toISOString().slice(0,10)}.csv`)}
+        onExport={() => exportCSV(people, `bumblebee-people-${new Date().toISOString().slice(0,10)}.csv`)}
       />
       <SearchBar value={search} onChange={setSearch} placeholder={ar ? "ابحث في الأشخاص..." : "Search people..."} ar={ar} />
 
@@ -253,15 +253,15 @@ export function PeopleLive({ workspaceId, lang }: { workspaceId: string; lang: "
               <div key={p.id} onClick={() => navigate(`/people/${p.id}`)}
                 className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all cursor-pointer group">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-[11px] font-semibold text-primary shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-micro font-semibold text-brand-ink shrink-0">
                     {inits(ar ? (p.name_ar ?? p.name_en) : p.name_en)}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[14px] font-medium truncate group-hover:text-primary transition-colors" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium truncate group-hover:text-brand-ink transition-colors" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? (p.name_ar ?? p.name_en) : p.name_en}
                     </p>
-                    {p.role_en && <p className="text-[11.5px] text-muted-foreground truncate mt-0.5">{ar ? (p.role_ar ?? p.role_en) : p.role_en}</p>}
-                    {p.email && <p className="text-[11px] text-muted-foreground/70 truncate mt-0.5">{p.email}</p>}
+                    {p.role_en && <p className="text-micro text-muted-foreground truncate mt-0.5">{ar ? (p.role_ar ?? p.role_en) : p.role_en}</p>}
+                    {p.email && <p className="text-micro text-muted-foreground/70 truncate mt-0.5">{p.email}</p>}
                   </div>
                 </div>
               </div>
@@ -318,7 +318,7 @@ function AddOrgModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o: L
           <input type="url" value={form.website} onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
             className={inputCls} placeholder="https://company.com" />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -362,7 +362,7 @@ export function OrgsLive({ workspaceId, lang }: { workspaceId: string; lang: "en
         count={orgs.length} countLabel={ar ? "شركة" : "organizations"}
         addLabel={ar ? "ضيف شركة" : "Add Organization"}
         onAdd={() => setModal(true)} ar={ar}
-        onExport={() => exportCSV(orgs, `thoth-organizations-${new Date().toISOString().slice(0,10)}.csv`)}
+        onExport={() => exportCSV(orgs, `bumblebee-organizations-${new Date().toISOString().slice(0,10)}.csv`)}
       />
       <SearchBar value={search} onChange={setSearch} placeholder={ar ? "ابحث في الشركات..." : "Search organizations..."} ar={ar} />
 
@@ -380,18 +380,18 @@ export function OrgsLive({ workspaceId, lang }: { workspaceId: string; lang: "en
               <div key={o.id} onClick={() => navigate(`/organizations/${o.id}`)}
                 className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all cursor-pointer group">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-[11px] font-semibold shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-micro font-semibold shrink-0">
                     {inits(ar ? (o.name_ar ?? o.name_en) : o.name_en)}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[14px] font-medium truncate group-hover:text-primary transition-colors" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium truncate group-hover:text-brand-ink transition-colors" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? (o.name_ar ?? o.name_en) : o.name_en}
                     </p>
-                    {o.sector && <p className="text-[11.5px] text-muted-foreground truncate mt-0.5">{o.sector}</p>}
+                    {o.sector && <p className="text-micro text-muted-foreground truncate mt-0.5">{o.sector}</p>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${o.health_score >= 70 ? "bg-emerald-100 text-emerald-700" : o.health_score >= 40 ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-700"}`}>
+                  <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${o.health_score >= 70 ? "bg-emerald-100 text-emerald-700" : o.health_score >= 40 ? "bg-warning/15 text-warning" : "bg-rose-100 text-rose-700"}`}>
                     {ar ? "الصحة" : "Health"} {o.health_score}%
                   </span>
                 </div>
@@ -469,7 +469,7 @@ function AddDealModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (d: 
           <input type="text" value={form.contact} onChange={(e) => setForm((f) => ({ ...f, contact: e.target.value }))}
             className={inputCls} placeholder={ar ? "اختياري" : "Optional"} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -508,7 +508,7 @@ export function SalesLive({ workspaceId, lang }: { workspaceId: string; lang: "e
 
   const stagePill: Record<string, string> = {
     lead: "bg-slate-100 text-slate-600", qualified: "bg-blue-100 text-blue-600",
-    proposal: "bg-violet-100 text-violet-600", negotiation: "bg-amber-100 text-amber-700",
+    proposal: "bg-chart-4/15 text-chart-4", negotiation: "bg-warning/15 text-warning",
     won: "bg-emerald-100 text-emerald-700", lost: "bg-rose-100 text-rose-600",
   };
 
@@ -523,7 +523,7 @@ export function SalesLive({ workspaceId, lang }: { workspaceId: string; lang: "e
         count={deals.length} countLabel={ar ? "صفقة" : "deals"}
         addLabel={ar ? "سجّل صفقة" : "Add Deal"}
         onAdd={() => setModal(true)} ar={ar}
-        onExport={() => exportCSV(deals, `thoth-deals-${new Date().toISOString().slice(0,10)}.csv`)}
+        onExport={() => exportCSV(deals, `bumblebee-deals-${new Date().toISOString().slice(0,10)}.csv`)}
       />
       <SearchBar value={search} onChange={setSearch} placeholder={ar ? "ابحث في الصفقات..." : "Search deals..."} ar={ar} />
 
@@ -542,21 +542,21 @@ export function SalesLive({ workspaceId, lang }: { workspaceId: string; lang: "e
                 className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all cursor-pointer group flex items-center justify-between gap-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${stagePill[d.stage] ?? "bg-muted text-muted-foreground"}`}>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium capitalize ${stagePill[d.stage] ?? "bg-muted text-muted-foreground"}`}>
                       {d.stage}
                     </span>
                   </div>
-                  <p className="text-[14px] font-medium truncate group-hover:text-primary transition-colors" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <p className="text-body-lg font-medium truncate group-hover:text-brand-ink transition-colors" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {ar ? (d.title_ar ?? d.title_en) : d.title_en}
                   </p>
                   {(d.org_name_en || d.contact_name_en) && (
-                    <p className="text-[11.5px] text-muted-foreground mt-0.5">
+                    <p className="text-micro text-muted-foreground mt-0.5">
                       {d.org_name_en ?? ""}{d.org_name_en && d.contact_name_en ? " · " : ""}{d.contact_name_en ?? ""}
                     </p>
                   )}
                 </div>
                 {d.value > 0 && (
-                  <p className="text-[14px] font-semibold tabular-nums text-foreground shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <p className="text-body-lg font-semibold tabular-nums text-foreground shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
                     {fmtVal(d.value, d.currency)}
                   </p>
                 )}
@@ -626,7 +626,7 @@ function AddInvoiceModal({ onClose, onAdd, ar, currency }: { onClose: () => void
           <input type="number" value={form.amount} onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))} min="0"
             className={inputCls} placeholder="0" />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.number.trim() || !form.orgName.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -686,7 +686,7 @@ function AddExpenseModal({ onClose, onAdd, ar, currency }: { onClose: () => void
           <label className={labelCls}>{ar ? "التاريخ" : "Date"}</label>
           <input type="date" value={form.date} onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.description.trim() || !form.amount} className={btnPrimary + " flex-1 h-10"}>
@@ -767,8 +767,8 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
     return (
       <div className="min-h-full py-8 px-7 md:px-10 max-w-[1100px] mx-auto">
         <div className="mb-8">
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "الحسابات" : "Finance"}</p>
-          <h1 className="text-[26px] font-medium" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "الحسابات" : "Finance"}</p>
+          <h1 className="text-display font-medium" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "الحسابات والمالية" : "Finance"}
           </h1>
         </div>
@@ -788,22 +788,22 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
       {/* ── Finance Overview Header ── */}
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "الحسابات" : "Finance"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "الحسابات" : "Finance"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "نظرة مالية" : "Financial Overview"}
           </h1>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { icon: FileText, value: fmtVal(totalInvoiced), label: ar ? "إجمالي الفواتير" : "Total Invoiced", color: "text-primary" },
+              { icon: FileText, value: fmtVal(totalInvoiced), label: ar ? "إجمالي الفواتير" : "Total Invoiced", color: "text-brand-ink" },
               { icon: DollarSign, value: fmtVal(totalPaid), label: ar ? "المحصّل" : "Collected", color: "text-emerald-600" },
-              { icon: CreditCard, value: fmtVal(outstanding), label: ar ? "المستحقات" : "Outstanding", color: "text-amber-600" },
+              { icon: CreditCard, value: fmtVal(outstanding), label: ar ? "المستحقات" : "Outstanding", color: "text-warning" },
               { icon: Receipt, value: fmtVal(totalExpenses), label: ar ? "المصاريف" : "Expenses", color: "text-rose-500" },
               { icon: Wallet, value: fmtVal(netPosition), label: ar ? "صافي الموقف" : "Net Position", color: netPosition >= 0 ? "text-emerald-600" : "text-rose-500" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <m.icon size={14} strokeWidth={1.75} className={m.color + " mb-2"} />
-                <p className="text-[17px] font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
-                <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>{m.value}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -818,7 +818,7 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
             { id: "expenses" as const, en: "Expenses", ar: "المصاريف", count: expenses.length },
           ].map((t) => (
             <button key={t.id} onClick={() => { setTab(t.id); setSearch(""); }}
-              className={`px-4 py-3 text-[12px] font-medium border-b-2 transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`px-4 py-3 text-caption font-medium border-b-2 transition-all ${tab === t.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               {ar ? t.ar : t.en} <span className="text-muted-foreground/40 ml-1">{t.count}</span>
             </button>
           ))}
@@ -833,18 +833,18 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
             <input value={search} onChange={(e) => setSearch(e.target.value)}
               placeholder={tab === "invoices" ? (ar ? "ابحث..." : "Search invoices...") : (ar ? "ابحث..." : "Search expenses...")}
-              className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+              className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
           </div>
           <div className="flex-1" />
           {tab === "invoices" && invoices.length > 0 && (
-            <button onClick={() => exportCSV(invoices, `thoth-invoices-${new Date().toISOString().slice(0,10)}.csv`)}
-              className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+            <button onClick={() => exportCSV(invoices, `bumblebee-invoices-${new Date().toISOString().slice(0,10)}.csv`)}
+              className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
               <Download size={13} /> {ar ? "صدّر" : "Export"}
             </button>
           )}
           {tab === "expenses" && expenses.length > 0 && (
-            <button onClick={() => exportCSV(expenses, `thoth-expenses-${new Date().toISOString().slice(0,10)}.csv`)}
-              className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+            <button onClick={() => exportCSV(expenses, `bumblebee-expenses-${new Date().toISOString().slice(0,10)}.csv`)}
+              className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
               <Download size={13} /> {ar ? "صدّر" : "Export"}
             </button>
           )}
@@ -867,16 +867,16 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
                 <div key={i.id} className="bg-background border border-border/40 rounded-xl px-5 py-4 hover:shadow-sm hover:border-border/70 transition-all flex items-center justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10.5px] font-mono text-muted-foreground">{i.number}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${statusPill[i.status] ?? "bg-muted text-muted-foreground"}`}>
+                      <span className="text-micro font-mono text-muted-foreground">{i.number}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium capitalize ${statusPill[i.status] ?? "bg-muted text-muted-foreground"}`}>
                         {i.status}
                       </span>
                     </div>
-                    <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? (i.org_name_ar ?? i.org_name_en) : i.org_name_en}
                     </p>
                   </div>
-                  <p className="text-[14px] font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(i.amount)}</p>
+                  <p className="text-body-lg font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(i.amount)}</p>
                 </div>
               ))}
             </div>
@@ -897,14 +897,14 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
                 <div key={e.id} className="bg-background border border-border/40 rounded-xl px-5 py-4 hover:shadow-sm hover:border-border/70 transition-all flex items-center justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      {e.category && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-rose-50 text-rose-600">{e.category}</span>}
-                      {e.date && <span className="text-[10.5px] text-muted-foreground">{e.date}</span>}
+                      {e.category && <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-rose-50 text-rose-600">{e.category}</span>}
+                      {e.date && <span className="text-micro text-muted-foreground">{e.date}</span>}
                     </div>
-                    <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? (e.description_ar ?? e.description_en) : e.description_en}
                     </p>
                   </div>
-                  <p className="text-[14px] font-semibold tabular-nums text-rose-500 shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmtVal(e.amount)}</p>
+                  <p className="text-body-lg font-semibold tabular-nums text-rose-500 shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmtVal(e.amount)}</p>
                 </div>
               ))}
             </div>
@@ -931,7 +931,7 @@ const WORK_STATUS_META: Record<string, { en: string; ar: string; pill: string }>
   planned:     { en: "Planned",     ar: "مخطط",         pill: "bg-indigo-100 text-indigo-600" },
   todo:        { en: "To Do",       ar: "للتنفيذ",      pill: "bg-slate-100 text-slate-600" },
   in_progress: { en: "In Progress", ar: "شغال عليها",   pill: "bg-blue-100 text-blue-600" },
-  review:      { en: "Review",      ar: "مراجعة",       pill: "bg-violet-100 text-violet-600" },
+  review:      { en: "Review",      ar: "مراجعة",       pill: "bg-chart-4/15 text-chart-4" },
   done:        { en: "Done",        ar: "خلصت",         pill: "bg-emerald-100 text-emerald-700" },
   blocked:     { en: "Blocked",     ar: "متوقفة",       pill: "bg-rose-100 text-rose-600" },
   cancelled:   { en: "Cancelled",   ar: "ملغية",        pill: "bg-muted text-muted-foreground" },
@@ -941,7 +941,7 @@ const WORK_PRIORITY_META: Record<string, { en: string; ar: string; pill: string 
   critical: { en: "Critical", ar: "حرجة",   pill: "bg-red-100 text-red-700" },
   urgent:   { en: "Urgent",   ar: "عاجلة",  pill: "bg-rose-100 text-rose-600" },
   high:     { en: "High",     ar: "عالية",  pill: "bg-orange-100 text-orange-600" },
-  medium:   { en: "Medium",   ar: "متوسطة", pill: "bg-amber-100 text-amber-700" },
+  medium:   { en: "Medium",   ar: "متوسطة", pill: "bg-warning/15 text-warning" },
   low:      { en: "Low",      ar: "منخفضة", pill: "bg-slate-100 text-slate-500" },
 };
 
@@ -960,7 +960,7 @@ const KANBAN_COLS: { id: string; en: string; ar: string; color: string }[] = [
   { id: "backlog",     en: "Backlog",     ar: "الانتظار",     color: "border-t-slate-400" },
   { id: "planned",     en: "Planned",     ar: "مخطط",         color: "border-t-indigo-400" },
   { id: "in_progress", en: "In Progress", ar: "شغال عليها",   color: "border-t-blue-500" },
-  { id: "review",      en: "Review",      ar: "مراجعة",       color: "border-t-violet-500" },
+  { id: "review",      en: "Review",      ar: "مراجعة",       color: "border-t-chart-4" },
   { id: "done",        en: "Done",        ar: "خلصت",         color: "border-t-emerald-500" },
 ];
 
@@ -1034,7 +1034,7 @@ function AddWorkItemModal({ onClose, onAdd, ar, parentId }: { onClose: () => voi
           <label className={labelCls}>{ar ? "تاريخ الاستحقاق" : "Due Date"}</label>
           <input type="date" value={form.dueDate} onChange={(e) => setForm((f) => ({ ...f, dueDate: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -1131,16 +1131,16 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
       <div className="px-7 md:px-10 py-6 border-b border-border/40">
         <div className="max-w-[1100px] flex items-start justify-between gap-4">
           <div>
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "الشغل" : "Work"}</p>
-            <h1 className="text-[26px] font-medium" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "الشغل" : "Work"}</p>
+            <h1 className="text-display font-medium" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "المهام" : "Work Items"}
             </h1>
-            <p className="text-[13px] text-muted-foreground mt-1">{workItems.length} {ar ? "عنصر" : "items"}</p>
+            <p className="text-body text-muted-foreground mt-1">{workItems.length} {ar ? "عنصر" : "items"}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {workItems.length > 0 && (
-              <button onClick={() => exportCSV(workItems, `thoth-work-items-${new Date().toISOString().slice(0,10)}.csv`)}
-                className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+              <button onClick={() => exportCSV(workItems, `bumblebee-work-items-${new Date().toISOString().slice(0,10)}.csv`)}
+                className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 <Download size={13} /> {ar ? "صدّر" : "Export"}
               </button>
             )}
@@ -1158,35 +1158,35 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
           <div className="relative min-w-[180px] flex-1 max-w-[260px]">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
             <input value={search} onChange={(e) => setSearch(e.target.value)}
-              placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-8 pl-8 pr-3 rounded-lg border border-border/60 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+              placeholder={ar ? "ابحث..." : "Search..."} className="w-full h-8 pl-8 pr-3 rounded-lg border border-border/60 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
           </div>
 
           <div className="h-4 w-px bg-border/40 hidden sm:block" />
 
           {/* Status filter */}
           <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}
-            className="h-8 px-2.5 rounded-lg border border-border/60 bg-background text-[11.5px] text-muted-foreground focus:outline-none appearance-none cursor-pointer">
+            className="h-8 px-2.5 rounded-lg border border-border/60 bg-background text-micro text-muted-foreground focus:outline-none appearance-none cursor-pointer">
             <option value="all">{ar ? "كل الحالات" : "All Status"}</option>
             {WORK_STATUSES.map((s) => <option key={s} value={s}>{ar ? WORK_STATUS_META[s].ar : WORK_STATUS_META[s].en}</option>)}
           </select>
 
           {/* Priority filter */}
           <select value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)}
-            className="h-8 px-2.5 rounded-lg border border-border/60 bg-background text-[11.5px] text-muted-foreground focus:outline-none appearance-none cursor-pointer">
+            className="h-8 px-2.5 rounded-lg border border-border/60 bg-background text-micro text-muted-foreground focus:outline-none appearance-none cursor-pointer">
             <option value="all">{ar ? "كل الأولويات" : "All Priority"}</option>
             {WORK_PRIORITIES.map((p) => <option key={p} value={p}>{ar ? WORK_PRIORITY_META[p].ar : WORK_PRIORITY_META[p].en}</option>)}
           </select>
 
           {/* Type filter */}
           <select value={filterType} onChange={(e) => setFilterType(e.target.value)}
-            className="h-8 px-2.5 rounded-lg border border-border/60 bg-background text-[11.5px] text-muted-foreground focus:outline-none appearance-none cursor-pointer">
+            className="h-8 px-2.5 rounded-lg border border-border/60 bg-background text-micro text-muted-foreground focus:outline-none appearance-none cursor-pointer">
             <option value="all">{ar ? "كل الأنواع" : "All Types"}</option>
             {WORK_TYPES.map((t) => <option key={t} value={t}>{ar ? WORK_TYPE_META[t].ar : WORK_TYPE_META[t].en}</option>)}
           </select>
 
           {hasFilters && (
             <button onClick={() => { setSearch(""); setFilterStatus("all"); setFilterPriority("all"); setFilterType("all"); }}
-              className="flex items-center gap-1 h-8 px-2 rounded-lg text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              className="flex items-center gap-1 h-8 px-2 rounded-lg text-micro text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
               <X size={10} /> {ar ? "مسح" : "Clear"}
             </button>
           )}
@@ -1194,14 +1194,14 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
           <div className="flex-1" />
 
           {/* View toggle */}
-          <div className="flex items-center border border-border rounded-lg overflow-hidden bg-card text-[11px]">
+          <div className="flex items-center border border-border rounded-lg overflow-hidden bg-card text-micro">
             <button onClick={() => setView("list")}
-              className={`px-3 h-8 transition-colors ${view === "list" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground hover:text-foreground"}`}>
+              className={`px-3 h-8 transition-colors ${view === "list" ? "bg-primary/10 text-brand-ink font-medium" : "text-muted-foreground hover:text-foreground"}`}>
               {ar ? "قائمة" : "List"}
             </button>
             <div className="w-px h-4 bg-border/60" />
             <button onClick={() => setView("board")}
-              className={`px-3 h-8 transition-colors ${view === "board" ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground hover:text-foreground"}`}>
+              className={`px-3 h-8 transition-colors ${view === "board" ? "bg-primary/10 text-brand-ink font-medium" : "text-muted-foreground hover:text-foreground"}`}>
               {ar ? "كانبان" : "Board"}
             </button>
           </div>
@@ -1227,32 +1227,32 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
                   <div className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
+                        <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
                           {ar ? tm.ar : tm.en}
                         </span>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${sm.pill}`}>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${sm.pill}`}>
                           {ar ? sm.ar : sm.en}
                         </span>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${pm.pill}`}>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${pm.pill}`}>
                           {ar ? pm.ar : pm.en}
                         </span>
                         {isOverdue && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">
+                          <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">
                             {ar ? "متأخرة" : "Overdue"}
                           </span>
                         )}
                       </div>
-                      <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
                         {ar ? (t.title_ar ?? t.title_en) : t.title_en}
                       </p>
-                      <div className="flex items-center gap-3 mt-1 text-[10.5px] text-muted-foreground">
+                      <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
                         {t.due_date && <span className={isOverdue ? "text-rose-500 font-medium" : ""}>{t.due_date.slice(0, 10)}</span>}
                         {children.length > 0 && <span>{children.length} {ar ? "فرعية" : "sub-items"}</span>}
                       </div>
                     </div>
                     {t.progress > 0 && (
                       <div className="shrink-0 w-16 text-right">
-                        <p className="text-[11px] text-muted-foreground tabular-nums">{t.progress}%</p>
+                        <p className="text-micro text-muted-foreground tabular-nums">{t.progress}%</p>
                         <div className="h-1 bg-muted rounded-full mt-1">
                           <div className="h-full bg-primary rounded-full" style={{ width: `${t.progress}%` }} />
                         </div>
@@ -1276,8 +1276,8 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
                   {/* Column header */}
                   <div className="px-3.5 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-[12px] font-medium text-foreground">{ar ? col.ar : col.en}</h3>
-                      <span className="text-[10px] text-muted-foreground/50 tabular-nums">{items.length}</span>
+                      <h3 className="text-caption font-medium text-foreground">{ar ? col.ar : col.en}</h3>
+                      <span className="text-micro text-muted-foreground/50 tabular-nums">{items.length}</span>
                     </div>
                   </div>
                   {/* Cards */}
@@ -1291,13 +1291,13 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
                           onDragStart={(e) => { e.dataTransfer.setData("text/plain", item.id); e.dataTransfer.effectAllowed = "move"; }}
                           className="bg-background border border-border/40 rounded-lg p-3 cursor-grab active:cursor-grabbing hover:shadow-sm hover:border-border/70 transition-all">
                           <div className="flex items-center gap-1.5 mb-1.5">
-                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">{ar ? tm.ar : tm.en}</span>
-                            <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${pm?.pill ?? "bg-muted text-muted-foreground"}`}>{ar ? pm?.ar : pm?.en}</span>
+                            <span className="text-micro px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">{ar ? tm.ar : tm.en}</span>
+                            <span className={`text-micro px-1.5 py-0.5 rounded font-medium ${pm?.pill ?? "bg-muted text-muted-foreground"}`}>{ar ? pm?.ar : pm?.en}</span>
                           </div>
-                          <p className="text-[12.5px] font-medium text-foreground leading-snug mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+                          <p className="text-caption font-medium text-foreground leading-snug mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                             {ar ? (item.title_ar ?? item.title_en) : item.title_en}
                           </p>
-                          <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                          <div className="flex items-center gap-2 text-micro text-muted-foreground">
                             {item.due_date && <span className={isOd ? "text-rose-500 font-medium" : ""}>{item.due_date.slice(0, 10)}</span>}
                             {item.progress > 0 && <span>{item.progress}%</span>}
                           </div>
@@ -1305,7 +1305,7 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
                       );
                     })}
                     {items.length === 0 && (
-                      <div className="py-8 text-center text-[11px] text-muted-foreground/40">
+                      <div className="py-8 text-center text-micro text-muted-foreground/40">
                         {ar ? "اسحب هنا" : "Drop here"}
                       </div>
                     )}
@@ -1372,7 +1372,7 @@ function AddResourceModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
               className={inputCls} placeholder={ar ? "اختياري" : "Optional"} />
           </div>
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -1408,7 +1408,7 @@ export function ResourcesLive({ workspaceId, lang }: { workspaceId: string; lang
   }, [resources, search]);
 
   const typeColors: Record<string, string> = {
-    equipment: "bg-amber-100 text-amber-700", inventory: "bg-violet-100 text-violet-600",
+    equipment: "bg-warning/15 text-warning", inventory: "bg-chart-4/15 text-chart-4",
     vehicle: "bg-blue-100 text-blue-600", facility: "bg-emerald-100 text-emerald-700",
     license: "bg-cyan-100 text-cyan-700", other: "bg-slate-100 text-slate-600",
   };
@@ -1421,7 +1421,7 @@ export function ResourcesLive({ workspaceId, lang }: { workspaceId: string; lang
         count={resources.length} countLabel={ar ? "مورد" : "resources"}
         addLabel={ar ? "ضيف مورد" : "Add Resource"}
         onAdd={() => setModal(true)} ar={ar}
-        onExport={() => exportCSV(resources, `thoth-resources-${new Date().toISOString().slice(0,10)}.csv`)}
+        onExport={() => exportCSV(resources, `bumblebee-resources-${new Date().toISOString().slice(0,10)}.csv`)}
       />
       <SearchBar value={search} onChange={setSearch} placeholder={ar ? "ابحث في الموارد..." : "Search resources..."} ar={ar} />
 
@@ -1439,15 +1439,15 @@ export function ResourcesLive({ workspaceId, lang }: { workspaceId: string; lang
               <div key={r.id}
                 className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-[10px] font-semibold shrink-0 ${typeColors[r.type] ?? "bg-muted text-muted-foreground"}`}>
+                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-micro font-semibold shrink-0 ${typeColors[r.type] ?? "bg-muted text-muted-foreground"}`}>
                     {inits(ar ? (r.name_ar ?? r.name_en) : r.name_en)}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {ar ? (r.name_ar ?? r.name_en) : r.name_en}
                     </p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${typeColors[r.type] ?? "bg-muted text-muted-foreground"}`}>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium capitalize ${typeColors[r.type] ?? "bg-muted text-muted-foreground"}`}>
                         {r.type}
                       </span>
                     </div>
@@ -1455,7 +1455,7 @@ export function ResourcesLive({ workspaceId, lang }: { workspaceId: string; lang
                 </div>
                 {r.utilization > 0 && (
                   <div>
-                    <div className="flex justify-between text-[10.5px] text-muted-foreground mb-1">
+                    <div className="flex justify-between text-micro text-muted-foreground mb-1">
                       <span>{ar ? "الاستخدام" : "Utilization"}</span>
                       <span>{r.utilization}%</span>
                     </div>

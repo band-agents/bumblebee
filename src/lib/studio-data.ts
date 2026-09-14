@@ -1,7 +1,7 @@
 /**
  * Studio Module Data — بيانات وحدة الاستوديو
  *
- * THOTH Studio: The intelligent workspace for business documentation,
+ * Bumblebee Studio: The intelligent workspace for business documentation,
  * knowledge management, and live ERP integration.
  *
  * Core philosophy: Everything is a Page.
@@ -160,7 +160,7 @@ export interface StudioVersion {
 // ═══════════════════════════════════════════════════════════
 
 export const STUDIO_PAGES: StudioPage[] = [
-  { id: "p01", workspace_id: W, title: "THOTH Knowledge Base", title_ar: "قاعدة معرفة ثوت", icon: "📚", cover_image: null, type: "knowledge", status: "published", parent_id: null, owner_id: "e01", owner_name: "Ahmed Ali", owner_name_ar: "أحمد علي", owner_avatar: "#1E3A5F", tags: ["knowledge", "company"], is_favorite: true, is_template: false, is_public: true, published_url: "/public/kb", properties: { department: "All", priority: "high" }, created_at: d(90), updated_at: d(1), last_edited_by: "Ahmed Ali", view_count: 245, word_count: 3200 },
+  { id: "p01", workspace_id: W, title: "Bumblebee Knowledge Base", title_ar: "قاعدة معرفة ثوت", icon: "📚", cover_image: null, type: "knowledge", status: "published", parent_id: null, owner_id: "e01", owner_name: "Ahmed Ali", owner_name_ar: "أحمد علي", owner_avatar: "#1E3A5F", tags: ["knowledge", "company"], is_favorite: true, is_template: false, is_public: true, published_url: "/public/kb", properties: { department: "All", priority: "high" }, created_at: d(90), updated_at: d(1), last_edited_by: "Ahmed Ali", view_count: 245, word_count: 3200 },
   { id: "p02", workspace_id: W, title: "HR Handbook", title_ar: "دليل الموارد البشرية", icon: "📋", cover_image: null, type: "handbook", status: "published", parent_id: "p01", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#10B981", tags: ["hr", "policies", "onboarding"], is_favorite: true, is_template: false, is_public: false, published_url: null, properties: { department: "HR", priority: "high", status: "published" }, created_at: d(60), updated_at: d(5), last_edited_by: "Mona Saad", view_count: 89, word_count: 5400 },
   { id: "p03", workspace_id: W, title: "Marketing Plan 2026", title_ar: "خطة التسويق ٢٠٢٦", icon: "📊", cover_image: null, type: "project", status: "in_progress", parent_id: null, owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#E07A5F", tags: ["marketing", "strategy", "2026"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "high", budget: "500,000 EGP" }, created_at: d(30), updated_at: d(0), last_edited_by: "Sara Mahmoud", view_count: 42, word_count: 1800 },
   { id: "p04", workspace_id: W, title: "Sales SOP", title_ar: "إجراءات المبيعات", icon: "💰", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#E07A5F", tags: ["sales", "sop", "process"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium", review_date: "2026-09-01" }, created_at: d(45), updated_at: d(10), last_edited_by: "Sara Mahmoud", view_count: 34, word_count: 1200 },
@@ -183,10 +183,10 @@ export const STUDIO_PAGES: StudioPage[] = [
 
 export const STUDIO_BLOCKS: StudioBlock[] = [
   // HR Handbook
-  { id: "b01", workspace_id: W, page_id: "p02", type: "h1", content: "THOTH HR Handbook", content_ar: "دليل ثوت للموارد البشرية", order: 0, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
-  { id: "b02", workspace_id: W, page_id: "p02", type: "text", content: "Welcome to THOTH Fashion. This handbook covers everything you need to know about working with us.", content_ar: "مرحباً بكم في ثوت فاشون. يغطي هذا الدليل كل ما تحتاج معرفته عن العمل معنا.", order: 1, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
+  { id: "b01", workspace_id: W, page_id: "p02", type: "h1", content: "Bumblebee HR Handbook", content_ar: "دليل ثوت للموارد البشرية", order: 0, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
+  { id: "b02", workspace_id: W, page_id: "p02", type: "text", content: "Welcome to Bumblebee Fashion. This handbook covers everything you need to know about working with us.", content_ar: "مرحباً بكم في ثوت فاشون. يغطي هذا الدليل كل ما تحتاج معرفته عن العمل معنا.", order: 1, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
   { id: "b03", workspace_id: W, page_id: "p02", type: "h2", content: "1. Company Overview", content_ar: "١. نظرة عامة على الشركة", order: 2, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
-  { id: "b04", workspace_id: W, page_id: "p02", type: "text", content: "THOTH Fashion is a premium Egyptian fashion house specializing in bridal, evening wear, and custom tailoring. Founded in 2020, we operate from Nasr City (showroom) and 10th Ramadan (factory).", content_ar: "ثوت فاشون هي دار أزياء مصرية فاخرة متخصصة في أزياء العروس وملابس السهرة والخياطة المخصصة. تأسست في ٢٠٢٠، نعمل من مدينة نصر (معرض) والعاشر من رمضان (مصنع).", order: 3, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
+  { id: "b04", workspace_id: W, page_id: "p02", type: "text", content: "Bumblebee Fashion is a premium Egyptian fashion house specializing in bridal, evening wear, and custom tailoring. Founded in 2020, we operate from Nasr City (showroom) and 10th Ramadan (factory).", content_ar: "ثوت فاشون هي دار أزياء مصرية فاخرة متخصصة في أزياء العروس وملابس السهرة والخياطة المخصصة. تأسست في ٢٠٢٠، نعمل من مدينة نصر (معرض) والعاشر من رمضان (مصنع).", order: 3, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
   { id: "b05", workspace_id: W, page_id: "p02", type: "callout", content: "Our mission: To create timeless fashion that empowers every woman to feel confident and beautiful.", content_ar: "مهمتنا: إنشاء أزياء خالدة تمكن كل امرأة من الشعور بالثقة والجمال.", order: 4, parent_block_id: null, children: [], metadata: { icon: "💡", color: "primary" }, created_at: d(60), updated_at: d(5) },
   { id: "b06", workspace_id: W, page_id: "p02", type: "h2", content: "2. Leave Policy", content_ar: "٢. سياسة الإجازات", order: 5, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
   { id: "b07", workspace_id: W, page_id: "p02", type: "bullet_list", content: "Annual Leave: 21 days per year (increases to 28 after 3 years)", content_ar: "إجازة سنوية: ٢١ يوماً في السنة (تزيد إلى ٢٨ بعد ٣ سنوات)", order: 6, parent_block_id: null, children: [], metadata: {}, created_at: d(60), updated_at: d(5) },
@@ -225,9 +225,9 @@ export const STUDIO_BLOCKS: StudioBlock[] = [
   { id: "b36", workspace_id: W, page_id: "p07", type: "checklist", content: "[@Mona] Complete Heba's probation review", content_ar: "@mona أكمل مراجعة فترة تجربة هبة", order: 9, parent_block_id: null, children: [], metadata: { checked: false, assignee: "Mona Saad" }, created_at: d(4), updated_at: d(4) },
 
   // Brand Guidelines
-  { id: "b37", workspace_id: W, page_id: "p08", type: "h1", content: "THOTH Brand Guidelines", content_ar: "إرشادات علامة ثوت التجارية", order: 0, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
+  { id: "b37", workspace_id: W, page_id: "p08", type: "h1", content: "Bumblebee Brand Guidelines", content_ar: "إرشادات علامة ثوت التجارية", order: 0, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
   { id: "b38", workspace_id: W, page_id: "p08", type: "h2", content: "Logo Usage", content_ar: "استخدام الشعار", order: 1, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
-  { id: "b39", workspace_id: W, page_id: "p08", type: "text", content: "The THOTH logo should always be used with sufficient whitespace. Minimum size: 24px height for digital, 15mm for print.", content_ar: "يجب استخدام شعار ثوت دائماً مع مساحة كافية. الحد الأدنى للحجم: ٢٤ بكسل للرقمي، ١٥ ملم للطباعة.", order: 2, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
+  { id: "b39", workspace_id: W, page_id: "p08", type: "text", content: "The Bumblebee logo should always be used with sufficient whitespace. Minimum size: 24px height for digital, 15mm for print.", content_ar: "يجب استخدام شعار ثوت دائماً مع مساحة كافية. الحد الأدنى للحجم: ٢٤ بكسل للرقمي، ١٥ ملم للطباعة.", order: 2, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
   { id: "b40", workspace_id: W, page_id: "p08", type: "h2", content: "Color Palette", content_ar: "لوحة الألوان", order: 3, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
   { id: "b41", workspace_id: W, page_id: "p08", type: "text", content: "Primary: #1E3A5F (Navy)\nSecondary: #C9A96E (Gold)\nAccent: #E8D5B7 (Champagne)\nNeutral: #F5F2ED (Ivory)\nText: #2C2C2C", content_ar: "الأساسي: #1E3A5F (كحلي)\nالثانوي: #C9A96E (ذهبي)\nالتمييز: #E8D5B7 (شمبانيا)\nالمحايد: #F5F2ED (عاجي)\nالنص: #2C2C2C", order: 4, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
   { id: "b42", workspace_id: W, page_id: "p08", type: "h2", content: "Typography", content_ar: "الطباعة", order: 5, parent_block_id: null, children: [], metadata: {}, created_at: d(90), updated_at: d(15) },
@@ -746,12 +746,12 @@ export const STUDIO_MEDIA: StudioMedia[] = [
 // ═══════════════════════════════════════════════════════════
 
 export const STUDIO_MEMBERS: StudioMember[] = [
-  { id: "sm01", workspace_id: W, name: "Ahmed Ali", name_ar: "أحمد علي", email: "ahmed@thoth.com", avatar: "#1E3A5F", role: "admin", last_active: d(0), status: "active" },
-  { id: "sm02", workspace_id: W, name: "Sara Mahmoud", name_ar: "سارة محمود", email: "sara@thoth.com", avatar: "#E07A5F", role: "manager", last_active: d(0), status: "active" },
-  { id: "sm03", workspace_id: W, name: "Mohamed Gamal", name_ar: "محمد جمال", email: "mohamed@thoth.com", avatar: "#3B82F6", role: "editor", last_active: d(1), status: "active" },
-  { id: "sm04", workspace_id: W, name: "Fatma Hassan", name_ar: "فاطمة حسن", email: "fatma@thoth.com", avatar: "#EC4899", role: "editor", last_active: d(0), status: "active" },
-  { id: "sm05", workspace_id: W, name: "Mona Saad", name_ar: "منى سعد", email: "mona@thoth.com", avatar: "#10B981", role: "editor", last_active: d(0), status: "active" },
-  { id: "sm06", workspace_id: W, name: "Omar Salah", name_ar: "عمر صلاح", email: "omar@thoth.com", avatar: "#F59E0B", role: "commenter", last_active: d(3), status: "active" },
+  { id: "sm01", workspace_id: W, name: "Ahmed Ali", name_ar: "أحمد علي", email: "ahmed@bumblebee.com", avatar: "#1E3A5F", role: "admin", last_active: d(0), status: "active" },
+  { id: "sm02", workspace_id: W, name: "Sara Mahmoud", name_ar: "سارة محمود", email: "sara@bumblebee.com", avatar: "#E07A5F", role: "manager", last_active: d(0), status: "active" },
+  { id: "sm03", workspace_id: W, name: "Mohamed Gamal", name_ar: "محمد جمال", email: "mohamed@bumblebee.com", avatar: "#3B82F6", role: "editor", last_active: d(1), status: "active" },
+  { id: "sm04", workspace_id: W, name: "Fatma Hassan", name_ar: "فاطمة حسن", email: "fatma@bumblebee.com", avatar: "#EC4899", role: "editor", last_active: d(0), status: "active" },
+  { id: "sm05", workspace_id: W, name: "Mona Saad", name_ar: "منى سعد", email: "mona@bumblebee.com", avatar: "#10B981", role: "editor", last_active: d(0), status: "active" },
+  { id: "sm06", workspace_id: W, name: "Omar Salah", name_ar: "عمر صلاح", email: "omar@bumblebee.com", avatar: "#F59E0B", role: "commenter", last_active: d(3), status: "active" },
 ];
 
 export const STUDIO_INVITES: StudioInvite[] = [
@@ -846,7 +846,7 @@ export const STUDIO_ANALYTICS: StudioAnalytics = {
   total_views: 743, total_edits: 312,
   active_users: 6, avg_edit_time: "12 min",
   most_viewed: [
-    { title: "THOTH Knowledge Base", title_ar: "قاعدة معرفة ثوت", views: 245, icon: "📚" },
+    { title: "Bumblebee Knowledge Base", title_ar: "قاعدة معرفة ثوت", views: 245, icon: "📚" },
     { title: "Brand Guidelines", title_ar: "إرشادات العلامة التجارية", views: 120, icon: "🎨" },
     { title: "HR Handbook", title_ar: "دليل الموارد البشرية", views: 89, icon: "📋" },
     { title: "Product Roadmap Q2-Q3", title_ar: "خارطة طريق المنتجات", views: 56, icon: "🗺️" },

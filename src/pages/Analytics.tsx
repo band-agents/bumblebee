@@ -53,15 +53,15 @@ function MetricCard({ value, label, icon: Icon, color, trend, sub }: {
       <div className="flex items-start justify-between mb-2">
         <Icon size={15} className={color} />
         {trend !== undefined && (
-          <span className={`text-[10px] font-medium flex items-center gap-0.5 ${trend >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+          <span className={`text-micro font-medium flex items-center gap-0.5 ${trend >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
             {trend >= 0 ? <ArrowUp size={9} /> : <ArrowDown size={9} />}
             {Math.abs(trend)}%
           </span>
         )}
       </div>
-      <p className={`text-[22px] font-medium tabular-nums ${color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{value}</p>
-      <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
-      {sub && <p className="text-[9px] text-muted-foreground/60 mt-0.5">{sub}</p>}
+      <p className={`text-heading font-medium tabular-nums ${color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{value}</p>
+      <p className="text-micro text-muted-foreground mt-0.5">{label}</p>
+      {sub && <p className="text-micro text-muted-foreground/60 mt-0.5">{sub}</p>}
     </div>
   );
 }
@@ -74,11 +74,11 @@ function ProgressBar({ value, max, label, color = "bg-primary" }: { value: numbe
   const p = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0;
   return (
     <div className="flex items-center gap-3">
-      <span className="text-[11px] text-muted-foreground w-[120px] truncate">{label}</span>
+      <span className="text-micro text-muted-foreground w-[120px] truncate">{label}</span>
       <div className="flex-1 h-2 bg-muted/50 rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${p}%` }} />
       </div>
-      <span className="text-[11px] font-medium tabular-nums w-12 text-right">{value}</span>
+      <span className="text-micro font-medium tabular-nums w-12 text-right">{value}</span>
     </div>
   );
 }
@@ -113,15 +113,15 @@ function DonutChart({ segments, size = 120, label }: {
         }}
       >
         <div className="absolute inset-[25%] rounded-full bg-background flex items-center justify-center">
-          <span className="text-[13px] font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(total)}</span>
+          <span className="text-body font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(total)}</span>
         </div>
       </div>
-      {label && <p className="text-[10px] text-muted-foreground">{label}</p>}
+      {label && <p className="text-micro text-muted-foreground">{label}</p>}
       <div className="flex flex-wrap justify-center gap-x-3 gap-y-1">
         {segments.filter(s => s.value > 0).map(seg => (
           <div key={seg.label} className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full" style={{ background: seg.color }} />
-            <span className="text-[9px] text-muted-foreground">{seg.label}: {seg.value}</span>
+            <span className="text-micro text-muted-foreground">{seg.label}: {seg.value}</span>
           </div>
         ))}
       </div>
@@ -148,10 +148,10 @@ function ProgressRing({ value, max, label, color = "hsl(var(--primary))", size =
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={4}
           strokeDasharray={`${dash} ${c - dash}`} strokeLinecap="round" />
       </svg>
-      <p className="text-[14px] font-bold -mt-[calc(50%+8px)]" style={{ fontFamily: "var(--app-font-serif)", position: "relative" }}>
+      <p className="text-body-lg font-bold -mt-[calc(50%+8px)]" style={{ fontFamily: "var(--app-font-serif)", position: "relative" }}>
         {Math.round(p)}%
       </p>
-      <p className="text-[9px] text-muted-foreground mt-4">{label}</p>
+      <p className="text-micro text-muted-foreground mt-4">{label}</p>
     </div>
   );
 }
@@ -170,7 +170,7 @@ function HBarChart({ items, color = "bg-primary", currency }: {
     <div className="space-y-2">
       {items.map((item, i) => (
         <div key={i} className="flex items-center gap-3">
-          <span className="text-[10.5px] text-muted-foreground w-[110px] truncate">{item.label}</span>
+          <span className="text-micro text-muted-foreground w-[110px] truncate">{item.label}</span>
           <div className="flex-1 h-3 bg-muted/40 rounded-full overflow-hidden">
             <motion.div
               className={`h-full rounded-full ${color}`}
@@ -179,7 +179,7 @@ function HBarChart({ items, color = "bg-primary", currency }: {
               transition={{ duration: 0.5, delay: i * 0.05 }}
             />
           </div>
-          <span className="text-[10.5px] font-medium tabular-nums w-16 text-right">
+          <span className="text-micro font-medium tabular-nums w-16 text-right">
             {fmt(item.value)}{currency ? ` ${currency}` : ""}
           </span>
         </div>
@@ -195,13 +195,13 @@ function HBarChart({ items, color = "bg-primary", currency }: {
 function InsightCard({ text, type = "info" }: { text: string; type?: "info" | "warning" | "success" }) {
   const colors = {
     info: "bg-blue-50 border-blue-200/60 text-blue-700",
-    warning: "bg-amber-50 border-amber-200/60 text-amber-700",
+    warning: "bg-warning/10 border-warning/30 text-warning",
     success: "bg-emerald-50 border-emerald-200/60 text-emerald-700",
   };
   const icons = { info: Lightbulb, warning: AlertTriangle, success: CheckCircle2 };
   const Icon = icons[type];
   return (
-    <div className={`px-3 py-2.5 rounded-xl border text-[11px] flex items-start gap-2 ${colors[type]}`}>
+    <div className={`px-3 py-2.5 rounded-xl border text-micro flex items-start gap-2 ${colors[type]}`}>
       <Icon size={12} className="shrink-0 mt-0.5" /><span>{text}</span>
     </div>
   );
@@ -215,7 +215,7 @@ function Section({ title, children, action }: { title: string; children: React.R
   return (
     <div className="border border-border/40 rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[11px] font-semibold text-muted-foreground tracking-[0.06em] uppercase">{title}</p>
+        <p className="text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase">{title}</p>
         {action}
       </div>
       {children}
@@ -362,10 +362,10 @@ export default function Analytics() {
       <div className="px-8 md:px-10 pt-8 pb-5 border-b border-border/40" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-[24px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+            <h1 className="text-display font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
               {ar ? "مركز التحليلات" : "Analytics Command Center"}
             </h1>
-            <p className="text-[12px] text-muted-foreground">{ar ? "بيانات حقيقية من النظام — قرارات أسرع" : "Real data from your system — faster decisions"}</p>
+            <p className="text-caption text-muted-foreground">{ar ? "بيانات حقيقية من النظام — قرارات أسرع" : "Real data from your system — faster decisions"}</p>
           </div>
           {!noData && (
             <button
@@ -374,7 +374,7 @@ export default function Analytics() {
                 ["Metric", "Value"],
                 [["Revenue", totalRevenue], ["Paid", totalPaid], ["Outstanding", unpaid], ["Orders", orders.length], ["Active Orders", activeOrders.length], ["Customers", customers.length], ["Products", products.length], ["Production Orders", prodOrders.length]],
               )}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium border border-border/60 text-muted-foreground hover:bg-muted/50 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-micro font-medium border border-border/60 text-muted-foreground hover:bg-muted/50 transition-colors"
             >
               <Download size={11} /> CSV
             </button>
@@ -384,7 +384,7 @@ export default function Analytics() {
         <div className="flex items-center gap-1 mt-4 overflow-x-auto pb-1">
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[11.5px] font-medium whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-micro font-medium whitespace-nowrap transition-all ${
                 tab === t.id ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted/50"
               }`}>
               <t.icon size={12} />{ar ? t.ar : t.en}
@@ -397,8 +397,8 @@ export default function Analytics() {
         {noData && (
           <div className="py-16 text-center border border-dashed border-border/40 rounded-xl">
             <BarChart3 size={24} className="mx-auto mb-3 text-muted-foreground/30" />
-            <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش بيانات لسه" : "No data yet"}</p>
-            <p className="text-[12px] text-muted-foreground mt-1">{ar ? "ابدأ بإنشاء طلبات ومنتجات وهتظهر التحليلات تلقائي" : "Start creating orders and products — analytics will appear automatically"}</p>
+            <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش بيانات لسه" : "No data yet"}</p>
+            <p className="text-caption text-muted-foreground mt-1">{ar ? "ابدأ بإنشاء طلبات ومنتجات وهتظهر التحليلات تلقائي" : "Start creating orders and products — analytics will appear automatically"}</p>
           </div>
         )}
 
@@ -412,15 +412,15 @@ export default function Analytics() {
                   {/* KPIs */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={fmt(totalRevenue)} label={ar ? `إجمالي الإيراد (${currency})` : `Total Revenue (${currency})`} icon={DollarSign} color="text-foreground" />
-                    <MetricCard value={activeOrders.length} label={ar ? "طلبات نشطة" : "Active Orders"} icon={Package} color="text-violet-600" />
+                    <MetricCard value={activeOrders.length} label={ar ? "طلبات نشطة" : "Active Orders"} icon={Package} color="text-chart-4" />
                     <MetricCard value={overdueOrders.length} label={ar ? "طلبات متأخرة" : "Overdue"} icon={AlertTriangle} color={overdueOrders.length > 0 ? "text-rose-500" : "text-emerald-600"} />
-                    <MetricCard value={customers.length} label={ar ? "العملاء" : "Customers"} icon={Users} color="text-primary" />
+                    <MetricCard value={customers.length} label={ar ? "العملاء" : "Customers"} icon={Users} color="text-brand-ink" />
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-amber-600" />
+                    <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-warning" />
                     <MetricCard value={prodOrders.length} label={ar ? "أوامر تشغيل" : "Production Orders"} icon={Factory} color="text-orange-600" />
                     <MetricCard value={fmt(unpaid)} label={ar ? `غير مدفوع (${currency})` : `Outstanding (${currency})`} icon={DollarSign} color={unpaid > 0 ? "text-rose-500" : "text-emerald-600"} />
-                    <MetricCard value={lowStockItems.length} label={ar ? "خامات ناقصة" : "Low Stock"} icon={Boxes} color={lowStockItems.length > 0 ? "text-amber-600" : "text-emerald-600"} />
+                    <MetricCard value={lowStockItems.length} label={ar ? "خامات ناقصة" : "Low Stock"} icon={Boxes} color={lowStockItems.length > 0 ? "text-warning" : "text-emerald-600"} />
                   </div>
 
                   {/* Charts row */}
@@ -437,7 +437,7 @@ export default function Analytics() {
                     </Section>
                     <Section title={ar ? "أفضل العملاء" : "Top Customers"}>
                       {topCustomers.length === 0
-                        ? <p className="text-[11px] text-muted-foreground/50 py-4 text-center">{ar ? "مفيش بيانات" : "No data"}</p>
+                        ? <p className="text-micro text-muted-foreground/50 py-4 text-center">{ar ? "مفيش بيانات" : "No data"}</p>
                         : <HBarChart items={topCustomers.slice(0, 5).map(c => ({ label: c.name, value: c.total }))} currency={currency} />
                       }
                     </Section>
@@ -464,7 +464,7 @@ export default function Analytics() {
               {tab === "sales" && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <MetricCard value={orders.length} label={ar ? "إجمالي الطلبات" : "Total Orders"} icon={Package} color="text-primary" />
+                    <MetricCard value={orders.length} label={ar ? "إجمالي الطلبات" : "Total Orders"} icon={Package} color="text-brand-ink" />
                     <MetricCard value={quotations.length} label={ar ? "عروض الأسعار" : "Quotations"} icon={TrendingUp} color="text-cyan-600" />
                     <MetricCard value={readyForProd.length} label={ar ? "جاهز للتصنيع" : "Ready for Production"} icon={CheckCircle2} color="text-emerald-600" />
                     <MetricCard value={fmt(totalRevenue)} label={`${ar ? "الإيراد" : "Revenue"} (${currency})`} icon={DollarSign} color="text-foreground" />
@@ -472,7 +472,7 @@ export default function Analytics() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Section title={ar ? "القمع التجاري" : "Sales Funnel"}
-                      action={<button onClick={() => exportCSV("sales-by-status.csv", ["Status", "Count"], ordersByStatus)} className="text-[9px] text-muted-foreground hover:text-foreground"><Download size={10} /></button>}
+                      action={<button onClick={() => exportCSV("sales-by-status.csv", ["Status", "Count"], ordersByStatus)} className="text-micro text-muted-foreground hover:text-foreground"><Download size={10} /></button>}
                     >
                       <div className="space-y-2">
                         {ordersByStatus.map(([status, count], i) => {
@@ -481,7 +481,7 @@ export default function Analytics() {
                             <div key={status} className="flex items-center gap-2">
                               <div className="flex-1 flex justify-center">
                                 <motion.div
-                                  className="h-7 rounded-lg flex items-center justify-center text-[10px] font-medium text-white"
+                                  className="h-7 rounded-lg flex items-center justify-center text-micro font-medium text-white"
                                   style={{ background: statusColors[status] || "#94a3b8", width: `${Math.max(20, maxW)}%` }}
                                   initial={{ width: 0 }} animate={{ width: `${Math.max(20, maxW)}%` }}
                                   transition={{ duration: 0.4, delay: i * 0.05 }}
@@ -497,7 +497,7 @@ export default function Analytics() {
 
                     <Section title={ar ? "أفضل المنتجات" : "Top Products by Revenue"}>
                       {topProducts.length === 0
-                        ? <p className="text-[11px] text-muted-foreground/50 py-4 text-center">{ar ? "مفيش بيانات" : "No data"}</p>
+                        ? <p className="text-micro text-muted-foreground/50 py-4 text-center">{ar ? "مفيش بيانات" : "No data"}</p>
                         : <HBarChart items={topProducts.slice(0, 5).map(p => ({ label: p.name, value: p.revenue }))} color="bg-cyan-500" currency={currency} />
                       }
                     </Section>
@@ -525,9 +525,9 @@ export default function Analytics() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={prodOrders.length} label={ar ? "أوامر التشغيل" : "Production Orders"} icon={Factory} color="text-orange-600" />
-                    <MetricCard value={prodOrders.filter(p => ["cutting","edgebanding","drilling","assembly","finishing","quality_check","packing"].includes(p.status)).length} label={ar ? "قيد التنفيذ" : "In Progress"} icon={Activity} color="text-violet-600" />
+                    <MetricCard value={prodOrders.filter(p => ["cutting","edgebanding","drilling","assembly","finishing","quality_check","packing"].includes(p.status)).length} label={ar ? "قيد التنفيذ" : "In Progress"} icon={Activity} color="text-chart-4" />
                     <MetricCard value={prodOrders.filter(p => ["completed", "done"].includes(p.status)).length} label={ar ? "مكتمل" : "Completed"} icon={CheckCircle2} color="text-emerald-600" />
-                    <MetricCard value={readyForProd.length} label={ar ? "بانتظار التشغيل" : "Awaiting Production"} icon={Clock} color="text-amber-600" />
+                    <MetricCard value={readyForProd.length} label={ar ? "بانتظار التشغيل" : "Awaiting Production"} icon={Clock} color="text-warning" />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -561,7 +561,7 @@ export default function Analytics() {
                   </div>
 
                   {prodOrders.length === 0 && (
-                    <div className="py-10 text-center text-[12px] text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
+                    <div className="py-10 text-center text-caption text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
                       {ar ? "مفيش أوامر تشغيل — أنشئ طلب وابدأ الإنتاج" : "No production orders — create an order and start production"}
                     </div>
                   )}
@@ -572,22 +572,22 @@ export default function Analytics() {
               {tab === "inventory" && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <MetricCard value={inventory.length} label={ar ? "أصناف المخزن" : "Stock Items"} icon={Boxes} color="text-primary" />
-                    <MetricCard value={lowStockItems.length} label={ar ? "تحت الحد" : "Low Stock"} icon={AlertTriangle} color={lowStockItems.length > 0 ? "text-amber-600" : "text-emerald-600"} />
-                    <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-violet-600" />
+                    <MetricCard value={inventory.length} label={ar ? "أصناف المخزن" : "Stock Items"} icon={Boxes} color="text-brand-ink" />
+                    <MetricCard value={lowStockItems.length} label={ar ? "تحت الحد" : "Low Stock"} icon={AlertTriangle} color={lowStockItems.length > 0 ? "text-warning" : "text-emerald-600"} />
+                    <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-chart-4" />
                     <MetricCard value={vendors.length} label={ar ? "الموردين" : "Vendors"} icon={Users} color="text-cyan-600" />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Section title={ar ? "خامات تحتاج شراء" : "Items Needing Reorder"}
-                      action={lowStockItems.length > 0 ? <button onClick={() => exportCSV("low-stock.csv", ["Item", "Current", "Reorder Level"], lowStockItems.map(i => [(i.name_en || ""), ((i.metadata as any)?.current_qty || 0), ((i.metadata as any)?.reorder_level || 0)]))} className="text-[9px] text-muted-foreground hover:text-foreground"><Download size={10} /></button> : undefined}
+                      action={lowStockItems.length > 0 ? <button onClick={() => exportCSV("low-stock.csv", ["Item", "Current", "Reorder Level"], lowStockItems.map(i => [(i.name_en || ""), ((i.metadata as any)?.current_qty || 0), ((i.metadata as any)?.reorder_level || 0)]))} className="text-micro text-muted-foreground hover:text-foreground"><Download size={10} /></button> : undefined}
                     >
                       {lowStockItems.length === 0
-                        ? <p className="text-[11px] text-muted-foreground/50 text-center py-4">{ar ? "الكل فوق الحد ✓" : "All items above reorder level ✓"}</p>
+                        ? <p className="text-micro text-muted-foreground/50 text-center py-4">{ar ? "الكل فوق الحد ✓" : "All items above reorder level ✓"}</p>
                         : <div className="space-y-2">{lowStockItems.slice(0, 10).map(item => {
                             const m = (item.metadata ?? {}) as any;
                             return (
-                              <div key={item.id} className="flex items-center justify-between text-[11px]">
+                              <div key={item.id} className="flex items-center justify-between text-micro">
                                 <span className="truncate max-w-[150px]">{ar ? (item.name_ar || item.name_en) : item.name_en}</span>
                                 <span className="text-rose-500 font-medium">{m.current_qty || 0} / {m.reorder_level || "?"}</span>
                               </div>
@@ -608,7 +608,7 @@ export default function Analytics() {
                   </div>
 
                   {inventory.length === 0 && (
-                    <div className="py-10 text-center text-[12px] text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
+                    <div className="py-10 text-center text-caption text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
                       {ar ? "أضف خامات في المخزن لتتبع الكميات" : "Add inventory items to track quantities"}
                     </div>
                   )}
@@ -619,16 +619,16 @@ export default function Analytics() {
               {tab === "purchasing" && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <MetricCard value={purchaseOrders.length} label={ar ? "أوامر الشراء" : "Purchase Orders"} icon={ShoppingCart} color="text-primary" />
+                    <MetricCard value={purchaseOrders.length} label={ar ? "أوامر الشراء" : "Purchase Orders"} icon={ShoppingCart} color="text-brand-ink" />
                     <MetricCard value={fmt(totalPurchaseValue)} label={ar ? `قيمة المشتريات (${currency})` : `Purchase Value (${currency})`} icon={DollarSign} color="text-orange-600" />
-                    <MetricCard value={vendors.length} label={ar ? "الموردين" : "Vendors"} icon={Users} color="text-violet-600" />
-                    <MetricCard value={lowStockItems.length} label={ar ? "خامات ناقصة" : "Needs Reorder"} icon={AlertTriangle} color={lowStockItems.length > 0 ? "text-amber-600" : "text-emerald-600"} />
+                    <MetricCard value={vendors.length} label={ar ? "الموردين" : "Vendors"} icon={Users} color="text-chart-4" />
+                    <MetricCard value={lowStockItems.length} label={ar ? "خامات ناقصة" : "Needs Reorder"} icon={AlertTriangle} color={lowStockItems.length > 0 ? "text-warning" : "text-emerald-600"} />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Section title={ar ? "حالة أوامر الشراء" : "PO by Status"}>
                       {poByStatus.length === 0
-                        ? <p className="text-[11px] text-muted-foreground/50 text-center py-4">{ar ? "مفيش أوامر شراء" : "No purchase orders"}</p>
+                        ? <p className="text-micro text-muted-foreground/50 text-center py-4">{ar ? "مفيش أوامر شراء" : "No purchase orders"}</p>
                         : <div className="space-y-2">{poByStatus.map(([status, count]) => (
                             <ProgressBar key={status} value={count} max={purchaseOrders.length} label={status.replace("_", " ")} color={statusColors[status] ? `bg-[${statusColors[status]}]` : "bg-primary"} />
                           ))}</div>
@@ -658,22 +658,22 @@ export default function Analytics() {
                     <MetricCard value={fmt(totalRevenue)} label={ar ? "الإيراد" : "Revenue"} icon={DollarSign} color="text-foreground" />
                     <MetricCard value={fmt(totalPaid)} label={ar ? "المحصّل" : "Collected"} icon={CheckCircle2} color="text-emerald-600" />
                     <MetricCard value={fmt(unpaid)} label={ar ? "المتبقي" : "Outstanding"} icon={AlertTriangle} color={unpaid > 0 ? "text-rose-500" : "text-emerald-600"} />
-                    <MetricCard value={totalRevenue > 0 ? `${pct(totalPaid, totalRevenue)}%` : "0%"} label={ar ? "نسبة التحصيل" : "Collection Rate"} icon={TrendingUp} color="text-primary" />
+                    <MetricCard value={totalRevenue > 0 ? `${pct(totalPaid, totalRevenue)}%` : "0%"} label={ar ? "نسبة التحصيل" : "Collection Rate"} icon={TrendingUp} color="text-brand-ink" />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Section title={ar ? "التدفق النقدي" : "Cash Flow"}>
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between text-[12px]">
+                        <div className="flex items-center justify-between text-caption">
                           <span className="text-muted-foreground">{ar ? "الإيراد" : "Revenue"}</span>
                           <span className="font-semibold text-emerald-600">+{fmt(totalRevenue)} {currency}</span>
                         </div>
-                        <div className="flex items-center justify-between text-[12px]">
+                        <div className="flex items-center justify-between text-caption">
                           <span className="text-muted-foreground">{ar ? "المشتريات" : "Purchases"}</span>
                           <span className="font-semibold text-rose-500">-{fmt(totalPurchaseValue)} {currency}</span>
                         </div>
                         <div className="h-px bg-border/60 my-1" />
-                        <div className="flex items-center justify-between text-[12px]">
+                        <div className="flex items-center justify-between text-caption">
                           <span className="font-medium">{ar ? "الصافي" : "Net"}</span>
                           <span className={`font-bold ${totalRevenue - totalPurchaseValue >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
                             {fmt(totalRevenue - totalPurchaseValue)} {currency}
@@ -689,7 +689,7 @@ export default function Analytics() {
                       <div className="h-3 bg-muted/50 rounded-full overflow-hidden mt-2">
                         <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${pct(totalPaid, totalRevenue)}%` }} />
                       </div>
-                      <div className="flex justify-between text-[10px] text-muted-foreground mt-1.5">
+                      <div className="flex justify-between text-micro text-muted-foreground mt-1.5">
                         <span>{ar ? "مدفوع" : "Paid"}: {fmt(totalPaid)}</span>
                         <span>{ar ? "متبقي" : "Remaining"}: {fmt(unpaid)}</span>
                       </div>
@@ -713,26 +713,26 @@ export default function Analytics() {
               {tab === "customer" && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <MetricCard value={customers.length} label={ar ? "إجمالي العملاء" : "Total Customers"} icon={Users} color="text-primary" />
-                    <MetricCard value={topCustomers.length > 0 ? topCustomers.filter(c => c.count > 1).length : 0} label={ar ? "عملاء متكررين" : "Repeat Customers"} icon={Target} color="text-violet-600" />
+                    <MetricCard value={customers.length} label={ar ? "إجمالي العملاء" : "Total Customers"} icon={Users} color="text-brand-ink" />
+                    <MetricCard value={topCustomers.length > 0 ? topCustomers.filter(c => c.count > 1).length : 0} label={ar ? "عملاء متكررين" : "Repeat Customers"} icon={Target} color="text-chart-4" />
                     <MetricCard value={orders.length > 0 && customers.length > 0 ? (orders.length / customers.length).toFixed(1) : "0"} label={ar ? "طلبات / عميل" : "Orders / Customer"} icon={Package} color="text-cyan-600" />
-                    <MetricCard value={totalRevenue > 0 && customers.length > 0 ? fmt(Math.round(totalRevenue / customers.length)) : "0"} label={ar ? `متوسط القيمة (${currency})` : `Avg Value (${currency})`} icon={DollarSign} color="text-amber-600" />
+                    <MetricCard value={totalRevenue > 0 && customers.length > 0 ? fmt(Math.round(totalRevenue / customers.length)) : "0"} label={ar ? `متوسط القيمة (${currency})` : `Avg Value (${currency})`} icon={DollarSign} color="text-warning" />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Section title={ar ? "أفضل العملاء بالقيمة" : "Top Customers by Revenue"}
-                      action={<button onClick={() => exportCSV("top-customers.csv", ["Customer", "Revenue", "Orders"], topCustomers.map(c => [c.name, c.total, c.count]))} className="text-[9px] text-muted-foreground hover:text-foreground"><Download size={10} /></button>}
+                      action={<button onClick={() => exportCSV("top-customers.csv", ["Customer", "Revenue", "Orders"], topCustomers.map(c => [c.name, c.total, c.count]))} className="text-micro text-muted-foreground hover:text-foreground"><Download size={10} /></button>}
                     >
                       <HBarChart items={topCustomers.map(c => ({ label: c.name, value: c.total }))} currency={currency} />
                     </Section>
 
                     <Section title={ar ? "أفضل العملاء بعدد الطلبات" : "Top Customers by Orders"}>
-                      <HBarChart items={topCustomers.sort((a, b) => b.count - a.count).map(c => ({ label: c.name, value: c.count }))} color="bg-violet-500" />
+                      <HBarChart items={topCustomers.sort((a, b) => b.count - a.count).map(c => ({ label: c.name, value: c.count }))} color="bg-chart-4" />
                     </Section>
                   </div>
 
                   {customers.length === 0 && (
-                    <div className="py-10 text-center text-[12px] text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
+                    <div className="py-10 text-center text-caption text-muted-foreground/50 border border-dashed border-border/40 rounded-xl">
                       {ar ? "أضف عملاء لتحليل الأداء" : "Add customers to analyze performance"}
                     </div>
                   )}

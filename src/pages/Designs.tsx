@@ -34,8 +34,8 @@ type Org = Database["public"]["Tables"]["organizations"]["Row"];
 const DESIGN_STATUSES = [
   { value: "draft",           en: "Draft",           ar: "مسودة",          pill: "bg-zinc-100 text-zinc-600" },
   { value: "in_progress",     en: "In Progress",     ar: "جاري التصميم",   pill: "bg-blue-50 text-blue-600" },
-  { value: "internal_review", en: "Internal Review",  ar: "مراجعة داخلية",  pill: "bg-violet-50 text-violet-600" },
-  { value: "client_review",   en: "Client Review",    ar: "مراجعة العميل",  pill: "bg-amber-50 text-amber-600" },
+  { value: "internal_review", en: "Internal Review",  ar: "مراجعة داخلية",  pill: "bg-chart-4/10 text-chart-4" },
+  { value: "client_review",   en: "Client Review",    ar: "مراجعة العميل",  pill: "bg-warning/10 text-warning" },
   { value: "revision",        en: "Revision",         ar: "تعديلات",        pill: "bg-orange-50 text-orange-600" },
   { value: "approved",        en: "Approved",         ar: "تم الاعتماد",    pill: "bg-emerald-50 text-emerald-600" },
   { value: "cancelled",       en: "Cancelled",        ar: "ملغي",           pill: "bg-rose-50 text-rose-600" },
@@ -90,9 +90,9 @@ const AUTHOR_ROLES = [
 
 // ─── Helpers ──────────────────────────────────────────────
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function genBriefNumber(): string {
   const d = new Date();
@@ -222,7 +222,7 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editBrief ? (ar ? "تعديل التصميم" : "Edit Design Brief") : (ar ? "ملف تصميم جديد" : "New Design Brief")}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -278,10 +278,10 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
             <input className={inputCls} value={form.preferredMaterials} onChange={e => set("preferredMaterials", e.target.value)} /></div>
           <div><label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
             <textarea className={inputCls + " h-20 py-2 resize-none"} value={form.specialNotes} onChange={e => set("specialNotes", e.target.value)} /></div>
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSubmit} disabled={loading || !form.briefNumber.trim() || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {editBrief ? (ar ? "حفظ" : "Save") : (ar ? "أنشئ التصميم" : "Create Brief")}
           </button>
@@ -452,13 +452,13 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{brief.brief_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-muted text-muted-foreground">v{brief.version}</span>
-            {typeDef && <span className="text-[10px] text-muted-foreground">{ar ? typeDef.ar : typeDef.en}</span>}
+            <span className="text-micro font-mono text-muted-foreground">{brief.brief_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-muted text-muted-foreground">v{brief.version}</span>
+            {typeDef && <span className="text-micro text-muted-foreground">{ar ? typeDef.ar : typeDef.en}</span>}
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{brief.title}</h2>
-          <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{brief.title}</h2>
+          <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
             {brief.customer_name && <span className="flex items-center gap-1"><Building2 size={10} />{brief.customer_name}</span>}
             {brief.assigned_designer && <span className="flex items-center gap-1"><User size={10} />{brief.assigned_designer}</span>}
             {styleDef && <span className="flex items-center gap-1"><Palette size={10} />{ar ? styleDef.ar : styleDef.en}</span>}
@@ -467,25 +467,25 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
           </div>
         </div>
         <div className="flex gap-2 shrink-0 flex-wrap">
-          {brief.status === "draft" && <button onClick={() => updateStatus("in_progress")} className="text-[11px] text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><PenTool size={11} /> {ar ? "ابدأ التصميم" : "Start Design"}</button>}
-          {brief.status === "in_progress" && <button onClick={() => updateStatus("internal_review")} className="text-[11px] text-violet-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-violet-200"><Eye size={11} /> {ar ? "مراجعة داخلية" : "Internal Review"}</button>}
-          {brief.status === "internal_review" && <button onClick={() => updateStatus("client_review")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200"><Send size={11} /> {ar ? "أرسل للعميل" : "Send to Client"}</button>}
+          {brief.status === "draft" && <button onClick={() => updateStatus("in_progress")} className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><PenTool size={11} /> {ar ? "ابدأ التصميم" : "Start Design"}</button>}
+          {brief.status === "in_progress" && <button onClick={() => updateStatus("internal_review")} className="text-micro text-chart-4 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-chart-4/30"><Eye size={11} /> {ar ? "مراجعة داخلية" : "Internal Review"}</button>}
+          {brief.status === "internal_review" && <button onClick={() => updateStatus("client_review")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><Send size={11} /> {ar ? "أرسل للعميل" : "Send to Client"}</button>}
           {brief.status === "client_review" && (
             <>
-              <button onClick={() => updateStatus("approved")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "العميل وافق" : "Client Approved"}</button>
-              <button onClick={() => updateStatus("revision")} className="text-[11px] text-orange-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-orange-200"><RotateCcw size={11} /> {ar ? "تعديلات" : "Revision"}</button>
+              <button onClick={() => updateStatus("approved")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "العميل وافق" : "Client Approved"}</button>
+              <button onClick={() => updateStatus("revision")} className="text-micro text-orange-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-orange-200"><RotateCcw size={11} /> {ar ? "تعديلات" : "Revision"}</button>
             </>
           )}
-          {brief.status === "revision" && <button onClick={incrementVersion} className="text-[11px] text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><GitBranch size={11} /> {ar ? "نسخة جديدة" : "New Version"}</button>}
-          <button onClick={() => setEditBrief(true)} className="text-[11px] text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
+          {brief.status === "revision" && <button onClick={incrementVersion} className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><GitBranch size={11} /> {ar ? "نسخة جديدة" : "New Version"}</button>}
+          <button onClick={() => setEditBrief(true)} className="text-micro text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
         </div>
       </div>
 
       {/* Requirements summary */}
       {(brief.preferred_colors || brief.preferred_materials) && (
         <div className="flex gap-3 mb-5 flex-wrap">
-          {brief.preferred_colors && <span className="text-[11px] bg-muted/30 border border-border/30 rounded-lg px-3 py-1.5"><Palette size={10} className="inline mr-1 text-muted-foreground" />{brief.preferred_colors}</span>}
-          {brief.preferred_materials && <span className="text-[11px] bg-muted/30 border border-border/30 rounded-lg px-3 py-1.5"><Layers size={10} className="inline mr-1 text-muted-foreground" />{brief.preferred_materials}</span>}
+          {brief.preferred_colors && <span className="text-micro bg-muted/30 border border-border/30 rounded-lg px-3 py-1.5"><Palette size={10} className="inline mr-1 text-muted-foreground" />{brief.preferred_colors}</span>}
+          {brief.preferred_materials && <span className="text-micro bg-muted/30 border border-border/30 rounded-lg px-3 py-1.5"><Layers size={10} className="inline mr-1 text-muted-foreground" />{brief.preferred_materials}</span>}
         </div>
       )}
 
@@ -493,8 +493,8 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
       <div className="flex gap-1 mb-5 border-b border-border/30 pb-3">
         {detailTabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5
-              ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+            className={`px-3 py-2 rounded-lg text-caption font-medium transition-colors flex items-center gap-1.5
+              ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <t.icon size={13} />{ar ? t.ar : t.en}
           </button>
         ))}
@@ -508,19 +508,19 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
           {tab === "drawings" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[14px] font-semibold">{ar ? "الرسومات الفنية" : "Technical Drawings"}</h3>
+                <h3 className="text-body-lg font-semibold">{ar ? "الرسومات الفنية" : "Technical Drawings"}</h3>
                 <div className="flex items-center gap-2">
-                  <select className="h-9 px-2 rounded-lg border border-border/60 text-[11px] bg-background" value={uploadFileType} onChange={e => setUploadFileType(e.target.value)}>
+                  <select className="h-9 px-2 rounded-lg border border-border/60 text-micro bg-background" value={uploadFileType} onChange={e => setUploadFileType(e.target.value)}>
                     {FILE_TYPES.map(t => <option key={t.value} value={t.value}>{ar ? t.ar : t.en}</option>)}
                   </select>
-                  <label className={btnPrimary + " h-9 text-[12px] cursor-pointer"}>
+                  <label className={btnPrimary + " h-9 text-caption cursor-pointer"}>
                     <Upload size={13} /> {ar ? "رفع" : "Upload"}
                     <input ref={fileRef} type="file" multiple accept="image/*,.pdf,.dxf,.dwg" className="hidden" onChange={handleFileUpload} />
                   </label>
                 </div>
               </div>
               {files.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش رسومات لسه" : "No drawings yet"}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش رسومات لسه" : "No drawings yet"}</div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {files.filter(f => f.version === brief.version).map(f => {
@@ -537,11 +537,11 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                         )}
                         <div className="px-3 py-2 flex items-center justify-between">
                           <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-medium truncate">{f.file_name}</p>
+                            <p className="text-micro font-medium truncate">{f.file_name}</p>
                             <div className="flex items-center gap-2 mt-0.5">
-                              {ftDef && <span className="text-[9px] text-muted-foreground">{ar ? ftDef.ar : ftDef.en}</span>}
-                              <span className="text-[9px] text-muted-foreground/50">v{f.version}</span>
-                              {f.file_format && <span className="text-[9px] text-muted-foreground/50 uppercase">{f.file_format}</span>}
+                              {ftDef && <span className="text-micro text-muted-foreground">{ar ? ftDef.ar : ftDef.en}</span>}
+                              <span className="text-micro text-muted-foreground/50">v{f.version}</span>
+                              {f.file_format && <span className="text-micro text-muted-foreground/50 uppercase">{f.file_format}</span>}
                             </div>
                           </div>
                           <button onClick={() => deleteFile(f.id)} className="p-1 rounded hover:bg-rose-50 text-rose-400 opacity-0 group-hover:opacity-100"><Trash2 size={11} /></button>
@@ -557,9 +557,9 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Dimensions Tab ── */}
           {tab === "dimensions" && (
             <div>
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "المقاسات من المعاينة" : "Dimensions from Site Visit"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "المقاسات من المعاينة" : "Dimensions from Site Visit"}</h3>
               {dims.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش مقاسات مربوطة" : "No dimensions linked"}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش مقاسات مربوطة" : "No dimensions linked"}</div>
               ) : (
                 <div className="space-y-2">
                   {dims.map((d: any, i: number) => {
@@ -567,12 +567,12 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                     return (
                       <div key={i} className="px-4 py-3 bg-muted/10 border border-border/30 rounded-xl">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[13px] font-medium">{d.room}</span>
-                          {d.label && <span className="text-[11px] text-muted-foreground">— {d.label}</span>}
-                          {rtDef && <span className="text-[9px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? rtDef.ar : rtDef.en}</span>}
+                          <span className="text-body font-medium">{d.room}</span>
+                          {d.label && <span className="text-micro text-muted-foreground">— {d.label}</span>}
+                          {rtDef && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? rtDef.ar : rtDef.en}</span>}
                           {d.approval === "approved" && <CheckCircle2 size={11} className="text-emerald-500" />}
                         </div>
-                        <div className="flex items-center gap-4 text-[11px] text-muted-foreground">
+                        <div className="flex items-center gap-4 text-micro text-muted-foreground">
                           {d.width != null && <span>{ar ? "عرض" : "W"}: {d.width} cm</span>}
                           {d.height != null && <span>{ar ? "ارتفاع" : "H"}: {d.height} cm</span>}
                           {d.depth != null && <span>{ar ? "عمق" : "D"}: {d.depth} cm</span>}
@@ -590,31 +590,31 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Comments Tab ── */}
           {tab === "comments" && (
             <div>
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "التعليقات والملاحظات" : "Comments & Annotations"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "التعليقات والملاحظات" : "Comments & Annotations"}</h3>
 
               {/* Add comment form */}
               <div className="border border-border/40 rounded-xl p-4 mb-4 space-y-3">
                 <div className="grid grid-cols-3 gap-2">
                   <div><label className={labelCls}>{ar ? "الاسم" : "Name"}</label>
-                    <input className={inputCls + " h-9 text-[12px]"} value={commentAuthor} onChange={e => setCommentAuthor(e.target.value)} placeholder={ar ? "اسمك" : "Your name"} /></div>
+                    <input className={inputCls + " h-9 text-caption"} value={commentAuthor} onChange={e => setCommentAuthor(e.target.value)} placeholder={ar ? "اسمك" : "Your name"} /></div>
                   <div><label className={labelCls}>{ar ? "الدور" : "Role"}</label>
-                    <select className={inputCls + " h-9 text-[12px]"} value={commentRole} onChange={e => setCommentRole(e.target.value)}>
+                    <select className={inputCls + " h-9 text-caption"} value={commentRole} onChange={e => setCommentRole(e.target.value)}>
                       {AUTHOR_ROLES.map(r => <option key={r.value} value={r.value}>{ar ? r.ar : r.en}</option>)}
                     </select></div>
                   <div><label className={labelCls}>{ar ? "النوع" : "Type"}</label>
-                    <select className={inputCls + " h-9 text-[12px]"} value={commentType} onChange={e => setCommentType(e.target.value)}>
+                    <select className={inputCls + " h-9 text-caption"} value={commentType} onChange={e => setCommentType(e.target.value)}>
                       {COMMENT_TYPES.map(t => <option key={t.value} value={t.value}>{ar ? t.ar : t.en}</option>)}
                     </select></div>
                 </div>
                 <div className="flex gap-2">
-                  <textarea className={inputCls + " h-16 py-2 resize-none flex-1 text-[12px]"} value={commentText} onChange={e => setCommentText(e.target.value)} placeholder={ar ? "اكتب تعليقك..." : "Write your comment..."} />
+                  <textarea className={inputCls + " h-16 py-2 resize-none flex-1 text-caption"} value={commentText} onChange={e => setCommentText(e.target.value)} placeholder={ar ? "اكتب تعليقك..." : "Write your comment..."} />
                   <button onClick={addComment} disabled={!commentText.trim() || !commentAuthor.trim()} className={btnPrimary + " h-16 px-4"}><Send size={13} /></button>
                 </div>
               </div>
 
               {/* Comments list */}
               {comments.length === 0 ? (
-                <div className="py-8 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش تعليقات لسه" : "No comments yet"}</div>
+                <div className="py-8 text-center text-body text-muted-foreground/50">{ar ? "مفيش تعليقات لسه" : "No comments yet"}</div>
               ) : (
                 <div className="space-y-2">
                   {comments.map(c => {
@@ -622,21 +622,21 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                     const arDef = AUTHOR_ROLES.find(r => r.value === c.author_role);
                     const typeColors: Record<string, string> = {
                       general: "border-l-zinc-300", revision_request: "border-l-orange-400",
-                      approval: "border-l-emerald-400", annotation: "border-l-violet-400", question: "border-l-blue-400",
+                      approval: "border-l-emerald-400", annotation: "border-l-chart-4", question: "border-l-blue-400",
                     };
                     return (
                       <div key={c.id} className={`px-4 py-3 bg-muted/10 border border-border/30 rounded-xl border-l-4 ${typeColors[c.comment_type] || "border-l-zinc-300"} ${c.resolved ? "opacity-50" : ""}`}>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[12px] font-medium">{c.author_name}</span>
-                          {arDef && <span className="text-[9px] bg-muted px-1.5 py-0.5 rounded-full text-muted-foreground">{ar ? arDef.ar : arDef.en}</span>}
-                          {ctDef && <span className="text-[9px] text-muted-foreground">{ar ? ctDef.ar : ctDef.en}</span>}
-                          <span className="text-[9px] text-muted-foreground/50 ml-auto">{new Date(c.created_at).toLocaleDateString()}</span>
+                          <span className="text-caption font-medium">{c.author_name}</span>
+                          {arDef && <span className="text-micro bg-muted px-1.5 py-0.5 rounded-full text-muted-foreground">{ar ? arDef.ar : arDef.en}</span>}
+                          {ctDef && <span className="text-micro text-muted-foreground">{ar ? ctDef.ar : ctDef.en}</span>}
+                          <span className="text-micro text-muted-foreground/50 ml-auto">{new Date(c.created_at).toLocaleDateString()}</span>
                           <button onClick={() => toggleResolve(c.id, c.resolved)} title={c.resolved ? "Unresolve" : "Resolve"}
                             className={`p-1 rounded ${c.resolved ? "text-emerald-500" : "text-muted-foreground/30 hover:text-emerald-500"}`}>
                             <CheckCircle2 size={12} />
                           </button>
                         </div>
-                        <p className="text-[12px] text-foreground whitespace-pre-wrap">{c.comment}</p>
+                        <p className="text-caption text-foreground whitespace-pre-wrap">{c.comment}</p>
                       </div>
                     );
                   })}
@@ -648,15 +648,15 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Versions Tab ── */}
           {tab === "history" && (
             <div>
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "تاريخ النُسخ" : "Version History"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "تاريخ النُسخ" : "Version History"}</h3>
               <div className="space-y-4">
                 {Object.entries(filesByVersion).sort(([a], [b]) => Number(b) - Number(a)).map(([ver, verFiles]) => (
                   <div key={ver} className="border border-border/40 rounded-xl overflow-hidden">
                     <div className="px-4 py-3 bg-muted/20 flex items-center gap-2 border-b border-border/30">
                       <GitBranch size={13} className="text-muted-foreground" />
-                      <span className="text-[13px] font-medium">{ar ? "النسخة" : "Version"} {ver}</span>
-                      {Number(ver) === brief.version && <span className="text-[9px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">{ar ? "الحالية" : "Current"}</span>}
-                      <span className="text-[10px] text-muted-foreground ml-auto">{verFiles.length} {ar ? "ملف" : "files"}</span>
+                      <span className="text-body font-medium">{ar ? "النسخة" : "Version"} {ver}</span>
+                      {Number(ver) === brief.version && <span className="text-micro bg-primary/10 text-brand-ink px-2 py-0.5 rounded-full font-medium">{ar ? "الحالية" : "Current"}</span>}
+                      <span className="text-micro text-muted-foreground ml-auto">{verFiles.length} {ar ? "ملف" : "files"}</span>
                     </div>
                     <div className="divide-y divide-border/20">
                       {verFiles.map(f => {
@@ -665,10 +665,10 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                           <div key={f.id} className="px-4 py-2.5 flex items-center gap-3">
                             <Paperclip size={12} className="text-muted-foreground/40 shrink-0" />
                             <div className="flex-1 min-w-0">
-                              <p className="text-[11.5px] truncate">{f.file_name}</p>
-                              <span className="text-[9px] text-muted-foreground">{ftDef ? (ar ? ftDef.ar : ftDef.en) : ""} • {f.file_format?.toUpperCase()}</span>
+                              <p className="text-micro truncate">{f.file_name}</p>
+                              <span className="text-micro text-muted-foreground">{ftDef ? (ar ? ftDef.ar : ftDef.en) : ""} • {f.file_format?.toUpperCase()}</span>
                             </div>
-                            <span className="text-[9px] text-muted-foreground/50">{new Date(f.created_at).toLocaleDateString()}</span>
+                            <span className="text-micro text-muted-foreground/50">{new Date(f.created_at).toLocaleDateString()}</span>
                           </div>
                         );
                       })}
@@ -676,7 +676,7 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                   </div>
                 ))}
                 {Object.keys(filesByVersion).length === 0 && (
-                  <div className="py-8 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش ملفات لسه لإظهار التاريخ" : "No files uploaded yet to show history"}</div>
+                  <div className="py-8 text-center text-body text-muted-foreground/50">{ar ? "مفيش ملفات لسه لإظهار التاريخ" : "No files uploaded yet to show history"}</div>
                 )}
               </div>
             </div>
@@ -759,7 +759,7 @@ export default function Designs() {
       design_type: b.design_type, style: b.style, status: b.status, version: b.version,
       assigned_designer: b.assigned_designer, start_date: b.start_date, due_date: b.due_date,
     }));
-    exportCSV(rows, `thoth-design-briefs-${new Date().toISOString().slice(0, 10)}.csv`);
+    exportCSV(rows, `bumblebee-design-briefs-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   if (selected) {
@@ -775,10 +775,10 @@ export default function Designs() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "التصميمات" : "Designs"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "ملفات التصميم والرسومات الفنية" : "Design Briefs & Technical Drawings"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "ملفات التصميم والرسومات الفنية" : "Design Briefs & Technical Drawings"}</p>
         </div>
         <button onClick={() => setModal(true)} className={btnPrimary + " h-10"}><Plus size={14} /> {ar ? "تصميم جديد" : "New Design"}</button>
       </div>
@@ -788,12 +788,12 @@ export default function Designs() {
         {[
           { label: ar ? "مسودات" : "Drafts", value: drafts, color: "text-zinc-600 bg-zinc-50" },
           { label: ar ? "جاري التصميم" : "In Progress", value: inProgress, color: "text-blue-600 bg-blue-50" },
-          { label: ar ? "عند العميل" : "Client Review", value: clientReview, color: "text-amber-600 bg-amber-50" },
+          { label: ar ? "عند العميل" : "Client Review", value: clientReview, color: "text-warning bg-warning/10" },
           { label: ar ? "معتمد" : "Approved", value: approved, color: "text-emerald-600 bg-emerald-50" },
         ].map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
-            <p className="text-[11px] text-muted-foreground mb-1">{s.label}</p>
-            <p className={`text-[20px] font-semibold tabular-nums ${s.color.split(" ")[0]}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+            <p className="text-micro text-muted-foreground mb-1">{s.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${s.color.split(" ")[0]}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -806,9 +806,9 @@ export default function Designs() {
           {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-muted-foreground"><X size={12} /></button>}
         </div>
         <div className="flex gap-1 flex-wrap">
-          <button onClick={() => setFilterStatus("all")} className={`px-3 py-2 rounded-lg text-[11px] font-medium ${filterStatus === "all" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? "الكل" : "All"}</button>
+          <button onClick={() => setFilterStatus("all")} className={`px-3 py-2 rounded-lg text-micro font-medium ${filterStatus === "all" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? "الكل" : "All"}</button>
           {DESIGN_STATUSES.slice(0, -1).map(s => (
-            <button key={s.value} onClick={() => setFilterStatus(s.value)} className={`px-3 py-2 rounded-lg text-[11px] font-medium ${filterStatus === s.value ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? s.ar : s.en}</button>
+            <button key={s.value} onClick={() => setFilterStatus(s.value)} className={`px-3 py-2 rounded-lg text-micro font-medium ${filterStatus === s.value ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? s.ar : s.en}</button>
           ))}
         </div>
         <button onClick={handleExport} className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground" title={ar ? "تصدير" : "Export"}><Download size={14} /></button>
@@ -820,12 +820,12 @@ export default function Designs() {
       ) : briefs.length === 0 ? (
         <div className="py-16 text-center">
           <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4"><PenTool size={22} className="text-muted-foreground/30" /></div>
-          <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش تصميمات لسه" : "No designs yet"}</h3>
-          <p className="text-[13px] text-muted-foreground">{ar ? "أنشئ أول ملف تصميم من معاينة مكتملة." : "Create your first design brief from a completed site visit."}</p>
+          <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش تصميمات لسه" : "No designs yet"}</h3>
+          <p className="text-body text-muted-foreground">{ar ? "أنشئ أول ملف تصميم من معاينة مكتملة." : "Create your first design brief from a completed site visit."}</p>
           <button onClick={() => setModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "تصميم جديد" : "New Design"}</button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+        <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
       ) : (
         <div className="space-y-3">
           {filtered.map(b => {
@@ -842,13 +842,13 @@ export default function Designs() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-[10.5px] font-mono text-muted-foreground">{b.brief_number}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-muted text-muted-foreground">v{b.version}</span>
-                      {isOverdue && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
+                      <span className="text-micro font-mono text-muted-foreground">{b.brief_number}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                      <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-muted text-muted-foreground">v{b.version}</span>
+                      {isOverdue && <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-rose-100 text-rose-600">{ar ? "متأخر" : "Overdue"}</span>}
                     </div>
-                    <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{b.title}</p>
-                    <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+                    <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{b.title}</p>
+                    <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
                       {b.customer_name && <span className="flex items-center gap-1"><Building2 size={9} />{b.customer_name}</span>}
                       {b.assigned_designer && <span className="flex items-center gap-1"><User size={9} />{b.assigned_designer}</span>}
                       {typeDef && <span>{ar ? typeDef.ar : typeDef.en}</span>}

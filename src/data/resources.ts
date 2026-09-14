@@ -44,9 +44,9 @@ export interface Resource {
 
 export const RESOURCE_TYPE_META: Record<ResourceType, { en: string; ar: string; pill: string }> = {
   equipment: { en: "Equipment",  ar: "معدات",    pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-  inventory: { en: "Inventory",  ar: "مخزون",    pill: "bg-amber-50 text-amber-700 border border-amber-200" },
+  inventory: { en: "Inventory",  ar: "مخزون",    pill: "bg-warning/10 text-warning border border-warning/30" },
   vehicle:   { en: "Vehicle",    ar: "مركبة",    pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
-  facility:  { en: "Facility",   ar: "منشأة",    pill: "bg-violet-50 text-violet-700 border border-violet-200" },
+  facility:  { en: "Facility",   ar: "منشأة",    pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
   license:   { en: "License",    ar: "ترخيص",    pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   other:     { en: "Other",      ar: "أخرى",     pill: "bg-muted text-muted-foreground border border-border" },
 };
@@ -54,7 +54,7 @@ export const RESOURCE_TYPE_META: Record<ResourceType, { en: string; ar: string; 
 export const RESOURCE_STATUS_META: Record<ResourceStatus, { en: string; ar: string; dot: string; pill: string }> = {
   active:      { en: "Active",      ar: "نشط",       dot: "bg-emerald-500", pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   idle:        { en: "Idle",        ar: "خامل",      dot: "bg-stone-400",   pill: "bg-stone-100 text-stone-600 border border-stone-200" },
-  maintenance: { en: "Maintenance", ar: "صيانة",     dot: "bg-amber-500",   pill: "bg-amber-50 text-amber-700 border border-amber-200" },
+  maintenance: { en: "Maintenance", ar: "صيانة",     dot: "bg-warning",   pill: "bg-warning/10 text-warning border border-warning/30" },
   retired:     { en: "Retired",     ar: "متقاعد",    dot: "bg-muted-foreground/40", pill: "bg-muted text-muted-foreground border border-border" },
 };
 
@@ -214,7 +214,7 @@ const DEFAULT_RESOURCES: Resource[] = [
 
 import { getLiveResources } from "../lib/dashboard-bridge";
 
-const STORAGE_KEY = "thoth_resources";
+const STORAGE_KEY = "bumblebee_resources";
 
 export function loadResources(): Resource[] {
   const live = getLiveResources();

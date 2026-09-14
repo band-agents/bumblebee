@@ -539,7 +539,7 @@ export interface DataSource {
 }
 
 // ─── Load-test seed (H2 proof) ─────────────────────────────
-// Set localStorage.thoth_loadtest = "100000" and reload: demo mode then
+// Set localStorage.bumblebee_loadtest = "100000" and reload: demo mode then
 // backs work_items with N synthetic stock movements, so pagination can be
 // proven against a realistic volume without a live database.
 
@@ -550,7 +550,7 @@ let loadTestCache: { n: number; rows: WorkRow[] } | null = null;
 function loadTestRows(): WorkRow[] {
   const n = typeof localStorage === "undefined"
     ? 0
-    : Math.min(500_000, parseInt(localStorage.getItem("thoth_loadtest") || "0", 10) || 0);
+    : Math.min(500_000, parseInt(localStorage.getItem("bumblebee_loadtest") || "0", 10) || 0);
   if (n <= 0) return [];
   if (loadTestCache?.n !== n) {
     const now = Date.now();

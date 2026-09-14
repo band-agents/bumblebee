@@ -19,7 +19,7 @@ import { isDemoMode, getSupabaseClient } from "../lib/supabase";
 import { signInWithGoogle } from "../lib/auth";
 import { Loader2, AlertCircle, CheckCircle2, Mail, ArrowRight, LogOut } from "lucide-react";
 
-export const PENDING_INVITE_KEY = "thoth_pending_invite";
+export const PENDING_INVITE_KEY = "bumblebee_pending_invite";
 
 interface InvitePreview {
   ok: boolean;
@@ -44,8 +44,8 @@ function Card({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex items-center justify-center px-4 bg-background">
       <div className="w-full max-w-[420px]">
         <div className="text-center mb-6">
-          <span className="text-[19px] font-semibold tracking-[0.12em] text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
-            THOTH
+          <span className="text-title font-semibold tracking-[0.12em] text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+            Bumblebee
           </span>
         </div>
         <div className="bg-card border border-border/60 rounded-2xl shadow-sm p-7">{children}</div>
@@ -150,13 +150,13 @@ export default function InviteAccept() {
       <Card>
         <div className="text-center space-y-3">
           <AlertCircle size={22} className="mx-auto text-muted-foreground" />
-          <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "الدعوات شغالة في النسخة الحقيقية بس" : "Invitations work in live mode only"}
           </p>
-          <p className="text-[12px] text-muted-foreground">
+          <p className="text-caption text-muted-foreground">
             {ar ? "النسخة التجريبية من غير حسابات." : "The demo runs without accounts."}
           </p>
-          <button onClick={() => navigate("/")} className="h-10 px-5 rounded-xl bg-foreground text-background text-[13px] font-medium">
+          <button onClick={() => navigate("/")} className="h-10 px-5 rounded-xl bg-foreground text-background text-body font-medium">
             {ar ? "ارجع للرئيسية" : "Back to home"}
           </button>
         </div>
@@ -169,7 +169,7 @@ export default function InviteAccept() {
       <Card>
         <div className="flex items-center justify-center gap-2 py-8 text-muted-foreground">
           <Loader2 size={16} className="animate-spin" />
-          <span className="text-[13px]">{ar ? "بنحمّل الدعوة…" : "Loading invitation…"}</span>
+          <span className="text-body">{ar ? "بنحمّل الدعوة…" : "Loading invitation…"}</span>
         </div>
       </Card>
     );
@@ -187,11 +187,11 @@ export default function InviteAccept() {
           <div className="w-12 h-12 rounded-2xl bg-rose-50 mx-auto flex items-center justify-center">
             <AlertCircle size={22} className="text-rose-500" />
           </div>
-          <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "الدعوة مش متاحة" : "Invitation unavailable"}
           </p>
-          <p className="text-[12.5px] text-muted-foreground leading-relaxed">{msg}</p>
-          <button onClick={() => navigate("/auth")} className="h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+          <p className="text-caption text-muted-foreground leading-relaxed">{msg}</p>
+          <button onClick={() => navigate("/auth")} className="h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
             {ar ? "تسجيل الدخول" : "Go to sign in"}
           </button>
         </div>
@@ -206,10 +206,10 @@ export default function InviteAccept() {
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 mx-auto flex items-center justify-center">
             <CheckCircle2 size={24} className="text-emerald-500" />
           </div>
-          <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? `أهلاً بيك في ${joined}` : `Welcome to ${joined}`}
           </p>
-          <p className="text-[12px] text-muted-foreground flex items-center justify-center gap-1.5">
+          <p className="text-caption text-muted-foreground flex items-center justify-center gap-1.5">
             <Loader2 size={12} className="animate-spin" />
             {ar ? "بنجهّز مساحة العمل…" : "Opening your workspace…"}
           </p>
@@ -224,19 +224,19 @@ export default function InviteAccept() {
     <Card>
       {/* Invitation summary */}
       <div className="text-center mb-6">
-        <p className="text-[12px] text-muted-foreground">
+        <p className="text-caption text-muted-foreground">
           {preview.inviter_name} {ar ? "بيدعوك تنضم لـ" : "invited you to join"}
         </p>
-        <p className="text-[19px] font-semibold mt-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <p className="text-title font-semibold mt-1" style={{ fontFamily: "var(--app-font-serif)" }}>
           {preview.workspace_name}
         </p>
-        <span className="inline-block mt-2 text-[11px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium">
+        <span className="inline-block mt-2 text-micro px-2.5 py-1 rounded-full bg-primary/10 text-brand-ink font-medium">
           {ar ? `الصلاحية: ${roleLabel.ar}` : `Role: ${roleLabel.en}`}
         </span>
       </div>
 
       {error && (
-        <div className="mb-4 flex items-start gap-2 bg-rose-50 border border-rose-200 rounded-xl p-3 text-[12px] text-rose-600">
+        <div className="mb-4 flex items-start gap-2 bg-rose-50 border border-rose-200 rounded-xl p-3 text-caption text-rose-600">
           <AlertCircle size={14} className="shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
@@ -244,20 +244,20 @@ export default function InviteAccept() {
 
       {isAuthenticated ? (
         <div className="space-y-3">
-          <p className="text-[12px] text-muted-foreground text-center">
+          <p className="text-caption text-muted-foreground text-center">
             {ar ? "مسجل دخول كـ" : "Signed in as"} <b className="text-foreground">{user?.email}</b>
           </p>
           <button
             onClick={accept}
             disabled={busy}
-            className="w-full h-11 rounded-xl bg-foreground text-background text-[13.5px] font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60"
+            className="w-full h-11 rounded-xl bg-foreground text-background text-body font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60"
           >
             {busy ? <Loader2 size={14} className="animate-spin" /> : <ArrowRight size={14} className={ar ? "rotate-180" : ""} />}
             {ar ? `انضم لـ ${preview.workspace_name}` : `Join ${preview.workspace_name}`}
           </button>
           <button
             onClick={() => signOut()}
-            className="w-full h-9 rounded-xl text-[12px] text-muted-foreground hover:bg-muted/50 transition-colors flex items-center justify-center gap-1.5"
+            className="w-full h-9 rounded-xl text-caption text-muted-foreground hover:bg-muted/50 transition-colors flex items-center justify-center gap-1.5"
           >
             <LogOut size={12} />
             {ar ? "مش أنت؟ سجل خروج" : "Not you? Sign out"}
@@ -265,9 +265,9 @@ export default function InviteAccept() {
         </div>
       ) : confirmNote ? (
         <div className="text-center space-y-3 py-2">
-          <Mail size={22} className="mx-auto text-primary" />
-          <p className="text-[13.5px] font-medium">{ar ? "اتأكد من بريدك الإلكتروني" : "Check your email"}</p>
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
+          <Mail size={22} className="mx-auto text-brand-ink" />
+          <p className="text-body font-medium">{ar ? "اتأكد من بريدك الإلكتروني" : "Check your email"}</p>
+          <p className="text-caption text-muted-foreground leading-relaxed">
             {ar
               ? `بعتنا لينك تأكيد لـ ${preview.email}. أكّد بريدك وبعدين افتح لينك الدعوة ده تاني.`
               : `We sent a confirmation link to ${preview.email}. Confirm your email, then open this invite link again.`}
@@ -278,7 +278,7 @@ export default function InviteAccept() {
           {/* Google */}
           <button
             onClick={handleGoogle}
-            className="w-full h-11 rounded-xl border border-border/70 bg-background text-[13px] font-medium flex items-center justify-center gap-2.5 hover:bg-muted/40 transition-colors"
+            className="w-full h-11 rounded-xl border border-border/70 bg-background text-body font-medium flex items-center justify-center gap-2.5 hover:bg-muted/40 transition-colors"
           >
             <svg width="15" height="15" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18A10.97 10.97 0 0 0 1 12c0 1.77.43 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.16-3.16C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
             {ar ? "كمّل بجوجل" : "Continue with Google"}
@@ -286,7 +286,7 @@ export default function InviteAccept() {
 
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-border/60" />
-            <span className="text-[10.5px] text-muted-foreground/70">{ar ? "أو بالبريد" : "or with email"}</span>
+            <span className="text-micro text-muted-foreground/70">{ar ? "أو بالبريد" : "or with email"}</span>
             <div className="flex-1 h-px bg-border/60" />
           </div>
 
@@ -296,7 +296,7 @@ export default function InviteAccept() {
               type="email"
               value={preview.email ?? ""}
               disabled
-              className="w-full h-10 px-3.5 rounded-xl border border-border/60 bg-muted/40 text-[13px] text-muted-foreground"
+              className="w-full h-10 px-3.5 rounded-xl border border-border/60 bg-muted/40 text-body text-muted-foreground"
             />
             {mode === "signup" && (
               <input
@@ -304,7 +304,7 @@ export default function InviteAccept() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder={ar ? "الاسم الكامل" : "Full name"}
-                className="w-full h-10 px-3.5 rounded-xl border border-border/60 bg-background text-[13px] outline-none focus:border-primary/50"
+                className="w-full h-10 px-3.5 rounded-xl border border-border/60 bg-background text-body outline-none focus:border-primary/50"
               />
             )}
             <input
@@ -314,27 +314,27 @@ export default function InviteAccept() {
               placeholder={mode === "signup" ? (ar ? "كلمة سر جديدة (٦+ حروف)" : "Create a password (6+ chars)") : (ar ? "كلمة السر" : "Password")}
               required
               minLength={6}
-              className="w-full h-10 px-3.5 rounded-xl border border-border/60 bg-background text-[13px] outline-none focus:border-primary/50"
+              className="w-full h-10 px-3.5 rounded-xl border border-border/60 bg-background text-body outline-none focus:border-primary/50"
             />
             <button
               type="submit"
               disabled={busy || !password}
-              className="w-full h-11 rounded-xl bg-foreground text-background text-[13.5px] font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60"
+              className="w-full h-11 rounded-xl bg-foreground text-background text-body font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60"
             >
               {busy && <Loader2 size={14} className="animate-spin" />}
               {mode === "signup" ? (ar ? "أنشئ حساب وانضم" : "Create account & join") : (ar ? "سجل دخول وانضم" : "Sign in & join")}
             </button>
           </form>
 
-          <p className="text-[11.5px] text-muted-foreground text-center">
+          <p className="text-micro text-muted-foreground text-center">
             {mode === "signup" ? (
               <>{ar ? "عندك حساب؟" : "Already have an account?"}{" "}
-                <button onClick={() => { setMode("signin"); setError(null); }} className="text-primary font-medium hover:underline">
+                <button onClick={() => { setMode("signin"); setError(null); }} className="text-brand-ink font-medium hover:underline">
                   {ar ? "سجل دخول" : "Sign in"}
                 </button></>
             ) : (
               <>{ar ? "معندكش حساب؟" : "New here?"}{" "}
-                <button onClick={() => { setMode("signup"); setError(null); }} className="text-primary font-medium hover:underline">
+                <button onClick={() => { setMode("signup"); setError(null); }} className="text-brand-ink font-medium hover:underline">
                   {ar ? "أنشئ حساب" : "Create account"}
                 </button></>
             )}

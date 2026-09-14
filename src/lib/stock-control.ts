@@ -44,9 +44,9 @@ export interface StockMovement {
 export const MOVEMENT_TYPES = [
   { value: "stock_in", en: "Stock In", ar: "إدخال مخزن", color: "text-emerald-600", icon: "↓" },
   { value: "stock_out", en: "Stock Out", ar: "إخراج مخزن", color: "text-rose-600", icon: "↑" },
-  { value: "reservation", en: "Reservation", ar: "حجز", color: "text-amber-600", icon: "◆" },
+  { value: "reservation", en: "Reservation", ar: "حجز", color: "text-warning", icon: "◆" },
   { value: "adjustment", en: "Adjustment", ar: "تسوية", color: "text-blue-600", icon: "⟲" },
-  { value: "transfer", en: "Transfer", ar: "تحويل", color: "text-violet-600", icon: "→" },
+  { value: "transfer", en: "Transfer", ar: "تحويل", color: "text-chart-4", icon: "→" },
   { value: "consumption", en: "Consumption", ar: "استهلاك تصنيع", color: "text-orange-600", icon: "▼" },
 ];
 
@@ -137,7 +137,7 @@ export function generatePurchaseSuggestions(requirements: MaterialRequirement[])
 }
 
 export const STOCK_ALERT_LABELS = {
-  low: { en: "Low Stock", ar: "مخزون منخفض", color: "text-amber-600 bg-amber-50 border-amber-200" },
+  low: { en: "Low Stock", ar: "مخزون منخفض", color: "text-warning bg-warning/10 border-warning/30" },
   out: { en: "Out of Stock", ar: "نفد من المخزن", color: "text-rose-600 bg-rose-50 border-rose-200" },
-  over_reserved: { en: "Over-Reserved", ar: "محجوز أكتر من المتاح", color: "text-violet-600 bg-violet-50 border-violet-200" },
+  over_reserved: { en: "Over-Reserved", ar: "محجوز أكتر من المتاح", color: "text-chart-4 bg-chart-4/10 border-chart-4/30" },
 };

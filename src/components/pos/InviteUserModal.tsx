@@ -8,8 +8,8 @@ import {
   AlertCircle, Loader2, Shield, Plus, Trash2,
 } from "lucide-react";
 
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11px] text-muted-foreground font-medium mb-1 block";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 interface InviteData {
   email: string;
@@ -53,7 +53,7 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
   }
 
   function copyInviteLink() {
-    const link = `https://thoth.app/invite/${btoa(Date.now().toString()).slice(0, 12)}`;
+    const link = `https://bumblebee.app/invite/${btoa(Date.now().toString()).slice(0, 12)}`;
     navigator.clipboard?.writeText(link);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
@@ -67,10 +67,10 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
           <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
             <Send size={22} className="text-emerald-600" />
           </div>
-          <p className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "تم إرسال الدعوات ✓" : "Invitations Sent ✓"}
           </p>
-          <p className="text-[12px] text-muted-foreground">
+          <p className="text-caption text-muted-foreground">
             {invites.filter(i => i.email.trim()).length} {ar ? "دعوة إلى" : "invites to"} {invites.filter(i => i.email.trim()).map(i => i.email).join(", ")}
           </p>
         </motion.div>
@@ -90,13 +90,13 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
         <div className="shrink-0 px-6 py-5 border-b border-border/40 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <UserPlus size={18} className="text-primary" />
+              <UserPlus size={18} className="text-brand-ink" />
             </div>
             <div>
-              <h3 className="text-[16px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h3 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "دعوة مستخدمين" : "Invite Users"}
               </h3>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-micro text-muted-foreground">
                 {ar ? "أرسل دعوات بالبريد الإلكتروني" : "Send email invitations to join"}
               </p>
             </div>
@@ -110,10 +110,10 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
           {/* Quick Link */}
           <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/30 border border-border/40">
             <Link size={14} className="text-muted-foreground shrink-0" />
-            <span className="text-[11px] text-muted-foreground flex-1">{ar ? "أو شارك رابط الدعوة" : "Or share an invite link"}</span>
+            <span className="text-micro text-muted-foreground flex-1">{ar ? "أو شارك رابط الدعوة" : "Or share an invite link"}</span>
             <button
               onClick={copyInviteLink}
-              className="h-7 px-3 rounded-lg bg-primary/10 text-primary text-[10px] font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors"
+              className="h-7 px-3 rounded-lg bg-primary/10 text-brand-ink text-micro font-medium flex items-center gap-1 hover:bg-primary/20 transition-colors"
             >
               {copiedLink ? <><Check size={10} /> {ar ? "تم النسخ" : "Copied"}</> : <><Copy size={10} /> {ar ? "نسخ الرابط" : "Copy Link"}</>}
             </button>
@@ -162,22 +162,22 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
                 {tmpl && (
                   <div className="flex items-center gap-2">
                     <Shield size={10} className="text-muted-foreground/50" />
-                    <span className="text-[10px] text-muted-foreground">
+                    <span className="text-micro text-muted-foreground">
                       {ar ? "الصلاحيات:" : "Permissions:"}
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {Object.entries(tmpl.permissions).filter(([, perms]) => perms.length > 0).slice(0, 4).map(([key]) => (
-                        <span key={key} className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">{key}</span>
+                        <span key={key} className="text-micro px-1.5 py-0.5 rounded bg-primary/10 text-brand-ink">{key}</span>
                       ))}
                       {Object.keys(tmpl.permissions).filter(k => (tmpl.permissions[k] || []).length > 0).length > 4 && (
-                        <span className="text-[9px] text-muted-foreground">+{Object.keys(tmpl.permissions).filter(k => (tmpl.permissions[k] || []).length > 0).length - 4}</span>
+                        <span className="text-micro text-muted-foreground">+{Object.keys(tmpl.permissions).filter(k => (tmpl.permissions[k] || []).length > 0).length - 4}</span>
                       )}
                     </div>
                   </div>
                 )}
                 <div>
                   <label className={labelCls}>{ar ? "رسالة شخصية (اختياري)" : "Personal message (optional)"}</label>
-                  <input value={invite.message} onChange={e => updateInvite(idx, { message: e.target.value })} className={inputCls} placeholder={ar ? "مرحباً، أنضم لفريقنا..." : "Hey, join our team on THOTH..."} />
+                  <input value={invite.message} onChange={e => updateInvite(idx, { message: e.target.value })} className={inputCls} placeholder={ar ? "مرحباً، أنضم لفريقنا..." : "Hey, join our team on Bumblebee..."} />
                 </div>
               </div>
             );
@@ -186,7 +186,7 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
           {/* Add More */}
           <button
             onClick={addInvite}
-            className="w-full h-10 rounded-xl border border-dashed border-border/60 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors flex items-center justify-center gap-1.5"
+            className="w-full h-10 rounded-xl border border-dashed border-border/60 text-micro font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors flex items-center justify-center gap-1.5"
           >
             <Plus size={12} /> {ar ? "إضافة شخص آخر" : "Add another person"}
           </button>
@@ -194,17 +194,17 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
 
         {/* Footer */}
         <div className="shrink-0 px-6 py-4 border-t border-border/40 flex items-center justify-between">
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-micro text-muted-foreground">
             {invites.filter(i => i.email.trim()).length} {ar ? "دعوة" : "invitation(s)"}
           </span>
           <div className="flex gap-2">
-            <button onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted transition-colors">
+            <button onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted transition-colors">
               {ar ? "إلغاء" : "Cancel"}
             </button>
             <button
               onClick={handleSend}
               disabled={sending || !invites.some(i => i.email.trim())}
-              className="h-10 px-5 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2"
+              className="h-10 px-5 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2"
             >
               {sending ? (
                 <><Loader2 size={13} className="animate-spin" /> {ar ? "جاري الإرسال..." : "Sending..."}</>

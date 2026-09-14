@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH — Design & Technical Drawings Foundation
+-- Bumblebee — Design & Technical Drawings Foundation
 -- التصميمات والرسومات الفنية
 -- ============================================================
 

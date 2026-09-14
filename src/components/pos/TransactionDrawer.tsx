@@ -75,12 +75,12 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
         {/* Header */}
         <div className="shrink-0 px-5 py-4 border-b border-border/40">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
               {selectedTxn ? selectedTxn.transaction_number : (lang === "ar" ? "سجل المعاملات" : "Transaction History")}
             </h3>
             <div className="flex items-center gap-1.5">
               {selectedTxn && (
-                <button onClick={() => setSelectedTxn(null)} className="text-[11px] text-primary hover:underline">
+                <button onClick={() => setSelectedTxn(null)} className="text-micro text-brand-ink hover:underline">
                   {lang === "ar" ? "العودة" : "Back"}
                 </button>
               )}
@@ -99,14 +99,14 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={lang === "ar" ? "بحث بالرقم أو اسم العميل..." : "Search by number, customer, or cashier..."}
-                  className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-background text-[13px] placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                  className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-background text-body placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-brand-ink/30"
                 />
               </div>
               <div className="flex gap-1.5">
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-                  className="h-7 px-2 rounded-md border border-border bg-background text-[11px] appearance-none cursor-pointer"
+                  className="h-7 px-2 rounded-md border border-border bg-background text-micro appearance-none cursor-pointer"
                 >
                   <option value="all">{lang === "ar" ? "الكل" : "All Status"}</option>
                   <option value="completed">{lang === "ar" ? "مكتملة" : "Completed"}</option>
@@ -115,7 +115,7 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                 <select
                   value={paymentFilter}
                   onChange={(e) => setPaymentFilter(e.target.value)}
-                  className="h-7 px-2 rounded-md border border-border bg-background text-[11px] appearance-none cursor-pointer"
+                  className="h-7 px-2 rounded-md border border-border bg-background text-micro appearance-none cursor-pointer"
                 >
                   <option value="all">{lang === "ar" ? "كل الدفعات" : "All Payments"}</option>
                   <option value="cash">{lang === "ar" ? "نقداً" : "Cash"}</option>
@@ -126,7 +126,7 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
-                  className="h-7 px-2 rounded-md border border-border bg-background text-[11px] appearance-none cursor-pointer"
+                  className="h-7 px-2 rounded-md border border-border bg-background text-micro appearance-none cursor-pointer"
                 >
                   <option value="newest">{lang === "ar" ? "الأحدث" : "Newest"}</option>
                   <option value="oldest">{lang === "ar" ? "الأقدم" : "Oldest"}</option>
@@ -141,62 +141,62 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
         <div className="flex-1 overflow-y-auto">
           {loading ? (
             <div className="flex items-center justify-center h-32">
-              <div className="animate-pulse text-[13px] text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</div>
+              <div className="animate-pulse text-body text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</div>
             </div>
           ) : selectedTxn ? (
             /* Transaction Detail */
             <div className="p-5 space-y-4">
               {/* Status Badge */}
               <div className="flex items-center justify-between">
-                <span className={`text-[11px] px-2.5 py-1 rounded-full font-medium ${
+                <span className={`text-micro px-2.5 py-1 rounded-full font-medium ${
                   selectedTxn.status === "completed" ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-600"
                 }`}>
                   {selectedTxn.status === "completed" ? (lang === "ar" ? "مكتملة" : "Completed") : (lang === "ar" ? "ملغاة" : "Voided")}
                 </span>
-                <span className="text-[11px] text-muted-foreground">{new Date(selectedTxn.created_at).toLocaleString()}</span>
+                <span className="text-micro text-muted-foreground">{new Date(selectedTxn.created_at).toLocaleString()}</span>
               </div>
 
               {/* Customer */}
               <div className="p-3 rounded-xl bg-muted/30">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{lang === "ar" ? "العميل" : "Customer"}</p>
-                <p className="text-[13px] font-medium text-foreground">{selectedTxn.customer_name || (lang === "ar" ? "عميل عادي" : "Walk-in")}</p>
-                {selectedTxn.customer_phone && <p className="text-[11px] text-muted-foreground">{selectedTxn.customer_phone}</p>}
+                <p className="text-micro text-muted-foreground uppercase tracking-wider mb-1">{lang === "ar" ? "العميل" : "Customer"}</p>
+                <p className="text-body font-medium text-foreground">{selectedTxn.customer_name || (lang === "ar" ? "عميل عادي" : "Walk-in")}</p>
+                {selectedTxn.customer_phone && <p className="text-micro text-muted-foreground">{selectedTxn.customer_phone}</p>}
               </div>
 
               {/* Items */}
               <div>
-                <p className="text-[11px] text-muted-foreground mb-2">{lang === "ar" ? "المنتجات" : "Items"}</p>
+                <p className="text-micro text-muted-foreground mb-2">{lang === "ar" ? "المنتجات" : "Items"}</p>
                 {items.map((item) => (
                   <div key={item.id} className="flex items-center justify-between py-2 border-b border-border/20 last:border-0">
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-medium text-foreground truncate">{item.product_name}</p>
-                      <p className="text-[10px] text-muted-foreground">
+                      <p className="text-caption font-medium text-foreground truncate">{item.product_name}</p>
+                      <p className="text-micro text-muted-foreground">
                         {item.quantity} × {formatEGP(item.unit_price)}
                         {item.discount_percent > 0 && <span className="text-rose-500"> (-{item.discount_percent}%)</span>}
                       </p>
                     </div>
-                    <span className="text-[12px] font-semibold text-foreground shrink-0">{formatEGP(item.total)}</span>
+                    <span className="text-caption font-semibold text-foreground shrink-0">{formatEGP(item.total)}</span>
                   </div>
                 ))}
               </div>
 
               {/* Totals */}
               <div className="space-y-1.5 pt-2 border-t border-border/40">
-                <div className="flex justify-between text-[12px]">
+                <div className="flex justify-between text-caption">
                   <span className="text-muted-foreground">{lang === "ar" ? "المجموع الفرعي" : "Subtotal"}</span>
                   <span className="text-foreground">{formatEGP(selectedTxn.subtotal)}</span>
                 </div>
                 {selectedTxn.discount_amount > 0 && (
-                  <div className="flex justify-between text-[12px]">
+                  <div className="flex justify-between text-caption">
                     <span className="text-muted-foreground">{lang === "ar" ? "الخصم" : "Discount"}</span>
                     <span className="text-rose-500">-{formatEGP(selectedTxn.discount_amount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-[12px]">
+                <div className="flex justify-between text-caption">
                   <span className="text-muted-foreground">{lang === "ar" ? "الضريبة" : "Tax"}</span>
                   <span className="text-foreground">{formatEGP(selectedTxn.tax_amount)}</span>
                 </div>
-                <div className="flex justify-between text-[14px] font-semibold pt-1.5 border-t border-border/40">
+                <div className="flex justify-between text-body-lg font-semibold pt-1.5 border-t border-border/40">
                   <span className="text-foreground">{lang === "ar" ? "الإجمالي" : "Total"}</span>
                   <span className="text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(selectedTxn.total)}</span>
                 </div>
@@ -208,18 +208,18 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                   {selectedTxn.payment_method === "cash" ? <Banknote size={12} /> :
                    selectedTxn.payment_method === "card" ? <CreditCard size={12} /> :
                    <Smartphone size={12} />}
-                  <span className="text-[11px] text-muted-foreground capitalize">{selectedTxn.payment_method?.replace("_", " ")}</span>
+                  <span className="text-micro text-muted-foreground capitalize">{selectedTxn.payment_method?.replace("_", " ")}</span>
                 </div>
                 {selectedTxn.payment_method === "cash" && selectedTxn.payment_details && (
-                  <div className="flex justify-between text-[11px]">
+                  <div className="flex justify-between text-micro">
                     <span className="text-muted-foreground">{lang === "ar" ? "المبلغ المستلم" : "Cash Received"}</span>
                     <span>{formatEGP(((selectedTxn.payment_details as Record<string, unknown>)?.cash_received as number) || 0)}</span>
                   </div>
                 )}
                 {selectedTxn.loyalty_points_earned > 0 && (
-                  <div className="flex justify-between text-[11px]">
+                  <div className="flex justify-between text-micro">
                     <span className="text-muted-foreground">{lang === "ar" ? "نقاط الولاء" : "Loyalty Points"}</span>
-                    <span className="text-primary">+{selectedTxn.loyalty_points_earned}</span>
+                    <span className="text-brand-ink">+{selectedTxn.loyalty_points_earned}</span>
                   </div>
                 )}
               </div>
@@ -227,13 +227,13 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
               {/* Notes */}
               {selectedTxn.notes && (
                 <div className="p-3 rounded-xl border border-border/40">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{lang === "ar" ? "ملاحظات" : "Notes"}</p>
-                  <p className="text-[12px] text-foreground">{selectedTxn.notes}</p>
+                  <p className="text-micro text-muted-foreground uppercase tracking-wider mb-1">{lang === "ar" ? "ملاحظات" : "Notes"}</p>
+                  <p className="text-caption text-foreground">{selectedTxn.notes}</p>
                 </div>
               )}
 
               {/* Cashier */}
-              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+              <div className="flex items-center gap-2 text-micro text-muted-foreground">
                 <span>{lang === "ar" ? "الكاشير" : "Cashier"}: {selectedTxn.cashier_name}</span>
               </div>
             </div>
@@ -243,7 +243,7 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
               {filtered.length === 0 ? (
                 <div className="text-center py-12">
                   <Clock size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-                  <p className="text-[12px] text-muted-foreground">{lang === "ar" ? "لا توجد معاملات" : "No transactions"}</p>
+                  <p className="text-caption text-muted-foreground">{lang === "ar" ? "لا توجد معاملات" : "No transactions"}</p>
                 </div>
               ) : (
                 filtered.map((txn) => (
@@ -259,14 +259,14 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-[12px] font-medium text-foreground truncate">{txn.customer_name || (lang === "ar" ? "عميل" : "Walk-in")}</p>
+                        <p className="text-caption font-medium text-foreground truncate">{txn.customer_name || (lang === "ar" ? "عميل" : "Walk-in")}</p>
                         {txn.status === "voided" && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">{lang === "ar" ? "ملغاة" : "Voided"}</span>
+                          <span className="text-micro px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600">{lang === "ar" ? "ملغاة" : "Voided"}</span>
                         )}
                       </div>
-                      <p className="text-[10px] text-muted-foreground">{txn.transaction_number} • {new Date(txn.created_at).toLocaleString()}</p>
+                      <p className="text-micro text-muted-foreground">{txn.transaction_number} • {new Date(txn.created_at).toLocaleString()}</p>
                     </div>
-                    <span className={`text-[13px] font-semibold shrink-0 ${txn.status === "voided" ? "text-rose-500 line-through" : "text-foreground"}`}>
+                    <span className={`text-body font-semibold shrink-0 ${txn.status === "voided" ? "text-rose-500 line-through" : "text-foreground"}`}>
                       {formatEGP(txn.total)}
                     </span>
                   </button>

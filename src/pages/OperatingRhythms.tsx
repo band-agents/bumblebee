@@ -27,7 +27,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 const STATUS_STYLE: Record<string, { icon: React.ElementType; iconCl: string; bg: string; border: string; dot: string }> = {
   green: { icon: CheckCircle2,   iconCl: "text-emerald-600", bg: "bg-emerald-50/40", border: "border-emerald-200/40", dot: "bg-emerald-500" },
-  amber: { icon: AlertTriangle,  iconCl: "text-amber-600",   bg: "bg-amber-50/40",   border: "border-amber-200/40",   dot: "bg-amber-500" },
+  amber: { icon: AlertTriangle,  iconCl: "text-warning",   bg: "bg-warning/10",   border: "border-warning/30",   dot: "bg-warning" },
   red:   { icon: AlertTriangle,  iconCl: "text-rose-600",    bg: "bg-rose-50/40",    border: "border-rose-200/40",    dot: "bg-rose-500" },
 };
 
@@ -46,10 +46,10 @@ function ScoreRing({ score, size = 88 }: { score: number; size?: number }) {
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-1000" />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[18px] font-semibold text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+        <span className="text-title font-semibold text-foreground tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
           {score}
         </span>
-        <span className="text-[8px] text-muted-foreground/40 mt-0.5">/100</span>
+        <span className="text-micro text-muted-foreground/40 mt-0.5">/100</span>
       </div>
     </div>
   );
@@ -71,12 +71,12 @@ function RhythmSectionView({ section, ar }: { section: RhythmSection; ar: boolea
       <div className="flex items-center justify-between px-5 py-3.5 bg-muted/20 border-b border-border/25">
         <div className="flex items-center gap-2.5">
           <SectionIcon size={14} strokeWidth={1.75} className="text-muted-foreground/60" />
-          <h3 className="text-[13px] font-medium text-foreground">{ar ? section.titleAr : section.titleEn}</h3>
+          <h3 className="text-body font-medium text-foreground">{ar ? section.titleAr : section.titleEn}</h3>
         </div>
         <div className="flex items-center gap-2">
-          {statusCounts.green > 0 && <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 text-[9px] font-bold flex items-center justify-center">{statusCounts.green}</span>}
-          {statusCounts.amber > 0 && <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 text-[9px] font-bold flex items-center justify-center">{statusCounts.amber}</span>}
-          {statusCounts.red > 0 && <span className="w-4 h-4 rounded-full bg-rose-100 text-rose-700 text-[9px] font-bold flex items-center justify-center">{statusCounts.red}</span>}
+          {statusCounts.green > 0 && <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 text-micro font-bold flex items-center justify-center">{statusCounts.green}</span>}
+          {statusCounts.amber > 0 && <span className="w-4 h-4 rounded-full bg-warning/15 text-warning text-micro font-bold flex items-center justify-center">{statusCounts.amber}</span>}
+          {statusCounts.red > 0 && <span className="w-4 h-4 rounded-full bg-rose-100 text-rose-700 text-micro font-bold flex items-center justify-center">{statusCounts.red}</span>}
         </div>
       </div>
       {/* Items */}
@@ -85,21 +85,21 @@ function RhythmSectionView({ section, ar }: { section: RhythmSection; ar: boolea
           const s = STATUS_STYLE[item.status];
           const ItemIcon = s.icon;
           return (
-            <div key={item.id} className={`flex items-center gap-4 px-5 py-3.5 ${s.bg} border-l-2 ${item.status === "green" ? "border-emerald-400/50" : item.status === "amber" ? "border-amber-400/50" : "border-rose-400/50"}`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${item.status === "green" ? "bg-emerald-100" : item.status === "amber" ? "bg-amber-100" : "bg-rose-100"}`}>
+            <div key={item.id} className={`flex items-center gap-4 px-5 py-3.5 ${s.bg} border-l-2 ${item.status === "green" ? "border-emerald-400/50" : item.status === "amber" ? "border-warning/30" : "border-rose-400/50"}`}>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${item.status === "green" ? "bg-emerald-100" : item.status === "amber" ? "bg-warning/15" : "bg-rose-100"}`}>
                 <ItemIcon size={12} strokeWidth={1.75} className={s.iconCl} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[12.5px] font-medium text-foreground">{ar ? item.labelAr : item.labelEn}</p>
+                <p className="text-caption font-medium text-foreground">{ar ? item.labelAr : item.labelEn}</p>
                 {item.actionEn && item.status !== "green" && (
-                  <div className="flex items-center gap-1 mt-0.5 text-[10px] text-primary">
+                  <div className="flex items-center gap-1 mt-0.5 text-micro text-brand-ink">
                     <ArrowRight size={9} strokeWidth={2} />
                     <span>{ar ? item.actionAr : item.actionEn}</span>
                   </div>
                 )}
               </div>
               <div className="text-right shrink-0">
-                <p className="text-[13px] font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <p className="text-body font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {ar ? item.valueAr : item.valueEn}
                 </p>
               </div>
@@ -122,7 +122,7 @@ function ReviewPanel({ review, ar }: { review: RhythmReview; ar: boolean }) {
   const overallLabelAr = allGreen ? "كل شيء طيب" : hasRed ? "يحتاج اهتماماً" : "تتبع";
   const overallColors = {
     green: "bg-emerald-50 text-emerald-700 border border-emerald-200",
-    amber: "bg-amber-50 text-amber-700 border border-amber-200",
+    amber: "bg-warning/10 text-warning border border-warning/30",
     red: "bg-rose-50 text-rose-700 border border-rose-200",
   };
 
@@ -132,11 +132,11 @@ function ReviewPanel({ review, ar }: { review: RhythmReview; ar: boolean }) {
       <div className="flex items-center gap-5 p-5 border border-border/40 rounded-xl bg-background">
         <ScoreRing score={review.overallScore} />
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] text-muted-foreground/60 tracking-wide uppercase mb-1">{ar ? review.titleAr : review.titleEn}</p>
-          <p className="text-[14px] font-medium text-foreground leading-snug mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-wide uppercase mb-1">{ar ? review.titleAr : review.titleEn}</p>
+          <p className="text-body-lg font-medium text-foreground leading-snug mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
             {ar ? review.subtitleAr : review.subtitleEn}
           </p>
-          <span className={`inline-flex items-center text-[10px] font-medium px-2.5 py-1 rounded-full ${overallColors[overallStatus]}`}>
+          <span className={`inline-flex items-center text-micro font-medium px-2.5 py-1 rounded-full ${overallColors[overallStatus]}`}>
             {ar ? overallLabelAr : overallLabelEn}
           </span>
         </div>
@@ -178,7 +178,7 @@ export default function OperatingRhythms() {
   const getStatusColor = (review: RhythmReview) => {
     const hasRed = review.sections.some((s) => s.items.some((i) => i.status === "red"));
     const allGreen = review.sections.every((s) => s.items.every((i) => i.status === "green"));
-    return hasRed ? "bg-rose-500" : allGreen ? "bg-emerald-500" : "bg-amber-500";
+    return hasRed ? "bg-rose-500" : allGreen ? "bg-emerald-500" : "bg-warning";
   };
 
   return (
@@ -188,13 +188,13 @@ export default function OperatingRhythms() {
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Activity size={14} strokeWidth={1.75} className="text-violet-500" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "إيقاعات التشغيل" : "Operating Rhythms"}</p>
+            <Activity size={14} strokeWidth={1.75} className="text-chart-4" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "إيقاعات التشغيل" : "Operating Rhythms"}</p>
           </div>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <h1 className="text-display font-medium text-foreground leading-tight mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "مراجعات التشغيل الهيكلية" : "Structured Operating Reviews"}
           </h1>
-          <p className="text-[12px] text-muted-foreground/60 mb-5">
+          <p className="text-caption text-muted-foreground/60 mb-5">
             {ar ? "يومي · أسبوعي · شهري · ربع سنوي" : "Daily · Weekly · Monthly · Quarterly"}
           </p>
 
@@ -209,13 +209,13 @@ export default function OperatingRhythms() {
                 <button key={tab.id} onClick={() => setActiveRhythm(tab.id)}
                   className={`text-left px-4 py-3.5 rounded-xl border transition-all ${isActive ? "border-primary bg-primary/8" : "border-border/40 bg-background hover:border-primary/40"}`}>
                   <div className="flex items-center justify-between mb-2">
-                    <Icon size={15} strokeWidth={1.75} className={isActive ? "text-primary" : "text-muted-foreground/60"} />
+                    <Icon size={15} strokeWidth={1.75} className={isActive ? "text-brand-ink" : "text-muted-foreground/60"} />
                     <div className={`w-2 h-2 rounded-full ${dot}`} />
                   </div>
-                  <p className={`text-[13px] font-medium ${isActive ? "text-primary" : "text-foreground"}`}>
+                  <p className={`text-body font-medium ${isActive ? "text-brand-ink" : "text-foreground"}`}>
                     {ar ? tab.labelAr : tab.labelEn}
                   </p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-0.5">{ar ? tab.subtitleAr : tab.subtitleEn}</p>
+                  <p className="text-micro text-muted-foreground/60 mt-0.5">{ar ? tab.subtitleAr : tab.subtitleEn}</p>
                 </button>
               );
             })}

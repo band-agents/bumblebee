@@ -1,12 +1,12 @@
 /**
  * WorkspaceSetup — Onboarding questionnaire
  *
- * A clear, joyful, industry-agnostic setup flow in the THOTH brand system
+ * A clear, joyful, industry-agnostic setup flow in the Bumblebee brand system
  * (cream + mint, teal & purple duo, Forum + Darker Grotesque). Six tight
  * steps shape the workspace to the user's trade, then launch.
  *
  * Completion contract preserved:
- *  · demo  → write `thoth_onboarding` to localStorage + reload
+ *  · demo  → write `bumblebee_onboarding` to localStorage + reload
  *  · live  → insert workspace + member, then refreshWorkspace()
  */
 
@@ -130,8 +130,8 @@ function SelectCard({ active, tint, icon: Icon, title, sub, onClick, compact }: 
       <span className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3" style={{ background: tint }}>
         <Icon size={20} className="text-white" />
       </span>
-      <p className="text-[20px] font-bold leading-tight text-[var(--ink)]">{title}</p>
-      {sub && <p className="text-[16px] font-medium text-[var(--ink-soft)] leading-tight">{sub}</p>}
+      <p className="text-heading font-bold leading-tight text-[var(--ink)]">{title}</p>
+      {sub && <p className="text-title font-medium text-[var(--ink-soft)] leading-tight">{sub}</p>}
       <AnimatePresence>
         {active && (
           <motion.span
@@ -148,7 +148,7 @@ function SelectCard({ active, tint, icon: Icon, title, sub, onClick, compact }: 
 function StepHead({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div className="mb-8">
-      <p className="text-[18px] font-bold text-[var(--teal)] mb-2">{eyebrow}</p>
+      <p className="text-title font-bold text-[var(--teal)] mb-2">{eyebrow}</p>
       <h1 className="text-[clamp(2rem,4.4vw,3.4rem)] leading-[1.02] [text-wrap:balance]" style={display}>{title}</h1>
     </div>
   );
@@ -196,7 +196,7 @@ export default function WorkspaceSetup() {
     const enabledModules = Array.from(new Set([...CORE_MODULES, ...state.goals]));
 
     if (isDemoMode) {
-      localStorage.setItem("thoth_onboarding", JSON.stringify({
+      localStorage.setItem("bumblebee_onboarding", JSON.stringify({
         completed: true,
         businessType: state.industry,
         companySize: state.size,
@@ -251,13 +251,13 @@ export default function WorkspaceSetup() {
       <div className="sticky top-0 z-20 bg-[var(--cream)]/85 backdrop-blur-xl border-b border-[var(--ink)]/6">
         <div className="max-w-[920px] mx-auto px-5 py-4 flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-[22px] tracking-[0.14em]" style={display}>THOTH</span>
+            <span className="text-heading tracking-[0.14em]" style={display}>Bumblebee</span>
           </div>
           <div className="flex-1 h-2 rounded-full bg-[var(--ink)]/8 overflow-hidden">
             <motion.div className="h-full rounded-full" style={{ background: "linear-gradient(90deg,var(--teal),var(--purple))" }}
               animate={{ width: `${((step + 1) / TOTAL) * 100}%` }} transition={{ ease: EASE, duration: 0.5 }} />
           </div>
-          <span className="text-[16px] font-bold text-[var(--ink-soft)] tabular-nums">{step + 1}/{TOTAL}</span>
+          <span className="text-title font-bold text-[var(--ink-soft)] tabular-nums">{step + 1}/{TOTAL}</span>
         </div>
       </div>
 
@@ -276,9 +276,9 @@ export default function WorkspaceSetup() {
                     <Sparkles size={32} className="text-white" />
                   </motion.div>
                   <h1 className="text-[clamp(2.4rem,5.5vw,4rem)] leading-[1.0] [text-wrap:balance]" style={display}>
-                    Welcome. Let's shape<br />your THOTH.
+                    Welcome. Let's shape<br />your Bumblebee.
                   </h1>
-                  <p className="mt-5 text-[20px] font-medium text-[var(--ink-soft)] max-w-[46ch] mx-auto">
+                  <p className="mt-5 text-heading font-medium text-[var(--ink-soft)] max-w-[46ch] mx-auto">
                     Six quick questions. We'll tailor the modules, vocabulary and code formats to how <em className="not-italic font-bold text-[var(--purple)]">you</em> work. Two minutes, tops.
                   </p>
                 </div>
@@ -294,7 +294,7 @@ export default function WorkspaceSetup() {
                         title={ar ? i.ar : i.en} onClick={() => selectIndustry(i.id)} />
                     ))}
                   </div>
-                  <p className="mt-5 text-[16px] font-medium text-[var(--ink-soft)]">
+                  <p className="mt-5 text-title font-medium text-[var(--ink-soft)]">
                     {ar ? "هنرشّحلك الوحدات المناسبة تلقائيًا — وتقدر تعدّلها بعدين." : "We'll pre-pick the right modules for you — tweak them next."}
                   </p>
                 </div>
@@ -316,17 +316,17 @@ export default function WorkspaceSetup() {
               {/* 3 — Goals / modules (grouped + smart-recommended) */}
               {step === 3 && (
                 <div>
-                  <StepHead eyebrow="YOUR FOCUS" title="What should THOTH handle?" />
+                  <StepHead eyebrow="YOUR FOCUS" title="What should Bumblebee handle?" />
                   <div className="-mt-5 mb-6 flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--mint)] text-[var(--teal-deep)] px-3.5 py-1.5 text-[15px] font-bold">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--mint)] text-[var(--teal-deep)] px-3.5 py-1.5 text-body-lg font-bold">
                       <Check size={13} /> {state.goals.length} {ar ? "وحدة مختارة" : "selected"}
                     </span>
                     {industry && (
-                      <button onClick={resetRecommended} className="text-[15px] font-bold text-[var(--teal)] hover:underline underline-offset-2">
+                      <button onClick={resetRecommended} className="text-body-lg font-bold text-[var(--teal)] hover:underline underline-offset-2">
                         {ar ? "↺ ارجع للمقترح" : "↺ Reset to recommended"}
                       </button>
                     )}
-                    <span className="text-[15px] font-medium text-[var(--ink-soft)]">{ar ? "بس اللي تختاره هيظهر في القائمة." : "Only what you pick shows in the sidebar."}</span>
+                    <span className="text-body-lg font-medium text-[var(--ink-soft)]">{ar ? "بس اللي تختاره هيظهر في القائمة." : "Only what you pick shows in the sidebar."}</span>
                   </div>
                   <div className="space-y-6">
                     {GOAL_GROUPS.map((grp) => {
@@ -335,11 +335,11 @@ export default function WorkspaceSetup() {
                       return (
                         <div key={grp.id}>
                           <div className="flex items-center justify-between mb-2.5">
-                            <p className="text-[16px] font-bold text-[var(--ink-soft)] uppercase tracking-wide">{ar ? grp.ar : grp.en}</p>
+                            <p className="text-title font-bold text-[var(--ink-soft)] uppercase tracking-wide">{ar ? grp.ar : grp.en}</p>
                             <button onClick={() => setState((p) => ({
                               ...p,
                               goals: allOn ? p.goals.filter((g) => !grp.goals.includes(g)) : Array.from(new Set([...p.goals, ...grp.goals])),
-                            }))} className="text-[14px] font-bold text-[var(--teal)] hover:underline underline-offset-2">
+                            }))} className="text-body-lg font-bold text-[var(--teal)] hover:underline underline-offset-2">
                               {allOn ? (ar ? "إلغاء الكل" : "Clear all") : (ar ? "اختر الكل" : "Select all")}
                             </button>
                           </div>
@@ -362,25 +362,25 @@ export default function WorkspaceSetup() {
                   <StepHead eyebrow="YOUR WORKSPACE" title="Last bit — name your workspace." />
                   <div className="space-y-5">
                     <div>
-                      <label className="text-[16px] font-bold text-[var(--ink-soft)] mb-1.5 block">Business name</label>
+                      <label className="text-title font-bold text-[var(--ink-soft)] mb-1.5 block">Business name</label>
                       <input value={state.companyName} onChange={(e) => set({ companyName: e.target.value })} autoFocus
                         placeholder={ar ? "اسم نشاطك" : "e.g. Nile Atelier"}
-                        className="w-full h-13 rounded-2xl border-2 border-[var(--ink)]/12 bg-[var(--paper)] px-4 py-3 text-[20px] font-semibold focus:outline-none focus:border-[var(--teal)] focus:ring-2 focus:ring-[var(--teal)]/25 transition placeholder:text-[var(--ink-soft)]" />
+                        className="w-full h-13 rounded-2xl border-2 border-[var(--ink)]/12 bg-[var(--paper)] px-4 py-3 text-heading font-semibold focus:outline-none focus:border-[var(--teal)] focus:ring-2 focus:ring-[var(--teal)]/25 transition placeholder:text-[var(--ink-soft)]" />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-[16px] font-bold text-[var(--ink-soft)] mb-1.5 block">Currency</label>
+                        <label className="text-title font-bold text-[var(--ink-soft)] mb-1.5 block">Currency</label>
                         <select value={state.currency} onChange={(e) => set({ currency: e.target.value })}
-                          className="w-full h-13 rounded-2xl border-2 border-[var(--ink)]/12 bg-[var(--paper)] px-4 text-[18px] font-semibold focus:outline-none focus:border-[var(--teal)] cursor-pointer">
+                          className="w-full h-13 rounded-2xl border-2 border-[var(--ink)]/12 bg-[var(--paper)] px-4 text-title font-semibold focus:outline-none focus:border-[var(--teal)] cursor-pointer">
                           {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
                         </select>
                       </div>
                       <div>
-                        <label className="text-[16px] font-bold text-[var(--ink-soft)] mb-1.5 block">Language</label>
+                        <label className="text-title font-bold text-[var(--ink-soft)] mb-1.5 block">Language</label>
                         <div className="flex h-13 p-1 rounded-2xl bg-[var(--mint)]">
                           {(["en", "ar"] as const).map((l) => (
                             <button key={l} type="button" onClick={() => set({ language: l })}
-                              className={"flex-1 rounded-xl text-[18px] font-bold transition-colors " + (state.language === l ? "bg-[var(--ink)] text-[var(--cream)]" : "text-[var(--teal-deep)]")}>
+                              className={"flex-1 rounded-xl text-title font-bold transition-colors " + (state.language === l ? "bg-[var(--ink)] text-[var(--cream)]" : "text-[var(--teal-deep)]")}>
                               {l === "en" ? "English" : "عربي"}
                             </button>
                           ))}
@@ -394,7 +394,7 @@ export default function WorkspaceSetup() {
               {/* 5 — Launch */}
               {step === 5 && (
                 <div className="text-center py-2">
-                  <p className="text-[18px] font-bold text-[var(--teal)] mb-2">ALL SET</p>
+                  <p className="text-title font-bold text-[var(--teal)] mb-2">ALL SET</p>
                   <h1 className="text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.02]" style={display}>
                     {state.companyName || "Your workspace"} is ready.
                   </h1>
@@ -404,7 +404,7 @@ export default function WorkspaceSetup() {
                     <Row label={ar ? "الوحدات" : "Modules"} value={`${state.goals.length + CORE_MODULES.filter(c=>!state.goals.includes(c)).length} ${ar ? "مُفعّلة" : "enabled"}`} icon={Boxes} tint="var(--teal)" />
                     <Row label={ar ? "العملة واللغة" : "Currency & language"} value={`${state.currency} · ${state.language === "en" ? "English" : "عربي"}`} icon={Wallet} tint="var(--purple-deep)" last />
                   </div>
-                  {error && <p className="mt-5 text-[16px] font-semibold text-rose-600 bg-rose-50 rounded-xl px-4 py-2.5 inline-block">{error}</p>}
+                  {error && <p className="mt-5 text-title font-semibold text-rose-600 bg-rose-50 rounded-xl px-4 py-2.5 inline-block">{error}</p>}
                 </div>
               )}
             </motion.div>
@@ -416,22 +416,22 @@ export default function WorkspaceSetup() {
       <div className="sticky bottom-0 bg-[var(--cream)]/85 backdrop-blur-xl border-t border-[var(--ink)]/6">
         <div className="max-w-[920px] mx-auto px-5 py-4 flex items-center justify-between">
           <button onClick={() => go(-1)} disabled={step === 0}
-            className="inline-flex items-center gap-1.5 text-[18px] font-bold text-[var(--ink-soft)] hover:text-[var(--ink)] disabled:opacity-0 transition">
+            className="inline-flex items-center gap-1.5 text-title font-bold text-[var(--ink-soft)] hover:text-[var(--ink)] disabled:opacity-0 transition">
             <ArrowLeft size={18} /> {ar ? "رجوع" : "Back"}
           </button>
 
           {step < TOTAL - 1 ? (
             <motion.button onClick={() => go(1)} disabled={!canNext} whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--teal)] text-[var(--cream)] text-[19px] font-bold px-7 py-3 hover:bg-[var(--teal-deep)] transition-colors disabled:opacity-40 shadow-[0_10px_30px_-10px_rgba(58,125,122,0.6)]">
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--teal)] text-[var(--cream)] text-title font-bold px-7 py-3 hover:bg-[var(--teal-deep)] transition-colors disabled:opacity-40 shadow-[0_10px_30px_-10px_rgba(58,125,122,0.6)]">
               {step === 0 ? (ar ? "يلا نبدأ" : "Let's go") : (ar ? "التالي" : "Continue")}
               <ArrowRight size={18} />
             </motion.button>
           ) : (
             <motion.button onClick={launch} disabled={saving} whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-full text-[19px] font-bold px-8 py-3 text-[var(--cream)] transition-opacity disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-full text-title font-bold px-8 py-3 text-[var(--cream)] transition-opacity disabled:opacity-60"
               style={{ background: "linear-gradient(135deg,var(--teal),var(--purple))" }}>
               {saving ? <Loader2 size={18} className="animate-spin" /> : <Rocket size={18} />}
-              {ar ? "ابدأ THOTH" : "Launch THOTH"}
+              {ar ? "ابدأ Bumblebee" : "Launch Bumblebee"}
             </motion.button>
           )}
         </div>
@@ -447,8 +447,8 @@ function Row({ label, value, icon: Icon, tint, last }: { label: string; value: s
         <Icon size={17} className="text-white" />
       </span>
       <div className="flex-1">
-        <p className="text-[15px] font-semibold text-[var(--ink-soft)] leading-none mb-1">{label}</p>
-        <p className="text-[19px] font-bold leading-none">{value}</p>
+        <p className="text-body-lg font-semibold text-[var(--ink-soft)] leading-none mb-1">{label}</p>
+        <p className="text-title font-bold leading-none">{value}</p>
       </div>
     </div>
   );

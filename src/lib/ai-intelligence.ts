@@ -1,5 +1,5 @@
 /**
- * THOTH AI Intelligence Layer — طبقة الذكاء الاصطناعي
+ * Buzz Intelligence Layer — طبقة الذكاء الاصطناعي
  *
  * Predictive analytics, anomaly detection, smart recommendations,
  * sentiment analysis, and document intelligence.

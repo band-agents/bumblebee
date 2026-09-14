@@ -69,7 +69,7 @@ export default function ConnectedSearch({ results, value, placeholder, onSelect,
 
   if (value) {
     return (
-      <div className={"flex items-center gap-2 h-10 px-3 rounded-xl border border-primary/30 bg-primary/5 text-[13px] " + (className || "")}>
+      <div className={"flex items-center gap-2 h-10 px-3 rounded-xl border border-primary/30 bg-primary/5 text-body " + (className || "")}>
         <span className="flex-1 truncate font-medium">{value}</span>
         {onClear && <button type="button" onClick={onClear} className="text-muted-foreground hover:text-foreground"><X size={14} /></button>}
       </div>
@@ -85,7 +85,7 @@ export default function ConnectedSearch({ results, value, placeholder, onSelect,
           onChange={e => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
           placeholder={placeholder || (ar ? "ابحث بالاسم أو الموبايل أو الكود..." : "Search by name, phone, SKU...")}
-          className="w-full h-10 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="w-full h-10 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20"
         />
       </div>
       {open && filtered.length > 0 && (
@@ -102,8 +102,8 @@ export default function ConnectedSearch({ results, value, placeholder, onSelect,
               >
                 <Icon size={14} className="text-muted-foreground/60 shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-medium truncate">{ar ? (r.name_ar || r.name) : r.name}</p>
-                  <p className="text-[10.5px] text-muted-foreground truncate">
+                  <p className="text-body font-medium truncate">{ar ? (r.name_ar || r.name) : r.name}</p>
+                  <p className="text-micro text-muted-foreground truncate">
                     {ar ? label.ar : label.en}
                     {r.phone && ` · ${r.phone}`}
                     {r.sku && ` · ${r.sku}`}
@@ -116,7 +116,7 @@ export default function ConnectedSearch({ results, value, placeholder, onSelect,
         </div>
       )}
       {open && query && filtered.length === 0 && (
-        <div className="absolute z-50 top-full mt-1 w-full bg-background border border-border/60 rounded-xl shadow-lg p-4 text-center text-[12px] text-muted-foreground">
+        <div className="absolute z-50 top-full mt-1 w-full bg-background border border-border/60 rounded-xl shadow-lg p-4 text-center text-caption text-muted-foreground">
           {ar ? "مفيش نتائج" : "No results found"}
         </div>
       )}

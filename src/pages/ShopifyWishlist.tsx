@@ -104,7 +104,7 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
 }
 
 const cardCls = "border border-border/40 rounded-xl bg-background";
-const inputCls = "h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
+const inputCls = "h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
 const numCls = `${inputCls} w-24 tabular-nums`;
 
 function AlertRow({ icon: Icon, titleEn, titleAr, descEn, descAr, on, onToggle, ar, children }: {
@@ -119,10 +119,10 @@ function AlertRow({ icon: Icon, titleEn, titleAr, descEn, descAr, on, onToggle, 
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-[13.5px] font-medium text-foreground">{ar ? titleAr : titleEn}</h3>
+            <h3 className="text-body font-medium text-foreground">{ar ? titleAr : titleEn}</h3>
             <Toggle on={on} onChange={onToggle} />
           </div>
-          <p className="text-[11.5px] text-muted-foreground mt-0.5 leading-relaxed">{ar ? descAr : descEn}</p>
+          <p className="text-micro text-muted-foreground mt-0.5 leading-relaxed">{ar ? descAr : descEn}</p>
           {on && children && <div className="mt-3.5 pt-3.5 border-t border-border/30">{children}</div>}
         </div>
       </div>
@@ -150,7 +150,7 @@ function ProductCardPreview({ cfg, dark, ar }: { cfg: WishlistConfig; dark: bool
       style={{ color: saved ? cfg.color : undefined }}>
       <Heart size={14} fill={saved ? cfg.color : "none"} className={saved ? "" : softText} style={saved ? { color: cfg.color } : {}} />
       {cfg.btnStyle === "icon_label" && (
-        <span className={`text-[10.5px] font-medium ${saved ? "" : softText}`} style={saved ? { color: cfg.color } : {}}>
+        <span className={`text-micro font-medium ${saved ? "" : softText}`} style={saved ? { color: cfg.color } : {}}>
           {saved ? (ar ? "محفوظ" : "Saved") : (ar ? cfg.labelAr : cfg.labelEn)}
         </span>
       )}
@@ -163,12 +163,12 @@ function ProductCardPreview({ cfg, dark, ar }: { cfg: WishlistConfig; dark: bool
         <div className={`rounded-2xl border overflow-hidden ${cardBg} shadow-sm`}>
           {/* image area */}
           <div className={`relative h-44 ${dark ? "bg-zinc-700/50" : "bg-gradient-to-br from-rose-50 to-orange-50"} flex items-center justify-center`}>
-            <span className="text-[52px]">👗</span>
+            <span className="text-display">👗</span>
             {cfg.btnPos === "image-corner" && (
               <div className="absolute top-2.5 end-2.5">{heartBtn}</div>
             )}
             {cfg.showCount && (
-              <span className={`absolute bottom-2.5 start-2.5 text-[9.5px] px-2 py-1 rounded-full ${dark ? "bg-zinc-900/80 text-zinc-300" : "bg-white/90 text-zinc-600"} shadow-sm flex items-center gap-1`}>
+              <span className={`absolute bottom-2.5 start-2.5 text-micro px-2 py-1 rounded-full ${dark ? "bg-zinc-900/80 text-zinc-300" : "bg-white/90 text-zinc-600"} shadow-sm flex items-center gap-1`}>
                 <Heart size={9} style={{ color: cfg.color }} fill={cfg.color} />
                 {ar ? "284 شخص يريده" : "284 people want this"}
               </span>
@@ -178,12 +178,12 @@ function ProductCardPreview({ cfg, dark, ar }: { cfg: WishlistConfig; dark: bool
           <div className="p-3.5">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p className={`text-[12.5px] font-medium truncate ${frameText}`}>{ar ? "فستان كتان صيفي" : "Linen Summer Dress"}</p>
-                <p className={`text-[11px] mt-0.5 ${softText}`}>{ar ? "1,450 ج.م" : "EGP 1,450"}</p>
+                <p className={`text-caption font-medium truncate ${frameText}`}>{ar ? "فستان كتان صيفي" : "Linen Summer Dress"}</p>
+                <p className={`text-micro mt-0.5 ${softText}`}>{ar ? "1,450 ج.م" : "EGP 1,450"}</p>
               </div>
               {cfg.btnPos === "under-title" && heartBtn}
             </div>
-            <button className="mt-3 w-full h-8 rounded-lg text-[10.5px] font-medium text-white flex items-center justify-center gap-1.5"
+            <button className="mt-3 w-full h-8 rounded-lg text-micro font-medium text-white flex items-center justify-center gap-1.5"
               style={{ background: dark ? "#fafafa" : "#18181b", color: dark ? "#18181b" : "#fafafa" }}>
               <ShoppingCart size={11} />{ar ? "أضف للسلة" : "Add to cart"}
             </button>
@@ -254,13 +254,13 @@ export default function ShopifyWishlistPage() {
   return (
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[1020px] mx-auto">
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
 
       {/* Header */}
-      <Link href="/shopify/kit" className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors mb-3">
+      <Link href="/shopify/kit" className="inline-flex items-center gap-1 text-micro text-muted-foreground hover:text-foreground transition-colors mb-3">
         <ChevronLeft size={12} className={ar ? "rotate-180" : ""} />{ar ? "عدة شوبيفاي" : "Shopify Kit"}
       </Link>
       <div className="flex items-start justify-between mb-6">
@@ -269,16 +269,16 @@ export default function ShopifyWishlistPage() {
             <Heart size={21} className="text-white" />
           </div>
           <div>
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "قائمة الأمنيات" : "Wishlist"}
             </h1>
-            <p className="text-[12px] text-muted-foreground mt-0.5">
+            <p className="text-caption text-muted-foreground mt-0.5">
               {ar ? "احفظ وشارك وتنبيهات تحوّل المتصفح إلى مشترٍ" : "Save, share, and alerts that turn browsers into buyers"}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2.5">
-          <span className={`text-[11px] ${enabled ? "text-rose-600" : "text-muted-foreground"}`}>
+          <span className={`text-micro ${enabled ? "text-rose-600" : "text-muted-foreground"}`}>
             {enabled ? (ar ? "مفعّل" : "Live") : (ar ? "موقوف" : "Off")}
           </span>
           <Toggle on={enabled} onChange={toggleEnabled} />
@@ -289,7 +289,7 @@ export default function ShopifyWishlistPage() {
       <div className="flex items-center gap-1 p-1 rounded-xl border border-border/40 bg-card w-fit mb-6 overflow-x-auto max-w-full">
         {TABS.map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
-            className={`h-8 px-3.5 rounded-lg text-[12px] font-medium whitespace-nowrap transition-colors ${tab === t.key ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+            className={`h-8 px-3.5 rounded-lg text-caption font-medium whitespace-nowrap transition-colors ${tab === t.key ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
             {ar ? t.ar : t.en}
           </button>
         ))}
@@ -303,12 +303,12 @@ export default function ShopifyWishlistPage() {
               { icon: Heart, val: totalSaves.toLocaleString(), labelEn: "Items wishlisted", labelAr: "منتج محفوظ", cls: "text-rose-600" },
               { icon: Users, val: "1,027", labelEn: "Wishlisters", labelAr: "عميل لديه قائمة", cls: "text-blue-600" },
               { icon: ShoppingCart, val: "18.4%", labelEn: "Wishlist → cart", labelAr: "من القائمة للسلة", cls: "text-emerald-600" },
-              { icon: Bell, val: "642", labelEn: "Alerts sent / mo", labelAr: "تنبيه شهريًا", cls: "text-violet-600" },
+              { icon: Bell, val: "642", labelEn: "Alerts sent / mo", labelAr: "تنبيه شهريًا", cls: "text-chart-4" },
             ].map((k, i) => (
               <div key={i} className={`${cardCls} p-4`}>
                 <k.icon size={14} className={`${k.cls} mb-2`} />
-                <p className={`text-[18px] font-medium tabular-nums ${k.cls}`} style={{ fontFamily: "var(--app-font-serif)" }}>{k.val}</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">{ar ? k.labelAr : k.labelEn}</p>
+                <p className={`text-title font-medium tabular-nums ${k.cls}`} style={{ fontFamily: "var(--app-font-serif)" }}>{k.val}</p>
+                <p className="text-micro text-muted-foreground mt-0.5">{ar ? k.labelAr : k.labelEn}</p>
               </div>
             ))}
           </div>
@@ -316,29 +316,29 @@ export default function ShopifyWishlistPage() {
           {/* Top wishlisted products */}
           <div className={`${cardCls} overflow-hidden`}>
             <div className="px-5 py-3.5 border-b border-border/30 flex items-center justify-between">
-              <h3 className="text-[13.5px] font-medium flex items-center gap-1.5"><BarChart3 size={13} />{ar ? "الأكثر حفظًا" : "Most wishlisted"}</h3>
-              <span className="text-[10px] text-muted-foreground">{ar ? "آخر 30 يوم" : "Last 30 days"}</span>
+              <h3 className="text-body font-medium flex items-center gap-1.5"><BarChart3 size={13} />{ar ? "الأكثر حفظًا" : "Most wishlisted"}</h3>
+              <span className="text-micro text-muted-foreground">{ar ? "آخر 30 يوم" : "Last 30 days"}</span>
             </div>
             {TOP_PRODUCTS.map((p, i) => (
               <div key={p.id} className={`px-5 py-3.5 flex items-center gap-3.5 ${i > 0 ? "border-t border-border/20" : ""}`}>
-                <span className="text-[22px] w-8 text-center">{p.emoji}</span>
+                <span className="text-heading w-8 text-center">{p.emoji}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-[13px] font-medium text-foreground truncate">{ar ? p.nameAr : p.nameEn}</p>
-                    {p.stock === 0 && <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-rose-50 text-rose-600">{ar ? "نفد" : "Out of stock"}</span>}
-                    {p.stock > 0 && p.stock <= 5 && <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-600">{ar ? `باقي ${p.stock}` : `${p.stock} left`}</span>}
+                    <p className="text-body font-medium text-foreground truncate">{ar ? p.nameAr : p.nameEn}</p>
+                    {p.stock === 0 && <span className="text-micro font-medium px-1.5 py-0.5 rounded-full bg-rose-50 text-rose-600">{ar ? "نفد" : "Out of stock"}</span>}
+                    {p.stock > 0 && p.stock <= 5 && <span className="text-micro font-medium px-1.5 py-0.5 rounded-full bg-warning/10 text-warning">{ar ? `باقي ${p.stock}` : `${p.stock} left`}</span>}
                   </div>
                   <div className="h-1.5 rounded-full bg-muted mt-1.5 max-w-[220px]">
                     <div className="h-full rounded-full bg-rose-400" style={{ width: `${(p.saves / maxSaves) * 100}%` }} />
                   </div>
                 </div>
                 <div className="text-end w-16">
-                  <p className="text-[13.5px] font-medium tabular-nums text-rose-600">{p.saves}</p>
-                  <p className="text-[9.5px] text-muted-foreground">{ar ? "حفظ" : "saves"}</p>
+                  <p className="text-body font-medium tabular-nums text-rose-600">{p.saves}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "حفظ" : "saves"}</p>
                 </div>
                 <div className="hidden md:block text-end w-20">
-                  <p className="text-[12px] tabular-nums text-muted-foreground">{p.addedToCart}</p>
-                  <p className="text-[9.5px] text-muted-foreground/60">{ar ? "أضيف للسلة" : "to cart"}</p>
+                  <p className="text-caption tabular-nums text-muted-foreground">{p.addedToCart}</p>
+                  <p className="text-micro text-muted-foreground/60">{ar ? "أضيف للسلة" : "to cart"}</p>
                 </div>
               </div>
             ))}
@@ -347,7 +347,7 @@ export default function ShopifyWishlistPage() {
           {/* Insight strip */}
           <div className="flex items-start gap-3 px-4 py-3.5 rounded-xl border border-rose-100 bg-rose-50/40">
             <Sparkles size={14} className="text-rose-500 mt-0.5 shrink-0" />
-            <p className="text-[12px] text-foreground/80 leading-relaxed">
+            <p className="text-caption text-foreground/80 leading-relaxed">
               {ar
                 ? "«وشاح حرير — النيل» نفد من المخزون وعليه 198 حفظ. أعد التخزين وسيرسل التطبيق تنبيهات «عاد للتوفر» تلقائيًا — طلبات شبه مضمونة."
                 : "\"Silk Scarf — Nile\" is out of stock with 198 saves. Restock it and the app auto-sends back-in-stock alerts — near-guaranteed orders."}
@@ -366,7 +366,7 @@ export default function ShopifyWishlistPage() {
                 placeholder={ar ? "بحث بالاسم أو الإيميل..." : "Search name or email..."}
                 className={`${inputCls} w-full ps-8`} />
             </div>
-            <span className="text-[11px] text-muted-foreground ms-auto">{filteredLists.length} {ar ? "قائمة" : "wishlists"}</span>
+            <span className="text-micro text-muted-foreground ms-auto">{filteredLists.length} {ar ? "قائمة" : "wishlists"}</span>
           </div>
 
           <div className={`${cardCls} overflow-hidden`}>
@@ -376,38 +376,38 @@ export default function ShopifyWishlistPage() {
                 <div key={w.id} className={i > 0 ? "border-t border-border/20" : ""}>
                   <button onClick={() => setExpanded(open ? null : w.id)}
                     className="w-full px-5 py-3.5 flex items-center gap-3.5 hover:bg-muted/30 transition-colors text-start">
-                    <div className="w-9 h-9 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-[11px] font-semibold shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-micro font-semibold shrink-0">
                       {(ar ? w.nameAr : w.nameEn).split(" ").map(s => s[0]).slice(0, 2).join("")}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-[13px] font-medium text-foreground truncate">{ar ? w.nameAr : w.nameEn}</p>
+                        <p className="text-body font-medium text-foreground truncate">{ar ? w.nameAr : w.nameEn}</p>
                         {w.shared && (
-                          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-600 flex items-center gap-0.5">
+                          <span className="text-micro font-medium px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-600 flex items-center gap-0.5">
                             <Share2 size={8} />{ar ? "مشاركة" : "Shared"}
                           </span>
                         )}
                       </div>
-                      <p className="text-[10.5px] text-muted-foreground truncate">{w.email}</p>
+                      <p className="text-micro text-muted-foreground truncate">{w.email}</p>
                     </div>
                     <div className="flex -space-x-1.5 rtl:space-x-reverse">
                       {w.items.slice(0, 4).map((it, j) => (
-                        <span key={j} className="w-7 h-7 rounded-full bg-muted border-2 border-background flex items-center justify-center text-[12px]">{it.emoji}</span>
+                        <span key={j} className="w-7 h-7 rounded-full bg-muted border-2 border-background flex items-center justify-center text-caption">{it.emoji}</span>
                       ))}
                     </div>
-                    <span className="text-[11px] text-muted-foreground tabular-nums w-14 text-end">{w.items.length} {ar ? "منتج" : "items"}</span>
+                    <span className="text-micro text-muted-foreground tabular-nums w-14 text-end">{w.items.length} {ar ? "منتج" : "items"}</span>
                     <ChevronDown size={14} className={`text-muted-foreground/50 transition-transform ${open ? "rotate-180" : ""}`} />
                   </button>
                   {open && (
                     <div className="px-5 pb-4 ps-[68px]">
                       <div className="flex flex-wrap gap-2">
                         {w.items.map((it, j) => (
-                          <span key={j} className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 rounded-lg bg-muted/60 text-foreground/80">
+                          <span key={j} className="inline-flex items-center gap-1.5 text-micro px-2.5 py-1.5 rounded-lg bg-muted/60 text-foreground/80">
                             <span>{it.emoji}</span>{ar ? it.nameAr : it.nameEn}
                           </span>
                         ))}
                       </div>
-                      <p className="text-[10px] text-muted-foreground/60 mt-2.5 flex items-center gap-1">
+                      <p className="text-micro text-muted-foreground/60 mt-2.5 flex items-center gap-1">
                         <Eye size={10} />{ar ? `آخر تحديث ${w.updated}` : `Last updated ${w.updated}`}
                       </p>
                     </div>
@@ -418,7 +418,7 @@ export default function ShopifyWishlistPage() {
             {filteredLists.length === 0 && (
               <div className="py-12 text-center">
                 <Heart size={20} className="mx-auto mb-2 text-muted-foreground/30" />
-                <p className="text-[12.5px] text-muted-foreground">{ar ? "لا توجد نتائج" : "No wishlists match"}</p>
+                <p className="text-caption text-muted-foreground">{ar ? "لا توجد نتائج" : "No wishlists match"}</p>
               </div>
             )}
           </div>
@@ -433,7 +433,7 @@ export default function ShopifyWishlistPage() {
             descEn="When a saved item's price drops, the customer hears about it first — the single highest-converting message in e-commerce."
             descAr="لما سعر منتج محفوظ ينخفض، العميل يعرف أولًا — أعلى رسالة تحويلًا في التجارة الإلكترونية."
             on={cfg.priceDropOn} onToggle={v => update({ priceDropOn: v })}>
-            <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+            <label className="flex items-center gap-2 text-caption text-muted-foreground">
               {ar ? "أرسل فقط إذا انخفض السعر" : "Only send when price drops"}
               <input type="number" min="1" max="90" value={cfg.priceDropMinPct}
                 onChange={e => update({ priceDropMinPct: parseInt(e.target.value) || 1 })} className={numCls} />% {ar ? "أو أكثر" : "or more"}
@@ -451,7 +451,7 @@ export default function ShopifyWishlistPage() {
             descEn="A gentle 'almost gone' nudge when a saved item is running out — honest urgency, not fake timers."
             descAr="تنبيه لطيف «قارب على النفاد» عندما يوشك منتج محفوظ على الانتهاء — استعجال صادق بلا عدادات مزيفة."
             on={cfg.lowStockOn} onToggle={v => update({ lowStockOn: v })}>
-            <label className="flex items-center gap-2 text-[12px] text-muted-foreground">
+            <label className="flex items-center gap-2 text-caption text-muted-foreground">
               {ar ? "أرسل عندما يتبقى" : "Send when stock falls below"}
               <input type="number" min="1" max="50" value={cfg.lowStockUnits}
                 onChange={e => update({ lowStockUnits: parseInt(e.target.value) || 1 })} className={numCls} />{ar ? "قطعة" : "units"}
@@ -460,7 +460,7 @@ export default function ShopifyWishlistPage() {
 
           {/* Channels & throttle */}
           <div className={`${cardCls} p-5 space-y-4`}>
-            <h3 className="text-[13.5px] font-medium flex items-center gap-1.5"><Bell size={13} />{ar ? "القنوات والحدود" : "Channels & limits"}</h3>
+            <h3 className="text-body font-medium flex items-center gap-1.5"><Bell size={13} />{ar ? "القنوات والحدود" : "Channels & limits"}</h3>
             {[
               { key: "channelEmail" as const, icon: Mail, en: "Email", ar: "البريد الإلكتروني" },
               { key: "channelPush" as const, icon: Smartphone, en: "Push notification", ar: "إشعار الجوال" },
@@ -469,15 +469,15 @@ export default function ShopifyWishlistPage() {
               <div key={c.key} className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2.5">
                   <c.icon size={14} className="text-muted-foreground" />
-                  <p className="text-[12.5px] text-foreground">{ar ? c.ar : c.en}</p>
+                  <p className="text-caption text-foreground">{ar ? c.ar : c.en}</p>
                 </div>
                 <Toggle on={cfg[c.key]} onChange={v => update({ [c.key]: v } as Partial<WishlistConfig>)} />
               </div>
             ))}
             <div className="flex items-center justify-between gap-4 pt-3 border-t border-border/30">
               <div>
-                <p className="text-[12.5px] text-foreground">{ar ? "حد التنبيهات" : "Alert throttle"}</p>
-                <p className="text-[10.5px] text-muted-foreground">{ar ? "أقصى عدد تنبيهات لكل عميل أسبوعيًا — الاحترام يبيع" : "Max alerts per customer per week — respect converts"}</p>
+                <p className="text-caption text-foreground">{ar ? "حد التنبيهات" : "Alert throttle"}</p>
+                <p className="text-micro text-muted-foreground">{ar ? "أقصى عدد تنبيهات لكل عميل أسبوعيًا — الاحترام يبيع" : "Max alerts per customer per week — respect converts"}</p>
               </div>
               <input type="number" min="1" max="14" value={cfg.maxAlertsPerWeek}
                 onChange={e => update({ maxAlertsPerWeek: parseInt(e.target.value) || 1 })} className={numCls} />
@@ -491,39 +491,39 @@ export default function ShopifyWishlistPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-6 items-start">
           <div className="space-y-4">
             <div className={`${cardCls} p-5 space-y-4`}>
-              <h3 className="text-[13.5px] font-medium">{ar ? "زر القلب" : "Wishlist button"}</h3>
+              <h3 className="text-body font-medium">{ar ? "زر القلب" : "Wishlist button"}</h3>
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground mb-2">{ar ? "الأسلوب" : "Style"}</p>
+                <p className="text-micro font-medium text-muted-foreground mb-2">{ar ? "الأسلوب" : "Style"}</p>
                 <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => update({ btnStyle: "icon" })}
-                    className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.btnStyle === "icon" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                    className={`h-9 rounded-lg border text-micro transition-colors ${cfg.btnStyle === "icon" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                     {ar ? "قلب فقط" : "Heart only"}
                   </button>
                   <button onClick={() => update({ btnStyle: "icon_label" })}
-                    className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.btnStyle === "icon_label" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                    className={`h-9 rounded-lg border text-micro transition-colors ${cfg.btnStyle === "icon_label" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                     {ar ? "قلب + نص" : "Heart + label"}
                   </button>
                 </div>
               </div>
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground mb-2">{ar ? "الموضع" : "Placement"}</p>
+                <p className="text-micro font-medium text-muted-foreground mb-2">{ar ? "الموضع" : "Placement"}</p>
                 <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => update({ btnPos: "image-corner" })}
-                    className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.btnPos === "image-corner" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                    className={`h-9 rounded-lg border text-micro transition-colors ${cfg.btnPos === "image-corner" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                     {ar ? "ركن الصورة" : "Image corner"}
                   </button>
                   <button onClick={() => update({ btnPos: "under-title" })}
-                    className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.btnPos === "under-title" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                    className={`h-9 rounded-lg border text-micro transition-colors ${cfg.btnPos === "under-title" ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                     {ar ? "بجانب الاسم" : "Beside title"}
                   </button>
                 </div>
               </div>
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground mb-2">{ar ? "حركة الحفظ" : "Save animation"}</p>
+                <p className="text-micro font-medium text-muted-foreground mb-2">{ar ? "حركة الحفظ" : "Save animation"}</p>
                 <div className="grid grid-cols-3 gap-2">
                   {([["pop", ar ? "نبضة" : "Pop"], ["pulse", ar ? "وميض" : "Pulse"], ["none", ar ? "بدون" : "None"]] as [HeartAnim, string][]).map(([k, l]) => (
                     <button key={k} onClick={() => update({ anim: k })}
-                      className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.anim === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                      className={`h-9 rounded-lg border text-micro transition-colors ${cfg.anim === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                       {l}
                     </button>
                   ))}
@@ -532,11 +532,11 @@ export default function ShopifyWishlistPage() {
               {cfg.btnStyle === "icon_label" && (
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "النص (EN)" : "Label (EN)"}</label>
+                    <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "النص (EN)" : "Label (EN)"}</label>
                     <input value={cfg.labelEn} onChange={e => update({ labelEn: e.target.value })} className={`${inputCls} w-full`} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "النص (AR)" : "Label (AR)"}</label>
+                    <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "النص (AR)" : "Label (AR)"}</label>
                     <input value={cfg.labelAr} onChange={e => update({ labelAr: e.target.value })} className={`${inputCls} w-full`} dir="rtl" />
                   </div>
                 </div>
@@ -544,9 +544,9 @@ export default function ShopifyWishlistPage() {
             </div>
 
             <div className={`${cardCls} p-5 space-y-4`}>
-              <h3 className="text-[13.5px] font-medium">{ar ? "الشكل" : "Appearance"}</h3>
+              <h3 className="text-body font-medium">{ar ? "الشكل" : "Appearance"}</h3>
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground mb-2">{ar ? "لون القلب" : "Heart color"}</p>
+                <p className="text-micro font-medium text-muted-foreground mb-2">{ar ? "لون القلب" : "Heart color"}</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   {SWATCHES.map(c => (
                     <button key={c} onClick={() => update({ color: c })}
@@ -559,17 +559,17 @@ export default function ShopifyWishlistPage() {
               </div>
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-[12.5px] text-foreground">{ar ? "عداد الإثبات الاجتماعي" : "Social-proof counter"}</p>
-                  <p className="text-[10.5px] text-muted-foreground">{ar ? "«284 شخص يريده» على بطاقة المنتج" : "\"284 people want this\" on the product card"}</p>
+                  <p className="text-caption text-foreground">{ar ? "عداد الإثبات الاجتماعي" : "Social-proof counter"}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? "«284 شخص يريده» على بطاقة المنتج" : "\"284 people want this\" on the product card"}</p>
                 </div>
                 <Toggle on={cfg.showCount} onChange={v => update({ showCount: v })} />
               </div>
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground mb-2">{ar ? "تخطيط صفحة القائمة" : "Wishlist page layout"}</p>
+                <p className="text-micro font-medium text-muted-foreground mb-2">{ar ? "تخطيط صفحة القائمة" : "Wishlist page layout"}</p>
                 <div className="grid grid-cols-2 gap-2">
                   {([["grid", ar ? "شبكة" : "Grid"], ["list", ar ? "قائمة" : "List"]] as [PageLayout, string][]).map(([k, l]) => (
                     <button key={k} onClick={() => update({ layout: k })}
-                      className={`h-9 rounded-lg border text-[11.5px] transition-colors ${cfg.layout === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
+                      className={`h-9 rounded-lg border text-micro transition-colors ${cfg.layout === k ? "border-primary bg-primary/5 text-foreground" : "border-border/60 text-muted-foreground hover:bg-muted"}`}>
                       {l}
                     </button>
                   ))}
@@ -581,14 +581,14 @@ export default function ShopifyWishlistPage() {
           {/* Live preview */}
           <div className="lg:sticky lg:top-6">
             <div className="flex items-center justify-between mb-2.5">
-              <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "معاينة حية — جرّب القلب" : "Live preview — try the heart"}</p>
+              <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "معاينة حية — جرّب القلب" : "Live preview — try the heart"}</p>
               <button onClick={() => setDarkPreview(d => !d)}
                 className="w-8 h-8 rounded-lg border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 {darkPreview ? <Sun size={13} /> : <Moon size={13} />}
               </button>
             </div>
             <ProductCardPreview cfg={cfg} dark={darkPreview} ar={ar} />
-            <p className="text-[10.5px] text-muted-foreground/60 mt-2.5 text-center">
+            <p className="text-micro text-muted-foreground/60 mt-2.5 text-center">
               {ar ? "اضغط القلب في المعاينة لتجربة الحركة" : "Click the heart in the preview to feel the animation"}
             </p>
           </div>
@@ -599,7 +599,7 @@ export default function ShopifyWishlistPage() {
       {tab === "settings" && (
         <div className="space-y-4 max-w-[620px]">
           <div className={`${cardCls} p-5 space-y-4`}>
-            <h3 className="text-[13.5px] font-medium">{ar ? "السلوك" : "Behavior"}</h3>
+            <h3 className="text-body font-medium">{ar ? "السلوك" : "Behavior"}</h3>
             {[
               { key: "guestWishlist" as const, en: "Guest wishlists", ar: "قوائم الزوار", descEn: "Visitors can save without an account — stored locally until they sign up", descAr: "الزوار يحفظون بدون حساب — تُخزن محليًا حتى يسجلوا" },
               { key: "mergeOnLogin" as const, en: "Merge on login", ar: "الدمج عند الدخول", descEn: "Guest list merges into the account list on sign-in, nothing lost", descAr: "قائمة الزائر تندمج مع قائمة الحساب عند الدخول، لا شيء يضيع" },
@@ -607,8 +607,8 @@ export default function ShopifyWishlistPage() {
             ].map(s => (
               <div key={s.key} className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-[12.5px] text-foreground">{ar ? s.ar : s.en}</p>
-                  <p className="text-[10.5px] text-muted-foreground">{ar ? s.descAr : s.descEn}</p>
+                  <p className="text-caption text-foreground">{ar ? s.ar : s.en}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? s.descAr : s.descEn}</p>
                 </div>
                 <Toggle on={cfg[s.key]} onChange={v => update({ [s.key]: v } as Partial<WishlistConfig>)} />
               </div>
@@ -616,18 +616,18 @@ export default function ShopifyWishlistPage() {
           </div>
 
           <div className={`${cardCls} p-5 space-y-4`}>
-            <h3 className="text-[13.5px] font-medium flex items-center gap-1.5"><Link2 size={13} />{ar ? "المشاركة" : "Sharing"}</h3>
+            <h3 className="text-body font-medium flex items-center gap-1.5"><Link2 size={13} />{ar ? "المشاركة" : "Sharing"}</h3>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-[12.5px] text-foreground">{ar ? "روابط مشاركة عامة" : "Public share links"}</p>
-                <p className="text-[10.5px] text-muted-foreground">{ar ? "قوائم قابلة للمشاركة — مثالية لهدايا الأعياد والزفاف" : "Shareable lists — perfect for gifting seasons and registries"}</p>
+                <p className="text-caption text-foreground">{ar ? "روابط مشاركة عامة" : "Public share links"}</p>
+                <p className="text-micro text-muted-foreground">{ar ? "قوائم قابلة للمشاركة — مثالية لهدايا الأعياد والزفاف" : "Shareable lists — perfect for gifting seasons and registries"}</p>
               </div>
               <Toggle on={cfg.shareLinks} onChange={v => update({ shareLinks: v })} />
             </div>
           </div>
 
           <button onClick={() => { update(DEFAULT_CONFIG); showToast(ar ? "تمت إعادة الضبط" : "Reset to defaults"); }}
-            className="text-[11.5px] text-muted-foreground hover:text-rose-600 transition-colors">
+            className="text-micro text-muted-foreground hover:text-rose-600 transition-colors">
             {ar ? "إعادة كل الإعدادات للوضع الافتراضي" : "Reset all settings to defaults"}
           </button>
         </div>

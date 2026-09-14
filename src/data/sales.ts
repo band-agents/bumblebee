@@ -40,16 +40,16 @@ export const PIPELINE_STAGES: DealStage[] = ["lead", "qualified", "proposal", "n
 
 export const STAGE_META: Record<DealStage, { en: string; ar: string; dot: string; pill: string }> = {
   lead:        { en: "Lead",        ar: "عميل محتمل",  dot: "bg-stone-400",    pill: "bg-stone-100 text-stone-600 border border-stone-200" },
-  qualified:   { en: "Qualified",   ar: "مؤهل",       dot: "bg-primary",      pill: "bg-primary/8 text-primary border border-primary/20" },
-  proposal:    { en: "Proposal",    ar: "عرض سعر",    dot: "bg-amber-500",    pill: "bg-amber-50 text-amber-700 border border-amber-200" },
-  negotiation: { en: "Negotiation", ar: "تفاوض",      dot: "bg-violet-500",   pill: "bg-violet-50 text-violet-700 border border-violet-200" },
+  qualified:   { en: "Qualified",   ar: "مؤهل",       dot: "bg-primary",      pill: "bg-primary/8 text-brand-ink border border-primary/20" },
+  proposal:    { en: "Proposal",    ar: "عرض سعر",    dot: "bg-warning",    pill: "bg-warning/10 text-warning border border-warning/30" },
+  negotiation: { en: "Negotiation", ar: "تفاوض",      dot: "bg-chart-4",   pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
   won:         { en: "Won",         ar: "فاز",        dot: "bg-emerald-500",  pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   lost:        { en: "Lost",        ar: "خسر",        dot: "bg-rose-500",     pill: "bg-rose-50 text-rose-600 border border-rose-200" },
 };
 
 export const DEAL_PRIORITY_META: Record<DealPriority, { en: string; ar: string; dot: string; pill: string }> = {
-  high:   { en: "High",   ar: "مرتفع",  dot: "bg-amber-500",  pill: "bg-amber-50 text-amber-700 border border-amber-200" },
-  medium: { en: "Medium", ar: "متوسط",  dot: "bg-primary",    pill: "bg-primary/8 text-primary border border-primary/20" },
+  high:   { en: "High",   ar: "مرتفع",  dot: "bg-warning",  pill: "bg-warning/10 text-warning border border-warning/30" },
+  medium: { en: "Medium", ar: "متوسط",  dot: "bg-primary",    pill: "bg-primary/8 text-brand-ink border border-primary/20" },
   low:    { en: "Low",    ar: "منخفض",  dot: "bg-muted-foreground/40", pill: "bg-muted text-muted-foreground border border-border" },
 };
 
@@ -319,7 +319,7 @@ const DEFAULT_DEALS: Deal[] = [
 
 import { getLiveDeals } from "../lib/dashboard-bridge";
 
-const STORAGE_KEY = "thoth_deals";
+const STORAGE_KEY = "bumblebee_deals";
 
 export function loadDeals(): Deal[] {
   // Live data bridge (production Supabase data)

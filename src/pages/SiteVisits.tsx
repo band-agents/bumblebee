@@ -31,7 +31,7 @@ type Org = Database["public"]["Tables"]["organizations"]["Row"];
 
 const VISIT_STATUSES = [
   { value: "scheduled",   en: "Scheduled",   ar: "مجدولة",    pill: "bg-blue-50 text-blue-600",    icon: Clock },
-  { value: "in_progress", en: "In Progress", ar: "جارية",     pill: "bg-amber-50 text-amber-600",  icon: Ruler },
+  { value: "in_progress", en: "In Progress", ar: "جارية",     pill: "bg-warning/10 text-warning",  icon: Ruler },
   { value: "completed",   en: "Completed",   ar: "مكتملة",    pill: "bg-emerald-50 text-emerald-600", icon: CheckCircle2 },
   { value: "cancelled",   en: "Cancelled",   ar: "ملغية",     pill: "bg-rose-50 text-rose-600",    icon: XCircle },
 ] as const;
@@ -40,7 +40,7 @@ const APPROVAL_STATUSES = [
   { value: "draft",          en: "Draft",          ar: "مسودة",            pill: "bg-zinc-100 text-zinc-600" },
   { value: "submitted",      en: "Submitted",      ar: "تم الإرسال",       pill: "bg-blue-50 text-blue-600" },
   { value: "approved",       en: "Approved",       ar: "تم اعتماد المقاسات", pill: "bg-emerald-50 text-emerald-600" },
-  { value: "needs_revision", en: "Needs Revision", ar: "محتاجة تعديل",     pill: "bg-amber-50 text-amber-600" },
+  { value: "needs_revision", en: "Needs Revision", ar: "محتاجة تعديل",     pill: "bg-warning/10 text-warning" },
 ] as const;
 
 const ROOM_TYPES = [
@@ -79,9 +79,9 @@ const FILE_TYPES = [
 
 // ─── Helpers ──────────────────────────────────────────────
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function genVisitNumber(): string {
   const d = new Date();
@@ -212,7 +212,7 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0">
           <div className="flex items-center justify-between">
-            <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
               {editVisit ? (ar ? "تعديل المعاينة" : "Edit Visit") : (ar ? "معاينة جديدة" : "New Site Visit")}
             </h2>
             <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -220,7 +220,7 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
           <div className="flex gap-1 mt-3">
             {tabs.map((t) => (
               <button key={t.id} onClick={() => setTab(t.id)}
-                className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+                className={`px-3 py-1.5 rounded-lg text-caption font-medium transition-colors ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
                 {ar ? t.ar : t.en}
               </button>
             ))}
@@ -278,10 +278,10 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
             </>
           )}
 
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSubmit} disabled={loading || !form.visitNumber.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {editVisit ? (ar ? "حفظ" : "Save") : (ar ? "أنشئ المعاينة" : "Create Visit")}
           </button>
@@ -345,7 +345,7 @@ function MeasurementModal({ onClose, onSaved, visitId, editMeasurement, ar, work
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editMeasurement ? (ar ? "تعديل المقاس" : "Edit Measurement") : (ar ? "مقاس جديد" : "New Measurement")}
           </h3>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -379,7 +379,7 @@ function MeasurementModal({ onClose, onSaved, visitId, editMeasurement, ar, work
             <textarea className={inputCls + " h-16 py-2 resize-none"} value={notes} onChange={(e) => setNotes(e.target.value)} /></div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading || !roomName.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "حفظ" : "Save"}
           </button>
@@ -532,14 +532,14 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50 transition-colors"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{visit.visit_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-            {allApproved && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-50 text-emerald-600">{ar ? "المقاسات معتمدة" : "All Approved"}</span>}
+            <span className="text-micro font-mono text-muted-foreground">{visit.visit_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            {allApproved && <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-emerald-50 text-emerald-600">{ar ? "المقاسات معتمدة" : "All Approved"}</span>}
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {visit.customer_name || visit.visit_number}
           </h2>
-          <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+          <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
             {visit.site_address && <span className="flex items-center gap-1"><MapPin size={10} />{visit.site_address}</span>}
             {visit.visit_date && <span className="flex items-center gap-1"><Calendar size={10} />{visit.visit_date}</span>}
             {visit.assigned_technician && <span className="flex items-center gap-1"><User size={10} />{visit.assigned_technician}</span>}
@@ -547,9 +547,9 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
-          {visit.status === "scheduled" && <button onClick={() => updateVisitStatus("in_progress")} className="text-[11px] text-amber-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-amber-200"><Ruler size={11} /> {ar ? "ابدأ" : "Start"}</button>}
-          {visit.status === "in_progress" && <button onClick={() => updateVisitStatus("completed")} className="text-[11px] text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "اكتملت" : "Complete"}</button>}
-          <button onClick={() => setEditVisit(true)} className="text-[11px] text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
+          {visit.status === "scheduled" && <button onClick={() => updateVisitStatus("in_progress")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><Ruler size={11} /> {ar ? "ابدأ" : "Start"}</button>}
+          {visit.status === "in_progress" && <button onClick={() => updateVisitStatus("completed")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-emerald-200"><CheckCircle2 size={11} /> {ar ? "اكتملت" : "Complete"}</button>}
+          <button onClick={() => setEditVisit(true)} className="text-micro text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
         </div>
       </div>
 
@@ -557,11 +557,11 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
       <div className="flex gap-1 mb-5 border-b border-border/30 pb-3">
         {detailTabs.map((t) => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5
-              ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+            className={`px-3 py-2 rounded-lg text-caption font-medium transition-colors flex items-center gap-1.5
+              ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <t.icon size={13} />{ar ? t.ar : t.en}
-            {t.id === "measurements" && measurements.length > 0 && <span className="text-[10px] bg-muted px-1.5 rounded-full">{measurements.length}</span>}
-            {t.id === "photos" && attachments.length > 0 && <span className="text-[10px] bg-muted px-1.5 rounded-full">{attachments.length}</span>}
+            {t.id === "measurements" && measurements.length > 0 && <span className="text-micro bg-muted px-1.5 rounded-full">{measurements.length}</span>}
+            {t.id === "photos" && attachments.length > 0 && <span className="text-micro bg-muted px-1.5 rounded-full">{attachments.length}</span>}
           </button>
         ))}
       </div>
@@ -574,11 +574,11 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
           {tab === "measurements" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[14px] font-semibold">{ar ? "المقاسات حسب الغرفة" : "Measurements by Room"}</h3>
-                <button onClick={() => { setEditMeas(null); setMeasModal(true); }} className={btnPrimary + " h-9 text-[12px]"}><Plus size={13} /> {ar ? "مقاس جديد" : "Add Measurement"}</button>
+                <h3 className="text-body-lg font-semibold">{ar ? "المقاسات حسب الغرفة" : "Measurements by Room"}</h3>
+                <button onClick={() => { setEditMeas(null); setMeasModal(true); }} className={btnPrimary + " h-9 text-caption"}><Plus size={13} /> {ar ? "مقاس جديد" : "Add Measurement"}</button>
               </div>
               {Object.keys(roomGroups).length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش مقاسات لسه" : "No measurements yet"}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش مقاسات لسه" : "No measurements yet"}</div>
               ) : (
                 <div className="space-y-4">
                   {Object.entries(roomGroups).map(([room, items]) => {
@@ -587,9 +587,9 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
                       <div key={room} className="border border-border/40 rounded-xl overflow-hidden">
                         <div className="px-4 py-3 bg-muted/20 flex items-center gap-2 border-b border-border/30">
                           <Home size={13} className="text-muted-foreground" />
-                          <span className="text-[13px] font-medium">{room}</span>
-                          {roomTypeDef && <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{ar ? roomTypeDef.ar : roomTypeDef.en}</span>}
-                          <span className="text-[10px] text-muted-foreground ml-auto">{items.length} {ar ? "مقاس" : "entries"}</span>
+                          <span className="text-body font-medium">{room}</span>
+                          {roomTypeDef && <span className="text-micro text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{ar ? roomTypeDef.ar : roomTypeDef.en}</span>}
+                          <span className="text-micro text-muted-foreground ml-auto">{items.length} {ar ? "مقاس" : "entries"}</span>
                         </div>
                         <div className="divide-y divide-border/20">
                           {items.map((m) => {
@@ -598,17 +598,17 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
                               <div key={m.id} className="px-4 py-3 flex items-center gap-4">
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 mb-1">
-                                    {m.label && <span className="text-[12px] font-medium">{m.label}</span>}
-                                    <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${appr.pill}`}>{ar ? appr.ar : appr.en}</span>
+                                    {m.label && <span className="text-caption font-medium">{m.label}</span>}
+                                    <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium ${appr.pill}`}>{ar ? appr.ar : appr.en}</span>
                                   </div>
-                                  <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                                  <div className="flex items-center gap-3 text-micro text-muted-foreground">
                                     {m.width != null && <span>{ar ? "عرض" : "W"}: {m.width}</span>}
                                     {m.height != null && <span>{ar ? "ارتفاع" : "H"}: {m.height}</span>}
                                     {m.depth != null && <span>{ar ? "عمق" : "D"}: {m.depth}</span>}
                                     {m.length != null && <span>{ar ? "طول" : "L"}: {m.length}</span>}
                                     {m.ceiling_height != null && <span>{ar ? "سقف" : "CH"}: {m.ceiling_height}</span>}
                                   </div>
-                                  {m.notes && <p className="text-[10.5px] text-muted-foreground mt-1">{m.notes}</p>}
+                                  {m.notes && <p className="text-micro text-muted-foreground mt-1">{m.notes}</p>}
                                 </div>
                                 <div className="flex items-center gap-1 shrink-0">
                                   {m.approval_status === "draft" && (
@@ -617,7 +617,7 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
                                   {m.approval_status === "submitted" && (
                                     <>
                                       <button onClick={() => updateMeasurementApproval(m.id, "approved")} title={ar ? "اعتماد" : "Approve"} className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-500"><Check size={12} /></button>
-                                      <button onClick={() => updateMeasurementApproval(m.id, "needs_revision")} title={ar ? "تعديل" : "Revision"} className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500"><RotateCcw size={12} /></button>
+                                      <button onClick={() => updateMeasurementApproval(m.id, "needs_revision")} title={ar ? "تعديل" : "Revision"} className="p-1.5 rounded-lg hover:bg-warning/10 text-warning"><RotateCcw size={12} /></button>
                                     </>
                                   )}
                                   {m.approval_status === "needs_revision" && (
@@ -641,19 +641,19 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Checklist Tab ── */}
           {tab === "checklist" && (
             <div className="space-y-2">
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "قائمة فحص الموقع" : "Site Visit Checklist"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "قائمة فحص الموقع" : "Site Visit Checklist"}</h3>
               {checklist.length === 0 ? (
-                <p className="text-[12px] text-muted-foreground/50 py-8 text-center">{ar ? "مفيش قائمة فحص" : "No checklist items"}</p>
+                <p className="text-caption text-muted-foreground/50 py-8 text-center">{ar ? "مفيش قائمة فحص" : "No checklist items"}</p>
               ) : checklist.map((item: any) => (
                 <button key={item.id} onClick={() => toggleChecklist(item.id)}
                   className="w-full flex items-center gap-3 px-4 py-3 bg-muted/10 border border-border/30 rounded-xl hover:bg-muted/20 transition-colors text-left">
                   <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${item.checked ? "bg-emerald-100 border-emerald-300 text-emerald-600" : "border-border/60 bg-background text-muted-foreground/20"}`}>
                     <CheckCircle2 size={12} />
                   </div>
-                  <span className={`text-[12.5px] ${item.checked ? "text-foreground" : "text-muted-foreground"}`}>{ar ? item.label_ar : item.label_en}</span>
+                  <span className={`text-caption ${item.checked ? "text-foreground" : "text-muted-foreground"}`}>{ar ? item.label_ar : item.label_en}</span>
                 </button>
               ))}
-              <p className="text-[10.5px] text-muted-foreground mt-3">
+              <p className="text-micro text-muted-foreground mt-3">
                 {checklist.filter((c: any) => c.checked).length}/{checklist.length} {ar ? "مكتمل" : "completed"}
               </p>
             </div>
@@ -663,22 +663,22 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
           {tab === "photos" && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[14px] font-semibold">{ar ? "الصور والمرفقات" : "Photos & Attachments"}</h3>
-                <label className={btnPrimary + " h-9 text-[12px] cursor-pointer"}>
+                <h3 className="text-body-lg font-semibold">{ar ? "الصور والمرفقات" : "Photos & Attachments"}</h3>
+                <label className={btnPrimary + " h-9 text-caption cursor-pointer"}>
                   <Upload size={13} /> {ar ? "رفع صور" : "Upload"}
                   <input ref={fileRef} type="file" multiple accept="image/*" className="hidden" onChange={handleFileUpload} />
                 </label>
               </div>
               {attachments.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش صور لسه" : "No photos yet"}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش صور لسه" : "No photos yet"}</div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                   {attachments.map((a) => (
                     <div key={a.id} className="border border-border/40 rounded-xl overflow-hidden group relative">
                       <img src={a.file_url} alt={a.file_name || ""} className="w-full h-32 object-cover" />
                       <div className="px-2 py-1.5">
-                        <p className="text-[10px] text-muted-foreground truncate">{a.file_name}</p>
-                        {a.file_type && <span className="text-[9px] text-muted-foreground/50">{FILE_TYPES.find((f) => f.value === a.file_type)?.[ar ? "ar" : "en"]}</span>}
+                        <p className="text-micro text-muted-foreground truncate">{a.file_name}</p>
+                        {a.file_type && <span className="text-micro text-muted-foreground/50">{FILE_TYPES.find((f) => f.value === a.file_type)?.[ar ? "ar" : "en"]}</span>}
                       </div>
                     </div>
                   ))}
@@ -690,7 +690,7 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
           {/* ── Requirements Tab ── */}
           {tab === "requirements" && (
             <div className="space-y-3">
-              <h3 className="text-[14px] font-semibold mb-3">{ar ? "متطلبات العميل" : "Customer Requirements"}</h3>
+              <h3 className="text-body-lg font-semibold mb-3">{ar ? "متطلبات العميل" : "Customer Requirements"}</h3>
               {[
                 { label: ar ? "الألوان المفضلة" : "Preferred Colors", value: visit.preferred_colors },
                 { label: ar ? "الخامات المفضلة" : "Preferred Materials", value: visit.preferred_materials },
@@ -699,8 +699,8 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
                 { label: ar ? "ملاحظات التركيب" : "Installation Notes", value: visit.installation_notes },
               ].map((r, i) => (
                 <div key={i} className="px-4 py-3 bg-muted/10 border border-border/30 rounded-xl">
-                  <p className="text-[11px] text-muted-foreground mb-0.5">{r.label}</p>
-                  <p className="text-[13px] text-foreground">{r.value || (ar ? "—" : "—")}</p>
+                  <p className="text-micro text-muted-foreground mb-0.5">{r.label}</p>
+                  <p className="text-body text-foreground">{r.value || (ar ? "—" : "—")}</p>
                 </div>
               ))}
             </div>
@@ -795,7 +795,7 @@ export default function SiteVisits() {
       visit_date: v.visit_date, status: v.status,
       preferred_style: v.preferred_style, notes: v.notes,
     }));
-    exportCSV(rows, `thoth-site-visits-${new Date().toISOString().slice(0, 10)}.csv`);
+    exportCSV(rows, `bumblebee-site-visits-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   async function handleExportMeasurements() {
@@ -808,13 +808,13 @@ export default function SiteVisits() {
       ceiling_height: m.ceiling_height, approval_status: m.approval_status,
       notes: m.notes,
     }));
-    exportCSV(rows, `thoth-measurements-${new Date().toISOString().slice(0, 10)}.csv`);
+    exportCSV(rows, `bumblebee-measurements-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   function handleDownloadTemplate() {
     downloadTemplate(
       ["visit_number", "customer_name", "site_address", "assigned_technician", "visit_date", "notes", "preferred_style"],
-      "thoth-site-visits-template.csv"
+      "bumblebee-site-visits-template.csv"
     );
   }
 
@@ -831,10 +831,10 @@ export default function SiteVisits() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "المعاينات" : "Site Visits"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "المعاينات والمقاسات" : "Measurements & Site Visits"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "المعاينات والمقاسات" : "Measurements & Site Visits"}</p>
         </div>
         <button onClick={() => setModal(true)} className={btnPrimary + " h-10"}><Plus size={14} /> {ar ? "معاينة جديدة" : "New Visit"}</button>
       </div>
@@ -843,13 +843,13 @@ export default function SiteVisits() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
           { label: ar ? "مجدولة" : "Scheduled", value: scheduled, color: "text-blue-600 bg-blue-50" },
-          { label: ar ? "جارية" : "In Progress", value: inProgress, color: "text-amber-600 bg-amber-50" },
+          { label: ar ? "جارية" : "In Progress", value: inProgress, color: "text-warning bg-warning/10" },
           { label: ar ? "مكتملة" : "Completed", value: completed, color: "text-emerald-600 bg-emerald-50" },
-          { label: ar ? "هذا الأسبوع" : "This Week", value: thisWeek, color: "text-violet-600 bg-violet-50" },
+          { label: ar ? "هذا الأسبوع" : "This Week", value: thisWeek, color: "text-chart-4 bg-chart-4/10" },
         ].map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
-            <p className="text-[11px] text-muted-foreground mb-1">{s.label}</p>
-            <p className={`text-[20px] font-semibold tabular-nums ${s.color.split(" ")[0]}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+            <p className="text-micro text-muted-foreground mb-1">{s.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${s.color.split(" ")[0]}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -862,9 +862,9 @@ export default function SiteVisits() {
           {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-muted-foreground"><X size={12} /></button>}
         </div>
         <div className="flex gap-1">
-          <button onClick={() => setFilterStatus("all")} className={`px-3 py-2 rounded-lg text-[11px] font-medium ${filterStatus === "all" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? "الكل" : "All"}</button>
+          <button onClick={() => setFilterStatus("all")} className={`px-3 py-2 rounded-lg text-micro font-medium ${filterStatus === "all" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? "الكل" : "All"}</button>
           {VISIT_STATUSES.map((s) => (
-            <button key={s.value} onClick={() => setFilterStatus(s.value)} className={`px-3 py-2 rounded-lg text-[11px] font-medium ${filterStatus === s.value ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? s.ar : s.en}</button>
+            <button key={s.value} onClick={() => setFilterStatus(s.value)} className={`px-3 py-2 rounded-lg text-micro font-medium ${filterStatus === s.value ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? s.ar : s.en}</button>
           ))}
         </div>
         <div className="flex gap-1">
@@ -880,12 +880,12 @@ export default function SiteVisits() {
       ) : visits.length === 0 ? (
         <div className="py-16 text-center">
           <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4"><MapPin size={22} className="text-muted-foreground/30" /></div>
-          <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش معاينات لسه" : "No site visits yet"}</h3>
-          <p className="text-[13px] text-muted-foreground">{ar ? "أنشئ أول معاينة لبدء أخذ المقاسات." : "Create your first site visit to start capturing measurements."}</p>
+          <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش معاينات لسه" : "No site visits yet"}</h3>
+          <p className="text-body text-muted-foreground">{ar ? "أنشئ أول معاينة لبدء أخذ المقاسات." : "Create your first site visit to start capturing measurements."}</p>
           <button onClick={() => setModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "معاينة جديدة" : "New Visit"}</button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+        <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
       ) : (
         <div className="space-y-3">
           {filtered.map((v) => {
@@ -902,14 +902,14 @@ export default function SiteVisits() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-[10.5px] font-mono text-muted-foreground">{v.visit_number}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                      {linkedMeta?.so_number && <span className="text-[10px] text-muted-foreground/60 flex items-center gap-0.5"><FileText size={9} />{linkedMeta.so_number}</span>}
+                      <span className="text-micro font-mono text-muted-foreground">{v.visit_number}</span>
+                      <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                      {linkedMeta?.so_number && <span className="text-micro text-muted-foreground/60 flex items-center gap-0.5"><FileText size={9} />{linkedMeta.so_number}</span>}
                     </div>
-                    <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {v.customer_name || v.visit_number}
                     </p>
-                    <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+                    <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
                       {v.site_address && <span className="flex items-center gap-1"><MapPin size={9} />{v.site_address}</span>}
                       {v.visit_date && <span className="flex items-center gap-1"><Calendar size={9} />{v.visit_date}</span>}
                       {v.assigned_technician && <span className="flex items-center gap-1"><User size={9} />{v.assigned_technician}</span>}
@@ -917,7 +917,7 @@ export default function SiteVisits() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {checklistArr.length > 0 && (
-                      <span className="text-[10px] text-muted-foreground">{checkedCount}/{checklistArr.length}</span>
+                      <span className="text-micro text-muted-foreground">{checkedCount}/{checklistArr.length}</span>
                     )}
                     <StIcon size={16} className={st.pill.split(" ")[1]} />
                     <ChevronRight size={14} className="text-muted-foreground/30" />

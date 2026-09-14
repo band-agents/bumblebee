@@ -58,7 +58,7 @@ const ROUTE_LABELS: Record<string, { en: string; ar: string }> = {
 
 // ─── Recently visited tracking ───────────────────────────
 
-const RECENT_KEY = "thoth_recent_pages";
+const RECENT_KEY = "bumblebee_recent_pages";
 const MAX_RECENT = 8;
 
 export function trackPageVisit(path: string) {
@@ -92,7 +92,7 @@ export default function Breadcrumbs({ items, backLabel, backPath }: Props) {
       initial={{ opacity: 0, x: -6 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="flex items-center gap-1.5 text-[12px] mb-1"
+      className="flex items-center gap-1.5 text-caption mb-1"
     >
       {backPath && (
         <button onClick={() => navigate(backPath)} className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group mr-1">

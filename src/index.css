@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
-/* Brand fonts (Thoth identity): Forum = display headlines, Darker Grotesque = body */
+/* Bumblebee identity: Fredoka = mark-matched display/headings + wordmark */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+/* Legacy marketing pages (Landing, AuthPage, WorkspaceSetup) still use these */
 @import url('https://fonts.googleapis.com/css2?family=Forum&family=Darker+Grotesque:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -42,6 +44,15 @@
   --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-destructive-border: var(--destructive-border);
 
+  --color-brand: hsl(var(--brand));
+  --color-brand-ink: hsl(var(--brand-ink));
+  --color-brand-wash: hsl(var(--brand-wash));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
   --color-chart-1: hsl(var(--chart-1));
   --color-chart-2: hsl(var(--chart-2));
   --color-chart-3: hsl(var(--chart-3));
@@ -59,6 +70,27 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
+  /* ── Type scale ───────────────────────────────────────────
+     Seven steps replacing ~26 ad-hoc sizes. Two rules behind it:
+     nothing renders below 11px (the old floor was 7px), and every
+     step carries its own line-height — 151 elements on one screen
+     were set to line-height 1.0, which is what actually makes a
+     dense tool tiring to read. */
+  --text-micro: 0.6875rem;        /* 11px — badges, counts, timestamps */
+  --text-micro--line-height: 1.45;
+  --text-caption: 0.75rem;        /* 12px — labels, table meta, eyebrows */
+  --text-caption--line-height: 1.45;
+  --text-body: 0.8125rem;         /* 13px — default body, table cells */
+  --text-body--line-height: 1.55;
+  --text-body-lg: 0.875rem;       /* 14px — emphasised body, inputs */
+  --text-body-lg--line-height: 1.55;
+  --text-title: 1.0625rem;        /* 17px — card and section titles */
+  --text-title--line-height: 1.35;
+  --text-heading: 1.3125rem;      /* 21px — page section headings */
+  --text-heading--line-height: 1.25;
+  --text-display: 1.625rem;       /* 26px — page titles, hero numbers */
+  --text-display--line-height: 1.15;
+
   --font-sans: var(--app-font-sans);
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
@@ -72,92 +104,106 @@
 
 /* ─── LIGHT MODE ─────────────────────────────────────────── */
 :root {
-  --button-outline: rgba(0,0,0, .06);
+  --button-outline: rgba(0,0,0, .05);
   --badge-outline: rgba(0,0,0, .04);
 
-  --opaque-button-border-intensity: -6;
+  --opaque-button-border-intensity: -8;
 
-  --elevate-1: rgba(0,0,0, .025);
-  --elevate-2: rgba(0,0,0, .06);
+  --elevate-1: rgba(60,44,10, .030);
+  --elevate-2: rgba(60,44,10, .065);
 
-  /* Soft near-white canvas — calmer than warm cream, less glare */
-  --background: 40 24% 97%;
+  /* Warm paper canvas — one point off the glare, six points onto the warmth.
+     This is what stops the yellow reading as a warning colour. */
+  --background: 42 30% 96%;
+  --foreground: 30 12% 18%;
+  --border: 38 18% 87%;
 
-  /* Softer graphite — eases the harsh ink-on-cream contrast */
-  --foreground: 220 10% 28%;
+  --card: 42 44% 99%;
+  --card-foreground: 30 12% 18%;
+  --card-border: 38 18% 87%;
 
-  /* Barely-there border, slightly softer */
-  --border: 38 12% 88%;
+  /* Honey-tinted sidebar */
+  --sidebar: 45 38% 94%;
+  --sidebar-foreground: 30 12% 20%;
+  --sidebar-border: 42 22% 88%;
+  --sidebar-primary: 46 88% 58%;
+  --sidebar-primary-foreground: 36 30% 13%;
+  --sidebar-accent: 48 62% 90%;
+  --sidebar-accent-foreground: 32 14% 20%;
+  --sidebar-ring: 40 82% 32%;
 
-  /* Card surface — near-white so it gently lifts off the soft canvas */
-  --card: 40 40% 99%;
-  --card-foreground: 220 10% 28%;
-  --card-border: 38 14% 91%;
+  --popover: 42 44% 99%;
+  --popover-foreground: 30 12% 18%;
+  --popover-border: 38 18% 87%;
 
-  /* Sage-tinted sidebar */
-  --sidebar: 120 11% 93%;
-  --sidebar-foreground: 216 8% 20%;
-  --sidebar-border: 120 8% 88%;
-  --sidebar-primary: 268 26% 55%;
-  --sidebar-primary-foreground: 37 50% 96%;
-  --sidebar-accent: 120 11% 91%;
-  --sidebar-accent-foreground: 216 8% 20%;
-  --sidebar-ring: 268 26% 55%;
+  /* Primary #EFC63A — fills only, always with graphite text.
+     NEVER use as a foreground colour: it reads 1.60:1 on card. Use --brand-ink. */
+  --primary: 46 88% 58%;
+  --primary-foreground: 36 30% 13%;
 
-  --popover: 40 40% 99%;
-  --popover-foreground: 220 10% 28%;
-  --popover-border: 38 14% 90%;
+  --secondary: 40 20% 92%;
+  --secondary-foreground: 30 12% 22%;
 
-  /* Lilac #8C6FAE — the accent, muted, architectural */
-  --primary: 268 26% 55%;
-  --primary-foreground: 37 50% 96%;
+  --muted: 40 20% 93%;
+  --muted-foreground: 32 10% 42%;
 
-  /* Sage #E8EFE8 — secondary */
-  --secondary: 120 11% 92%;
-  --secondary-foreground: 216 8% 20%;
+  --accent: 48 62% 90%;
+  --accent-foreground: 32 14% 20%;
 
-  /* Muted surfaces */
-  --muted: 37 15% 93%;
-  --muted-foreground: 216 8% 52%;
+  --destructive: 9 64% 46%;
+  --destructive-foreground: 20 40% 97%;
 
-  /* Sage accent for highlighted states */
-  --accent: 120 11% 90%;
-  --accent-foreground: 216 8% 20%;
+  --input: 36 14% 52%;
+  /* Light mode cannot use yellow for the focus ring — deep honey instead. */
+  --ring: 40 82% 32%;
 
-  --destructive: 4 72% 58%;
-  --destructive-foreground: 37 50% 96%;
+  /* Five series that stay separable next to yellow chrome, and for
+     deuteranopia/protanopia. Do not "simplify" these toward the brand hue. */
+  --chart-1: 205 62% 24%;
+  --chart-2: 43 88% 39%;
+  --chart-3: 7 58% 43%;
+  --chart-4: 276 40% 50%;
+  --chart-5: 161 44% 42%;
 
-  --input: 37 13% 86%;
-  --ring: 268 26% 55%;
-
-  --chart-1: 268 26% 55%;
-  --chart-2: 261 27% 51%;
-  --chart-3: 120 15% 62%;
-  --chart-4: 200 30% 58%;
-  --chart-5: 268 20% 60%;
-
-  /* Apple-like system stack — SF Pro on macOS — for eye-comfortable, calm UI.
-     Headings use the same family (just heavier) instead of a high-contrast
-     display serif, so text stops "fighting" at interface sizes. */
+  /* Body stays the Apple system stack; headings take Fredoka — the same soft
+     geometry as the bee mark. */
   --app-font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'DM Sans', system-ui, sans-serif;
-  --app-font-serif: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  --app-font-serif: 'Fredoka', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
   --app-font-mono: 'SF Mono', 'Menlo', ui-monospace, monospace;
 
-  /* Softer, rounder radius for the liquid-glass feel */
-  --radius: 0.875rem;
+  --radius: 1rem;
 
-  /* Elegant warm shadows — barely there, deeply refined */
-  --shadow-2xs: 0 1px 2px 0 hsl(220 12% 18% / 0.04);
-  --shadow-xs:  0 1px 3px 0 hsl(220 12% 18% / 0.05), 0 1px 2px -1px hsl(220 12% 18% / 0.04);
-  --shadow-sm:  0 2px 4px 0 hsl(220 12% 18% / 0.05), 0 1px 3px -1px hsl(220 12% 18% / 0.04);
-  --shadow:     0 4px 8px -1px hsl(220 12% 18% / 0.07), 0 2px 4px -2px hsl(220 12% 18% / 0.04);
-  --shadow-md:  0 8px 16px -3px hsl(220 12% 18% / 0.08), 0 4px 6px -4px hsl(220 12% 18% / 0.04);
-  --shadow-lg:  0 16px 28px -5px hsl(220 12% 18% / 0.09), 0 8px 10px -6px hsl(220 12% 18% / 0.04);
-  --shadow-xl:  0 24px 40px -8px hsl(220 12% 18% / 0.10), 0 12px 16px -8px hsl(220 12% 18% / 0.04);
-  --shadow-2xl: 0 40px 64px -12px hsl(220 12% 18% / 0.14);
+  /* Warm-retinted shadows */
+  --shadow-2xs: 0 1px 2px 0 hsl(36 30% 14% / .045);
+  --shadow-xs:  0 1px 3px 0 hsl(36 30% 14% / .055), 0 1px 2px -1px hsl(36 30% 14% / .045);
+  --shadow-sm:  0 2px 4px 0 hsl(36 30% 14% / .055), 0 1px 3px -1px hsl(36 30% 14% / .045);
+  --shadow:     0 4px 8px -1px hsl(36 30% 14% / .075), 0 2px 4px -2px hsl(36 30% 14% / .045);
+  --shadow-md:  0 8px 16px -3px hsl(36 30% 14% / .085), 0 4px 6px -4px hsl(36 30% 14% / .045);
+  --shadow-lg:  0 16px 28px -5px hsl(36 30% 14% / .095), 0 8px 10px -6px hsl(36 30% 14% / .045);
+  --shadow-xl:  0 24px 40px -8px hsl(36 30% 14% / .105), 0 12px 16px -8px hsl(36 30% 14% / .045);
+  --shadow-2xl: 0 40px 64px -12px hsl(36 30% 14% / .15);
 
-  --tracking-normal: -0.01em;
+  --tracking-normal: -0.011em;
   --spacing: 0.25rem;
+
+  /* ── Brand & status — new names ──────────────────────────
+     --brand      the signature butter/corn yellow. Fills, never ink.
+     --brand-ink  the only legal yellow foreground (4.56:1 on canvas).
+     --brand-wash selected rows, hover tints.
+     --warning    sits at 28° so it stays distinct from the brand hue.  */
+  --brand: 51 85% 74%;
+  --brand-ink: 40 82% 32%;
+  --brand-wash: 51 80% 94%;
+  --success: 152 62% 26%;
+  --success-foreground: 150 38% 96%;
+  --warning: 28 78% 31%;
+  --warning-foreground: 36 80% 96%;
+
+  /* Bumblebee mark — graphite bee on light surfaces. <Logo> reads these
+     when no explicit theme prop is passed, so the mark follows the theme. */
+  --logo-ink: #2B2317;
+  --logo-accent: #F2C636;
+  --logo-wing: 0.6;
 
   --sidebar-primary-border: hsl(var(--sidebar-primary));
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -184,56 +230,74 @@
 /* ─── DARK MODE ──────────────────────────────────────────── */
 .dark {
   --button-outline: rgba(255,255,255, .08);
-  --badge-outline: rgba(255,255,255, .04);
+  --badge-outline: rgba(255,255,255, .05);
 
   --opaque-button-border-intensity: 8;
 
-  --elevate-1: rgba(255,255,255, .035);
-  --elevate-2: rgba(255,255,255, .08);
+  --elevate-1: rgba(255,244,214, .045);
+  --elevate-2: rgba(255,244,214, .09);
 
-  --background: 220 14% 10%;
-  --foreground: 37 20% 94%;
-  --border: 220 10% 22%;
-  --card: 220 14% 14%;
-  --card-foreground: 37 20% 94%;
-  --card-border: 220 10% 22%;
-  --sidebar: 220 14% 9%;
-  --sidebar-foreground: 37 20% 94%;
-  --sidebar-border: 220 10% 18%;
-  --sidebar-primary: 268 30% 65%;
-  --sidebar-primary-foreground: 220 14% 10%;
-  --sidebar-accent: 220 14% 14%;
-  --sidebar-accent-foreground: 37 20% 94%;
-  --sidebar-ring: 268 30% 65%;
-  --popover: 220 14% 10%;
-  --popover-foreground: 37 20% 94%;
-  --popover-border: 220 10% 22%;
-  --primary: 268 30% 65%;
-  --primary-foreground: 220 14% 10%;
-  --secondary: 220 14% 18%;
-  --secondary-foreground: 37 20% 94%;
-  --muted: 220 14% 18%;
-  --muted-foreground: 220 8% 56%;
-  --accent: 220 10% 22%;
-  --accent-foreground: 37 20% 94%;
-  --destructive: 4 72% 58%;
-  --destructive-foreground: 37 50% 96%;
-  --input: 220 10% 22%;
-  --ring: 268 30% 65%;
-  --chart-1: 268 30% 65%;
-  --chart-2: 261 22% 55%;
-  --chart-3: 120 12% 58%;
-  --chart-4: 200 30% 55%;
-  --chart-5: 268 18% 58%;
+  /* Warmed dark canvas. Yellow on blue-grey goes green — 32° keeps it honey. */
+  --background: 32 10% 10%;
+  --foreground: 42 22% 92%;
+  --border: 34 9% 24%;
+  --card: 30 9% 14%;
+  --card-foreground: 42 22% 92%;
+  --card-border: 34 9% 24%;
+  --sidebar: 30 11% 8%;
+  --sidebar-foreground: 42 22% 92%;
+  --sidebar-border: 32 9% 18%;
+  --sidebar-primary: 48 90% 68%;
+  --sidebar-primary-foreground: 36 35% 12%;
+  --sidebar-accent: 40 14% 22%;
+  --sidebar-accent-foreground: 46 30% 90%;
+  --sidebar-ring: 48 90% 68%;
+  --popover: 30 9% 13%;
+  --popover-foreground: 42 22% 92%;
+  --popover-border: 34 9% 24%;
+  --primary: 48 90% 68%;
+  --primary-foreground: 36 35% 12%;
+  --secondary: 34 8% 19%;
+  --secondary-foreground: 42 22% 92%;
+  --muted: 34 8% 18%;
+  --muted-foreground: 38 9% 62%;
+  --accent: 40 14% 22%;
+  --accent-foreground: 46 30% 90%;
+  --destructive: 8 62% 58%;
+  --destructive-foreground: 20 30% 10%;
+  --input: 34 9% 44%;
+  /* Dark mode SHOULD use yellow for the ring — the one place the themes
+     genuinely diverge. Do not collapse these to a single value. */
+  --ring: 48 90% 68%;
+  --chart-1: 211 68% 48%;
+  --chart-2: 40 82% 66%;
+  --chart-3: 4 72% 60%;
+  --chart-4: 276 36% 70%;
+  --chart-5: 158 46% 56%;
 
-  --shadow-2xs: 0 1px 2px 0 hsl(220 20% 5% / 0.30);
-  --shadow-xs:  0 1px 3px 0 hsl(220 20% 5% / 0.35), 0 1px 2px -1px hsl(220 20% 5% / 0.25);
-  --shadow-sm:  0 2px 4px 0 hsl(220 20% 5% / 0.35), 0 1px 3px -1px hsl(220 20% 5% / 0.25);
-  --shadow:     0 4px 8px -1px hsl(220 20% 5% / 0.40), 0 2px 4px -2px hsl(220 20% 5% / 0.25);
-  --shadow-md:  0 8px 16px -3px hsl(220 20% 5% / 0.45), 0 4px 6px -4px hsl(220 20% 5% / 0.25);
-  --shadow-lg:  0 16px 28px -5px hsl(220 20% 5% / 0.50), 0 8px 10px -6px hsl(220 20% 5% / 0.25);
-  --shadow-xl:  0 24px 40px -8px hsl(220 20% 5% / 0.55), 0 12px 16px -8px hsl(220 20% 5% / 0.25);
-  --shadow-2xl: 0 40px 64px -12px hsl(220 20% 5% / 0.65);
+  /* Deeper, warm-black shadows */
+  --shadow-2xs: 0 1px 2px 0 hsl(30 20% 4% / .32);
+  --shadow-xs:  0 1px 3px 0 hsl(30 20% 4% / .38), 0 1px 2px -1px hsl(30 20% 4% / .26);
+  --shadow-sm:  0 2px 4px 0 hsl(30 20% 4% / .38), 0 1px 3px -1px hsl(30 20% 4% / .26);
+  --shadow:     0 4px 8px -1px hsl(30 20% 4% / .42), 0 2px 4px -2px hsl(30 20% 4% / .26);
+  --shadow-md:  0 8px 16px -3px hsl(30 20% 4% / .47), 0 4px 6px -4px hsl(30 20% 4% / .26);
+  --shadow-lg:  0 16px 28px -5px hsl(30 20% 4% / .52), 0 8px 10px -6px hsl(30 20% 4% / .26);
+  --shadow-xl:  0 24px 40px -8px hsl(30 20% 4% / .57), 0 12px 16px -8px hsl(30 20% 4% / .26);
+  --shadow-2xl: 0 40px 64px -12px hsl(30 20% 4% / .66);
+
+  /* Brand & status */
+  --brand: 51 85% 74%;
+  --brand-ink: 45 72% 60%;
+  --brand-wash: 44 28% 17%;
+  --success: 152 48% 58%;
+  --success-foreground: 152 30% 10%;
+  --warning: 36 80% 62%;
+  --warning-foreground: 36 40% 10%;
+
+  /* warm-white bee on dark surfaces */
+  --logo-ink: #F8F6F2;
+  --logo-accent: #F7D964;
+  --logo-wing: 0.42;
 
   --sidebar-primary-border: hsl(var(--sidebar-primary));
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -301,12 +365,48 @@
   }
 }
 
-/* ─── THOTH SURFACE UTILITIES ───────────────────────────── */
+/* ─── Bumblebee SURFACE UTILITIES ───────────────────────────── */
+/* ── Buzz launcher ────────────────────────────────────────
+   Wing beat lives in CSS rather than the motion library: SVG needs
+   transform-box: fill-box for transform-origin to mean anything, and the
+   hinge has to sit at the wing root or it windmills instead of flapping. */
+@keyframes bb-wing-l {
+  0%, 100% { transform: rotate(0deg)   scaleY(1); }
+  25%      { transform: rotate(-15deg) scaleY(0.80); }
+  50%      { transform: rotate(3deg)   scaleY(1.04); }
+  75%      { transform: rotate(-15deg) scaleY(0.80); }
+}
+@keyframes bb-wing-r {
+  0%, 100% { transform: rotate(0deg)   scaleY(1); }
+  25%      { transform: rotate(15deg)  scaleY(0.80); }
+  50%      { transform: rotate(-3deg)  scaleY(1.04); }
+  75%      { transform: rotate(15deg)  scaleY(0.80); }
+}
+/* Idle: a slow drift, so it reads as alive without asking for attention. */
+@keyframes bb-wing-idle-l {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-4deg); }
+}
+@keyframes bb-wing-idle-r {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+.buzz-wing { transform-box: fill-box; }
+.buzz-wing-l { transform-origin: 100% 85%; animation: bb-wing-idle-l 4.2s ease-in-out infinite; }
+.buzz-wing-r { transform-origin: 0% 85%;   animation: bb-wing-idle-r 4.2s ease-in-out infinite; }
+.buzz-btn:hover .buzz-wing-l, .buzz-btn:focus-visible .buzz-wing-l { animation: bb-wing-l 0.42s ease-in-out infinite; }
+.buzz-btn:hover .buzz-wing-r, .buzz-btn:focus-visible .buzz-wing-r { animation: bb-wing-r 0.42s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .buzz-wing { animation: none !important; }
+}
+
 @layer utilities {
 
   /* Liquid-glass surface — frosted translucency for chrome (sidebar, headers,
      toolbars, popovers). Apple-like depth without heavy contrast. */
-  .thoth-glass {
+  .bb-glass {
     background-color: hsl(var(--background) / 0.72);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -314,7 +414,7 @@
   }
 
   /* Quiet card with elegant shadow — use instead of bare bg-card */
-  .thoth-card {
+  .bb-card {
     background-color: hsl(var(--card));
     border: 1px solid hsl(var(--card-border));
     border-radius: var(--radius);
@@ -322,7 +422,7 @@
   }
 
   /* Elevated card — for modals, popovers, selection states */
-  .thoth-card-elevated {
+  .bb-card-elevated {
     background-color: hsl(var(--card));
     border: 1px solid hsl(var(--card-border));
     border-radius: var(--radius);
@@ -330,14 +430,14 @@
   }
 
   /* Serif display text — for headings, hero, onboarding */
-  .thoth-heading {
+  .bb-heading {
     font-family: var(--app-font-serif);
     font-weight: 500;
     letter-spacing: -0.025em;
   }
 
   /* Eyebrow label — small, tracked, uppercase */
-  .thoth-eyebrow {
+  .bb-eyebrow {
     font-size: 0.65rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -346,13 +446,13 @@
   }
 
   /* Sage tinted surface for selected/active states */
-  .thoth-selected {
+  .bb-selected {
     background-color: hsl(120 11% 91%);
     border-color: hsl(120 11% 82%);
   }
 
   /* Primary selected — lilac tint */
-  .thoth-primary-selected {
+  .bb-primary-selected {
     background-color: hsl(var(--primary) / 0.08);
     border-color: hsl(var(--primary) / 0.25);
   }
@@ -428,8 +528,35 @@
   }
 
   /* ─── RTL compatibility ─── */
-  [dir="rtl"] .thoth-card,
-  [dir="rtl"] .thoth-card-elevated {
+  [dir="rtl"] .bb-card,
+  [dir="rtl"] .bb-card-elevated {
     text-align: right;
   }
+
+  /* ── Primary press states ────────────────────────────────
+     The generic elevate overlay is a black wash. Over lilac that read as a
+     press; over yellow it reads as dirt. Primary surfaces therefore darken
+     the hue itself instead of taking the overlay.
+     Light: 58% -> 53% -> 48%.  Dark: 68% -> 63% -> 58%. */
+  .bg-primary.hover-elevate::after,
+  .bg-primary.hover-elevate-2::after,
+  .bg-primary.active-elevate::after,
+  .bg-primary.active-elevate-2::after {
+    background-color: transparent;
+  }
+
+  .bg-primary.hover-elevate:hover,
+  .bg-primary.hover-elevate-2:hover {
+    background-color: hsl(46 88% 53%);
+    background-color: hsl(from hsl(var(--primary)) h s calc(l - 5));
+  }
+
+  .bg-primary.hover-elevate:active,
+  .bg-primary.hover-elevate-2:active,
+  .bg-primary.active-elevate:active,
+  .bg-primary.active-elevate-2:active {
+    background-color: hsl(46 88% 48%);
+    background-color: hsl(from hsl(var(--primary)) h s calc(l - 10));
+  }
+
 }

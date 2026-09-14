@@ -37,7 +37,7 @@ function BarChart({ data, height = 140, color = "hsl(var(--primary))", labels, s
         {data.map((d, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
             {showValues && (
-              <span className="text-[9px] tabular-nums text-muted-foreground font-medium">{d.value}</span>
+              <span className="text-micro tabular-nums text-muted-foreground font-medium">{d.value}</span>
             )}
             <div className="w-full rounded-t-md transition-all duration-500" style={{
               height: `${(d.value / max) * 100}%`,
@@ -52,7 +52,7 @@ function BarChart({ data, height = 140, color = "hsl(var(--primary))", labels, s
         <div className="flex gap-1.5 mt-2">
           {data.map((d, i) => (
             <div key={i} className="flex-1 text-center">
-              <span className="text-[8.5px] text-muted-foreground leading-tight block truncate">{d.label}</span>
+              <span className="text-micro text-muted-foreground leading-tight block truncate">{d.label}</span>
             </div>
           ))}
         </div>
@@ -71,8 +71,8 @@ function HorizontalBar({ items, maxWidth = 100 }: {
       {items.map((item, i) => (
         <div key={i}>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[11px] font-medium truncate">{item.label}</span>
-            <span className="text-[10px] tabular-nums text-muted-foreground ml-2 shrink-0">{item.value}</span>
+            <span className="text-micro font-medium truncate">{item.label}</span>
+            <span className="text-micro tabular-nums text-muted-foreground ml-2 shrink-0">{item.value}</span>
           </div>
           <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
             <div className="h-full rounded-full transition-all duration-700" style={{
@@ -122,8 +122,8 @@ function DonutChart({ segments, size = 120, thickness = 16 }: {
         })}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[18px] font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{total}</span>
-        <span className="text-[9px] text-muted-foreground">total</span>
+        <span className="text-title font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{total}</span>
+        <span className="text-micro text-muted-foreground">total</span>
       </div>
     </div>
   );
@@ -154,9 +154,9 @@ function SparkLine({ data, width = 80, height = 24, color = "hsl(var(--primary))
 }
 
 function TrendBadge({ value, suffix = "" }: { value: number; suffix?: string }) {
-  if (value === 0) return <span className="text-[10px] text-muted-foreground flex items-center gap-0.5"><Minus size={10} />0{suffix}</span>;
-  if (value > 0) return <span className="text-[10px] text-emerald-600 flex items-center gap-0.5"><ArrowUpRight size={10} />+{value}{suffix}</span>;
-  return <span className="text-[10px] text-rose-600 flex items-center gap-0.5"><ArrowDownRight size={10} />{value}{suffix}</span>;
+  if (value === 0) return <span className="text-micro text-muted-foreground flex items-center gap-0.5"><Minus size={10} />0{suffix}</span>;
+  if (value > 0) return <span className="text-micro text-emerald-600 flex items-center gap-0.5"><ArrowUpRight size={10} />+{value}{suffix}</span>;
+  return <span className="text-micro text-rose-600 flex items-center gap-0.5"><ArrowDownRight size={10} />{value}{suffix}</span>;
 }
 
 // ─── Stage Pipeline ───────────────────────────────────────
@@ -207,7 +207,7 @@ function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean 
 
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
-      <h3 className="text-[14px] font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+      <h3 className="text-body-lg font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
         {t(ar, "Furniture Production Pipeline", "خط إنتاج الأثاث")}
       </h3>
 
@@ -222,22 +222,22 @@ function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean 
             <div key={stage.key} className="flex items-center shrink-0">
               <div className="flex flex-col items-center gap-1.5 px-2">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                  counts.active > 0 ? "bg-primary/15 text-primary ring-2 ring-primary/20" :
+                  counts.active > 0 ? "bg-primary/15 text-brand-ink ring-2 ring-brand-ink/20" :
                   counts.completed > 0 ? "bg-emerald-100 text-emerald-600" :
                   "bg-muted/50 text-muted-foreground/40"
                 }`}>
                   <Icon size={16} />
                 </div>
-                <span className="text-[9px] text-muted-foreground text-center leading-tight">{ar ? stage.ar : stage.en}</span>
+                <span className="text-micro text-muted-foreground text-center leading-tight">{ar ? stage.ar : stage.en}</span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[11px] font-semibold tabular-nums">{counts.total}</span>
+                  <span className="text-micro font-semibold tabular-nums">{counts.total}</span>
                   {hasStuck && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />}
                 </div>
               </div>
               {i < stageFlow.length - 1 && (
                 <div className="flex items-center px-0.5">
                   <div className={`w-6 h-0.5 ${counts.completed > 0 ? "bg-primary/40" : "bg-border/30"}`} />
-                  <ChevronRight size={10} className={`-ml-0.5 ${counts.completed > 0 ? "text-primary/40" : "text-border/30"}`} />
+                  <ChevronRight size={10} className={`-ml-0.5 ${counts.completed > 0 ? "text-brand-ink/40" : "text-border/30"}`} />
                 </div>
               )}
             </div>
@@ -257,7 +257,7 @@ function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean 
             <div key={stage.key} className="flex items-center gap-3">
               <div className="w-24 flex items-center gap-2 shrink-0">
                 <Icon size={12} className="text-muted-foreground" />
-                <span className="text-[11px] font-medium">{ar ? stage.ar : stage.en}</span>
+                <span className="text-micro font-medium">{ar ? stage.ar : stage.en}</span>
               </div>
               <div className="flex-1 h-6 bg-muted/30 rounded-lg overflow-hidden relative">
                 {/* Completed portion */}
@@ -268,12 +268,12 @@ function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean 
                   style={{ left: `${completedPct}%`, width: `${activePct}%` }} />
                 {/* Labels */}
                 <div className="absolute inset-0 flex items-center px-2 gap-2">
-                  {counts.completed > 0 && <span className="text-[9px] font-medium text-emerald-700">{counts.completed}</span>}
-                  {counts.active > 0 && <span className="text-[9px] font-medium text-primary">{counts.active} {t(ar, "جاري", "active")}</span>}
+                  {counts.completed > 0 && <span className="text-micro font-medium text-emerald-700">{counts.completed}</span>}
+                  {counts.active > 0 && <span className="text-micro font-medium text-brand-ink">{counts.active} {t(ar, "جاري", "active")}</span>}
                 </div>
               </div>
               {counts.stuck > 0 && (
-                <span className="text-[9px] text-rose-600 font-medium flex items-center gap-0.5 shrink-0">
+                <span className="text-micro text-rose-600 font-medium flex items-center gap-0.5 shrink-0">
                   <AlertTriangle size={9} />{counts.stuck} {t(ar, "عائق", "stuck")}
                 </span>
               )}
@@ -316,14 +316,14 @@ function StagePerformance({ orders, ar }: { orders: ProductionOrder[]; ar: boole
 
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
-      <h3 className="text-[14px] font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+      <h3 className="text-body-lg font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
         {t(ar, "Stage Performance", "أداء المراحل")}
       </h3>
       <div className="space-y-3">
         {stageStats.map(stage => (
           <div key={stage.key} className="flex items-center gap-3">
             <div className="w-20 shrink-0">
-              <span className="text-[11px] font-medium">{ar ? stage.labelAr : stage.label}</span>
+              <span className="text-micro font-medium">{ar ? stage.labelAr : stage.label}</span>
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -337,15 +337,15 @@ function StagePerformance({ orders, ar }: { orders: ProductionOrder[]; ar: boole
                       opacity: 0.6,
                     }} />
                   <div className="absolute inset-0 flex items-center px-2">
-                    <span className="text-[8.5px] font-medium text-foreground/60">{stage.actual}h / {stage.planned}h planned</span>
+                    <span className="text-micro font-medium text-foreground/60">{stage.actual}h / {stage.planned}h planned</span>
                   </div>
                 </div>
-                <span className={`text-[11px] font-semibold tabular-nums w-10 text-right ${
-                  stage.efficiency >= 90 ? "text-emerald-600" : stage.efficiency >= 70 ? "text-amber-600" : "text-rose-600"
+                <span className={`text-micro font-semibold tabular-nums w-10 text-right ${
+                  stage.efficiency >= 90 ? "text-emerald-600" : stage.efficiency >= 70 ? "text-warning" : "text-rose-600"
                 }`}>{stage.efficiency}%</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 shrink-0 text-[10px] text-muted-foreground">
+            <div className="flex items-center gap-3 shrink-0 text-micro text-muted-foreground">
               <span>{stage.count}x</span>
               {stage.rejections > 0 && (
                 <span className="text-rose-500 flex items-center gap-0.5"><AlertTriangle size={9} />{stage.rejections}</span>
@@ -371,14 +371,14 @@ function OrderHealthTable({ orders, ar }: { orders: ProductionOrder[]; ar: boole
   return (
     <div className="bg-background border border-border/40 rounded-xl overflow-hidden">
       <div className="px-5 py-4 border-b border-border/30">
-        <h3 className="text-[14px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
           {t(ar, "Order Health Overview", "نظرة عامة على صحة الأوامر")}
         </h3>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border/30 text-[10px] text-muted-foreground">
+            <tr className="border-b border-border/30 text-micro text-muted-foreground">
               <th className="text-left px-5 py-2.5 font-medium">{t(ar, "الطلب", "Order")}</th>
               <th className="text-left px-3 py-2.5 font-medium">{t(ar, "المنتج", "Product")}</th>
               <th className="text-center px-3 py-2.5 font-medium">{t(ar, "التقدم", "Progress")}</th>
@@ -401,13 +401,13 @@ function OrderHealthTable({ orders, ar }: { orders: ProductionOrder[]; ar: boole
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2">
                       <div className={`w-1.5 h-1.5 rounded-full bg-${healthColor}-500`} />
-                      <span className="text-[11px] font-mono">{order.order_number}</span>
+                      <span className="text-micro font-mono">{order.order_number}</span>
                     </div>
                   </td>
                   <td className="px-3 py-3">
                     <div>
-                      <p className="text-[11px] font-medium">{order.product_name}</p>
-                      <p className="text-[9.5px] text-muted-foreground">{order.customer_name}</p>
+                      <p className="text-micro font-medium">{order.product_name}</p>
+                      <p className="text-micro text-muted-foreground">{order.customer_name}</p>
                     </div>
                   </td>
                   <td className="px-3 py-3 text-center">
@@ -416,27 +416,27 @@ function OrderHealthTable({ orders, ar }: { orders: ProductionOrder[]; ar: boole
                         <div className={`h-full rounded-full bg-${healthColor}-500`}
                           style={{ width: `${order.progress_pct}%` }} />
                       </div>
-                      <span className="text-[10px] tabular-nums font-medium">{order.progress_pct}%</span>
+                      <span className="text-micro tabular-nums font-medium">{order.progress_pct}%</span>
                     </div>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className="text-[11px] tabular-nums">{order.production_rate_per_hour}/hr</span>
+                    <span className="text-micro tabular-nums">{order.production_rate_per_hour}/hr</span>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className={`text-[11px] tabular-nums font-medium ${
-                      order.efficiency_pct >= 85 ? "text-emerald-600" : order.efficiency_pct >= 70 ? "text-amber-600" : "text-rose-600"
+                    <span className={`text-micro tabular-nums font-medium ${
+                      order.efficiency_pct >= 85 ? "text-emerald-600" : order.efficiency_pct >= 70 ? "text-warning" : "text-rose-600"
                     }`}>{order.efficiency_pct}%</span>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className="text-[10px] text-muted-foreground">{order.current_stage_en}</span>
+                    <span className="text-micro text-muted-foreground">{order.current_stage_en}</span>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className={`text-[10.5px] ${isOverdue ? "text-rose-600 font-medium" : "text-muted-foreground"}`}>
+                    <span className={`text-micro ${isOverdue ? "text-rose-600 font-medium" : "text-muted-foreground"}`}>
                       {order.due_date}
                     </span>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className={`text-[9.5px] px-2 py-0.5 rounded-full font-medium ${
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${
                       order.status === "completed" ? "bg-emerald-100 text-emerald-700" :
                       order.status === "delayed" || isOverdue ? "bg-rose-100 text-rose-700" :
                       order.status === "in_progress" ? "bg-blue-100 text-blue-700" :
@@ -479,7 +479,7 @@ function TeamProductivity({ orders, ar }: { orders: ProductionOrder[]; ar: boole
 
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
-      <h3 className="text-[14px] font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+      <h3 className="text-body-lg font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
         {t(ar, "Team Productivity", "إنتاجية الفرق")}
       </h3>
       <HorizontalBar items={teamStats.map(team => ({
@@ -514,7 +514,7 @@ function CostAnalysis({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }
 
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
-      <h3 className="text-[14px] font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
+      <h3 className="text-body-lg font-semibold mb-4" style={{ fontFamily: "var(--app-font-serif)" }}>
         {t(ar, "Cost Analysis", "تحليل التكاليف")}
       </h3>
       <div className="flex items-center gap-6">
@@ -523,24 +523,24 @@ function CostAnalysis({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }
           {costSegments.map((seg, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: seg.color }} />
-              <span className="text-[11px] flex-1">{seg.label}</span>
-              <span className="text-[11px] font-medium tabular-nums">${fmt(seg.value)}</span>
+              <span className="text-micro flex-1">{seg.label}</span>
+              <span className="text-micro font-medium tabular-nums">${fmt(seg.value)}</span>
             </div>
           ))}
           <div className="pt-2 mt-2 border-t border-border/30">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] text-muted-foreground">{t(ar, "المقدّر", "Estimated")}</span>
-              <span className="text-[11px] font-medium tabular-nums">${fmt(totals.estimated)}</span>
+              <span className="text-micro text-muted-foreground">{t(ar, "المقدّر", "Estimated")}</span>
+              <span className="text-micro font-medium tabular-nums">${fmt(totals.estimated)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] text-muted-foreground">{t(ar, "الفعلي", "Actual")}</span>
-              <span className={`text-[11px] font-medium tabular-nums ${totals.variance > 0 ? "text-rose-600" : "text-emerald-600"}`}>
+              <span className="text-micro text-muted-foreground">{t(ar, "الفعلي", "Actual")}</span>
+              <span className={`text-micro font-medium tabular-nums ${totals.variance > 0 ? "text-rose-600" : "text-emerald-600"}`}>
                 ${fmt(totals.actual)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] text-muted-foreground">{t(ar, "الانحراف", "Variance")}</span>
-              <span className={`text-[11px] font-semibold tabular-nums ${totals.variance > 0 ? "text-rose-600" : "text-emerald-600"}`}>
+              <span className="text-micro text-muted-foreground">{t(ar, "الانحراف", "Variance")}</span>
+              <span className={`text-micro font-semibold tabular-nums ${totals.variance > 0 ? "text-rose-600" : "text-emerald-600"}`}>
                 {totals.variance > 0 ? "+" : ""}${fmt(totals.variance)}
               </span>
             </div>
@@ -577,14 +577,14 @@ export default function ProductionExecutiveDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {t(ar, "Production Overview", "نظرة عامة على الإنتاج")}
           </h1>
-          <p className="text-[12px] text-muted-foreground mt-0.5">
+          <p className="text-caption text-muted-foreground mt-0.5">
             {t(ar, "Executive dashboard — furniture manufacturing intelligence", "لوحة تحكم تنفيذية — ذكاء تصنيع الأثاث")}
           </p>
         </div>
-        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+        <div className="flex items-center gap-2 text-micro text-muted-foreground">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           {ar ? "مباشر" : "Live"} — {new Date().toLocaleTimeString(ar ? "ar-EG" : "en-US", { hour: "2-digit", minute: "2-digit" })}
         </div>
@@ -596,9 +596,9 @@ export default function ProductionExecutiveDashboard() {
           { label: t(ar, "_orders", " orders"), value: stats.activeOrders, icon: Factory, color: "text-blue-600", bg: "bg-blue-50", trend: +2 },
           { label: t(ar, " متأخرة", " delayed"), value: stats.delayedOrders, icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50", trend: -1 },
           { label: t(ar, " مكتملة", " done"), value: stats.completedOrders, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: +3 },
-          { label: t(ar, " قطعة/ساعة", " pcs/hr"), value: stats.avgProductionRate, icon: Zap, color: "text-violet-600", bg: "bg-violet-50", trend: +5 },
+          { label: t(ar, " قطعة/ساعة", " pcs/hr"), value: stats.avgProductionRate, icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10", trend: +5 },
           { label: t(ar, " كفاءة", " efficiency"), value: `${stats.avgEfficiency}%`, icon: TrendingUp, color: "text-cyan-600", bg: "bg-cyan-50", trend: +3 },
-          { label: t(ar, " مواد", " material issues"), value: stats.waitingMaterials, icon: Package, color: "text-amber-600", bg: "bg-amber-50", trend: 0 },
+          { label: t(ar, " مواد", " material issues"), value: stats.waitingMaterials, icon: Package, color: "text-warning", bg: "bg-warning/10", trend: 0 },
           { label: t(ar, " جودة", " QC pending"), value: stats.waitingQC, icon: ShieldCheck, color: "text-orange-600", bg: "bg-orange-50", trend: 0 },
           { label: t(ar, " تنبيهات", " alerts"), value: alerts.length, icon: Bell, color: "text-rose-600", bg: "bg-rose-50", trend: 0 },
         ].map((kpi, i) => (
@@ -609,8 +609,8 @@ export default function ProductionExecutiveDashboard() {
               </div>
               <TrendBadge value={kpi.trend} />
             </div>
-            <p className={`text-[20px] font-semibold tabular-nums ${kpi.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{kpi.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${kpi.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{kpi.value}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{kpi.label}</p>
           </div>
         ))}
       </div>
@@ -620,7 +620,7 @@ export default function ProductionExecutiveDashboard() {
         {/* Daily Output Chart */}
         <div className="lg:col-span-2 bg-background border border-border/40 rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[13px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
               {t(ar, "Daily Production Output (7 days)", "الإنتاج اليومي (7 أيام)")}
             </h3>
             <SparkLine data={dailyTrend} color="#3b82f6" />
@@ -639,7 +639,7 @@ export default function ProductionExecutiveDashboard() {
         {/* Efficiency Trend */}
         <div className="bg-background border border-border/40 rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[13px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
               {t(ar, "Efficiency Trend", "اتجاه الكفاءة")}
             </h3>
             <TrendBadge value={3} suffix="%" />
@@ -647,19 +647,19 @@ export default function ProductionExecutiveDashboard() {
           <div className="space-y-3">
             {efficiencyTrend.map((val, i) => (
               <div key={i} className="flex items-center gap-3">
-                <span className="text-[9px] text-muted-foreground w-6">{["S", "S", "M", "T", "W", "T", "F"][i]}</span>
+                <span className="text-micro text-muted-foreground w-6">{["S", "S", "M", "T", "W", "T", "F"][i]}</span>
                 <div className="flex-1 h-3 bg-muted/30 rounded-full overflow-hidden">
                   <div className={`h-full rounded-full transition-all duration-700 ${
-                    val >= 85 ? "bg-emerald-400" : val >= 70 ? "bg-amber-400" : "bg-rose-400"
+                    val >= 85 ? "bg-emerald-400" : val >= 70 ? "bg-warning" : "bg-rose-400"
                   }`} style={{ width: `${val}%` }} />
                 </div>
-                <span className="text-[10px] tabular-nums font-medium w-8 text-right">{val}%</span>
+                <span className="text-micro tabular-nums font-medium w-8 text-right">{val}%</span>
               </div>
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-border/30 flex items-center justify-between">
-            <span className="text-[10px] text-muted-foreground">{t(ar, "متوسط", "Avg")}</span>
-            <span className="text-[13px] font-semibold tabular-nums text-emerald-600">{Math.round(efficiencyTrend.reduce((s, v) => s + v, 0) / efficiencyTrend.length)}%</span>
+            <span className="text-micro text-muted-foreground">{t(ar, "متوسط", "Avg")}</span>
+            <span className="text-body font-semibold tabular-nums text-emerald-600">{Math.round(efficiencyTrend.reduce((s, v) => s + v, 0) / efficiencyTrend.length)}%</span>
           </div>
         </div>
       </div>
@@ -686,9 +686,9 @@ export default function ProductionExecutiveDashboard() {
         {/* AI Insights */}
         <div className="bg-background border border-border/40 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Brain size={15} className="text-primary" />
-            <h3 className="text-[13px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
-              {t(ar, "THOTH AI Insights", "رؤى THOTH AI")}
+            <Brain size={15} className="text-brand-ink" />
+            <h3 className="text-body font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+              {t(ar, "Buzz Insights", "رؤى Buzz")}
             </h3>
           </div>
           <div className="space-y-2.5">
@@ -699,14 +699,14 @@ export default function ProductionExecutiveDashboard() {
               return (
                 <div key={insight.id} className={`p-3 rounded-lg border-l-3 ${
                   insight.severity === "critical" ? "border-l-rose-400 bg-rose-50/30" :
-                  insight.severity === "warning" ? "border-l-amber-400 bg-amber-50/30" :
+                  insight.severity === "warning" ? "border-l-warning bg-warning/10" :
                   "border-l-blue-400 bg-blue-50/30"
                 }`}>
                   <div className="flex items-start gap-2.5">
                     <Icon size={12} className="shrink-0 mt-0.5 text-muted-foreground" />
                     <div>
-                      <p className="text-[11px] font-semibold">{ar ? insight.title_ar : insight.title_en}</p>
-                      <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">{ar ? insight.detail_ar : insight.detail_en}</p>
+                      <p className="text-micro font-semibold">{ar ? insight.title_ar : insight.title_en}</p>
+                      <p className="text-micro text-muted-foreground mt-0.5 leading-relaxed">{ar ? insight.detail_ar : insight.detail_en}</p>
                     </div>
                   </div>
                 </div>
@@ -719,16 +719,16 @@ export default function ProductionExecutiveDashboard() {
         <div className="space-y-5">
           <div className="bg-background border border-border/40 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[13px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+              <h3 className="text-body font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {t(ar, "Active Alerts", "التنبيهات النشطة")}
               </h3>
-              {alerts.length > 0 && <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-600 text-[10px] font-medium flex items-center justify-center">{alerts.length}</span>}
+              {alerts.length > 0 && <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-600 text-micro font-medium flex items-center justify-center">{alerts.length}</span>}
             </div>
             <div className="space-y-2">
               {alerts.slice(0, 4).map(alert => (
-                <div key={alert.id} className={`p-3 rounded-lg border text-[10.5px] ${
+                <div key={alert.id} className={`p-3 rounded-lg border text-micro ${
                   alert.severity === "critical" ? "border-rose-200 bg-rose-50 text-rose-700" :
-                  alert.severity === "warning" ? "border-amber-200 bg-amber-50 text-amber-700" :
+                  alert.severity === "warning" ? "border-warning/30 bg-warning/10 text-warning" :
                   "border-blue-200 bg-blue-50 text-blue-700"
                 }`}>
                   <div className="flex items-start gap-2">
@@ -742,13 +742,13 @@ export default function ProductionExecutiveDashboard() {
                 </div>
               ))}
               {alerts.length === 0 && (
-                <div className="py-4 text-center text-[11px] text-muted-foreground/50">{t(ar, "لا تنبيهات", "No alerts")}</div>
+                <div className="py-4 text-center text-micro text-muted-foreground/50">{t(ar, "لا تنبيهات", "No alerts")}</div>
               )}
             </div>
           </div>
 
           <div className="bg-background border border-border/40 rounded-xl p-5">
-            <h3 className="text-[13px] font-semibold mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h3 className="text-body font-semibold mb-3" style={{ fontFamily: "var(--app-font-serif)" }}>
               {t(ar, "Workstation Status", "حالة محطات العمل")}
             </h3>
             <div className="space-y-2">
@@ -756,15 +756,15 @@ export default function ProductionExecutiveDashboard() {
                 <div key={ws.id} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-muted/20 border border-border/20">
                   <div className={`w-2 h-2 rounded-full shrink-0 ${
                     ws.status === "active" ? "bg-emerald-500" :
-                    ws.status === "maintenance" ? "bg-amber-500 animate-pulse" :
+                    ws.status === "maintenance" ? "bg-warning animate-pulse" :
                     ws.status === "down" ? "bg-rose-500" : "bg-zinc-300"
                   }`} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10.5px] font-medium truncate">{ws.name}</p>
-                    <p className="text-[9px] text-muted-foreground">{ws.operator || t(ar, "خامل", "Idle")}</p>
+                    <p className="text-micro font-medium truncate">{ws.name}</p>
+                    <p className="text-micro text-muted-foreground">{ws.operator || t(ar, "خامل", "Idle")}</p>
                   </div>
                   {ws.queue_count > 0 && (
-                    <span className="text-[9px] bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded-full font-medium">
+                    <span className="text-micro bg-warning/15 text-warning px-1.5 py-0.5 rounded-full font-medium">
                       {ws.queue_count} {t(ar, "في الطابور", "queued")}
                     </span>
                   )}

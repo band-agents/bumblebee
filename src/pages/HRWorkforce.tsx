@@ -43,7 +43,7 @@ const DEPARTMENTS = [
 
 const EMP_STATUSES = [
   { value: "active",      en: "Active",      ar: "نشط",      pill: "bg-emerald-50 text-emerald-600" },
-  { value: "on_leave",    en: "On Leave",    ar: "إجازة",    pill: "bg-amber-50 text-amber-600" },
+  { value: "on_leave",    en: "On Leave",    ar: "إجازة",    pill: "bg-warning/10 text-warning" },
   { value: "suspended",   en: "Suspended",   ar: "موقوف",    pill: "bg-rose-50 text-rose-600" },
   { value: "terminated",  en: "Terminated",  ar: "منتهي",    pill: "bg-zinc-100 text-zinc-500" },
 ] as const;
@@ -58,7 +58,7 @@ const EMP_TYPES = [
 const ATTEND_STATUSES = [
   { value: "present",      en: "Present",      ar: "حاضر",      pill: "bg-emerald-50 text-emerald-600" },
   { value: "absent",       en: "Absent",       ar: "غائب",      pill: "bg-rose-50 text-rose-600" },
-  { value: "late",         en: "Late",         ar: "متأخر",     pill: "bg-amber-50 text-amber-600" },
+  { value: "late",         en: "Late",         ar: "متأخر",     pill: "bg-warning/10 text-warning" },
   { value: "half_day",     en: "Half Day",     ar: "نص يوم",    pill: "bg-blue-50 text-blue-600" },
   { value: "holiday",      en: "Holiday",      ar: "عطلة",      pill: "bg-indigo-50 text-indigo-600" },
   { value: "sick_leave",   en: "Sick Leave",   ar: "إجازة مرضية", pill: "bg-orange-50 text-orange-600" },
@@ -76,7 +76,7 @@ const LEAVE_TYPES = [
 ] as const;
 
 const LEAVE_STATUSES = [
-  { value: "pending",   en: "Pending",   ar: "في الانتظار", pill: "bg-amber-50 text-amber-600" },
+  { value: "pending",   en: "Pending",   ar: "في الانتظار", pill: "bg-warning/10 text-warning" },
   { value: "approved",  en: "Approved",  ar: "موافق عليها", pill: "bg-emerald-50 text-emerald-600" },
   { value: "rejected",  en: "Rejected",  ar: "مرفوضة",     pill: "bg-rose-50 text-rose-600" },
   { value: "cancelled", en: "Cancelled", ar: "ملغاة",      pill: "bg-zinc-100 text-zinc-500" },
@@ -97,9 +97,9 @@ const SKILLS_CATALOG = [
   { value: "supervision",     en: "Supervision",      ar: "إشراف" },
 ] as const;
 
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 hover:opacity-90 transition-opacity disabled:opacity-40";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 function genNum(prefix: string): string {
   const seq = Math.floor(Math.random() * 9000) + 1000;
@@ -164,7 +164,7 @@ function EmployeeModal({ onClose, onSaved, editEmp, ar, wid }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {editEmp ? (ar ? "تعديل موظف" : "Edit Employee") : (ar ? "موظف جديد" : "New Employee")}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
@@ -214,10 +214,10 @@ function EmployeeModal({ onClose, onSaved, editEmp, ar, wid }: {
           </div>
           <div><label className={labelCls}>{ar ? "العنوان" : "Address"}</label>
             <input className={inputCls} value={address} onChange={e => setAddress(e.target.value)} /></div>
-          {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "حفظ" : "Save"}
           </button>
@@ -307,44 +307,44 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-muted/50"><ChevronRight size={16} className="rotate-180" /></button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-[11px] font-mono text-muted-foreground">{emp.employee_number}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-            {deptDef && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? deptDef.ar : deptDef.en}</span>}
+            <span className="text-micro font-mono text-muted-foreground">{emp.employee_number}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            {deptDef && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? deptDef.ar : deptDef.en}</span>}
           </div>
-          <h2 className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name}
           </h2>
-          <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+          <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
             {emp.job_title && <span className="flex items-center gap-1"><Briefcase size={10} />{ar && emp.job_title_ar ? emp.job_title_ar : emp.job_title}</span>}
             {typeDef && <span>{ar ? typeDef.ar : typeDef.en}</span>}
             {emp.hire_date && <span className="flex items-center gap-1"><Calendar size={10} />{emp.hire_date}</span>}
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
-          <button onClick={() => setEditModal(true)} className="text-[11px] text-muted-foreground px-3 py-1.5 rounded-lg border border-border/60 hover:bg-muted/50 flex items-center gap-1"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
+          <button onClick={() => setEditModal(true)} className="text-micro text-muted-foreground px-3 py-1.5 rounded-lg border border-border/60 hover:bg-muted/50 flex items-center gap-1"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
         </div>
       </div>
 
       {/* Quick attendance */}
       <div className="mb-5 p-4 border border-border/40 rounded-xl flex items-center gap-3 flex-wrap">
-        <span className="text-[12px] font-medium">{ar ? "حضور اليوم:" : "Today:"}</span>
+        <span className="text-caption font-medium">{ar ? "حضور اليوم:" : "Today:"}</span>
         {todayAtt ? (
           <>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${ATTEND_STATUSES.find(s => s.value === todayAtt.status)?.pill}`}>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${ATTEND_STATUSES.find(s => s.value === todayAtt.status)?.pill}`}>
               {ar ? ATTEND_STATUSES.find(s => s.value === todayAtt.status)?.ar : todayAtt.status}
             </span>
-            {todayAtt.check_in && <span className="text-[10px] text-muted-foreground flex items-center gap-1"><LogIn size={9} />{new Date(todayAtt.check_in).toLocaleTimeString()}</span>}
-            {todayAtt.check_out && <span className="text-[10px] text-muted-foreground flex items-center gap-1"><LogOut size={9} />{new Date(todayAtt.check_out).toLocaleTimeString()}</span>}
+            {todayAtt.check_in && <span className="text-micro text-muted-foreground flex items-center gap-1"><LogIn size={9} />{new Date(todayAtt.check_in).toLocaleTimeString()}</span>}
+            {todayAtt.check_out && <span className="text-micro text-muted-foreground flex items-center gap-1"><LogOut size={9} />{new Date(todayAtt.check_out).toLocaleTimeString()}</span>}
             {!todayAtt.check_out && todayAtt.status === "present" && (
-              <button onClick={checkOut} className="text-[10px] text-blue-600 px-2 py-1 rounded border border-blue-200 hover:opacity-70 flex items-center gap-1"><LogOut size={9} />{ar ? "انصراف" : "Check Out"}</button>
+              <button onClick={checkOut} className="text-micro text-blue-600 px-2 py-1 rounded border border-blue-200 hover:opacity-70 flex items-center gap-1"><LogOut size={9} />{ar ? "انصراف" : "Check Out"}</button>
             )}
           </>
         ) : (
           <div className="flex gap-1">
-            <button onClick={() => markAttendance("present")} className="text-[10px] text-emerald-600 px-2 py-1 rounded border border-emerald-200 hover:opacity-70">{ar ? "حاضر" : "Present"}</button>
-            <button onClick={() => markAttendance("absent")} className="text-[10px] text-rose-600 px-2 py-1 rounded border border-rose-200 hover:opacity-70">{ar ? "غائب" : "Absent"}</button>
-            <button onClick={() => markAttendance("late")} className="text-[10px] text-amber-600 px-2 py-1 rounded border border-amber-200 hover:opacity-70">{ar ? "متأخر" : "Late"}</button>
-            <button onClick={() => markAttendance("sick_leave")} className="text-[10px] text-orange-600 px-2 py-1 rounded border border-orange-200 hover:opacity-70">{ar ? "مرضي" : "Sick"}</button>
+            <button onClick={() => markAttendance("present")} className="text-micro text-emerald-600 px-2 py-1 rounded border border-emerald-200 hover:opacity-70">{ar ? "حاضر" : "Present"}</button>
+            <button onClick={() => markAttendance("absent")} className="text-micro text-rose-600 px-2 py-1 rounded border border-rose-200 hover:opacity-70">{ar ? "غائب" : "Absent"}</button>
+            <button onClick={() => markAttendance("late")} className="text-micro text-warning px-2 py-1 rounded border border-warning/30 hover:opacity-70">{ar ? "متأخر" : "Late"}</button>
+            <button onClick={() => markAttendance("sick_leave")} className="text-micro text-orange-600 px-2 py-1 rounded border border-orange-200 hover:opacity-70">{ar ? "مرضي" : "Sick"}</button>
           </div>
         )}
       </div>
@@ -358,8 +358,8 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
           { id: "leaves" as const, en: `Leaves (${leaves.length})`, ar: `الإجازات (${leaves.length})`, icon: Coffee },
         ].map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5
-              ${tab === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>
+            className={`px-3 py-2 rounded-lg text-caption font-medium transition-colors flex items-center gap-1.5
+              ${tab === t.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <t.icon size={13} />{ar ? t.ar : t.en}
           </button>
         ))}
@@ -377,7 +377,7 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
           ].filter(f => f.value).map((f, i) => (
             <div key={i} className="flex items-start gap-2.5 p-3 border border-border/30 rounded-xl">
               <f.icon size={13} className="text-muted-foreground mt-0.5 shrink-0" />
-              <div><p className="text-[10px] text-muted-foreground">{f.label}</p><p className="text-[13px]">{f.value}</p></div>
+              <div><p className="text-micro text-muted-foreground">{f.label}</p><p className="text-body">{f.value}</p></div>
             </div>
           ))}
         </div>
@@ -391,12 +391,12 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
               const def = SKILLS_CATALOG.find(c => c.value === s.skill);
               return (
                 <div key={s.skill} className="flex items-center gap-3 px-4 py-3 border border-border/30 rounded-xl">
-                  <Award size={13} className="text-primary shrink-0" />
-                  <span className="text-[13px] flex-1">{def ? (ar ? def.ar : def.en) : s.skill}</span>
+                  <Award size={13} className="text-brand-ink shrink-0" />
+                  <span className="text-body flex-1">{def ? (ar ? def.ar : def.en) : s.skill}</span>
                   <div className="flex gap-0.5">
                     {[1, 2, 3, 4, 5].map(n => (
                       <button key={n} onClick={() => addSkill(s.skill, n)}
-                        className={`w-5 h-5 rounded ${n <= s.level ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground/20"} text-[9px] font-bold`}>
+                        className={`w-5 h-5 rounded ${n <= s.level ? "bg-primary/20 text-brand-ink" : "bg-muted text-muted-foreground/20"} text-micro font-bold`}>
                         {n}
                       </button>
                     ))}
@@ -406,11 +406,11 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
               );
             })}
           </div>
-          <p className="text-[11px] text-muted-foreground mb-2">{ar ? "إضافة مهارة:" : "Add skill:"}</p>
+          <p className="text-micro text-muted-foreground mb-2">{ar ? "إضافة مهارة:" : "Add skill:"}</p>
           <div className="flex flex-wrap gap-1.5">
             {SKILLS_CATALOG.filter(c => !skills.some((s: any) => s.skill === c.value)).map(c => (
               <button key={c.value} onClick={() => addSkill(c.value, 1)}
-                className="text-[10px] px-2.5 py-1 rounded-full border border-border/60 text-muted-foreground hover:bg-primary/10 hover:text-primary">
+                className="text-micro px-2.5 py-1 rounded-full border border-border/60 text-muted-foreground hover:bg-primary/10 hover:text-brand-ink">
                 + {ar ? c.ar : c.en}
               </button>
             ))}
@@ -421,17 +421,17 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
       {/* ── Attendance ── */}
       {tab === "attendance" && (
         loadingSub ? <div className="py-12 flex justify-center"><Loader2 size={16} className="animate-spin text-muted-foreground" /></div> :
-        attendance.length === 0 ? <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش سجلات حضور" : "No attendance records"}</div> :
+        attendance.length === 0 ? <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش سجلات حضور" : "No attendance records"}</div> :
         <div className="space-y-2">
           {attendance.slice(0, 30).map(a => {
             const ast = ATTEND_STATUSES.find(s => s.value === a.status)!;
             return (
               <div key={a.id} className="flex items-center gap-3 px-4 py-3 border border-border/30 rounded-xl">
-                <span className="text-[12px] font-mono text-muted-foreground w-24">{a.date}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${ast.pill}`}>{ar ? ast.ar : ast.en}</span>
-                {a.check_in && <span className="text-[10px] text-muted-foreground flex items-center gap-1"><LogIn size={9} />{new Date(a.check_in).toLocaleTimeString()}</span>}
-                {a.check_out && <span className="text-[10px] text-muted-foreground flex items-center gap-1"><LogOut size={9} />{new Date(a.check_out).toLocaleTimeString()}</span>}
-                {a.overtime_hours > 0 && <span className="text-[10px] text-amber-600">+{a.overtime_hours}h OT</span>}
+                <span className="text-caption font-mono text-muted-foreground w-24">{a.date}</span>
+                <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${ast.pill}`}>{ar ? ast.ar : ast.en}</span>
+                {a.check_in && <span className="text-micro text-muted-foreground flex items-center gap-1"><LogIn size={9} />{new Date(a.check_in).toLocaleTimeString()}</span>}
+                {a.check_out && <span className="text-micro text-muted-foreground flex items-center gap-1"><LogOut size={9} />{new Date(a.check_out).toLocaleTimeString()}</span>}
+                {a.overtime_hours > 0 && <span className="text-micro text-warning">+{a.overtime_hours}h OT</span>}
               </div>
             );
           })}
@@ -441,18 +441,18 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
       {/* ── Leaves ── */}
       {tab === "leaves" && (
         loadingSub ? <div className="py-12 flex justify-center"><Loader2 size={16} className="animate-spin text-muted-foreground" /></div> :
-        leaves.length === 0 ? <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش طلبات إجازات" : "No leave requests"}</div> :
+        leaves.length === 0 ? <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش طلبات إجازات" : "No leave requests"}</div> :
         <div className="space-y-2">
           {leaves.map(l => {
             const lst = LEAVE_STATUSES.find(s => s.value === l.status)!;
             const lt = LEAVE_TYPES.find(t => t.value === l.leave_type);
             return (
               <div key={l.id} className="flex items-center gap-3 px-4 py-3 border border-border/30 rounded-xl flex-wrap">
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${lst.pill}`}>{ar ? lst.ar : lst.en}</span>
-                {lt && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? lt.ar : lt.en}</span>}
-                <span className="text-[12px]">{l.start_date} → {l.end_date}</span>
-                <span className="text-[10px] text-muted-foreground">{l.days} {ar ? "يوم" : "days"}</span>
-                {l.reason && <span className="text-[11px] text-muted-foreground flex-1 truncate">{l.reason}</span>}
+                <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${lst.pill}`}>{ar ? lst.ar : lst.en}</span>
+                {lt && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? lt.ar : lt.en}</span>}
+                <span className="text-caption">{l.start_date} → {l.end_date}</span>
+                <span className="text-micro text-muted-foreground">{l.days} {ar ? "يوم" : "days"}</span>
+                {l.reason && <span className="text-micro text-muted-foreground flex-1 truncate">{l.reason}</span>}
               </div>
             );
           })}
@@ -498,7 +498,7 @@ function LeaveModal({ onClose, onSaved, employees, ar, wid }: {
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-5 border-b border-border/40 shrink-0 flex items-center justify-between">
-          <h2 className="text-[17px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "طلب إجازة" : "Leave Request"}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "طلب إجازة" : "Leave Request"}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/50"><X size={16} /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
@@ -519,12 +519,12 @@ function LeaveModal({ onClose, onSaved, employees, ar, wid }: {
             <div><label className={labelCls}>{ar ? "إلى" : "To"}</label>
               <input type="date" className={inputCls} value={endDate} onChange={e => setEndDate(e.target.value)} /></div>
           </div>
-          <p className="text-[11px] text-muted-foreground">{days} {ar ? "يوم" : "day(s)"}</p>
+          <p className="text-micro text-muted-foreground">{days} {ar ? "يوم" : "day(s)"}</p>
           <div><label className={labelCls}>{ar ? "السبب" : "Reason"}</label>
             <textarea className={inputCls + " h-16 py-2 resize-none"} value={reason} onChange={e => setReason(e.target.value)} /></div>
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
           <button onClick={handleSave} disabled={loading || !empId} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "إرسال الطلب" : "Submit"}
           </button>
@@ -606,7 +606,7 @@ export default function HRWorkforce() {
       employee_number: e.employee_number, full_name: e.full_name,
       department: e.department, job_title: e.job_title, status: e.status,
       hire_date: e.hire_date, employment_type: e.employment_type,
-    })), `thoth-employees-${new Date().toISOString().slice(0, 10)}.csv`);
+    })), `bumblebee-employees-${new Date().toISOString().slice(0, 10)}.csv`);
   }
 
   if (selectedEmp) {
@@ -621,10 +621,10 @@ export default function HRWorkforce() {
     <div className="max-w-4xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h1 className="text-heading font-semibold tracking-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "الموارد البشرية" : "HR & Workforce"}
           </h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5">{ar ? "إدارة الموظفين والحضور والإجازات" : "Employees, Attendance & Leave Management"}</p>
+          <p className="text-body text-muted-foreground mt-0.5">{ar ? "إدارة الموظفين والحضور والإجازات" : "Employees, Attendance & Leave Management"}</p>
         </div>
         <button onClick={() => topTab === "employees" ? setEmpModal(true) : setLeaveModal(true)} className={btnPrimary + " h-10"}>
           <Plus size={14} /> {topTab === "employees" ? (ar ? "موظف جديد" : "New Employee") : (ar ? "طلب إجازة" : "Leave Request")}
@@ -638,9 +638,9 @@ export default function HRWorkforce() {
           { id: "leaves" as const, en: "Leave Requests", ar: "الإجازات", icon: Coffee, count: leaves.length },
         ].map(t => (
           <button key={t.id} onClick={() => setTopTab(t.id)}
-            className={`px-4 py-2.5 rounded-xl text-[13px] font-medium transition-colors flex items-center gap-2
+            className={`px-4 py-2.5 rounded-xl text-body font-medium transition-colors flex items-center gap-2
               ${topTab === t.id ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}>
-            <t.icon size={15} />{ar ? t.ar : t.en} <span className="text-[10px] opacity-70">({t.count})</span>
+            <t.icon size={15} />{ar ? t.ar : t.en} <span className="text-micro opacity-70">({t.count})</span>
           </button>
         ))}
       </div>
@@ -649,12 +649,12 @@ export default function HRWorkforce() {
       <div className="grid grid-cols-3 gap-3 mb-6">
         {[
           { label: ar ? "نشط" : "Active", value: activeCount, color: "text-emerald-600" },
-          { label: ar ? "في إجازة" : "On Leave", value: onLeaveCount, color: "text-amber-600" },
+          { label: ar ? "في إجازة" : "On Leave", value: onLeaveCount, color: "text-warning" },
           { label: ar ? "طلبات معلقة" : "Pending Leaves", value: pendingLeaves, color: pendingLeaves > 0 ? "text-rose-600" : "text-zinc-400" },
         ].map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
-            <p className="text-[11px] text-muted-foreground mb-1">{s.label}</p>
-            <p className={`text-[20px] font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+            <p className="text-micro text-muted-foreground mb-1">{s.label}</p>
+            <p className={`text-heading font-semibold tabular-nums ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -669,7 +669,7 @@ export default function HRWorkforce() {
             </div>
             <div className="flex gap-1 overflow-x-auto">
               {[{ v: "all", en: "All", ar: "الكل" }, ...DEPARTMENTS.map(d => ({ v: d.value, en: d.en, ar: d.ar }))].map(g => (
-                <button key={g.v} onClick={() => setFilterDept(g.v)} className={`px-2.5 py-2 rounded-lg text-[11px] font-medium whitespace-nowrap ${filterDept === g.v ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
+                <button key={g.v} onClick={() => setFilterDept(g.v)} className={`px-2.5 py-2 rounded-lg text-micro font-medium whitespace-nowrap ${filterDept === g.v ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>{ar ? g.ar : g.en}</button>
               ))}
             </div>
             <button onClick={handleExport} className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground"><Download size={14} /></button>
@@ -680,11 +680,11 @@ export default function HRWorkforce() {
           ) : employees.length === 0 ? (
             <div className="py-16 text-center">
               <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4"><Users size={22} className="text-muted-foreground/30" /></div>
-              <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش موظفين لسه" : "No employees yet"}</h3>
+              <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش موظفين لسه" : "No employees yet"}</h3>
               <button onClick={() => setEmpModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "أضف موظف" : "Add Employee"}</button>
             </div>
           ) : filteredEmps.length === 0 ? (
-            <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
+            <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش نتائج" : "No results"}</div>
           ) : (
             <div className="space-y-3">
               {filteredEmps.map(emp => {
@@ -697,14 +697,14 @@ export default function HRWorkforce() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                          <span className="text-[10.5px] font-mono text-muted-foreground">{emp.employee_number}</span>
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                          {deptDef && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? deptDef.ar : deptDef.en}</span>}
+                          <span className="text-micro font-mono text-muted-foreground">{emp.employee_number}</span>
+                          <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                          {deptDef && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? deptDef.ar : deptDef.en}</span>}
                         </div>
-                        <p className="text-[15px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                        <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                           {ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name}
                         </p>
-                        <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground flex-wrap">
+                        <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground flex-wrap">
                           {emp.job_title && <span className="flex items-center gap-1"><Briefcase size={9} />{ar && emp.job_title_ar ? emp.job_title_ar : emp.job_title}</span>}
                           {emp.phone && <span className="flex items-center gap-1"><Phone size={9} />{emp.phone}</span>}
                           {skills.length > 0 && <span className="flex items-center gap-1"><Award size={9} />{skills.length} {ar ? "مهارات" : "skills"}</span>}
@@ -727,7 +727,7 @@ export default function HRWorkforce() {
         ) : leaves.length === 0 ? (
           <div className="py-16 text-center">
             <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4"><Coffee size={22} className="text-muted-foreground/30" /></div>
-            <h3 className="text-[15px] font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش طلبات إجازات" : "No leave requests"}</h3>
+            <h3 className="text-body-lg font-semibold mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش طلبات إجازات" : "No leave requests"}</h3>
             <button onClick={() => setLeaveModal(true)} className={btnPrimary + " h-10 mt-4"}><Plus size={14} /> {ar ? "طلب إجازة" : "New Request"}</button>
           </div>
         ) : (
@@ -741,22 +741,22 @@ export default function HRWorkforce() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${lst.pill}`}>{ar ? lst.ar : lst.en}</span>
-                        {lt && <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? lt.ar : lt.en}</span>}
-                        <span className="text-[10px] text-muted-foreground">{l.days} {ar ? "يوم" : "days"}</span>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${lst.pill}`}>{ar ? lst.ar : lst.en}</span>
+                        {lt && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? lt.ar : lt.en}</span>}
+                        <span className="text-micro text-muted-foreground">{l.days} {ar ? "يوم" : "days"}</span>
                       </div>
-                      <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                         {emp ? (ar && emp.full_name_ar ? emp.full_name_ar : emp.full_name) : "—"}
                       </p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1">
+                      <p className="text-micro text-muted-foreground mt-0.5 flex items-center gap-1">
                         <Calendar size={10} />{l.start_date} → {l.end_date}
                       </p>
-                      {l.reason && <p className="text-[11px] text-muted-foreground mt-1">{l.reason}</p>}
+                      {l.reason && <p className="text-micro text-muted-foreground mt-1">{l.reason}</p>}
                     </div>
                     {l.status === "pending" && (
                       <div className="flex gap-1 shrink-0">
-                        <button onClick={() => approveLeave(l.id)} className="text-[10px] text-emerald-600 px-2.5 py-1.5 rounded-lg border border-emerald-200 hover:opacity-70 flex items-center gap-1"><Check size={10} />{ar ? "موافقة" : "Approve"}</button>
-                        <button onClick={() => rejectLeave(l.id)} className="text-[10px] text-rose-600 px-2.5 py-1.5 rounded-lg border border-rose-200 hover:opacity-70 flex items-center gap-1"><XCircle size={10} />{ar ? "رفض" : "Reject"}</button>
+                        <button onClick={() => approveLeave(l.id)} className="text-micro text-emerald-600 px-2.5 py-1.5 rounded-lg border border-emerald-200 hover:opacity-70 flex items-center gap-1"><Check size={10} />{ar ? "موافقة" : "Approve"}</button>
+                        <button onClick={() => rejectLeave(l.id)} className="text-micro text-rose-600 px-2.5 py-1.5 rounded-lg border border-rose-200 hover:opacity-70 flex items-center gap-1"><XCircle size={10} />{ar ? "رفض" : "Reject"}</button>
                       </div>
                     )}
                   </div>

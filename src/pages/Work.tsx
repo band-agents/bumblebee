@@ -156,7 +156,7 @@ function AddWorkModal({ open, onClose, onAdd, lang }: AddWorkModalProps) {
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} aria-hidden="true" />
       <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[520px] overflow-hidden max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-[17px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+          <h2 className="text-title font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
             {ar ? "إنشاء عمل جديد" : "Create Work"}
           </h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -168,27 +168,27 @@ function AddWorkModal({ open, onClose, onAdd, lang }: AddWorkModalProps) {
           <div className="px-6 py-5 flex flex-col gap-4">
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "النوع" : "Type"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "النوع" : "Type"}</label>
                 <select value={form.kind} onChange={(e) => field("kind", e.target.value)}
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
                   {(Object.keys(KIND_META) as WorkKind[]).map((k) => (
                     <option key={k} value={k}>{ar ? KIND_META[k].ar : KIND_META[k].en}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "الأولوية" : "Priority"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الأولوية" : "Priority"}</label>
                 <select value={form.priority} onChange={(e) => field("priority", e.target.value)}
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
                   {(Object.keys(PRIORITY_META) as WorkPriority[]).map((p) => (
                     <option key={p} value={p}>{ar ? PRIORITY_META[p].ar : PRIORITY_META[p].en}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "الحالة" : "Status"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الحالة" : "Status"}</label>
                 <select value={form.status} onChange={(e) => field("status", e.target.value)}
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
                   {(Object.keys(STATUS_META) as WorkStatus[]).map((s) => (
                     <option key={s} value={s}>{ar ? STATUS_META[s].ar : STATUS_META[s].en}</option>
                   ))}
@@ -197,66 +197,66 @@ function AddWorkModal({ open, onClose, onAdd, lang }: AddWorkModalProps) {
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+              <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                 {ar ? "العنوان" : "Title"} <span className="text-rose-400">*</span>
               </label>
               <input ref={titleRef} type="text" value={form.title} onChange={(e) => field("title", e.target.value)}
                 placeholder={ar ? "مثال: تجهيز طلب المكاتب" : "e.g. Prepare office desk order"}
-                className={`w-full h-9 px-3 rounded-xl border bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.title ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
+                className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.title ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.title && <p className="text-[11px] text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.title}</p>}
+              {errors.title && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.title}</p>}
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "الوصف" : "Description"}</label>
+              <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الوصف" : "Description"}</label>
               <textarea value={form.description} onChange={(e) => field("description", e.target.value)}
                 placeholder={ar ? "تفاصيل إضافية…" : "Additional details…"} rows={3}
-                className="w-full px-3 py-2 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 resize-none transition-colors"
+                className="w-full px-3 py-2 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 resize-none transition-colors"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">
                   {ar ? "المسؤول" : "Assignee"} <span className="text-rose-400">*</span>
                 </label>
                 <input type="text" value={form.assignee} onChange={(e) => field("assignee", e.target.value)}
                   placeholder={ar ? "اسم الشخص أو الفريق" : "Person or team name"}
-                  className={`w-full h-9 px-3 rounded-xl border bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.assignee ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
+                  className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.assignee ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
                 />
-                {errors.assignee && <p className="text-[11px] text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.assignee}</p>}
+                {errors.assignee && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.assignee}</p>}
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "تاريخ الاستحقاق" : "Due Date"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "تاريخ الاستحقاق" : "Due Date"}</label>
                 <input type="date" value={form.dueDate} onChange={(e) => field("dueDate", e.target.value)}
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground focus:outline-none focus:border-primary/40 transition-colors"
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground focus:outline-none focus:border-primary/40 transition-colors"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "شخص مرتبط" : "Related Person"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "شخص مرتبط" : "Related Person"}</label>
                 <input type="text" value={form.relatedPerson} onChange={(e) => field("relatedPerson", e.target.value)}
                   placeholder={ar ? "اختياري" : "Optional"}
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground mb-1.5">{ar ? "منظمة مرتبطة" : "Related Organization"}</label>
+                <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "منظمة مرتبطة" : "Related Organization"}</label>
                 <input type="text" value={form.relatedOrg} onChange={(e) => field("relatedOrg", e.target.value)}
                   placeholder={ar ? "اختياري" : "Optional"}
-                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
+                  className="w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
                 />
               </div>
             </div>
           </div>
 
           <div className="px-6 py-4 border-t border-border/40 flex items-center justify-end gap-3">
-            <button type="button" onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button type="button" onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-body text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
               {ar ? "إلغاء" : "Cancel"}
             </button>
-            <button type="submit" disabled={submitted} className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60">
+            <button type="submit" disabled={submitted} className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60">
               {submitted
                 ? <><Check size={14} strokeWidth={2.5} />{ar ? "تم الإنشاء" : "Created"}</>
                 : <><Plus size={14} strokeWidth={2} />{ar ? "إنشاء" : "Create"}</>
@@ -292,14 +292,14 @@ function KanbanCard({
       className="bg-background border border-border/40 rounded-xl p-4 hover:shadow-md hover:border-border/60 hover:scale-[1.01] transition-all duration-200 cursor-pointer group active:shadow-lg active:scale-[0.99]"
     >
       <div className="flex items-center justify-between gap-2 mb-3">
-        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${kindMeta.pill}`}>
+        <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${kindMeta.pill}`}>
           {ar ? kindMeta.ar : kindMeta.en}
         </span>
         <GripVertical size={12} className="text-muted-foreground/30 group-hover:text-muted-foreground/60 transition-colors shrink-0" />
       </div>
 
       <h4
-        className="text-[13px] font-medium text-foreground leading-snug mb-3 line-clamp-2 group-hover:text-primary transition-colors"
+        className="text-body font-medium text-foreground leading-snug mb-3 line-clamp-2 group-hover:text-brand-ink transition-colors"
         style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}
       >
         {ar ? (item.title_ar || item.title_en) : item.title_en}
@@ -307,10 +307,10 @@ function KanbanCard({
 
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
-          <div className="w-5 h-5 rounded-md bg-primary/8 flex items-center justify-center text-[8px] font-semibold text-primary shrink-0">
+          <div className="w-5 h-5 rounded-md bg-primary/8 flex items-center justify-center text-micro font-semibold text-brand-ink shrink-0">
             {initials(ar ? ((m.assigneeAr as string) || "") : ((m.assigneeEn as string) || ""))}
           </div>
-          <span className="text-[11px] text-muted-foreground truncate">
+          <span className="text-micro text-muted-foreground truncate">
             {ar ? ((m.assigneeAr as string) || "") : ((m.assigneeEn as string) || "")}
           </span>
         </div>
@@ -322,7 +322,7 @@ function KanbanCard({
       {((m.relatedOrgNameEn as string) || (m.relatedPersonNameEn as string)) && (
         <div className="flex items-center gap-1.5 mt-2 text-muted-foreground/50">
           <Building2 size={9} strokeWidth={1.75} className="shrink-0" />
-          <span className="text-[10px] truncate">
+          <span className="text-micro truncate">
             {ar
               ? ((m.relatedOrgNameAr as string) || (m.relatedPersonNameAr as string))
               : ((m.relatedOrgNameEn as string) || (m.relatedPersonNameEn as string))
@@ -334,7 +334,7 @@ function KanbanCard({
       {item.due_date && (
         <div className="flex items-center gap-1 mt-1.5 text-muted-foreground/50">
           <Calendar size={9} strokeWidth={1.75} />
-          <span className="text-[10px]">{ar ? ((m.dueDateAr as string) || item.due_date) : ((m.dueDateEn as string) || item.due_date)}</span>
+          <span className="text-micro">{ar ? ((m.dueDateAr as string) || item.due_date) : ((m.dueDateEn as string) || item.due_date)}</span>
         </div>
       )}
     </div>
@@ -346,16 +346,16 @@ function KanbanCard({
 const COLUMN_COLORS: Record<WorkStatus, string> = {
   backlog:     "bg-stone-100/60",
   planned:     "bg-primary/[0.04]",
-  in_progress: "bg-amber-50/50",
-  review:      "bg-violet-50/40",
+  in_progress: "bg-warning/10",
+  review:      "bg-chart-4/10",
   done:        "bg-emerald-50/40",
 };
 
 const COLUMN_ACCENT: Record<WorkStatus, string> = {
   backlog:     "bg-stone-400",
   planned:     "bg-primary",
-  in_progress: "bg-amber-500",
-  review:      "bg-violet-500",
+  in_progress: "bg-warning",
+  review:      "bg-chart-4",
   done:        "bg-emerald-500",
 };
 
@@ -408,15 +408,15 @@ function KanbanView({
         return (
           <div
             key={status}
-            className={`flex flex-col min-w-[260px] w-[260px] shrink-0 rounded-2xl ${COLUMN_COLORS[status]} ${isDragOver ? "ring-2 ring-primary/30 scale-[1.01]" : ""} transition-all duration-200`}
+            className={`flex flex-col min-w-[260px] w-[260px] shrink-0 rounded-2xl ${COLUMN_COLORS[status]} ${isDragOver ? "ring-2 ring-brand-ink/30 scale-[1.01]" : ""} transition-all duration-200`}
             onDragOver={(e) => handleDragOver(e, status)}
             onDragLeave={handleDragLeave}
             onDrop={(e) => handleDrop(e, status)}
           >
             <div className="px-4 pt-4 pb-3 flex items-center gap-2.5">
               <div className={`w-2 h-2 rounded-full ${COLUMN_ACCENT[status]}`} />
-              <span className="text-[12px] font-semibold text-foreground/80 tracking-wide">{ar ? meta.ar : meta.en}</span>
-              <span className="text-[11px] text-muted-foreground/60 tabular-nums ms-auto">{colItems.length}</span>
+              <span className="text-caption font-semibold text-foreground/80 tracking-wide">{ar ? meta.ar : meta.en}</span>
+              <span className="text-micro text-muted-foreground/60 tabular-nums ms-auto">{colItems.length}</span>
             </div>
 
             <div className="flex-1 px-3 pb-3 space-y-2.5 overflow-y-auto" style={{ maxHeight: "calc(100vh - 380px)" }}>
@@ -425,7 +425,7 @@ function KanbanView({
               ))}
               {colItems.length === 0 && (
                 <div className="py-8 text-center">
-                  <p className="text-[11px] text-muted-foreground/40">{ar ? "لا يوجد عمل" : "No items"}</p>
+                  <p className="text-micro text-muted-foreground/40">{ar ? "لا يوجد عمل" : "No items"}</p>
                 </div>
               )}
             </div>
@@ -467,8 +467,8 @@ function ListView({
           <div key={status}>
             <div className="flex items-center gap-2.5 mb-3">
               <div className={`w-2 h-2 rounded-full ${meta.dot}`} />
-              <span className="text-[11px] font-semibold text-muted-foreground tracking-[0.07em] uppercase">{ar ? meta.ar : meta.en}</span>
-              <span className="text-[11px] text-muted-foreground/50 tabular-nums">{groupItems.length}</span>
+              <span className="text-micro font-semibold text-muted-foreground tracking-[0.07em] uppercase">{ar ? meta.ar : meta.en}</span>
+              <span className="text-micro text-muted-foreground/50 tabular-nums">{groupItems.length}</span>
               <div className="flex-1 h-px bg-border/30" />
             </div>
 
@@ -486,17 +486,17 @@ function ListView({
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2.5 mb-1">
-                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 ${kindMeta.pill}`}>
+                        <span className={`text-micro font-medium px-2 py-0.5 rounded-full shrink-0 ${kindMeta.pill}`}>
                           {ar ? kindMeta.ar : kindMeta.en}
                         </span>
                         <h4
-                          className="text-[13px] font-medium text-foreground truncate group-hover:text-primary transition-colors"
+                          className="text-body font-medium text-foreground truncate group-hover:text-brand-ink transition-colors"
                           style={{ letterSpacing: "-0.01em" }}
                         >
                           {ar ? (item.title_ar || item.title_en) : item.title_en}
                         </h4>
                       </div>
-                      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="flex items-center gap-3 text-micro text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <User size={10} strokeWidth={1.75} className="text-muted-foreground/50" />
                           {ar ? ((m.assigneeAr as string) || "") : ((m.assigneeEn as string) || "")}
@@ -516,13 +516,13 @@ function ListView({
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="flex items-center gap-1.5">
                         <div className={`w-1.5 h-1.5 rounded-full ${priorityMeta.dot}`} />
-                        <span className="text-[11px] text-muted-foreground hidden sm:inline">
+                        <span className="text-micro text-muted-foreground hidden sm:inline">
                           {ar ? priorityMeta.ar : priorityMeta.en}
                         </span>
                       </div>
 
                       {item.due_date && (
-                        <span className="text-[11px] text-muted-foreground/60 hidden md:flex items-center gap-1">
+                        <span className="text-micro text-muted-foreground/60 hidden md:flex items-center gap-1">
                           <Calendar size={10} strokeWidth={1.75} />
                           {ar ? ((m.dueDateAr as string) || item.due_date) : ((m.dueDateEn as string) || item.due_date)}
                         </span>
@@ -535,11 +535,11 @@ function ListView({
                           <div className="flex-1 h-[3px] rounded-full bg-border/50 overflow-hidden">
                             <div className="h-full rounded-full bg-primary/50" style={{ width: `${item.progress}%` }} />
                           </div>
-                          <span className="text-[10px] text-muted-foreground tabular-nums">{item.progress}%</span>
+                          <span className="text-micro text-muted-foreground tabular-nums">{item.progress}%</span>
                         </div>
                       ) : null}
 
-                      <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+                      <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/30 group-hover:text-brand-ink/50 transition-colors" />
                     </div>
                   </div>
                 );
@@ -609,7 +609,7 @@ function CalendarView({
           <ChevronLeft size={14} strokeWidth={2} />
         </button>
         <h3
-          className="text-[16px] font-medium text-foreground"
+          className="text-title font-medium text-foreground"
           style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}
         >
           {monthLabel}
@@ -625,7 +625,7 @@ function CalendarView({
       <div className="border border-border/40 rounded-xl overflow-hidden bg-background">
         <div className="grid grid-cols-7 border-b border-border/40">
           {dayNames.map((d) => (
-            <div key={d} className="px-2 py-2.5 text-center text-[10px] font-semibold text-muted-foreground tracking-[0.08em] uppercase bg-muted/20">
+            <div key={d} className="px-2 py-2.5 text-center text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase bg-muted/20">
               {d}
             </div>
           ))}
@@ -647,7 +647,7 @@ function CalendarView({
               >
                 {day && (
                   <>
-                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-medium mb-1 ${isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
+                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-micro font-medium mb-1 ${isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
                       {day}
                     </div>
                     <div className="space-y-1">
@@ -660,14 +660,14 @@ function CalendarView({
                             className="w-full text-start px-1.5 py-1 rounded-md hover:bg-accent transition-colors flex items-center gap-1.5"
                           >
                             <div className={`w-1 h-1 rounded-full shrink-0 ${meta.dot}`} />
-                            <span className="text-[10px] text-foreground/80 truncate leading-tight">
+                            <span className="text-micro text-foreground/80 truncate leading-tight">
                               {ar ? (item.title_ar || item.title_en) : item.title_en}
                             </span>
                           </button>
                         );
                       })}
                       {dayItems.length > 3 && (
-                        <p className="text-[9px] text-muted-foreground/50 px-1.5">
+                        <p className="text-micro text-muted-foreground/50 px-1.5">
                           +{dayItems.length - 3} {ar ? "أكثر" : "more"}
                         </p>
                       )}
@@ -773,11 +773,11 @@ function WorkPage() {
         {/* ── Header ── */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
               {ar ? "محرك العمل" : "Work Engine"}
             </p>
             <h1
-              className="text-[26px] font-medium text-foreground leading-tight"
+              className="text-display font-medium text-foreground leading-tight"
               style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}
             >
               {ar ? "لوحة العمل" : "Work Board"}
@@ -785,7 +785,7 @@ function WorkPage() {
           </div>
           <button
             onClick={() => setModalOpen(true)}
-            className="flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium shadow-sm hover:opacity-90 active:opacity-80 transition-opacity shrink-0 mt-1"
+            className="flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-body font-medium shadow-sm hover:opacity-90 active:opacity-80 transition-opacity shrink-0 mt-1"
           >
             <Plus size={14} strokeWidth={2.5} />
             {ar ? "إنشاء عمل" : "Create Work"}
@@ -800,9 +800,9 @@ function WorkPage() {
               <div key={status} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <div className="flex items-center gap-2 mb-1.5">
                   <div className={`w-2 h-2 rounded-full ${meta.dot}`} />
-                  <p className="text-[11px] text-muted-foreground">{ar ? meta.ar : meta.en}</p>
+                  <p className="text-micro text-muted-foreground">{ar ? meta.ar : meta.en}</p>
                 </div>
-                <p className="text-[22px] font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+                <p className="text-heading font-medium text-foreground leading-none" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                   {statusCounts[status] || 0}
                 </p>
               </div>
@@ -816,7 +816,7 @@ function WorkPage() {
             <Search size={13} strokeWidth={1.75} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input type="search" value={search} onChange={(e) => setSearch(e.target.value)}
               placeholder={ar ? "بحث…" : "Search work…"}
-              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
+              className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors"
             />
           </div>
 
@@ -825,7 +825,7 @@ function WorkPage() {
           <div className="flex items-center gap-1.5 flex-wrap">
             {STATUS_FILTERS.map((f) => (
               <button key={f.value} onClick={() => setStatusFilter(f.value as WorkStatus | "all")}
-                className={`h-7 px-3 rounded-lg text-[12px] font-medium border transition-all duration-150 ${statusFilter === f.value ? "bg-primary/8 text-primary border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
+                className={`h-7 px-3 rounded-lg text-caption font-medium border transition-all duration-150 ${statusFilter === f.value ? "bg-primary/8 text-brand-ink border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
                 {ar ? f.ar : f.en}
               </button>
             ))}
@@ -834,21 +834,21 @@ function WorkPage() {
           <div className="h-5 w-px bg-border/60 hidden sm:block" aria-hidden="true" />
 
           <select value={kindFilter} onChange={(e) => setKindFilter(e.target.value as WorkKind | "all")}
-            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-[12px] text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-caption text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
             {KIND_FILTERS.map((f) => (
               <option key={f.value} value={f.value}>{ar ? f.ar : f.en}</option>
             ))}
           </select>
 
           <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value as WorkPriority | "all")}
-            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-[12px] text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-caption text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
             {PRIORITY_FILTERS.map((f) => (
               <option key={f.value} value={f.value}>{ar ? f.ar : f.en}</option>
             ))}
           </select>
 
           <select value={assigneeFilter} onChange={(e) => setAssigneeFilter(e.target.value)}
-            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-[12px] text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
+            className="h-7 ps-2.5 pe-6 rounded-lg border border-border bg-card text-caption text-muted-foreground focus:outline-none focus:border-primary/40 appearance-none cursor-pointer">
             <option value="all">{ar ? "كل المسؤولين" : "All Assignees"}</option>
             {assigneeOptions.map((name) => (
               <option key={name} value={name}>{name}</option>
@@ -856,7 +856,7 @@ function WorkPage() {
           </select>
 
           {hasActiveFilters && (
-            <button onClick={clearFilters} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
+            <button onClick={clearFilters} className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
               <X size={11} strokeWidth={2} />
               {ar ? "مسح" : "Clear"}
             </button>
@@ -867,19 +867,19 @@ function WorkPage() {
           {/* View toggle */}
           <div className="flex items-center border border-border rounded-xl overflow-hidden bg-card">
             <button onClick={() => setView("kanban")}
-              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "kanban" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "kanban" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:text-foreground"}`}
               aria-label={ar ? "عرض كانبان" : "Kanban view"}>
               <Columns3 size={14} strokeWidth={1.75} />
             </button>
             <div className="w-px h-4 bg-border/60" aria-hidden="true" />
             <button onClick={() => setView("list")}
-              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "list" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:text-foreground"}`}
               aria-label={ar ? "عرض القائمة" : "List view"}>
               <List size={14} strokeWidth={1.75} />
             </button>
             <div className="w-px h-4 bg-border/60" aria-hidden="true" />
             <button onClick={() => setView("calendar")}
-              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "calendar" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-8 h-8 flex items-center justify-center transition-colors ${view === "calendar" ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:text-foreground"}`}
               aria-label={ar ? "عرض التقويم" : "Calendar view"}>
               <CalendarDays size={14} strokeWidth={1.75} />
             </button>
@@ -887,7 +887,7 @@ function WorkPage() {
         </div>
 
         {/* ── Count ── */}
-        <p className="text-[12px] text-muted-foreground mb-4">
+        <p className="text-caption text-muted-foreground mb-4">
           {ar ? `${filtered.length} عمل` : `${filtered.length} ${filtered.length === 1 ? "item" : "items"}`}
         </p>
 
@@ -897,10 +897,10 @@ function WorkPage() {
             <div className="w-10 h-10 rounded-xl bg-muted mx-auto mb-4 flex items-center justify-center">
               <Search size={16} className="text-muted-foreground" strokeWidth={1.5} />
             </div>
-            <p className="text-[13px] font-medium text-foreground mb-1">{ar ? "لا توجد نتائج" : "No results found"}</p>
-            <p className="text-[12px] text-muted-foreground">{ar ? "جرب تغيير البحث أو الفلاتر" : "Try adjusting your search or filters"}</p>
+            <p className="text-body font-medium text-foreground mb-1">{ar ? "لا توجد نتائج" : "No results found"}</p>
+            <p className="text-caption text-muted-foreground">{ar ? "جرب تغيير البحث أو الفلاتر" : "Try adjusting your search or filters"}</p>
             {hasActiveFilters && (
-              <button onClick={clearFilters} className="mt-4 text-[12px] text-primary hover:underline">
+              <button onClick={clearFilters} className="mt-4 text-caption text-brand-ink hover:underline">
                 {ar ? "مسح الفلاتر" : "Clear filters"}
               </button>
             )}

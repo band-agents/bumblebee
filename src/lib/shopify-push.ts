@@ -1,7 +1,7 @@
 /**
  * Shopify auto-push — fire-and-forget product export.
  *
- * Called after a product is created/edited in THOTH so the store stays
+ * Called after a product is created/edited in Bumblebee so the store stays
  * current without waiting for a manual "Sync" or the scheduled run.
  * Respects the connection's sync direction: only pushes when products
  * are set to "export" or "both". Failures are silent here — every push

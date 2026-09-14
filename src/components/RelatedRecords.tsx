@@ -15,10 +15,10 @@ const TYPE_ICONS: Record<EntityType, React.ElementType> = {
 };
 
 const TYPE_NODE_COLORS: Record<EntityType, string> = {
-  work:         "bg-amber-100 text-amber-700",
+  work:         "bg-warning/15 text-warning",
   deal:         "bg-emerald-100 text-emerald-700",
   person:       "bg-blue-100 text-blue-700",
-  organization: "bg-violet-100 text-violet-700",
+  organization: "bg-chart-4/15 text-chart-4",
   invoice:      "bg-rose-100 text-rose-700",
   resource:     "bg-cyan-100 text-cyan-700",
 };
@@ -57,13 +57,13 @@ function EntityChip({ meta, kindLabel, onNavigate }: {
         <Icon size={13} strokeWidth={1.75} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-medium text-foreground truncate leading-tight">{meta.titleEn}</p>
-        <p className="text-[11px] text-muted-foreground truncate leading-tight mt-0.5">
+        <p className="text-body font-medium text-foreground truncate leading-tight">{meta.titleEn}</p>
+        <p className="text-micro text-muted-foreground truncate leading-tight mt-0.5">
           <span className="capitalize">{kindLabel}</span>
           {meta.subtitleEn ? ` · ${meta.subtitleEn}` : ""}
         </p>
       </div>
-      <ArrowUpRight size={13} strokeWidth={1.75} className="shrink-0 text-muted-foreground/30 group-hover:text-primary/60 transition-colors" />
+      <ArrowUpRight size={13} strokeWidth={1.75} className="shrink-0 text-muted-foreground/30 group-hover:text-brand-ink/60 transition-colors" />
     </button>
   );
 }
@@ -82,7 +82,7 @@ export function RelatedRecords({ entityType, entityId, compact = false }: Relate
         <div className="w-10 h-10 rounded-xl bg-muted mx-auto mb-3 flex items-center justify-center">
           <Link2 size={15} className="text-muted-foreground/40" strokeWidth={1.5} />
         </div>
-        <p className="text-[13px] text-muted-foreground/60">
+        <p className="text-body text-muted-foreground/60">
           {ar ? "لا توجد سجلات مرتبطة" : "No related records"}
         </p>
       </div>
@@ -108,7 +108,7 @@ export function RelatedRecords({ entityType, entityId, compact = false }: Relate
           <div key={type}>
             {!compact && (
               <div className="px-4 pt-3 pb-1">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                <span className="text-micro font-semibold uppercase tracking-widest text-muted-foreground/50">
                   {ar ? typeMeta.ar : typeMeta.en}
                 </span>
               </div>
@@ -144,16 +144,16 @@ export function BacklinksSection({ entityType, entityId }: { entityType: EntityT
   return (
     <div className="border border-border/40 rounded-xl bg-background overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/30">
-        <h3 className="text-[11px] font-semibold text-muted-foreground tracking-[0.08em] uppercase">
+        <h3 className="text-micro font-semibold text-muted-foreground tracking-[0.08em] uppercase">
           {ar ? "مُشار إليه في" : "Referenced In"}
         </h3>
         {backlinks.length > 0 && (
-          <span className="text-[11px] text-muted-foreground/60 tabular-nums">{backlinks.length}</span>
+          <span className="text-micro text-muted-foreground/60 tabular-nums">{backlinks.length}</span>
         )}
       </div>
       {backlinks.length === 0 ? (
         <div className="px-6 py-10 text-center">
-          <p className="text-[13px] text-muted-foreground/50">
+          <p className="text-body text-muted-foreground/50">
             {ar ? "لم يُشر إليه في أي سجل" : "Not referenced anywhere yet"}
           </p>
         </div>
@@ -172,12 +172,12 @@ export function BacklinksSection({ entityType, entityId }: { entityType: EntityT
                 <Icon size={13} strokeWidth={1.75} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-medium text-foreground truncate">{ar ? r.meta.titleAr : r.meta.titleEn}</p>
-                <p className="text-[11px] text-muted-foreground truncate capitalize">
+                <p className="text-body font-medium text-foreground truncate">{ar ? r.meta.titleAr : r.meta.titleEn}</p>
+                <p className="text-micro text-muted-foreground truncate capitalize">
                   {ar ? kindMeta.ar : kindMeta.en} · {ar ? TYPE_LABELS[r.meta.type].ar : TYPE_LABELS[r.meta.type].en}
                 </p>
               </div>
-              <ArrowUpRight size={13} strokeWidth={1.75} className="shrink-0 text-muted-foreground/30 group-hover:text-primary/60 transition-colors" />
+              <ArrowUpRight size={13} strokeWidth={1.75} className="shrink-0 text-muted-foreground/30 group-hover:text-brand-ink/60 transition-colors" />
             </button>
           );
         })

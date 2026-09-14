@@ -38,8 +38,8 @@ function RuleModal({ rule, ar, onClose, onSave }: {
   const [startsAt, setStartsAt] = useState(rule?.startsAt?.split("T")[0] || "");
   const [endsAt, setEndsAt] = useState(rule?.endsAt?.split("T")[0] || "");
 
-  const inputCls = "w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
-  const labelCls = "block text-[11px] font-medium text-muted-foreground mb-1.5";
+  const inputCls = "w-full h-9 px-3 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors";
+  const labelCls = "block text-micro font-medium text-muted-foreground mb-1.5";
 
   function handleSave() {
     if (!nameEn.trim()) return;
@@ -66,7 +66,7 @@ function RuleModal({ rule, ar, onClose, onSave }: {
       <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[540px] max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="px-6 py-4 border-b border-border/40 flex items-center justify-between sticky top-0 bg-background z-10">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {isEdit ? (ar ? "تعديل القاعدة" : "Edit Rule") : (ar ? "قاعدة جديدة" : "New Rule")}
           </h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={16} /></button>
@@ -84,8 +84,8 @@ function RuleModal({ rule, ar, onClose, onSave }: {
                 const isActive = type === t;
                 return (
                   <button key={t} onClick={() => setType(t)}
-                    className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl border text-[10px] font-medium transition-all ${
-                      isActive ? "border-primary bg-primary/5 text-primary" : "border-border/40 text-muted-foreground hover:border-border hover:text-foreground"
+                    className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl border text-micro font-medium transition-all ${
+                      isActive ? "border-primary bg-primary/5 text-brand-ink" : "border-border/40 text-muted-foreground hover:border-border hover:text-foreground"
                     }`}>
                     <Icon size={14} />
                     {ar ? meta.ar : meta.en}
@@ -111,7 +111,7 @@ function RuleModal({ rule, ar, onClose, onSave }: {
           <div>
             <label className={labelCls}>{ar ? "الوصف" : "Description"}</label>
             <textarea value={ar ? descAr : descEn} onChange={e => ar ? setDescAr(e.target.value) : setDescEn(e.target.value)} rows={2}
-              className="w-full px-3 py-2.5 rounded-xl border border-border/80 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 resize-none"
+              className="w-full px-3 py-2.5 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 resize-none"
               placeholder={ar ? "وصف القاعدة..." : "Describe the rule..."} />
           </div>
 
@@ -150,11 +150,11 @@ function RuleModal({ rule, ar, onClose, onSave }: {
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-border/40 flex justify-end gap-3 sticky bottom-0 bg-background">
-          <button onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          <button onClick={onClose} className="h-9 px-4 rounded-xl border border-border text-caption text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
             {ar ? "إلغاء" : "Cancel"}
           </button>
           <button onClick={handleSave} disabled={!nameEn.trim()}
-            className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2">
+            className="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2">
             <Check size={13} />{isEdit ? (ar ? "حفظ" : "Save") : (ar ? "إنشاء" : "Create Rule")}
           </button>
         </div>
@@ -239,7 +239,7 @@ export default function LoyaltyRulesPage() {
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[960px] mx-auto">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-[13px] font-medium shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl bg-foreground text-background text-body font-medium shadow-lg flex items-center gap-2">
           <Check size={14} />{toast}
         </div>
       )}
@@ -247,16 +247,16 @@ export default function LoyaltyRulesPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "برنامج الولاء" : "Loyalty Program"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "قواعد الاكتساب" : "Earning Rules"}
           </h1>
-          <p className="text-[12px] text-muted-foreground mt-1">
+          <p className="text-caption text-muted-foreground mt-1">
             {activeCount} {ar ? "نشط" : "active"} · {scheduledCount} {ar ? "مجدول" : "scheduled"} · {rules.length} {ar ? "إجمالي" : "total"}
           </p>
         </div>
         <button onClick={() => { setEditRule(undefined); setShowModal(true); }}
-          className="inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium hover:opacity-90 transition-opacity">
+          className="inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-primary text-primary-foreground text-body font-medium hover:opacity-90 transition-opacity">
           <Plus size={14} />{ar ? "قاعدة جديدة" : "New Rule"}
         </button>
       </div>
@@ -266,11 +266,11 @@ export default function LoyaltyRulesPage() {
         <div className="relative flex-1 min-w-[200px] max-w-[320px]">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث القواعد..." : "Search rules..."}
-            className="w-full h-9 pl-9 pr-3 rounded-xl border border-border/60 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" />
+            className="w-full h-9 pl-9 pr-3 rounded-xl border border-border/60 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
         </div>
 
         <select value={filterType} onChange={e => setFilterType(e.target.value as RuleType | "all")}
-          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption text-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 cursor-pointer">
           <option value="all">{ar ? "كل الأنواع" : "All Types"}</option>
           {(Object.keys(RULE_TYPE_META) as RuleType[]).map(t => (
             <option key={t} value={t}>{ar ? RULE_TYPE_META[t].ar : RULE_TYPE_META[t].en}</option>
@@ -278,7 +278,7 @@ export default function LoyaltyRulesPage() {
         </select>
 
         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value as RuleStatus | "all")}
-          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption text-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 cursor-pointer">
           <option value="all">{ar ? "كل الحالات" : "All Status"}</option>
           {(Object.keys(RULE_STATUS_META) as RuleStatus[]).map(s => (
             <option key={s} value={s}>{ar ? RULE_STATUS_META[s].ar : RULE_STATUS_META[s].en}</option>
@@ -291,7 +291,7 @@ export default function LoyaltyRulesPage() {
         {filtered.length === 0 ? (
           <div className="py-14 text-center">
             <Zap size={22} className="mx-auto mb-3 text-muted-foreground/30" />
-            <p className="text-[13px] text-muted-foreground">{ar ? "لا توجد قواعد مطابقة" : "No rules match your filters"}</p>
+            <p className="text-body text-muted-foreground">{ar ? "لا توجد قواعد مطابقة" : "No rules match your filters"}</p>
           </div>
         ) : filtered.map(rule => {
           const typeMeta = RULE_TYPE_META[rule.type];
@@ -302,23 +302,23 @@ export default function LoyaltyRulesPage() {
             <div key={rule.id} className="px-5 py-4 flex items-start gap-4 hover:bg-muted/15 transition-colors group">
               {/* Icon */}
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${rule.status === "active" ? "bg-primary/8" : "bg-muted/50"}`}>
-                <Icon size={16} strokeWidth={1.75} className={rule.status === "active" ? "text-primary" : "text-muted-foreground"} />
+                <Icon size={16} strokeWidth={1.75} className={rule.status === "active" ? "text-brand-ink" : "text-muted-foreground"} />
               </div>
 
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${typeMeta.pill}`}>
+                  <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${typeMeta.pill}`}>
                     {ar ? typeMeta.ar : typeMeta.en}
                   </span>
-                  <h4 className="text-[13px] font-medium text-foreground truncate">
+                  <h4 className="text-body font-medium text-foreground truncate">
                     {ar ? rule.nameAr : rule.nameEn}
                   </h4>
                 </div>
-                <p className="text-[11.5px] text-muted-foreground line-clamp-1 mb-1.5">
+                <p className="text-micro text-muted-foreground line-clamp-1 mb-1.5">
                   {ar ? rule.descAr : rule.descEn}
                 </p>
-                <div className="flex items-center gap-3 text-[10px] text-muted-foreground/60">
+                <div className="flex items-center gap-3 text-micro text-muted-foreground/60">
                   {rule.pointsAwarded && <span>{rule.pointsAwarded} {ar ? "نقطة" : "pts"}</span>}
                   {rule.multiplier && <span>{rule.multiplier}x</span>}
                   {rule.minAmount && <span>{ar ? "الحد الأدنى:" : "Min:"} {rule.minAmount.toLocaleString()} {ar ? "ج.م" : "EGP"}</span>}
@@ -340,7 +340,7 @@ export default function LoyaltyRulesPage() {
               <div className="flex items-center gap-2 shrink-0">
                 <div className="flex items-center gap-1.5">
                   <div className={`w-1.5 h-1.5 rounded-full ${statusMeta.dot}`} />
-                  <span className={`text-[11px] font-medium ${rule.status === "active" ? "text-emerald-600" : rule.status === "scheduled" ? "text-amber-600" : "text-muted-foreground"}`}>
+                  <span className={`text-micro font-medium ${rule.status === "active" ? "text-emerald-600" : rule.status === "scheduled" ? "text-warning" : "text-muted-foreground"}`}>
                     {ar ? statusMeta.ar : statusMeta.en}
                   </span>
                 </div>
@@ -367,10 +367,10 @@ export default function LoyaltyRulesPage() {
 
       {/* How Rules Work */}
       <div className="mt-6 bg-muted/20 border border-border/30 rounded-xl p-5">
-        <h3 className="text-[13px] font-medium text-foreground mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>
+        <h3 className="text-body font-medium text-foreground mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>
           {ar ? "كيف تعمل القواعد" : "How Rules Work"}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[11px] text-muted-foreground">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-micro text-muted-foreground">
           <div>
             <p className="font-medium text-foreground mb-0.5">{ar ? "الأولوية" : "Priority"}</p>
             <p>{ar ? "القواعد ذات الأولوية الأعلى تُفحص أولاً. الحملات تتجاوز القواعد الأساسية." : "Higher priority rules are checked first. Campaigns override base rules."}</p>

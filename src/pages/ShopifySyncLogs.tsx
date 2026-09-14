@@ -43,8 +43,8 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
               <Icon size={14} className={log.status === "success" ? "text-emerald-600" : log.status === "failed" ? "text-rose-500" : "text-muted-foreground"} />
             </div>
             <div>
-              <p className="text-[14px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? evt.ar : evt.en}</p>
-              <p className="text-[10px] text-muted-foreground">{log.id}</p>
+              <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? evt.ar : evt.en}</p>
+              <p className="text-micro text-muted-foreground">{log.id}</p>
             </div>
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={16} /></button>
@@ -54,16 +54,16 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
           {/* Status */}
           <div className="flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${sts.dot}`} />
-            <span className={`text-[12px] font-medium px-2.5 py-0.5 rounded-full ${sts.pill}`}>{ar ? sts.ar : sts.en}</span>
-            <span className="text-[11px] text-muted-foreground ms-auto">
+            <span className={`text-caption font-medium px-2.5 py-0.5 rounded-full ${sts.pill}`}>{ar ? sts.ar : sts.en}</span>
+            <span className="text-micro text-muted-foreground ms-auto">
               {new Date(log.createdAt).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })}
             </span>
           </div>
 
           {/* Details */}
           <div className="bg-muted/20 rounded-xl p-4">
-            <p className="text-[11px] font-medium text-muted-foreground mb-1">{ar ? "التفاصيل" : "Details"}</p>
-            <p className="text-[12px] text-foreground leading-relaxed">{log.details}</p>
+            <p className="text-micro font-medium text-muted-foreground mb-1">{ar ? "التفاصيل" : "Details"}</p>
+            <p className="text-caption text-foreground leading-relaxed">{log.details}</p>
           </div>
 
           {/* Error */}
@@ -71,9 +71,9 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
             <div className="bg-rose-50 border border-rose-200 rounded-xl p-4">
               <div className="flex items-center gap-1.5 mb-1">
                 <XCircle size={12} className="text-rose-500" />
-                <p className="text-[11px] font-medium text-rose-700">{ar ? "رسالة الخطأ" : "Error Message"}</p>
+                <p className="text-micro font-medium text-rose-700">{ar ? "رسالة الخطأ" : "Error Message"}</p>
               </div>
-              <p className="text-[12px] text-rose-600 font-mono">{log.errorMessage}</p>
+              <p className="text-caption text-rose-600 font-mono">{log.errorMessage}</p>
             </div>
           )}
 
@@ -81,26 +81,26 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
           <div className="grid grid-cols-2 gap-3">
             {log.shopifyOrderId && (
               <div className="bg-background border border-border/40 rounded-lg p-3">
-                <p className="text-[10px] text-muted-foreground mb-0.5">{ar ? "رقم الطلب" : "Order ID"}</p>
-                <p className="text-[12px] font-medium font-mono">{log.shopifyOrderId}</p>
+                <p className="text-micro text-muted-foreground mb-0.5">{ar ? "رقم الطلب" : "Order ID"}</p>
+                <p className="text-caption font-medium font-mono">{log.shopifyOrderId}</p>
               </div>
             )}
             {log.shopifyCustomerId && (
               <div className="bg-background border border-border/40 rounded-lg p-3">
-                <p className="text-[10px] text-muted-foreground mb-0.5">{ar ? "معرف العميل" : "Customer ID"}</p>
-                <p className="text-[11px] font-medium font-mono truncate">{log.shopifyCustomerId.replace("gid://shopify/Customer/", "")}</p>
+                <p className="text-micro text-muted-foreground mb-0.5">{ar ? "معرف العميل" : "Customer ID"}</p>
+                <p className="text-micro font-medium font-mono truncate">{log.shopifyCustomerId.replace("gid://shopify/Customer/", "")}</p>
               </div>
             )}
             {log.memberName && (
               <div className="bg-background border border-border/40 rounded-lg p-3">
-                <p className="text-[10px] text-muted-foreground mb-0.5">{ar ? "العضو" : "Member"}</p>
-                <p className="text-[12px] font-medium">{log.memberName}</p>
+                <p className="text-micro text-muted-foreground mb-0.5">{ar ? "العضو" : "Member"}</p>
+                <p className="text-caption font-medium">{log.memberName}</p>
               </div>
             )}
             {log.pointsDelta !== undefined && (
               <div className="bg-background border border-border/40 rounded-lg p-3">
-                <p className="text-[10px] text-muted-foreground mb-0.5">{ar ? "النقاط" : "Points"}</p>
-                <p className={`text-[12px] font-medium tabular-nums ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                <p className="text-micro text-muted-foreground mb-0.5">{ar ? "النقاط" : "Points"}</p>
+                <p className={`text-caption font-medium tabular-nums ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-500"}`}>
                   {log.pointsDelta > 0 ? "+" : ""}{log.pointsDelta.toLocaleString()}
                 </p>
               </div>
@@ -172,12 +172,12 @@ export default function ShopifySyncLogsPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "شوبيفاي" : "Shopify"}</p>
-          <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">{ar ? "شوبيفاي" : "Shopify"}</p>
+          <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
             {ar ? "سجل المزامنة" : "Sync Logs"}
           </h1>
         </div>
-        <button className="h-9 px-4 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2 transition-colors">
+        <button className="h-9 px-4 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2 transition-colors">
           <RefreshCw size={13} />{ar ? "تحديث" : "Refresh"}
         </button>
       </div>
@@ -188,12 +188,12 @@ export default function ShopifySyncLogsPage() {
           { icon: Activity, value: String(logs.length), label: ar ? "إجمالي الأحداث" : "Total Events", color: "text-foreground" },
           { icon: CheckCircle2, value: String(successCount), label: ar ? "ناجح" : "Successful", color: "text-emerald-600" },
           { icon: XCircle, value: String(failedCount), label: ar ? "فشل" : "Failed", color: "text-rose-500" },
-          { icon: Star, value: totalPoints.toLocaleString(), label: ar ? "نقاط مكتسبة" : "Points Awarded", color: "text-primary" },
+          { icon: Star, value: totalPoints.toLocaleString(), label: ar ? "نقاط مكتسبة" : "Points Awarded", color: "text-brand-ink" },
         ].map((c, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
             <c.icon size={14} className={`${c.color} mb-2`} />
-            <p className={`text-[20px] font-medium tabular-nums ${c.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{c.value}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{c.label}</p>
+            <p className={`text-heading font-medium tabular-nums ${c.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{c.value}</p>
+            <p className="text-micro text-muted-foreground mt-0.5">{c.label}</p>
           </div>
         ))}
       </div>
@@ -203,11 +203,11 @@ export default function ShopifySyncLogsPage() {
         <div className="relative flex-1 min-w-[200px] max-w-[300px]">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث..." : "Search logs..."}
-            className="w-full h-9 pl-9 pr-3 rounded-xl border border-border/60 bg-card text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" />
+            className="w-full h-9 pl-9 pr-3 rounded-xl border border-border/60 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
         </div>
 
         <select value={filterEvent} onChange={e => setFilterEvent(e.target.value as SyncEventType | "all")}
-          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption text-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 cursor-pointer">
           <option value="all">{ar ? "كل الأحداث" : "All Events"}</option>
           {(Object.keys(SYNC_EVENT_META) as SyncEventType[]).map(t => (
             <option key={t} value={t}>{ar ? SYNC_EVENT_META[t].ar : SYNC_EVENT_META[t].en}</option>
@@ -215,14 +215,14 @@ export default function ShopifySyncLogsPage() {
         </select>
 
         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value as SyncEventStatus | "all")}
-          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-[12px] text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+          className="h-9 px-3 rounded-xl border border-border/60 bg-card text-caption text-foreground focus:outline-none focus:ring-2 focus:ring-brand-ink/20 cursor-pointer">
           <option value="all">{ar ? "كل الحالات" : "All Status"}</option>
           {(Object.keys(SYNC_STATUS_META) as SyncEventStatus[]).map(s => (
             <option key={s} value={s}>{ar ? SYNC_STATUS_META[s].ar : SYNC_STATUS_META[s].en}</option>
           ))}
         </select>
 
-        <span className="text-[11px] text-muted-foreground ms-auto">{filtered.length} {ar ? "حدث" : "events"}</span>
+        <span className="text-micro text-muted-foreground ms-auto">{filtered.length} {ar ? "حدث" : "events"}</span>
       </div>
 
       {/* Log Timeline */}
@@ -230,7 +230,7 @@ export default function ShopifySyncLogsPage() {
         {filtered.length === 0 ? (
           <div className="py-14 text-center">
             <Activity size={22} className="mx-auto mb-3 text-muted-foreground/30" />
-            <p className="text-[13px] text-muted-foreground">{ar ? "لا توجد أحداث مطابقة" : "No events match your filters"}</p>
+            <p className="text-body text-muted-foreground">{ar ? "لا توجد أحداث مطابقة" : "No events match your filters"}</p>
           </div>
         ) : (
           <div className="divide-y divide-border/25">
@@ -247,12 +247,12 @@ export default function ShopifySyncLogsPage() {
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                       log.status === "success" ? "bg-emerald-50" :
                       log.status === "failed" ? "bg-rose-50" :
-                      log.status === "skipped" ? "bg-amber-50" : "bg-blue-50"
+                      log.status === "skipped" ? "bg-warning/10" : "bg-blue-50"
                     }`}>
                       <Icon size={14} className={
                         log.status === "success" ? "text-emerald-600" :
                         log.status === "failed" ? "text-rose-500" :
-                        log.status === "skipped" ? "text-amber-600" : "text-blue-500"
+                        log.status === "skipped" ? "text-warning" : "text-blue-500"
                       } />
                     </div>
                   </div>
@@ -260,22 +260,22 @@ export default function ShopifySyncLogsPage() {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${sts.pill}`}>{ar ? sts.ar : sts.en}</span>
-                      <span className="text-[12px] font-medium text-foreground">{ar ? evt.ar : evt.en}</span>
-                      {log.shopifyOrderId && <code className="text-[10px] font-mono text-muted-foreground">{log.shopifyOrderId}</code>}
+                      <span className={`text-micro font-medium px-2 py-0.5 rounded-full ${sts.pill}`}>{ar ? sts.ar : sts.en}</span>
+                      <span className="text-caption font-medium text-foreground">{ar ? evt.ar : evt.en}</span>
+                      {log.shopifyOrderId && <code className="text-micro font-mono text-muted-foreground">{log.shopifyOrderId}</code>}
                     </div>
-                    <p className="text-[11px] text-muted-foreground line-clamp-1">{log.details}</p>
+                    <p className="text-micro text-muted-foreground line-clamp-1">{log.details}</p>
                   </div>
 
                   {/* Points delta */}
                   {log.pointsDelta !== undefined && (
-                    <span className={`text-[12px] font-medium tabular-nums shrink-0 ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-caption font-medium tabular-nums shrink-0 ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-500"}`}>
                       {log.pointsDelta > 0 ? "+" : ""}{log.pointsDelta.toLocaleString()} {ar ? "نقطة" : "pts"}
                     </span>
                   )}
 
                   {/* Timestamp */}
-                  <span className="text-[10px] text-muted-foreground tabular-nums shrink-0 w-[80px] text-end">
+                  <span className="text-micro text-muted-foreground tabular-nums shrink-0 w-[80px] text-end">
                     {new Date(log.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                     <br />
                     <span className="text-muted-foreground/50">
@@ -283,7 +283,7 @@ export default function ShopifySyncLogsPage() {
                     </span>
                   </span>
 
-                  <ChevronRight size={12} className="text-muted-foreground/30 group-hover:text-primary/50 shrink-0" />
+                  <ChevronRight size={12} className="text-muted-foreground/30 group-hover:text-brand-ink/50 shrink-0" />
                 </button>
               );
             })}

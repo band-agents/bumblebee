@@ -262,10 +262,10 @@ function DetailPanel({
           <Icon size={15} strokeWidth={1.75} style={{ color: TYPE_DOT_COLORS[type] }} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-semibold text-foreground truncate leading-tight">
+          <p className="text-body font-semibold text-foreground truncate leading-tight">
             {ar ? meta.titleAr : meta.titleEn}
           </p>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-micro text-muted-foreground">
             {ar ? typeLabel.ar : typeLabel.en}
           </p>
         </div>
@@ -277,7 +277,7 @@ function DetailPanel({
       {/* Subtitle */}
       {meta.subtitleEn && (
         <div className="px-4 py-3 border-b border-border/20">
-          <p className="text-[12px] text-muted-foreground">{ar ? meta.subtitleAr : meta.subtitleEn}</p>
+          <p className="text-caption text-muted-foreground">{ar ? meta.subtitleAr : meta.subtitleEn}</p>
         </div>
       )}
 
@@ -286,7 +286,7 @@ function DetailPanel({
         {related.length > 0 ? (
           <>
             <div className="px-4 pt-3 pb-1">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+              <span className="text-micro font-semibold uppercase tracking-widest text-muted-foreground/50">
                 {ar ? `${related.length} اتصال` : `${related.length} Connection${related.length !== 1 ? "s" : ""}`}
               </span>
             </div>
@@ -303,17 +303,17 @@ function DetailPanel({
                     <RIcon size={12} strokeWidth={1.75} style={{ color: TYPE_DOT_COLORS[r.meta.type] }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] text-foreground truncate">{ar ? r.meta.titleAr : r.meta.titleEn}</p>
-                    <p className="text-[10px] text-muted-foreground capitalize">{r.relationship.kind.replace("_", " ")}</p>
+                    <p className="text-caption text-foreground truncate">{ar ? r.meta.titleAr : r.meta.titleEn}</p>
+                    <p className="text-micro text-muted-foreground capitalize">{r.relationship.kind.replace("_", " ")}</p>
                   </div>
-                  <ArrowUpRight size={11} className="shrink-0 text-muted-foreground/20 group-hover:text-primary/50 transition-colors" />
+                  <ArrowUpRight size={11} className="shrink-0 text-muted-foreground/20 group-hover:text-brand-ink/50 transition-colors" />
                 </button>
               );
             })}
           </>
         ) : (
           <div className="px-4 py-8 text-center">
-            <p className="text-[12px] text-muted-foreground/50">{ar ? "لا توجد اتصالات" : "No connections"}</p>
+            <p className="text-caption text-muted-foreground/50">{ar ? "لا توجد اتصالات" : "No connections"}</p>
           </div>
         )}
       </div>
@@ -322,7 +322,7 @@ function DetailPanel({
       <div className="px-4 py-3 border-t border-border/30 shrink-0">
         <button
           onClick={() => navigate(meta.route)}
-          className="w-full flex items-center justify-center gap-2 h-8 rounded-lg bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition-opacity"
+          className="w-full flex items-center justify-center gap-2 h-8 rounded-lg bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 transition-opacity"
         >
           <ArrowUpRight size={13} strokeWidth={2} />
           {ar ? "فتح السجل" : "Open Record"}
@@ -403,8 +403,8 @@ export default function Memory() {
     <div className="min-h-full flex items-center justify-center py-24">
       <div className="text-center max-w-[400px]">
         <div className="w-12 h-12 rounded-2xl bg-muted mx-auto flex items-center justify-center mb-4"><Brain size={20} className="text-muted-foreground/40" /></div>
-        <h2 className="text-[16px] font-medium mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "ذاكرة المنظمة" : "Organization Memory"}</h2>
-        <p className="text-[13px] text-muted-foreground leading-relaxed">{ar ? "ضيف أشخاص وشركات وصفقات ومهام عشان تبني شبكة العلاقات." : "Add people, organizations, deals, and work items to build the relationship network."}</p>
+        <h2 className="text-title font-medium mb-2" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "ذاكرة المنظمة" : "Organization Memory"}</h2>
+        <p className="text-body text-muted-foreground leading-relaxed">{ar ? "ضيف أشخاص وشركات وصفقات ومهام عشان تبني شبكة العلاقات." : "Add people, organizations, deals, and work items to build the relationship network."}</p>
       </div>
     </div>
   );
@@ -431,13 +431,13 @@ export default function Memory() {
       <div className="px-8 py-5 border-b border-border/40 shrink-0 flex items-center gap-4 flex-wrap bg-background">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center">
-            <Brain size={16} strokeWidth={1.75} className="text-primary" />
+            <Brain size={16} strokeWidth={1.75} className="text-brand-ink" />
           </div>
           <div>
-            <h1 className="text-[15px] font-semibold text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h1 className="text-body-lg font-semibold text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "رسم المعرفة" : "Knowledge Graph"}
             </h1>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-micro text-muted-foreground">
               {ar
                 ? `${totalNodes} عقدة · ${totalEdges} اتصال`
                 : `${totalNodes} nodes · ${totalEdges} connections`}
@@ -457,7 +457,7 @@ export default function Memory() {
                 key={type}
                 onClick={() => toggleFilter(type)}
                 className={`
-                  flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all
+                  flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-micro font-medium transition-all
                   ${active
                     ? "border-transparent text-foreground"
                     : "border-border/40 text-muted-foreground/50 bg-transparent"
@@ -472,7 +472,7 @@ export default function Memory() {
           })}
           <button
             onClick={() => { setRunning(true); setTick(0); }}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border/40 text-[11px] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors ms-1"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border/40 text-micro text-muted-foreground hover:text-foreground hover:bg-accent transition-colors ms-1"
           >
             <RefreshCw size={11} strokeWidth={1.75} />
             {ar ? "إعادة" : "Reset"}
@@ -491,10 +491,10 @@ export default function Memory() {
                 <GitBranch size={22} strokeWidth={1.5} className="text-muted-foreground/40" />
               </div>
               <div>
-                <p className="text-[15px] font-medium text-foreground mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <p className="text-body-lg font-medium text-foreground mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {ar ? "لا توجد بيانات للعرض" : "No data to display"}
                 </p>
-                <p className="text-[13px] text-muted-foreground">
+                <p className="text-body text-muted-foreground">
                   {ar ? "حاول تغيير الفلاتر أو إضافة سجلات" : "Try changing filters or adding records"}
                 </p>
               </div>
@@ -520,8 +520,8 @@ export default function Memory() {
                 return (
                   <div key={t} className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: TYPE_DOT_COLORS[t] }} />
-                    <span className="text-[11px] text-muted-foreground">{ar ? TYPE_LABELS[t].ar : TYPE_LABELS[t].en}</span>
-                    <span className="text-[10px] text-muted-foreground/50 tabular-nums ms-auto">{cnt}</span>
+                    <span className="text-micro text-muted-foreground">{ar ? TYPE_LABELS[t].ar : TYPE_LABELS[t].en}</span>
+                    <span className="text-micro text-muted-foreground/50 tabular-nums ms-auto">{cnt}</span>
                   </div>
                 );
               })}
@@ -530,7 +530,7 @@ export default function Memory() {
 
           {/* Running indicator */}
           {running && (
-            <div className="absolute top-4 end-4 flex items-center gap-1.5 text-[11px] text-muted-foreground/50">
+            <div className="absolute top-4 end-4 flex items-center gap-1.5 text-micro text-muted-foreground/50">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
               {ar ? "جارٍ الحساب..." : "Simulating…"}
             </div>

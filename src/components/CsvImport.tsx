@@ -136,7 +136,7 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40 shrink-0">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? `استيراد ${template.labelAr}` : `Import ${template.labelEn}`}
           </h2>
           <button onClick={handleClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
@@ -152,13 +152,13 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
             <div className="space-y-5">
               <div className="border-2 border-dashed border-border/50 rounded-xl p-8 text-center hover:border-primary/30 transition-colors">
                 <Upload size={24} className="mx-auto text-muted-foreground/40 mb-3" />
-                <p className="text-[14px] font-medium mb-1">
+                <p className="text-body-lg font-medium mb-1">
                   {ar ? "اختار ملف CSV" : "Select CSV File"}
                 </p>
-                <p className="text-[12px] text-muted-foreground mb-4">
+                <p className="text-caption text-muted-foreground mb-4">
                   {ar ? "ارفع ملف CSV يحتوي على البيانات" : "Upload a CSV file with your data"}
                 </p>
-                <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 cursor-pointer transition-opacity">
+                <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 cursor-pointer transition-opacity">
                   <FileText size={14} />
                   {ar ? "اختار ملف" : "Choose File"}
                   <input ref={fileRef} type="file" accept=".csv,text/csv" onChange={handleFileChange} className="hidden" />
@@ -167,23 +167,23 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
 
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-border/40" />
-                <span className="text-[11px] text-muted-foreground">{ar ? "أو" : "or"}</span>
+                <span className="text-micro text-muted-foreground">{ar ? "أو" : "or"}</span>
                 <div className="flex-1 h-px bg-border/40" />
               </div>
 
-              <button onClick={() => downloadTemplate(template.headers, `thoth-${template.id}-template.csv`)}
-                className="w-full flex items-center justify-center gap-2 h-10 rounded-xl border border-border/60 text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+              <button onClick={() => downloadTemplate(template.headers, `bumblebee-${template.id}-template.csv`)}
+                className="w-full flex items-center justify-center gap-2 h-10 rounded-xl border border-border/60 text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 <Download size={14} />
                 {ar ? "حمّل نموذج جاهز" : "Download Template"}
               </button>
 
               <div className="bg-muted/30 rounded-xl p-4">
-                <p className="text-[11px] font-medium text-foreground mb-2">{ar ? "الأعمدة المطلوبة" : "Required Columns"}</p>
+                <p className="text-micro font-medium text-foreground mb-2">{ar ? "الأعمدة المطلوبة" : "Required Columns"}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {template.headers.map((h) => (
-                    <span key={h} className={`text-[10.5px] px-2 py-0.5 rounded-full font-mono ${
+                    <span key={h} className={`text-micro px-2 py-0.5 rounded-full font-mono ${
                       template.requiredHeaders.includes(h)
-                        ? "bg-primary/10 text-primary border border-primary/20"
+                        ? "bg-primary/10 text-brand-ink border border-primary/20"
                         : "bg-muted text-muted-foreground border border-border/40"
                     }`}>
                       {h}{template.requiredHeaders.includes(h) ? " *" : ""}
@@ -199,15 +199,15 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
             <div className="space-y-4">
               {/* Summary */}
               <div className="flex items-center gap-3">
-                <span className="text-[12px] font-medium bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full">
+                <span className="text-caption font-medium bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full">
                   {validCount} {ar ? "صالح" : "valid"}
                 </span>
                 {invalidCount > 0 && (
-                  <span className="text-[12px] font-medium bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full">
+                  <span className="text-caption font-medium bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full">
                     {invalidCount} {ar ? "غير صالح" : "invalid"}
                   </span>
                 )}
-                <span className="text-[12px] text-muted-foreground">
+                <span className="text-caption text-muted-foreground">
                   {ar ? `${rows.length} سجل إجمالي` : `${rows.length} total rows`}
                 </span>
               </div>
@@ -215,7 +215,7 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
               {/* Row list */}
               <div className="border border-border/40 rounded-xl overflow-hidden divide-y divide-border/30 max-h-[300px] overflow-auto">
                 {rows.map((row, i) => (
-                  <div key={i} className={`flex items-start gap-3 px-4 py-3 text-[12px] ${
+                  <div key={i} className={`flex items-start gap-3 px-4 py-3 text-caption ${
                     row.status === "invalid" ? "bg-rose-50/30" : "bg-background"
                   }`}>
                     <div className="shrink-0 mt-0.5">
@@ -229,7 +229,7 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
                       <p className="text-foreground font-medium truncate">
                         {row.data[template.requiredHeaders[0]] || `Row ${i + 1}`}
                       </p>
-                      {row.error && <p className="text-rose-500 text-[11px] mt-0.5">{row.error}</p>}
+                      {row.error && <p className="text-rose-500 text-micro mt-0.5">{row.error}</p>}
                     </div>
                     <span className="text-muted-foreground/50 tabular-nums shrink-0">#{i + 1}</span>
                   </div>
@@ -241,11 +241,11 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
           {/* Step 3: Importing */}
           {step === "importing" && (
             <div className="flex flex-col items-center justify-center py-12 gap-4">
-              <Loader2 size={24} className="animate-spin text-primary" />
-              <p className="text-[14px] font-medium">
+              <Loader2 size={24} className="animate-spin text-brand-ink" />
+              <p className="text-body-lg font-medium">
                 {ar ? "جاري الاستيراد..." : "Importing..."}
               </p>
-              <p className="text-[12px] text-muted-foreground">
+              <p className="text-caption text-muted-foreground">
                 {importedCount} / {validCount}
               </p>
             </div>
@@ -258,10 +258,10 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
                 <CheckCircle2 size={28} className="text-emerald-500" />
               </div>
               <div className="text-center">
-                <p className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <p className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
                   {ar ? "تم الاستيراد بنجاح" : "Import Complete"}
                 </p>
-                <p className="text-[13px] text-muted-foreground mt-1">
+                <p className="text-body text-muted-foreground mt-1">
                   {ar
                     ? `تم استيراد ${importedCount} سجل${failedCount > 0 ? ` · ${failedCount} فشل` : ""}`
                     : `${importedCount} imported${failedCount > 0 ? ` · ${failedCount} failed` : ""}`}
@@ -274,17 +274,17 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex items-center justify-end gap-3">
           {step === "upload" && (
-            <button onClick={handleClose} className="h-9 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+            <button onClick={handleClose} className="h-9 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
               {ar ? "إلغاء" : "Cancel"}
             </button>
           )}
           {step === "preview" && (
             <>
-              <button onClick={reset} className="h-9 px-4 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={reset} className="h-9 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
                 {ar ? "رجوع" : "Back"}
               </button>
               <button onClick={handleImport} disabled={validCount === 0}
-                className="h-9 px-5 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2">
+                className="h-9 px-5 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2">
                 <Upload size={14} />
                 {ar ? `استورد ${validCount} سجل` : `Import ${validCount} rows`}
               </button>
@@ -292,7 +292,7 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
           )}
           {step === "done" && (
             <button onClick={handleClose}
-              className="h-9 px-5 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity">
+              className="h-9 px-5 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity">
               {ar ? "تم" : "Done"}
             </button>
           )}

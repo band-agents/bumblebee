@@ -10,7 +10,8 @@ import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 import { OnboardingProvider, useOnboarding } from "./context/OnboardingContext";
 import { CommandBarProvider } from "./context/CommandBarContext";
 import { CommandBar, useCommandBarShortcut } from "./components/CommandBar";
-import { Sidebar } from "./components/Sidebar";
+import { ShellNav } from "./components/ShellNav";
+import { RouteErrorBoundary } from "./components/RouteErrorBoundary";
 import { Topbar } from "./components/Topbar";
 import AIAssistant from "./components/AIAssistant";
 import { Logo } from "./components/Logo";
@@ -123,6 +124,13 @@ const PushNotificationCenter = lazy(() => import("./pages/PushNotificationCenter
 import { MemoryProvider } from "./context/MemoryContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { isDemoMode } from "./lib/supabase";
+
+/**
+ * Dev bypass. With VITE_SKIP_AUTH=true the app opens straight on the
+ * dashboard — no landing page, no sign-in, no workspace setup. Set in
+ * .env.development.local; delete that file to restore the normal flow.
+ */
+const SKIP_AUTH = import.meta.env.VITE_SKIP_AUTH === "true";
 import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient({
@@ -147,10 +155,10 @@ function ModulePlaceholder({ labelEn, labelAr, descEn, descAr }: { labelEn: stri
           <div className="w-3.5 h-3.5 rounded bg-border" />
         </div>
         <div>
-          <p className="text-[14px] font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <p className="text-body-lg font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
             {lang === "ar" ? labelAr : labelEn}
           </p>
-          <p className="text-[12px] text-muted-foreground mt-1">
+          <p className="text-caption text-muted-foreground mt-1">
             {lang === "ar" ? (descAr || "قريباً إن شاء الله") : (descEn || "Coming soon")}
           </p>
         </div>
@@ -198,7 +206,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-[100dvh] w-full overflow-hidden bg-background font-sans">
-      <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+      <ShellNav mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Topbar onMenuClick={() => setMobileOpen((prev) => !prev)} />
         <main className="flex-1 overflow-auto">
@@ -226,6 +234,16 @@ function Shell({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Shell>
+      <RoutedArea />
+    </Shell>
+  );
+}
+
+/** The page area: one crash here must not take the shell with it. */
+function RoutedArea() {
+  const [path] = useLocation();
+  return (
+    <RouteErrorBoundary resetKey={path}>
       <Suspense fallback={<LoadingScreen />}>
       <Switch>
         {/* ── Executive OS ── */}
@@ -354,7 +372,7 @@ function AppRoutes() {
         <Route component={NotFound} />
       </Switch>
       </Suspense>
-    </Shell>
+    </RouteErrorBoundary>
   );
 }
 
@@ -370,6 +388,12 @@ function Router() {
 
   // ── Public landing page: reachable in every mode ──────────
   if (path === "/welcome") return <Landing />;
+
+  // ── Dev bypass: straight into the app ─────────────────────
+  if (SKIP_AUTH) {
+    if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" />;
+    return <AppRoutes />;
+  }
 
   // ── Invitation links: public, before all auth guards ──────
   // The page handles logged-out (inline sign in/up) and logged-in

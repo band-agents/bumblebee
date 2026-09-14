@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════
--- THOTH Sprint 2: Admin Users + Permissions + Analytics
+-- Bumblebee Sprint 2: Admin Users + Permissions + Analytics
 -- Migration: admin-users-analytics.sql
 -- ═══════════════════════════════════════════════════════════
 

@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS loyalty_members (
   workspace_id      UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
   program_id        UUID NOT NULL REFERENCES loyalty_programs(id) ON DELETE CASCADE,
 
-  -- Link to existing THOTH entities
+  -- Link to existing Bumblebee entities
   person_id         UUID REFERENCES people(id),
   organization_id   UUID REFERENCES organizations(id),
 
@@ -303,7 +303,7 @@ CREATE TABLE IF NOT EXISTS shopify_orders (
   shopify_order_number TEXT,                          -- human-readable #1001
   shopify_customer_id TEXT,
 
-  -- Matched THOTH member
+  -- Matched Bumblebee member
   member_id         UUID REFERENCES loyalty_members(id),
 
   -- Order data

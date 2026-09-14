@@ -36,7 +36,7 @@ export function HoldTransactions({ held, onRecall, onDiscard, onClose }: {
         className="relative w-full max-w-md bg-background rounded-2xl border border-border shadow-2xl overflow-hidden"
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
-          <h3 className="text-[15px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <h3 className="text-body-lg font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {lang === "ar" ? "المعاملات المعلّقة" : "Held Transactions"}
           </h3>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
@@ -48,7 +48,7 @@ export function HoldTransactions({ held, onRecall, onDiscard, onClose }: {
           {held.length === 0 ? (
             <div className="text-center py-8">
               <Pause size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-              <p className="text-[12px] text-muted-foreground">
+              <p className="text-caption text-muted-foreground">
                 {lang === "ar" ? "لا توجد معاملات معلّقة" : "No held transactions"}
               </p>
             </div>
@@ -59,44 +59,44 @@ export function HoldTransactions({ held, onRecall, onDiscard, onClose }: {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Clock size={12} className="text-muted-foreground/50" />
-                      <span className="text-[11px] text-muted-foreground">
+                      <span className="text-micro text-muted-foreground">
                         {h.heldAt.toLocaleTimeString()} • {h.items.length} {lang === "ar" ? "منتجات" : "items"}
                       </span>
                     </div>
-                    <span className="text-[14px] font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                    <span className="text-body-lg font-bold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
                       {formatEGP(h.total)}
                     </span>
                   </div>
 
                   {h.customerName && (
-                    <p className="text-[11px] text-muted-foreground mb-1">{lang === "ar" ? "العميل" : "Customer"}: {h.customerName}</p>
+                    <p className="text-micro text-muted-foreground mb-1">{lang === "ar" ? "العميل" : "Customer"}: {h.customerName}</p>
                   )}
 
                   <div className="flex flex-wrap gap-1 mb-3">
                     {h.items.slice(0, 3).map((item, i) => (
-                      <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-background border border-border/40">
+                      <span key={i} className="text-micro px-2 py-0.5 rounded-full bg-background border border-border/40">
                         {item.product_name} × {item.quantity}
                       </span>
                     ))}
                     {h.items.length > 3 && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                      <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
                         +{h.items.length - 3} more
                       </span>
                     )}
                   </div>
 
-                  {h.note && <p className="text-[10px] text-muted-foreground italic mb-2">{h.note}</p>}
+                  {h.note && <p className="text-micro text-muted-foreground italic mb-2">{h.note}</p>}
 
                   <div className="flex gap-2">
                     <button
                       onClick={() => onRecall(h.id)}
-                      className="flex-1 h-8 rounded-lg bg-primary text-primary-foreground text-[11px] font-medium flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
+                      className="flex-1 h-8 rounded-lg bg-primary text-primary-foreground text-micro font-medium flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
                     >
                       <Play size={11} /> {lang === "ar" ? "استدعاء" : "Recall"}
                     </button>
                     <button
                       onClick={() => onDiscard(h.id)}
-                      className="h-8 px-3 rounded-lg border border-rose-200 text-rose-500 text-[11px] font-medium flex items-center justify-center gap-1.5 hover:bg-rose-50 transition-colors"
+                      className="h-8 px-3 rounded-lg border border-rose-200 text-rose-500 text-micro font-medium flex items-center justify-center gap-1.5 hover:bg-rose-50 transition-colors"
                     >
                       <Trash2 size={11} />
                     </button>

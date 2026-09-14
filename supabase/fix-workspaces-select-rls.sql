@@ -1,5 +1,5 @@
 -- ============================================================
--- THOTH — Fix: workspaces SELECT policy blocks INSERT…RETURNING
+-- Bumblebee — Fix: workspaces SELECT policy blocks INSERT…RETURNING
 --
 -- Run this in Supabase SQL Editor.
 --

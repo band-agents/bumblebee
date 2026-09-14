@@ -33,9 +33,9 @@ function getPM(r: Resource): ProductMeta {
   return (r.metadata ?? {}) as ProductMeta;
 }
 
-const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20";
-const smallInput = "w-full h-8 px-2.5 rounded-lg border border-border/50 bg-background text-[12px] focus:outline-none focus:ring-1 focus:ring-primary/20";
-const labelCls = "text-[11.5px] text-muted-foreground font-medium mb-1 block";
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const smallInput = "w-full h-8 px-2.5 rounded-lg border border-border/50 bg-background text-caption focus:outline-none focus:ring-1 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
 // ─── Tabs ───────────────────────────────────────────────
 
@@ -69,18 +69,18 @@ function DeleteConfirm({ ar, name, onConfirm, onCancel, loading }: {
             <Trash2 size={18} className="text-rose-600" />
           </div>
           <div>
-            <h3 className="text-[15px] font-semibold">{ar ? "حذف المنتج" : "Delete Product"}</h3>
-            <p className="text-[12px] text-muted-foreground">{ar ? "هذا الإجراء لا يمكن التراجع عنه" : "This action cannot be undone"}</p>
+            <h3 className="text-body-lg font-semibold">{ar ? "حذف المنتج" : "Delete Product"}</h3>
+            <p className="text-caption text-muted-foreground">{ar ? "هذا الإجراء لا يمكن التراجع عنه" : "This action cannot be undone"}</p>
           </div>
         </div>
-        <p className="text-[13px] text-muted-foreground mb-6">
+        <p className="text-body text-muted-foreground mb-6">
           {ar ? `هل أنت متأكد من حذف "${name}"؟ سيتم حذف كل البيانات المرتبطة.` : `Are you sure you want to delete "${name}"? All associated data will be removed.`}
         </p>
         <div className="flex gap-3">
-          <button onClick={onCancel} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50">
+          <button onClick={onCancel} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">
             {ar ? "إلغاء" : "Cancel"}
           </button>
-          <button onClick={onConfirm} disabled={loading} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-[13px] font-medium hover:bg-rose-700 disabled:opacity-50 flex items-center justify-center gap-2">
+          <button onClick={onConfirm} disabled={loading} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-body font-medium hover:bg-rose-700 disabled:opacity-50 flex items-center justify-center gap-2">
             {loading && <Loader2 size={12} className="animate-spin" />}
             <Trash2 size={13} />
             {ar ? "احذف" : "Delete"}
@@ -205,7 +205,7 @@ export default function ProductDetail() {
   }
 
   if (loading) return <div className="flex items-center justify-center py-24"><Loader2 size={20} className="animate-spin text-muted-foreground/40" /></div>;
-  if (!product) return <div className="flex flex-col items-center justify-center py-24 gap-4"><Package size={24} className="text-muted-foreground/30" /><p className="text-[14px] text-muted-foreground">{ar ? "المنتج غير موجود" : "Product not found"}</p><button onClick={() => navigate("/products")} className="text-[13px] text-primary hover:underline">{ar ? "← رجوع للمنتجات" : "← Back to Products"}</button></div>;
+  if (!product) return <div className="flex flex-col items-center justify-center py-24 gap-4"><Package size={24} className="text-muted-foreground/30" /><p className="text-body-lg text-muted-foreground">{ar ? "المنتج غير موجود" : "Product not found"}</p><button onClick={() => navigate("/products")} className="text-body text-brand-ink hover:underline">{ar ? "← رجوع للمنتجات" : "← Back to Products"}</button></div>;
 
   const m = getPM(product);
   const bom = m.bom || [];
@@ -232,21 +232,21 @@ export default function ProductDetail() {
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                {m.sku && <span className="text-[10px] font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded">{m.sku}</span>}
-                {cat && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/8 text-primary font-medium">{ar ? cat.ar : cat.en}</span>}
-                {pri && <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
-                {m.active === false && <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{ar ? "غير نشط" : "Inactive"}</span>}
+                {m.sku && <span className="text-micro font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded">{m.sku}</span>}
+                {cat && <span className="text-micro px-2 py-0.5 rounded-full bg-primary/8 text-brand-ink font-medium">{ar ? cat.ar : cat.en}</span>}
+                {pri && <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${pri.color}`}>{ar ? pri.ar : pri.en}</span>}
+                {m.active === false && <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{ar ? "غير نشط" : "Inactive"}</span>}
               </div>
-              <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+              <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
                 {ar ? (product.name_ar ?? product.name_en) : product.name_en}
               </h1>
-              {m.description && <p className="text-[13px] text-muted-foreground mt-1">{m.description}</p>}
+              {m.description && <p className="text-body text-muted-foreground mt-1">{m.description}</p>}
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <button onClick={() => setTab("edit")} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+              <button onClick={() => setTab("edit")} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 <Edit3 size={13} /> {ar ? "تعديل" : "Edit"}
               </button>
-              <button onClick={() => setShowDelete(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-rose-200 text-[12px] font-medium text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition-colors">
+              <button onClick={() => setShowDelete(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-rose-200 text-caption font-medium text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition-colors">
                 <Trash2 size={13} /> {ar ? "حذف" : "Delete"}
               </button>
             </div>
@@ -255,32 +255,32 @@ export default function ProductDetail() {
           {/* Quick stats */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-              <Layers size={13} className="text-primary mb-1.5" />
-              <p className="text-[18px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{bom.length}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "مكون" : "BOM Items"}</p>
+              <Layers size={13} className="text-brand-ink mb-1.5" />
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{bom.length}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "مكون" : "BOM Items"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-              <Wrench size={13} className="text-primary mb-1.5" />
-              <p className="text-[18px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{stages.length}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "مرحلة" : "Stages"}</p>
+              <Wrench size={13} className="text-brand-ink mb-1.5" />
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{stages.length}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "مرحلة" : "Stages"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-              <Clock size={13} className="text-primary mb-1.5" />
-              <p className="text-[18px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{timeInfo.totalDays}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "يوم تصنيع" : "Work Days"}</p>
+              <Clock size={13} className="text-brand-ink mb-1.5" />
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{timeInfo.totalDays}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "يوم تصنيع" : "Work Days"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-              <DollarSign size={13} className="text-primary mb-1.5" />
-              <p className="text-[18px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{Math.round(costInfo.totalCost).toLocaleString()}</p>
-              <p className="text-[10px] text-muted-foreground">{ar ? "التكلفة" : "Total Cost"}</p>
+              <DollarSign size={13} className="text-brand-ink mb-1.5" />
+              <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{Math.round(costInfo.totalCost).toLocaleString()}</p>
+              <p className="text-micro text-muted-foreground">{ar ? "التكلفة" : "Total Cost"}</p>
             </div>
             {m.suggested_price && m.suggested_price > 0 && costInfo.totalCost > 0 && (
               <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
                 <Tag size={13} className="text-emerald-500 mb-1.5" />
-                <p className={`text-[18px] font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                <p className={`text-title font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                   {Math.round(((m.suggested_price - costInfo.totalCost) / m.suggested_price) * 100)}%
                 </p>
-                <p className="text-[10px] text-muted-foreground">{ar ? "هامش الربح" : "Margin"}</p>
+                <p className="text-micro text-muted-foreground">{ar ? "هامش الربح" : "Margin"}</p>
               </div>
             )}
           </div>
@@ -295,7 +295,7 @@ export default function ProductDetail() {
             const active = tab === t.key;
             return (
               <button key={t.key} onClick={() => setTab(t.key)}
-                className={`flex items-center gap-1.5 px-4 py-3 text-[12px] font-medium border-b-2 transition-colors ${active ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+                className={`flex items-center gap-1.5 px-4 py-3 text-caption font-medium border-b-2 transition-colors ${active ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                 <Icon size={13} />
                 {ar ? t.ar : t.en}
               </button>
@@ -313,34 +313,34 @@ export default function ProductDetail() {
               {/* Dimensions */}
               {(m.width || m.height || m.depth) && (
                 <div>
-                  <p className="text-[12px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-3 flex items-center gap-1"><Ruler size={11} /> {ar ? "الأبعاد" : "Dimensions"}</p>
+                  <p className="text-caption font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-3 flex items-center gap-1"><Ruler size={11} /> {ar ? "الأبعاد" : "Dimensions"}</p>
                   <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-                    {m.width && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-[10px] text-muted-foreground">{ar ? "العرض" : "Width"}</p><p className="text-[15px] font-medium tabular-nums">{m.width} cm</p></div>}
-                    {m.height && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-[10px] text-muted-foreground">{ar ? "الارتفاع" : "Height"}</p><p className="text-[15px] font-medium tabular-nums">{m.height} cm</p></div>}
-                    {m.depth && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-[10px] text-muted-foreground">{ar ? "العمق" : "Depth"}</p><p className="text-[15px] font-medium tabular-nums">{m.depth} cm</p></div>}
-                    {m.weight && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-[10px] text-muted-foreground">{ar ? "الوزن" : "Weight"}</p><p className="text-[15px] font-medium tabular-nums">{m.weight} kg</p></div>}
+                    {m.width && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-micro text-muted-foreground">{ar ? "العرض" : "Width"}</p><p className="text-body-lg font-medium tabular-nums">{m.width} cm</p></div>}
+                    {m.height && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-micro text-muted-foreground">{ar ? "الارتفاع" : "Height"}</p><p className="text-body-lg font-medium tabular-nums">{m.height} cm</p></div>}
+                    {m.depth && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-micro text-muted-foreground">{ar ? "العمق" : "Depth"}</p><p className="text-body-lg font-medium tabular-nums">{m.depth} cm</p></div>}
+                    {m.weight && <div className="bg-muted/20 rounded-xl px-4 py-3"><p className="text-micro text-muted-foreground">{ar ? "الوزن" : "Weight"}</p><p className="text-body-lg font-medium tabular-nums">{m.weight} kg</p></div>}
                   </div>
                 </div>
               )}
               {/* Materials */}
               {(m.main_material || m.finish) && (
                 <div>
-                  <p className="text-[12px] font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-3">{ar ? "الخامات" : "Materials"}</p>
+                  <p className="text-caption font-semibold text-muted-foreground tracking-[0.06em] uppercase mb-3">{ar ? "الخامات" : "Materials"}</p>
                   <div className="flex flex-wrap gap-2">
-                    {m.main_material && <span className="text-[12px] px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.main_material}</span>}
-                    {m.secondary_material && <span className="text-[12px] px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.secondary_material}</span>}
-                    {m.finish && <span className="text-[12px] px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.finish}</span>}
-                    {m.paint && <span className="text-[12px] px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.paint}</span>}
-                    {m.hardware && <span className="text-[12px] px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.hardware}</span>}
+                    {m.main_material && <span className="text-caption px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.main_material}</span>}
+                    {m.secondary_material && <span className="text-caption px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.secondary_material}</span>}
+                    {m.finish && <span className="text-caption px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.finish}</span>}
+                    {m.paint && <span className="text-caption px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.paint}</span>}
+                    {m.hardware && <span className="text-caption px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">{m.hardware}</span>}
                   </div>
                 </div>
               )}
               {/* Warnings */}
               {warnings.length > 0 && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-2">
-                  <p className="text-[12px] font-semibold text-amber-700 flex items-center gap-1"><AlertTriangle size={12} /> {ar ? "تنبيهات" : "Warnings"}</p>
+                <div className="bg-warning/10 border border-warning/30 rounded-xl p-4 space-y-2">
+                  <p className="text-caption font-semibold text-warning flex items-center gap-1"><AlertTriangle size={12} /> {ar ? "تنبيهات" : "Warnings"}</p>
                   {warnings.map((w, i) => (
-                    <p key={i} className="text-[11px] text-amber-600">{ar ? w.ar : w.en}</p>
+                    <p key={i} className="text-micro text-warning">{ar ? w.ar : w.en}</p>
                   ))}
                 </div>
               )}
@@ -351,17 +351,17 @@ export default function ProductDetail() {
           {tab === "bom" && (
             <motion.div key="bom" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               {bom.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش مكونات لسه" : "No BOM items yet. Edit the product to add materials."}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش مكونات لسه" : "No BOM items yet. Edit the product to add materials."}</div>
               ) : (
                 <div className="space-y-2">
-                  <div className="grid grid-cols-12 gap-2 text-[10px] font-semibold text-muted-foreground tracking-[0.06em] uppercase px-3 mb-1">
+                  <div className="grid grid-cols-12 gap-2 text-micro font-semibold text-muted-foreground tracking-[0.06em] uppercase px-3 mb-1">
                     <span className="col-span-5">{ar ? "الخامة" : "Material"}</span>
                     <span className="col-span-2">{ar ? "الكمية" : "Qty"}</span>
                     <span className="col-span-2">{ar ? "الوحدة" : "Unit"}</span>
                     <span className="col-span-3 text-right">{ar ? "التكلفة" : "Cost"}</span>
                   </div>
                   {bom.map((line, i) => (
-                    <div key={line.id || i} className="grid grid-cols-12 gap-2 items-center px-3 py-2.5 rounded-xl bg-muted/10 border border-border/20 text-[12px]">
+                    <div key={line.id || i} className="grid grid-cols-12 gap-2 items-center px-3 py-2.5 rounded-xl bg-muted/10 border border-border/20 text-caption">
                       <span className="col-span-5 font-medium">{line.material || "—"}</span>
                       <span className="col-span-2 tabular-nums">{line.qty}</span>
                       <span className="col-span-2 text-muted-foreground">{line.unit}</span>
@@ -369,7 +369,7 @@ export default function ProductDetail() {
                     </div>
                   ))}
                   <div className="flex justify-end pt-3 border-t border-border/30">
-                    <span className="text-[13px] font-semibold tabular-nums">{ar ? "إجمالي الخامات:" : "Total Materials:"} {Math.round(costInfo.materialCost).toLocaleString()} {currency}</span>
+                    <span className="text-body font-semibold tabular-nums">{ar ? "إجمالي الخامات:" : "Total Materials:"} {Math.round(costInfo.materialCost).toLocaleString()} {currency}</span>
                   </div>
                 </div>
               )}
@@ -380,7 +380,7 @@ export default function ProductDetail() {
           {tab === "manufacturing" && (
             <motion.div key="mfg" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               {stages.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش مراحل تصنيع" : "No manufacturing stages defined."}</div>
+                <div className="py-12 text-center text-body text-muted-foreground/50">{ar ? "مفيش مراحل تصنيع" : "No manufacturing stages defined."}</div>
               ) : (
                 <VisualStages stages={stages} ar={ar} currency={currency} />
               )}
@@ -392,7 +392,7 @@ export default function ProductDetail() {
             <motion.div key="cost" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <p className="text-[13px] font-semibold mb-2">{ar ? "تحليل التكلفة" : "Cost Breakdown"}</p>
+                  <p className="text-body font-semibold mb-2">{ar ? "تحليل التكلفة" : "Cost Breakdown"}</p>
                   {[
                     { label: ar ? "تكلفة الخامات" : "Material Cost", value: costInfo.materialCost },
                     { label: ar ? "تكلفة العمالة" : "Labor Cost", value: costInfo.stageCosts.laborTotal },
@@ -400,12 +400,12 @@ export default function ProductDetail() {
                     { label: ar ? "هالك الخامات" : "Material Waste", value: costInfo.stageCosts.wasteTotal },
                     { label: ar ? "تكاليف غير مباشرة" : "Overhead", value: costInfo.stageCosts.overheadTotal },
                   ].map(row => (
-                    <div key={row.label} className="flex justify-between text-[12px] bg-muted/20 rounded-lg px-3 py-2">
+                    <div key={row.label} className="flex justify-between text-caption bg-muted/20 rounded-lg px-3 py-2">
                       <span className="text-muted-foreground">{row.label}</span>
                       <span className="font-medium tabular-nums">{Math.round(row.value).toLocaleString()} {currency}</span>
                     </div>
                   ))}
-                  <div className="flex justify-between text-[13px] font-semibold border-t border-border/40 pt-2 px-3">
+                  <div className="flex justify-between text-body font-semibold border-t border-border/40 pt-2 px-3">
                     <span>{ar ? "إجمالي التكلفة" : "Total Cost"}</span>
                     <span className="tabular-nums">{Math.round(costInfo.totalCost).toLocaleString()} {currency}</span>
                   </div>
@@ -413,22 +413,22 @@ export default function ProductDetail() {
                 <div className="space-y-4">
                   {m.suggested_price && m.suggested_price > 0 && (
                     <div className="bg-muted/20 rounded-xl p-4">
-                      <p className="text-[11px] text-muted-foreground mb-1">{ar ? "سعر البيع" : "Selling Price"}</p>
-                      <p className="text-[22px] font-medium tabular-nums">{m.suggested_price.toLocaleString()} {currency}</p>
+                      <p className="text-micro text-muted-foreground mb-1">{ar ? "سعر البيع" : "Selling Price"}</p>
+                      <p className="text-heading font-medium tabular-nums">{m.suggested_price.toLocaleString()} {currency}</p>
                     </div>
                   )}
                   {m.suggested_price && m.suggested_price > 0 && costInfo.totalCost > 0 && (
                     <div className="bg-muted/20 rounded-xl p-4">
-                      <p className="text-[11px] text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
-                      <p className={`text-[22px] font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                      <p className="text-micro text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
+                      <p className={`text-heading font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
                         {Math.round(((m.suggested_price - costInfo.totalCost) / m.suggested_price) * 100)}%
                       </p>
-                      <p className="text-[11px] text-muted-foreground mt-1">{ar ? "صافي الربح:" : "Profit:"} {Math.round(m.suggested_price - costInfo.totalCost).toLocaleString()} {currency}</p>
+                      <p className="text-micro text-muted-foreground mt-1">{ar ? "صافي الربح:" : "Profit:"} {Math.round(m.suggested_price - costInfo.totalCost).toLocaleString()} {currency}</p>
                     </div>
                   )}
                   <div className="bg-muted/20 rounded-xl p-4">
-                    <p className="text-[11px] text-muted-foreground mb-1">{ar ? "مدة التصنيع" : "Manufacturing Time"}</p>
-                    <p className="text-[22px] font-medium tabular-nums">{timeInfo.totalDays} {ar ? "يوم" : "days"}</p>
+                    <p className="text-micro text-muted-foreground mb-1">{ar ? "مدة التصنيع" : "Manufacturing Time"}</p>
+                    <p className="text-heading font-medium tabular-nums">{timeInfo.totalDays} {ar ? "يوم" : "days"}</p>
                   </div>
                 </div>
               </div>
@@ -501,12 +501,12 @@ export default function ProductDetail() {
 
               {/* Save */}
               <div className="flex items-center gap-3 pt-4 border-t border-border/30">
-                <button onClick={handleSave} disabled={saving || !editName.trim()} className="flex items-center gap-2 h-10 px-6 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium hover:opacity-90 disabled:opacity-50">
+                <button onClick={handleSave} disabled={saving || !editName.trim()} className="flex items-center gap-2 h-10 px-6 rounded-xl bg-primary text-primary-foreground text-body font-medium hover:opacity-90 disabled:opacity-50">
                   {saving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
                   {ar ? "حفظ التغييرات" : "Save Changes"}
                 </button>
                 {saveMsg && (
-                  <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[12px] text-emerald-600 flex items-center gap-1">
+                  <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-caption text-emerald-600 flex items-center gap-1">
                     <CheckCircle2 size={12} /> {saveMsg}
                   </motion.span>
                 )}

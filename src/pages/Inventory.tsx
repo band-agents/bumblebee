@@ -116,8 +116,8 @@ function getMaintMeta(w: WorkItem): MaintMeta {
 // ─── Constants ───────────────────────────────────────────
 
 const RESOURCE_CATEGORIES: { value: string; en: string; ar: string; icon: React.ElementType; color: string; hex: string }[] = [
-  { value: "inventory", en: "Inventory", ar: "مخزون", icon: Box, color: "bg-violet-100 text-violet-600", hex: "#8b5cf6" },
-  { value: "equipment", en: "Equipment", ar: "معدات", icon: Monitor, color: "bg-amber-100 text-amber-700", hex: "#d97706" },
+  { value: "inventory", en: "Inventory", ar: "مخزون", icon: Box, color: "bg-chart-4/15 text-chart-4", hex: "#8b5cf6" },
+  { value: "equipment", en: "Equipment", ar: "معدات", icon: Monitor, color: "bg-warning/15 text-warning", hex: "#d97706" },
   { value: "vehicle", en: "Vehicle", ar: "مركبة", icon: Car, color: "bg-blue-100 text-blue-600", hex: "#3b82f6" },
   { value: "tool", en: "Tool", ar: "أداة", icon: Hammer, color: "bg-orange-100 text-orange-600", hex: "#ea580c" },
   { value: "furniture", en: "Furniture", ar: "أثاث", icon: Armchair, color: "bg-emerald-100 text-emerald-700", hex: "#059669" },
@@ -128,7 +128,7 @@ const RESOURCE_CATEGORIES: { value: string; en: string; ar: string; icon: React.
 
 const INV_STATUSES = [
   { value: "in_stock", en: "In Stock", ar: "متوفر", pill: "bg-emerald-100 text-emerald-700" },
-  { value: "low_stock", en: "Low Stock", ar: "الكمية قليلة", pill: "bg-amber-100 text-amber-700" },
+  { value: "low_stock", en: "Low Stock", ar: "الكمية قليلة", pill: "bg-warning/15 text-warning" },
   { value: "out_of_stock", en: "Out of Stock", ar: "خلص من المخزون", pill: "bg-rose-100 text-rose-600" },
   { value: "discontinued", en: "Discontinued", ar: "متوقف", pill: "bg-muted text-muted-foreground" },
 ];
@@ -136,7 +136,7 @@ const INV_STATUSES = [
 const ASSET_STATUSES = [
   { value: "active", en: "Active", ar: "نشط", pill: "bg-emerald-100 text-emerald-700" },
   { value: "assigned", en: "Assigned", ar: "مخصص", pill: "bg-blue-100 text-blue-600" },
-  { value: "maintenance", en: "In Maintenance", ar: "صيانة", pill: "bg-amber-100 text-amber-700" },
+  { value: "maintenance", en: "In Maintenance", ar: "صيانة", pill: "bg-warning/15 text-warning" },
   { value: "retired", en: "Retired", ar: "متقاعد", pill: "bg-slate-100 text-slate-500" },
   { value: "lost", en: "Lost", ar: "مفقود", pill: "bg-rose-100 text-rose-600" },
 ];
@@ -150,7 +150,7 @@ const MOVE_TYPES = [
 
 const MAINT_STATUSES = [
   { value: "planned", en: "Scheduled", ar: "مجدولة", pill: "bg-blue-100 text-blue-600" },
-  { value: "in_progress", en: "In Progress", ar: "جارية", pill: "bg-amber-100 text-amber-700" },
+  { value: "in_progress", en: "In Progress", ar: "جارية", pill: "bg-warning/15 text-warning" },
   { value: "done", en: "Completed", ar: "مكتملة", pill: "bg-emerald-100 text-emerald-700" },
   { value: "blocked", en: "Overdue", ar: "متأخرة", pill: "bg-rose-100 text-rose-600" },
   { value: "cancelled", en: "Cancelled", ar: "ملغية", pill: "bg-muted text-muted-foreground" },
@@ -169,7 +169,7 @@ const UOMS = [
 ];
 
 const ABC_STYLES: Record<string, string> = {
-  A: "bg-violet-100 text-violet-700",
+  A: "bg-chart-4/15 text-chart-4",
   B: "bg-blue-100 text-blue-600",
   C: "bg-slate-100 text-slate-500",
 };
@@ -230,10 +230,10 @@ function fmtBytes(n?: number): string {
 
 // ─── Shared UI ───────────────────────────────────────────
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
 const cardCls = "bg-background border border-border/40 rounded-xl";
 
 function ModalShell({ title, onClose, children, wide }: { title: string; onClose: () => void; children: React.ReactNode; wide?: boolean }) {
@@ -242,7 +242,7 @@ function ModalShell({ title, onClose, children, wide }: { title: string; onClose
       <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
       <div className={`relative bg-background border border-border/60 rounded-2xl shadow-xl w-full ${wide ? "max-w-[560px]" : "max-w-[500px]"} max-h-[85vh] overflow-auto`}>
         <div className="flex items-center justify-between px-6 py-5 border-b border-border/40 sticky top-0 bg-background z-10">
-          <h2 className="text-[16px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h2>
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h2>
           <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
         </div>
         {children}
@@ -278,8 +278,8 @@ function Donut({ segments, centerValue, centerLabel, size = 148 }: {
         })}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <p className="text-[19px] font-medium leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{centerValue}</p>
-        <p className="text-[9.5px] text-muted-foreground mt-1">{centerLabel}</p>
+        <p className="text-title font-medium leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{centerValue}</p>
+        <p className="text-micro text-muted-foreground mt-1">{centerLabel}</p>
       </div>
     </div>
   );
@@ -292,8 +292,8 @@ function HBarList({ rows, fmt }: { rows: { label: string; value: number; color: 
       {rows.map((r, i) => (
         <div key={i}>
           <div className="flex items-center justify-between mb-1">
-            <p className="text-[11px] text-foreground/80 truncate">{r.label}{r.sub && <span className="text-muted-foreground/60"> · {r.sub}</span>}</p>
-            <p className="text-[11px] font-medium tabular-nums shrink-0">{fmt(r.value)}</p>
+            <p className="text-micro text-foreground/80 truncate">{r.label}{r.sub && <span className="text-muted-foreground/60"> · {r.sub}</span>}</p>
+            <p className="text-micro font-medium tabular-nums shrink-0">{fmt(r.value)}</p>
           </div>
           <div className="h-1.5 rounded-full bg-muted/60 overflow-hidden">
             <div className="h-full rounded-full transition-all duration-700" style={{ width: `${(r.value / max) * 100}%`, backgroundColor: r.color }} />
@@ -318,11 +318,11 @@ function FlowColumns({ months, ar }: { months: { label: string; inn: number; out
         ))}
       </div>
       <div className="flex gap-2 mt-1.5">
-        {months.map((m, i) => <p key={i} className="flex-1 text-center text-[9px] text-muted-foreground/60">{m.label}</p>)}
+        {months.map((m, i) => <p key={i} className="flex-1 text-center text-micro text-muted-foreground/60">{m.label}</p>)}
       </div>
       <div className="flex items-center gap-4 mt-2.5">
-        <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground"><span className="w-2 h-2 rounded-full bg-emerald-400/80" />{ar ? "وارد" : "Stock In"}</span>
-        <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground"><span className="w-2 h-2 rounded-full bg-rose-300/90" />{ar ? "صادر" : "Stock Out"}</span>
+        <span className="flex items-center gap-1.5 text-micro text-muted-foreground"><span className="w-2 h-2 rounded-full bg-emerald-400/80" />{ar ? "وارد" : "Stock In"}</span>
+        <span className="flex items-center gap-1.5 text-micro text-muted-foreground"><span className="w-2 h-2 rounded-full bg-rose-300/90" />{ar ? "صادر" : "Stock Out"}</span>
       </div>
     </div>
   );
@@ -332,8 +332,8 @@ function ChartCard({ title, sub, children, className }: { title: string; sub?: s
   return (
     <div className={`${cardCls} p-5 ${className ?? ""}`}>
       <div className="mb-4">
-        <h3 className="text-[13px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h3>
-        {sub && <p className="text-[10.5px] text-muted-foreground/70 mt-0.5">{sub}</p>}
+        <h3 className="text-body font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{title}</h3>
+        {sub && <p className="text-micro text-muted-foreground/70 mt-0.5">{sub}</p>}
       </div>
       {children}
     </div>
@@ -549,15 +549,15 @@ function ItemModal({ onClose, onSaved, ar, currency, mode, initial }: {
         </div>
         <div>
           <label className={labelCls}>{ar ? "صورة (اختياري)" : "Photo (optional)"}</label>
-          <label className="flex items-center gap-2.5 h-10 px-3.5 rounded-xl border border-dashed border-border/70 text-[12px] text-muted-foreground cursor-pointer hover:bg-muted/40 transition-colors">
+          <label className="flex items-center gap-2.5 h-10 px-3.5 rounded-xl border border-dashed border-border/70 text-caption text-muted-foreground cursor-pointer hover:bg-muted/40 transition-colors">
             <ImageIcon size={13} />
             <span className="truncate">{imageFile ? imageFile.name : (ar ? "اختار صورة..." : "Choose an image…")}</span>
             <input type="file" accept="image/*" className="hidden" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
           </label>
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {initial ? (ar ? "احفظ" : "Save") : (ar ? "ضيف" : "Add")}
           </button>
@@ -665,9 +665,9 @@ function AddMovementModal({ onClose, onAdd, onResourceUpdate, ar, resources }: {
           <label className={labelCls}>{ar ? "السبب" : "Reason"}</label>
           <input type="text" value={form.reason} onChange={(e) => setForm((f) => ({ ...f, reason: e.target.value }))} className={inputCls} placeholder={ar ? "اختياري" : "Optional"} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.resource || !form.quantity} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "سجّل" : "Record"}
           </button>
@@ -751,9 +751,9 @@ function AddMaintenanceModal({ onClose, onAdd, ar, resources, currency }: { onCl
           <label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
           <input type="text" value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-[12px] text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
+          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.resource} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "سجّل" : "Schedule"}
           </button>
@@ -853,8 +853,8 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
           <div className="flex items-center gap-2.5 min-w-0">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${cat.color}`}><CatIcon size={14} /></div>
             <div className="min-w-0">
-              <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{resource.name_en}</p>
-              <p className="text-[10px] text-muted-foreground font-mono truncate">{isInv ? (m.sku || "—") : (m.asset_tag || "—")}</p>
+              <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{resource.name_en}</p>
+              <p className="text-micro text-muted-foreground font-mono truncate">{isInv ? (m.sku || "—") : (m.asset_tag || "—")}</p>
             </div>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
@@ -885,7 +885,7 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
             ) : (
               <button onClick={() => imgInput.current?.click()} disabled={uploading === "image"} className="w-full rounded-xl border border-dashed border-border/70 aspect-[16/7] flex flex-col items-center justify-center gap-2 text-muted-foreground/60 hover:bg-muted/30 transition-colors">
                 {uploading === "image" ? <Loader2 size={16} className="animate-spin" /> : <ImageIcon size={18} strokeWidth={1.5} />}
-                <span className="text-[11px]">{ar ? "ضيف صورة للصنف" : "Add a photo"}</span>
+                <span className="text-micro">{ar ? "ضيف صورة للصنف" : "Add a photo"}</span>
               </button>
             )}
             <input ref={imgInput} type="file" accept="image/*" className="hidden" onChange={(e) => { handleUpload("image", e.target.files?.[0]); e.target.value = ""; }} />
@@ -896,31 +896,31 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
             {isInv ? (
               <>
                 <div className={cardCls + " px-3 py-2.5"}>
-                  <p className="text-[15px] font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{qty}</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{ar ? "الكمية" : "On Hand"}{m.uom ? ` (${m.uom})` : ""}</p>
+                  <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{qty}</p>
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "الكمية" : "On Hand"}{m.uom ? ` (${m.uom})` : ""}</p>
                 </div>
                 <div className={cardCls + " px-3 py-2.5"}>
-                  <p className="text-[15px] font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(m.unit_cost || 0)}</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{ar ? "سعر الوحدة" : "Unit Cost"}</p>
+                  <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(m.unit_cost || 0)}</p>
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "سعر الوحدة" : "Unit Cost"}</p>
                 </div>
                 <div className={cardCls + " px-3 py-2.5"}>
-                  <p className="text-[15px] font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(qty * (m.unit_cost || 0))}</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{ar ? "القيمة الإجمالية" : "Total Value"}</p>
+                  <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(qty * (m.unit_cost || 0))}</p>
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "القيمة الإجمالية" : "Total Value"}</p>
                 </div>
               </>
             ) : (
               <>
                 <div className={cardCls + " px-3 py-2.5"}>
-                  <p className="text-[15px] font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(m.purchase_cost || 0)}</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{ar ? "تكلفة الشراء" : "Purchase Cost"}</p>
+                  <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(m.purchase_cost || 0)}</p>
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "تكلفة الشراء" : "Purchase Cost"}</p>
                 </div>
                 <div className={cardCls + " px-3 py-2.5"}>
-                  <p className="text-[15px] font-medium tabular-nums leading-none text-emerald-700" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(dep.book)}</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{ar ? "القيمة الدفترية" : "Book Value"}</p>
+                  <p className="text-body-lg font-medium tabular-nums text-emerald-700" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(dep.book)}</p>
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "القيمة الدفترية" : "Book Value"}</p>
                 </div>
                 <div className={cardCls + " px-3 py-2.5"}>
-                  <p className="text-[15px] font-medium tabular-nums leading-none" style={{ fontFamily: "var(--app-font-serif)" }}>{Math.round(dep.agePct * 100)}%</p>
-                  <p className="text-[9px] text-muted-foreground mt-1">{ar ? "نسبة الإهلاك" : "Depreciated"}</p>
+                  <p className="text-body-lg font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{Math.round(dep.agePct * 100)}%</p>
+                  <p className="text-micro text-muted-foreground mt-1">{ar ? "نسبة الإهلاك" : "Depreciated"}</p>
                 </div>
               </>
             )}
@@ -928,27 +928,27 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
 
           {/* Status + ABC */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-            {isInv && abc && <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${ABC_STYLES[abc]}`}>{ar ? `تصنيف ${abc}` : `Class ${abc}`}</span>}
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">{ar ? cat.ar : cat.en}</span>
+            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            {isInv && abc && <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${ABC_STYLES[abc]}`}>{ar ? `تصنيف ${abc}` : `Class ${abc}`}</span>}
+            <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">{ar ? cat.ar : cat.en}</span>
           </div>
 
           {/* Stock level bar + quick adjust */}
           {isInv && (
             <div className={cardCls + " p-4"}>
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[11px] font-medium text-muted-foreground">{ar ? "مستوى المخزون" : "Stock Level"}</p>
-                <p className="text-[10px] text-muted-foreground tabular-nums">{qty} / {stockTarget}</p>
+                <p className="text-micro font-medium text-muted-foreground">{ar ? "مستوى المخزون" : "Stock Level"}</p>
+                <p className="text-micro text-muted-foreground tabular-nums">{qty} / {stockTarget}</p>
               </div>
               <div className="h-2 rounded-full bg-muted/60 overflow-hidden mb-4">
-                <div className={`h-full rounded-full transition-all duration-700 ${qty === 0 ? "bg-rose-400" : qty <= (m.reorder_level || 0) ? "bg-amber-400" : "bg-emerald-400"}`} style={{ width: `${stockPct * 100}%` }} />
+                <div className={`h-full rounded-full transition-all duration-700 ${qty === 0 ? "bg-rose-400" : qty <= (m.reorder_level || 0) ? "bg-warning" : "bg-emerald-400"}`} style={{ width: `${stockPct * 100}%` }} />
               </div>
               <div className="flex items-center gap-2">
-                <input type="number" min="1" value={adjQty} onChange={(e) => setAdjQty(e.target.value)} placeholder={ar ? "كمية" : "Qty"} className="h-9 w-20 rounded-xl border border-border/60 bg-background px-3 text-[12px] focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                <button onClick={() => quickAdjust("in")} disabled={!adjQty || !!adjLoading} className="flex-1 h-9 rounded-xl border border-emerald-200/70 bg-emerald-50/50 text-emerald-700 text-[11.5px] font-medium hover:bg-emerald-50 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40">
+                <input type="number" min="1" value={adjQty} onChange={(e) => setAdjQty(e.target.value)} placeholder={ar ? "كمية" : "Qty"} className="h-9 w-20 rounded-xl border border-border/60 bg-background px-3 text-caption focus:outline-none focus:ring-2 focus:ring-brand-ink/20" />
+                <button onClick={() => quickAdjust("in")} disabled={!adjQty || !!adjLoading} className="flex-1 h-9 rounded-xl border border-emerald-200/70 bg-emerald-50/50 text-emerald-700 text-micro font-medium hover:bg-emerald-50 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40">
                   {adjLoading === "in" ? <Loader2 size={11} className="animate-spin" /> : <ArrowUpRight size={12} />} {ar ? "وارد" : "Stock In"}
                 </button>
-                <button onClick={() => quickAdjust("out")} disabled={!adjQty || !!adjLoading} className="flex-1 h-9 rounded-xl border border-rose-200/70 bg-rose-50/50 text-rose-600 text-[11.5px] font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40">
+                <button onClick={() => quickAdjust("out")} disabled={!adjQty || !!adjLoading} className="flex-1 h-9 rounded-xl border border-rose-200/70 bg-rose-50/50 text-rose-600 text-micro font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40">
                   {adjLoading === "out" ? <Loader2 size={11} className="animate-spin" /> : <ArrowDownRight size={12} />} {ar ? "صادر" : "Stock Out"}
                 </button>
               </div>
@@ -960,51 +960,51 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
             <div className={cardCls + " p-4"}>
               <div className="flex items-center gap-2 mb-3">
                 <TrendingDown size={13} className="text-muted-foreground" />
-                <p className="text-[11px] font-medium text-muted-foreground">{ar ? "الإهلاك (قسط ثابت)" : "Depreciation (Straight-line)"}</p>
+                <p className="text-micro font-medium text-muted-foreground">{ar ? "الإهلاك (قسط ثابت)" : "Depreciation (Straight-line)"}</p>
               </div>
               <div className="h-2 rounded-full bg-muted/60 overflow-hidden mb-3">
-                <div className="h-full rounded-full bg-violet-400 transition-all duration-700" style={{ width: `${dep.agePct * 100}%` }} />
+                <div className="h-full rounded-full bg-chart-4 transition-all duration-700" style={{ width: `${dep.agePct * 100}%` }} />
               </div>
               <div className="grid grid-cols-3 gap-2 text-center">
-                <div><p className="text-[12px] font-medium tabular-nums">{fmtVal(dep.annual)}</p><p className="text-[9px] text-muted-foreground">{ar ? "سنوياً" : "Annual"}</p></div>
-                <div><p className="text-[12px] font-medium tabular-nums">{fmtVal(dep.depreciated)}</p><p className="text-[9px] text-muted-foreground">{ar ? "مُهلك" : "Accumulated"}</p></div>
-                <div><p className="text-[12px] font-medium tabular-nums">{m.useful_life_years || 5} {ar ? "سنين" : "yrs"}</p><p className="text-[9px] text-muted-foreground">{ar ? "العمر الإنتاجي" : "Useful Life"}</p></div>
+                <div><p className="text-caption font-medium tabular-nums">{fmtVal(dep.annual)}</p><p className="text-micro text-muted-foreground">{ar ? "سنوياً" : "Annual"}</p></div>
+                <div><p className="text-caption font-medium tabular-nums">{fmtVal(dep.depreciated)}</p><p className="text-micro text-muted-foreground">{ar ? "مُهلك" : "Accumulated"}</p></div>
+                <div><p className="text-caption font-medium tabular-nums">{m.useful_life_years || 5} {ar ? "سنين" : "yrs"}</p><p className="text-micro text-muted-foreground">{ar ? "العمر الإنتاجي" : "Useful Life"}</p></div>
               </div>
             </div>
           )}
 
           {/* Details */}
           <div>
-            <h4 className="text-[12px] font-medium mb-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "التفاصيل" : "Details"}</h4>
+            <h4 className="text-caption font-medium mb-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "التفاصيل" : "Details"}</h4>
             <div className={cardCls + " divide-y divide-border/30"}>
               {detailRows.filter((d) => d.value).map((d, i) => (
                 <div key={i} className="flex items-center justify-between px-4 py-2.5">
-                  <p className="text-[11px] text-muted-foreground">{d.label}</p>
-                  <p className="text-[11.5px] font-medium text-end max-w-[60%] truncate">{d.value}</p>
+                  <p className="text-micro text-muted-foreground">{d.label}</p>
+                  <p className="text-micro font-medium text-end max-w-[60%] truncate">{d.value}</p>
                 </div>
               ))}
-              {detailRows.filter((d) => d.value).length === 0 && <p className="text-[11px] text-muted-foreground/50 px-4 py-3">{ar ? "مفيش تفاصيل إضافية" : "No extra details"}</p>}
+              {detailRows.filter((d) => d.value).length === 0 && <p className="text-micro text-muted-foreground/50 px-4 py-3">{ar ? "مفيش تفاصيل إضافية" : "No extra details"}</p>}
             </div>
           </div>
 
           {/* Files */}
           <div>
             <div className="flex items-center justify-between mb-2.5">
-              <h4 className="text-[12px] font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "المرفقات" : "Files"} {files.length > 0 && <span className="text-muted-foreground/60">({files.length})</span>}</h4>
-              <button onClick={() => fileInput.current?.click()} disabled={uploading === "file"} className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:opacity-70 transition-opacity">
+              <h4 className="text-caption font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "المرفقات" : "Files"} {files.length > 0 && <span className="text-muted-foreground/60">({files.length})</span>}</h4>
+              <button onClick={() => fileInput.current?.click()} disabled={uploading === "file"} className="flex items-center gap-1.5 text-micro font-medium text-brand-ink hover:opacity-70 transition-opacity">
                 {uploading === "file" ? <Loader2 size={11} className="animate-spin" /> : <Upload size={11} />} {ar ? "ارفع ملف" : "Upload"}
               </button>
               <input ref={fileInput} type="file" className="hidden" onChange={(e) => { handleUpload("file", e.target.files?.[0]); e.target.value = ""; }} />
             </div>
             {files.length === 0 ? (
-              <p className="text-[11px] text-muted-foreground/50 py-2">{ar ? "مفيش ملفات مرفقة — فواتير، ضمانات، كتالوجات..." : "No files yet — invoices, warranties, datasheets…"}</p>
+              <p className="text-micro text-muted-foreground/50 py-2">{ar ? "مفيش ملفات مرفقة — فواتير، ضمانات، كتالوجات..." : "No files yet — invoices, warranties, datasheets…"}</p>
             ) : (
               <div className="space-y-1.5">
                 {files.map((f, i) => (
                   <div key={i} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-border/40 bg-background">
                     <FileText size={13} className="text-muted-foreground shrink-0" />
-                    <a href={f.url} target="_blank" rel="noreferrer" className="flex-1 min-w-0 text-[12px] font-medium truncate hover:underline">{f.name}</a>
-                    <span className="text-[10px] text-muted-foreground shrink-0">{fmtBytes(f.size)}</span>
+                    <a href={f.url} target="_blank" rel="noreferrer" className="flex-1 min-w-0 text-caption font-medium truncate hover:underline">{f.name}</a>
+                    <span className="text-micro text-muted-foreground shrink-0">{fmtBytes(f.size)}</span>
                     <button onClick={() => saveMeta({ files: files.filter((_, j) => j !== i) })} className="p-1 rounded-md hover:bg-rose-50 text-rose-400 transition-colors shrink-0"><X size={11} /></button>
                   </div>
                 ))}
@@ -1014,11 +1014,11 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
 
           {/* History */}
           <div>
-            <h4 className="text-[12px] font-medium mb-2.5 flex items-center gap-1.5" style={{ fontFamily: "var(--app-font-serif)" }}>
+            <h4 className="text-caption font-medium mb-2.5 flex items-center gap-1.5" style={{ fontFamily: "var(--app-font-serif)" }}>
               <History size={12} className="text-muted-foreground" /> {isInv ? (ar ? "آخر الحركات" : "Recent Movements") : (ar ? "سجل الصيانة" : "Maintenance History")}
             </h4>
             {isInv ? (
-              itemMoves.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-2">{ar ? "مفيش حركات لسه" : "No movements yet"}</p> : (
+              itemMoves.length === 0 ? <p className="text-micro text-muted-foreground/50 py-2">{ar ? "مفيش حركات لسه" : "No movements yet"}</p> : (
                 <div className="space-y-1.5">
                   {itemMoves.map((w) => {
                     const mm = getMoveMeta(w);
@@ -1026,26 +1026,26 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
                     const isOut = mm.move_type === "stock_out";
                     return (
                       <div key={w.id} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-border/40">
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium shrink-0 ${isOut ? "bg-rose-100 text-rose-600" : "bg-emerald-100 text-emerald-700"}`}>{mt ? (ar ? mt.ar : mt.en) : mm.move_type}</span>
-                        <p className="flex-1 text-[11px] text-muted-foreground truncate">{mm.reason || w.created_at.slice(0, 10)}</p>
-                        <p className="text-[12.5px] font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{isOut ? "-" : "+"}{mm.move_qty}</p>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium shrink-0 ${isOut ? "bg-rose-100 text-rose-600" : "bg-emerald-100 text-emerald-700"}`}>{mt ? (ar ? mt.ar : mt.en) : mm.move_type}</span>
+                        <p className="flex-1 text-micro text-muted-foreground truncate">{mm.reason || w.created_at.slice(0, 10)}</p>
+                        <p className="text-caption font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{isOut ? "-" : "+"}{mm.move_qty}</p>
                       </div>
                     );
                   })}
                 </div>
               )
             ) : (
-              itemMaint.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-2">{ar ? "مفيش صيانة مسجلة" : "No maintenance recorded"}</p> : (
+              itemMaint.length === 0 ? <p className="text-micro text-muted-foreground/50 py-2">{ar ? "مفيش صيانة مسجلة" : "No maintenance recorded"}</p> : (
                 <div className="space-y-1.5">
                   {itemMaint.map((w) => {
                     const mm = getMaintMeta(w);
                     const stx = MAINT_STATUSES.find((s) => s.value === w.status) ?? MAINT_STATUSES[0];
                     return (
                       <div key={w.id} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-border/40">
-                        <Wrench size={12} className="text-amber-500 shrink-0" />
-                        <p className="flex-1 text-[11px] truncate">{mm.maint_type}{w.due_date ? ` · ${w.due_date.slice(0, 10)}` : ""}</p>
-                        {mm.cost ? <p className="text-[11px] font-medium tabular-nums shrink-0">{fmtVal(mm.cost)}</p> : null}
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium shrink-0 ${stx.pill}`}>{ar ? stx.ar : stx.en}</span>
+                        <Wrench size={12} className="text-warning shrink-0" />
+                        <p className="flex-1 text-micro truncate">{mm.maint_type}{w.due_date ? ` · ${w.due_date.slice(0, 10)}` : ""}</p>
+                        {mm.cost ? <p className="text-micro font-medium tabular-nums shrink-0">{fmtVal(mm.cost)}</p> : null}
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium shrink-0 ${stx.pill}`}>{ar ? stx.ar : stx.en}</span>
                       </div>
                     );
                   })}
@@ -1219,7 +1219,7 @@ export default function Inventory() {
       const target = Math.max(m.max_level || 0, (m.reorder_level || 0) * 2);
       const suggested = Math.max(target - (m.quantity || 0), m.reorder_level || 1);
       out.push({
-        icon: AlertTriangle, tone: (m.quantity ?? 0) === 0 ? "text-rose-500 bg-rose-50/60 border-rose-200/40" : "text-amber-600 bg-amber-50/60 border-amber-200/40",
+        icon: AlertTriangle, tone: (m.quantity ?? 0) === 0 ? "text-rose-500 bg-rose-50/60 border-rose-200/40" : "text-warning bg-warning/10 border-warning/30",
         title: ar ? `اطلب ${r.name_en}` : `Reorder ${r.name_en}`,
         desc: ar ? `الكمية ${m.quantity ?? 0} — الكمية المقترحة للطلب: ${suggested}${m.vendor_name ? ` من ${m.vendor_name}` : ""}` : `On hand ${m.quantity ?? 0} — suggested order qty: ${suggested}${m.vendor_name ? ` from ${m.vendor_name}` : ""}`,
       });
@@ -1372,21 +1372,21 @@ export default function Inventory() {
       <div className="border-b border-border/40 px-7 md:px-10 py-7" style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Package size={14} className="text-primary" />
-            <p className="text-[11px] text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "المخزون والأصول" : "Inventory & Assets"}</p>
+            <Package size={14} className="text-brand-ink" />
+            <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "المخزون والأصول" : "Inventory & Assets"}</p>
           </div>
           <div className="flex items-start justify-between gap-4 mb-5">
-            <h1 className="text-[26px] font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
+            <h1 className="text-display font-medium text-foreground leading-tight" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
               {ar ? "المخزون والأصول" : "Inventory & Assets"}
             </h1>
             <div className="flex items-center gap-2 shrink-0">
-              <button onClick={() => setMoveModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setMoveModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted/50 transition-colors">
                 <ArrowDownUp size={13} /> {ar ? "حركة مخزون" : "Movement"}
               </button>
-              <button onClick={() => setMaintModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setMaintModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted/50 transition-colors">
                 <Wrench size={13} /> {ar ? "صيانة" : "Maintenance"}
               </button>
-              <button onClick={() => setInvModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium hover:bg-muted/50 transition-colors">
+              <button onClick={() => setInvModal(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium hover:bg-muted/50 transition-colors">
                 <Box size={13} /> {ar ? "صنف مخزون" : "Inventory"}
               </button>
               <button onClick={() => setAssetModal(true)} className={btnPrimary + " h-9"}>
@@ -1397,21 +1397,21 @@ export default function Inventory() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
             {[
-              { icon: Box, value: invItems.length, label: ar ? "أصناف المخزون" : "Inventory Items", color: "text-violet-600" },
-              { icon: DollarSign, value: fmtVal(totalStockValue), label: ar ? "قيمة المخزون" : "Stock Value", color: "text-primary" },
-              { icon: AlertTriangle, value: lowStock.length, label: ar ? "كمية قليلة" : "Low Stock", color: lowStock.length > 0 ? "text-amber-600" : "text-slate-400" },
+              { icon: Box, value: invItems.length, label: ar ? "أصناف المخزون" : "Inventory Items", color: "text-chart-4" },
+              { icon: DollarSign, value: fmtVal(totalStockValue), label: ar ? "قيمة المخزون" : "Stock Value", color: "text-brand-ink" },
+              { icon: AlertTriangle, value: lowStock.length, label: ar ? "كمية قليلة" : "Low Stock", color: lowStock.length > 0 ? "text-warning" : "text-slate-400" },
               { icon: Package, value: assets.length, label: ar ? "الأصول" : "Assets", color: "text-blue-600" },
               { icon: DollarSign, value: fmtVal(totalAssetValue), label: ar ? "تكلفة الأصول" : "Asset Cost", color: "text-foreground" },
               { icon: TrendingDown, value: fmtVal(totalBookValue), label: ar ? "القيمة الدفترية" : "Book Value", color: "text-emerald-700" },
-              { icon: Wrench, value: inMaintenance.length, label: ar ? "في الصيانة" : "In Maintenance", color: inMaintenance.length > 0 ? "text-amber-600" : "text-slate-400" },
+              { icon: Wrench, value: inMaintenance.length, label: ar ? "في الصيانة" : "In Maintenance", color: inMaintenance.length > 0 ? "text-warning" : "text-slate-400" },
               { icon: CheckCircle2, value: assignedAssets.length, label: ar ? "مخصصة" : "Assigned", color: "text-emerald-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-3.5 py-3">
                 <m.icon size={13} strokeWidth={1.75} className={m.color + " mb-1.5"} />
-                <p className="text-[15px] font-medium text-foreground leading-none tabular-nums mb-0.5 truncate" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
+                <p className="text-body-lg font-medium text-foreground tabular-nums mb-0.5 truncate" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
                   {m.value}
                 </p>
-                <p className="text-[9px] text-muted-foreground">{m.label}</p>
+                <p className="text-micro text-muted-foreground">{m.label}</p>
               </div>
             ))}
           </div>
@@ -1430,7 +1430,7 @@ export default function Inventory() {
             { id: "maintenance" as const, en: `Maintenance (${maintCount.toLocaleString("en")})`, ar: `الصيانة (${maintCount.toLocaleString("ar-EG")})` },
           ]).map((t) => (
             <button key={t.id} onClick={() => { setTab(t.id); setSearch(""); setCatFilter("all"); setStatusFilter("all"); }}
-              className={`px-4 py-3 text-[12px] font-medium border-b-2 whitespace-nowrap transition-all ${tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`px-4 py-3 text-caption font-medium border-b-2 whitespace-nowrap transition-all ${tab === t.id ? "border-primary text-brand-ink" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               {ar ? t.ar : t.en}
             </button>
           ))}
@@ -1443,12 +1443,12 @@ export default function Inventory() {
           <div className="flex flex-col items-center justify-center py-20 gap-5">
             <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center"><Package size={24} className="text-muted-foreground/40" /></div>
             <div className="text-center max-w-[400px]">
-              <p className="text-[15px] font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش بيانات مخزون أو أصول لسه" : "No inventory or assets yet"}</p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">{ar ? "ضيف أول صنف مخزون أو أصل عشان تبدأ." : "Add your first inventory item or asset to get started."}</p>
+              <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "مفيش بيانات مخزون أو أصول لسه" : "No inventory or assets yet"}</p>
+              <p className="text-body text-muted-foreground leading-relaxed">{ar ? "ضيف أول صنف مخزون أو أصل عشان تبدأ." : "Add your first inventory item or asset to get started."}</p>
             </div>
             <div className="flex gap-3">
               <button onClick={() => setInvModal(true)} className={btnPrimary + " h-10"}><Box size={14} /> {ar ? "صنف مخزون" : "Add Inventory"}</button>
-              <button onClick={() => setAssetModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/50 transition-colors"><Package size={14} /> {ar ? "أصل جديد" : "Add Asset"}</button>
+              <button onClick={() => setAssetModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors"><Package size={14} /> {ar ? "أصل جديد" : "Add Asset"}</button>
             </div>
           </div>
         ) : tab === "dashboard" ? (
@@ -1462,18 +1462,18 @@ export default function Inventory() {
                     {stockHealthSegments.map((s, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                        <p className="text-[11px] text-muted-foreground flex-1">{s.label}</p>
-                        <p className="text-[11.5px] font-medium tabular-nums">{s.value}</p>
+                        <p className="text-micro text-muted-foreground flex-1">{s.label}</p>
+                        <p className="text-micro font-medium tabular-nums">{s.value}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </ChartCard>
               <ChartCard title={ar ? "قيمة المخزون حسب التصنيف" : "Stock Value by Category"} sub={fmtVal(totalStockValue)}>
-                {invByCategory.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : <HBarList rows={invByCategory} fmt={fmtCompact} />}
+                {invByCategory.length === 0 ? <p className="text-micro text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : <HBarList rows={invByCategory} fmt={fmtCompact} />}
               </ChartCard>
               <ChartCard title={ar ? "قيمة الأصول حسب التصنيف" : "Asset Value by Category"} sub={`${ar ? "القيمة الدفترية" : "Book value"} ${fmtVal(totalBookValue)}`}>
-                {assetsByCategory.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : <HBarList rows={assetsByCategory} fmt={fmtCompact} />}
+                {assetsByCategory.length === 0 ? <p className="text-micro text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : <HBarList rows={assetsByCategory} fmt={fmtCompact} />}
               </ChartCard>
             </div>
 
@@ -1494,12 +1494,12 @@ export default function Inventory() {
                 <div className="space-y-2.5">
                   {(["A", "B", "C"] as const).map((k) => (
                     <div key={k} className="flex items-center gap-2.5">
-                      <span className={`text-[10px] w-6 h-6 rounded-lg flex items-center justify-center font-semibold ${ABC_STYLES[k]}`}>{k}</span>
-                      <p className="text-[11px] text-muted-foreground flex-1">
+                      <span className={`text-micro w-6 h-6 rounded-lg flex items-center justify-center font-semibold ${ABC_STYLES[k]}`}>{k}</span>
+                      <p className="text-micro text-muted-foreground flex-1">
                         {abcSummary[k].n} {ar ? "صنف" : `item${abcSummary[k].n === 1 ? "" : "s"}`}
                         <span className="text-muted-foreground/50"> · {k === "A" ? (ar ? "أعلى ٨٠٪ من القيمة" : "top 80% of value") : k === "B" ? (ar ? "١٥٪ التالية" : "next 15%") : (ar ? "آخر ٥٪" : "last 5%")}</span>
                       </p>
-                      <p className="text-[11.5px] font-medium tabular-nums">{fmtCompact(abcSummary[k].v)}</p>
+                      <p className="text-micro font-medium tabular-nums">{fmtCompact(abcSummary[k].v)}</p>
                     </div>
                   ))}
                 </div>
@@ -1509,16 +1509,16 @@ export default function Inventory() {
                   {inMaintenance.length === 0 ? (
                     <div className="p-3.5 rounded-xl border border-emerald-200/40 bg-emerald-50/20 text-center">
                       <CheckCircle2 size={16} className="mx-auto text-emerald-500 mb-1.5" />
-                      <p className="text-[11px] text-emerald-700">{ar ? "مفيش صيانة جارية" : "No open maintenance"}</p>
+                      <p className="text-micro text-emerald-700">{ar ? "مفيش صيانة جارية" : "No open maintenance"}</p>
                     </div>
                   ) : inMaintenance.slice(0, 4).map((w) => {
                     const mm = getMaintMeta(w);
                     const stx = MAINT_STATUSES.find((s) => s.value === w.status) ?? MAINT_STATUSES[0];
                     return (
                       <div key={w.id} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/40">
-                        <Wrench size={12} className="text-amber-500 shrink-0" />
-                        <p className="flex-1 text-[11px] font-medium truncate">{mm.resource_name || w.title_en}</p>
-                        <span className={`text-[9.5px] px-1.5 py-0.5 rounded-full font-medium shrink-0 ${stx.pill}`}>{ar ? stx.ar : stx.en}</span>
+                        <Wrench size={12} className="text-warning shrink-0" />
+                        <p className="flex-1 text-micro font-medium truncate">{mm.resource_name || w.title_en}</p>
+                        <span className={`text-micro px-1.5 py-0.5 rounded-full font-medium shrink-0 ${stx.pill}`}>{ar ? stx.ar : stx.en}</span>
                       </div>
                     );
                   })}
@@ -1532,7 +1532,7 @@ export default function Inventory() {
                 {insights.length === 0 ? (
                   <div className="flex items-center gap-2.5 p-4 rounded-xl border border-emerald-200/40 bg-emerald-50/20">
                     <Sparkles size={14} className="text-emerald-500" />
-                    <p className="text-[12px] text-emerald-700">{ar ? "كل حاجة تمام — مفيش تنبيهات دلوقتي" : "All clear — nothing needs your attention right now"}</p>
+                    <p className="text-caption text-emerald-700">{ar ? "كل حاجة تمام — مفيش تنبيهات دلوقتي" : "All clear — nothing needs your attention right now"}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -1542,8 +1542,8 @@ export default function Inventory() {
                         <div key={i} className={`flex items-start gap-3 p-3 rounded-xl border ${ins.tone.split(" ").slice(1).join(" ")}`}>
                           <Icon size={14} className={`${ins.tone.split(" ")[0]} mt-0.5 shrink-0`} />
                           <div className="min-w-0">
-                            <p className="text-[12px] font-medium truncate">{ins.title}</p>
-                            <p className="text-[11px] text-muted-foreground mt-0.5">{ins.desc}</p>
+                            <p className="text-caption font-medium truncate">{ins.title}</p>
+                            <p className="text-micro text-muted-foreground mt-0.5">{ins.desc}</p>
                           </div>
                         </div>
                       );
@@ -1555,28 +1555,28 @@ export default function Inventory() {
                 {reorderPlan.length === 0 ? (
                   <div className="p-3.5 rounded-xl border border-emerald-200/40 bg-emerald-50/20 text-center">
                     <CheckCircle2 size={16} className="mx-auto text-emerald-500 mb-1.5" />
-                    <p className="text-[11px] text-emerald-700">{ar ? "مفيش طلبات شراء مطلوبة" : "Nothing to reorder right now"}</p>
+                    <p className="text-micro text-emerald-700">{ar ? "مفيش طلبات شراء مطلوبة" : "Nothing to reorder right now"}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     {reorderPlan.slice(0, 5).map((rp, i) => (
                       <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/40">
-                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${rp.qty === 0 ? "bg-rose-400" : "bg-amber-400"}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${rp.qty === 0 ? "bg-rose-400" : "bg-warning"}`} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[11px] font-medium truncate">{rp.name}</p>
-                          <p className="text-[9.5px] text-muted-foreground truncate">
+                          <p className="text-micro font-medium truncate">{rp.name}</p>
+                          <p className="text-micro text-muted-foreground truncate">
                             {ar ? "متاح" : "On hand"} {rp.qty} · {ar ? "اطلب" : "order"} <span className="font-medium text-foreground">{rp.suggested}</span>{rp.vendor ? ` ${ar ? "من" : "from"} ${rp.vendor}` : ""}
                           </p>
                         </div>
-                        <p className="text-[10.5px] font-medium tabular-nums shrink-0">{fmtCompact(rp.cost)}</p>
+                        <p className="text-micro font-medium tabular-nums shrink-0">{fmtCompact(rp.cost)}</p>
                       </div>
                     ))}
-                    {reorderPlan.length > 5 && <p className="text-[9.5px] text-muted-foreground/60 text-center pt-0.5">+{reorderPlan.length - 5} {ar ? "أصناف كمان" : "more items"}</p>}
+                    {reorderPlan.length > 5 && <p className="text-micro text-muted-foreground/60 text-center pt-0.5">+{reorderPlan.length - 5} {ar ? "أصناف كمان" : "more items"}</p>}
                   </div>
                 )}
               </ChartCard>
               <ChartCard title={ar ? "أعلى الأصناف قيمة" : "Top Value Items"} sub={ar ? "أكتر ٥ أصناف رابطة قيمة في المخزون" : "Top 5 items by stock value"}>
-                {topValueItems.length === 0 ? <p className="text-[11px] text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : <HBarList rows={topValueItems} fmt={fmtCompact} />}
+                {topValueItems.length === 0 ? <p className="text-micro text-muted-foreground/50 py-6 text-center">{ar ? "مفيش بيانات" : "No data"}</p> : <HBarList rows={topValueItems} fmt={fmtCompact} />}
               </ChartCard>
             </div>
           </div>
@@ -1588,20 +1588,20 @@ export default function Inventory() {
             <div className="flex items-center gap-3 mb-4 flex-wrap">
               <div className="relative flex-1 max-w-[280px] min-w-[180px]">
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "اسم، SKU، باركود، موقع..." : "Name, SKU, barcode, location…"} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30" />
+                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "اسم، SKU، باركود، موقع..." : "Name, SKU, barcode, location…"} className="w-full h-9 pl-9 pr-4 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-1 focus:ring-brand-ink/30" />
               </div>
-              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="h-9 rounded-xl border border-border/60 bg-background px-3 text-[12px] cursor-pointer focus:outline-none">
+              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="h-9 rounded-xl border border-border/60 bg-background px-3 text-caption cursor-pointer focus:outline-none">
                 <option value="all">{ar ? "كل الحالات" : "All statuses"}</option>
                 {(tab === "inventory" ? INV_STATUSES : ASSET_STATUSES).map((s) => <option key={s.value} value={s.value}>{ar ? s.ar : s.en}</option>)}
               </select>
-              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className="h-9 rounded-xl border border-border/60 bg-background px-3 text-[12px] cursor-pointer focus:outline-none">
+              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className="h-9 rounded-xl border border-border/60 bg-background px-3 text-caption cursor-pointer focus:outline-none">
                 <option value="value">{ar ? "ترتيب: القيمة" : "Sort: Value"}</option>
                 {tab === "inventory" && <option value="qty">{ar ? "ترتيب: الكمية" : "Sort: Quantity"}</option>}
                 <option value="name">{ar ? "ترتيب: الاسم" : "Sort: Name"}</option>
               </select>
               <div className="flex-1" />
               {(tab === "inventory" ? invItems : assets).length > 0 && (
-                <button onClick={() => exportCSV(tab === "inventory" ? invItems : assets, `thoth-${tab}-${new Date().toISOString().slice(0, 10)}.csv`)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"><Download size={13} /> {ar ? "صدّر" : "Export"}</button>
+                <button onClick={() => exportCSV(tab === "inventory" ? invItems : assets, `bumblebee-${tab}-${new Date().toISOString().slice(0, 10)}.csv`)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"><Download size={13} /> {ar ? "صدّر" : "Export"}</button>
               )}
               <button onClick={() => tab === "inventory" ? setInvModal(true) : setAssetModal(true)} className={btnPrimary + " h-9"}><Plus size={14} /> {ar ? "ضيف" : "Add"}</button>
             </div>
@@ -1609,11 +1609,11 @@ export default function Inventory() {
             {/* Category chips */}
             {presentCats.length > 1 && (
               <div className="flex items-center gap-2 mb-5 flex-wrap">
-                <button onClick={() => setCatFilter("all")} className={`h-7 px-3 rounded-full text-[11px] font-medium transition-colors ${catFilter === "all" ? "bg-foreground text-background" : "border border-border/60 text-muted-foreground hover:bg-muted/50"}`}>
+                <button onClick={() => setCatFilter("all")} className={`h-7 px-3 rounded-full text-micro font-medium transition-colors ${catFilter === "all" ? "bg-foreground text-background" : "border border-border/60 text-muted-foreground hover:bg-muted/50"}`}>
                   {ar ? "الكل" : "All"}
                 </button>
                 {presentCats.map((c) => (
-                  <button key={c.value} onClick={() => setCatFilter(catFilter === c.value ? "all" : c.value)} className={`h-7 px-3 rounded-full text-[11px] font-medium transition-colors flex items-center gap-1.5 ${catFilter === c.value ? "bg-foreground text-background" : "border border-border/60 text-muted-foreground hover:bg-muted/50"}`}>
+                  <button key={c.value} onClick={() => setCatFilter(catFilter === c.value ? "all" : c.value)} className={`h-7 px-3 rounded-full text-micro font-medium transition-colors flex items-center gap-1.5 ${catFilter === c.value ? "bg-foreground text-background" : "border border-border/60 text-muted-foreground hover:bg-muted/50"}`}>
                     <c.icon size={11} /> {ar ? c.ar : c.en}
                   </button>
                 ))}
@@ -1622,7 +1622,7 @@ export default function Inventory() {
 
             {tab === "inventory" ? (
               filteredInv.length === 0 ? (
-                <div className="py-16 text-center text-[13px] text-muted-foreground/50">{search || catFilter !== "all" || statusFilter !== "all" ? (ar ? "مفيش نتائج" : "No results") : (ar ? "مفيش أصناف مخزون" : "No inventory items")}</div>
+                <div className="py-16 text-center text-body text-muted-foreground/50">{search || catFilter !== "all" || statusFilter !== "all" ? (ar ? "مفيش نتائج" : "No results") : (ar ? "مفيش أصناف مخزون" : "No inventory items")}</div>
               ) : (
                 <div className="space-y-2">
                   {filteredInv.map((r) => {
@@ -1646,27 +1646,27 @@ export default function Inventory() {
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
-                            {m.sku && <span className="text-[10.5px] font-mono text-muted-foreground">{m.sku}</span>}
-                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${isOut ? "bg-rose-100 text-rose-600" : isLow ? "bg-amber-100 text-amber-700" : "bg-emerald-100 text-emerald-700"}`}>
+                            {m.sku && <span className="text-micro font-mono text-muted-foreground">{m.sku}</span>}
+                            <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${isOut ? "bg-rose-100 text-rose-600" : isLow ? "bg-warning/15 text-warning" : "bg-emerald-100 text-emerald-700"}`}>
                               {isOut ? (ar ? "خلص" : "Out of Stock") : isLow ? (ar ? "قليل" : "Low Stock") : (ar ? "متوفر" : "In Stock")}
                             </span>
-                            {abc && <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${ABC_STYLES[abc]}`}>{abc}</span>}
+                            {abc && <span className={`text-micro px-1.5 py-0.5 rounded-full font-semibold ${ABC_STYLES[abc]}`}>{abc}</span>}
                           </div>
-                          <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{r.name_en}</p>
+                          <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{r.name_en}</p>
                           <div className="flex items-center gap-3 mt-1.5">
                             <div className="h-1 rounded-full bg-muted/60 overflow-hidden w-28">
-                              <div className={`h-full rounded-full ${isOut ? "bg-rose-400" : isLow ? "bg-amber-400" : "bg-emerald-400"}`} style={{ width: `${Math.min(qty / target, 1) * 100}%` }} />
+                              <div className={`h-full rounded-full ${isOut ? "bg-rose-400" : isLow ? "bg-warning" : "bg-emerald-400"}`} style={{ width: `${Math.min(qty / target, 1) * 100}%` }} />
                             </div>
-                            <p className="text-[10.5px] text-muted-foreground truncate">{m.location || ""}{m.vendor_name ? ` · ${m.vendor_name}` : ""}</p>
+                            <p className="text-micro text-muted-foreground truncate">{m.location || ""}{m.vendor_name ? ` · ${m.vendor_name}` : ""}</p>
                           </div>
                         </div>
                         <div className="text-end shrink-0 w-16">
-                          <p className="text-[15px] font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{qty}</p>
-                          <p className="text-[9.5px] text-muted-foreground">{m.uom || (ar ? "كمية" : "qty")}</p>
+                          <p className="text-body-lg font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{qty}</p>
+                          <p className="text-micro text-muted-foreground">{m.uom || (ar ? "كمية" : "qty")}</p>
                         </div>
                         <div className="text-end shrink-0 w-24 hidden sm:block">
-                          <p className="text-[13px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(value)}</p>
-                          {m.unit_cost ? <p className="text-[9.5px] text-muted-foreground tabular-nums">@{fmtVal(m.unit_cost)}</p> : null}
+                          <p className="text-body font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(value)}</p>
+                          {m.unit_cost ? <p className="text-micro text-muted-foreground tabular-nums">@{fmtVal(m.unit_cost)}</p> : null}
                         </div>
                         <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
                           <Trash2 size={12} />
@@ -1679,7 +1679,7 @@ export default function Inventory() {
               )
             ) : (
               filteredAssets.length === 0 ? (
-                <div className="py-16 text-center text-[13px] text-muted-foreground/50">{search || catFilter !== "all" || statusFilter !== "all" ? (ar ? "مفيش نتائج" : "No results") : (ar ? "مفيش أصول" : "No assets")}</div>
+                <div className="py-16 text-center text-body text-muted-foreground/50">{search || catFilter !== "all" || statusFilter !== "all" ? (ar ? "مفيش نتائج" : "No results") : (ar ? "مفيش أصول" : "No assets")}</div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {filteredAssets.map((r) => {
@@ -1700,12 +1700,12 @@ export default function Inventory() {
                               <CatIcon size={17} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-[14px] font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{r.name_en}</p>
+                              <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{r.name_en}</p>
                               <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                {m.asset_tag && <span className="text-[10px] font-mono text-muted-foreground">{m.asset_tag}</span>}
-                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                                {m.asset_tag && <span className="text-micro font-mono text-muted-foreground">{m.asset_tag}</span>}
+                                <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
                                 {warrantyDays !== null && warrantyDays > 0 && warrantyDays <= 60 && (
-                                  <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-600 flex items-center gap-1"><ShieldAlert size={9} />{ar ? `ضمان ${warrantyDays}ي` : `${warrantyDays}d warranty`}</span>
+                                  <span className="text-micro px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-600 flex items-center gap-1"><ShieldAlert size={9} />{ar ? `ضمان ${warrantyDays}ي` : `${warrantyDays}d warranty`}</span>
                                 )}
                               </div>
                             </div>
@@ -1713,18 +1713,18 @@ export default function Inventory() {
                               <Trash2 size={12} />
                             </button>
                           </div>
-                          <div className="flex flex-col gap-1 text-[11px] text-muted-foreground mb-3">
+                          <div className="flex flex-col gap-1 text-micro text-muted-foreground mb-3">
                             {m.assigned_to && <span>{ar ? "متسلمها" : "Assigned to"}: {m.assigned_to}</span>}
                             {m.location && <span><MapPin size={10} className="inline mr-1" />{m.location}</span>}
                           </div>
                           {(m.purchase_cost || 0) > 0 && (
                             <div className="pt-3 border-t border-border/30">
                               <div className="flex items-center justify-between mb-1.5">
-                                <p className="text-[10px] text-muted-foreground">{ar ? "القيمة الدفترية" : "Book value"}</p>
-                                <p className="text-[12px] font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(dep.book)} <span className="text-[9.5px] text-muted-foreground font-normal">/ {fmtVal(m.purchase_cost || 0)}</span></p>
+                                <p className="text-micro text-muted-foreground">{ar ? "القيمة الدفترية" : "Book value"}</p>
+                                <p className="text-caption font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(dep.book)} <span className="text-micro text-muted-foreground font-normal">/ {fmtVal(m.purchase_cost || 0)}</span></p>
                               </div>
                               <div className="h-1 rounded-full bg-muted/60 overflow-hidden">
-                                <div className="h-full rounded-full bg-violet-400" style={{ width: `${(1 - dep.agePct) * 100}%` }} />
+                                <div className="h-full rounded-full bg-chart-4" style={{ width: `${(1 - dep.agePct) * 100}%` }} />
                               </div>
                             </div>
                           )}
@@ -1743,7 +1743,7 @@ export default function Inventory() {
               <button onClick={() => setMoveModal(true)} className={btnPrimary + " h-9"}><Plus size={14} /> {ar ? "حركة جديدة" : "New Movement"}</button>
             </div>
             {movements.length === 0 ? (
-              <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش حركات مخزون" : "No stock movements"}</div>
+              <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش حركات مخزون" : "No stock movements"}</div>
             ) : (
               <div className="space-y-2" data-testid="movements-list">
                 {movements.map((w) => {
@@ -1751,15 +1751,15 @@ export default function Inventory() {
                   const mt = MOVE_TYPES.find((t) => t.value === m.move_type);
                   return (
                     <div key={w.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/40 bg-background">
-                      <ArrowDownUp size={14} className="text-primary shrink-0" />
+                      <ArrowDownUp size={14} className="text-brand-ink shrink-0" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/8 text-primary font-medium">{mt ? (ar ? mt.ar : mt.en) : m.move_type}</span>
+                          <span className="text-micro px-2 py-0.5 rounded-full bg-primary/8 text-brand-ink font-medium">{mt ? (ar ? mt.ar : mt.en) : m.move_type}</span>
                         </div>
-                        <p className="text-[13px] font-medium truncate">{m.resource_name || w.title_en}</p>
-                        <p className="text-[11px] text-muted-foreground">{m.reason || ""} · {w.created_at.slice(0, 10)}</p>
+                        <p className="text-body font-medium truncate">{m.resource_name || w.title_en}</p>
+                        <p className="text-micro text-muted-foreground">{m.reason || ""} · {w.created_at.slice(0, 10)}</p>
                       </div>
-                      <p className="text-[16px] font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      <p className="text-title font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>
                         {m.move_type === "stock_out" ? "-" : "+"}{m.move_qty}
                       </p>
                     </div>
@@ -1773,12 +1773,12 @@ export default function Inventory() {
           /* Maintenance tab */
           <>
             <div className="flex items-center gap-3 mb-5">
-              {maintCostTotal > 0 && <p className="text-[12px] text-muted-foreground">{ar ? "إجمالي تكلفة الصيانة:" : "Total maintenance spend:"} <span className="font-medium text-foreground tabular-nums">{fmtVal(maintCostTotal)}</span></p>}
+              {maintCostTotal > 0 && <p className="text-caption text-muted-foreground">{ar ? "إجمالي تكلفة الصيانة:" : "Total maintenance spend:"} <span className="font-medium text-foreground tabular-nums">{fmtVal(maintCostTotal)}</span></p>}
               <div className="flex-1" />
               <button onClick={() => setMaintModal(true)} className={btnPrimary + " h-9"}><Plus size={14} /> {ar ? "سجّل صيانة" : "Schedule"}</button>
             </div>
             {maintenance.length === 0 ? (
-              <div className="py-16 text-center text-[13px] text-muted-foreground/50">{ar ? "مفيش سجلات صيانة" : "No maintenance records"}</div>
+              <div className="py-16 text-center text-body text-muted-foreground/50">{ar ? "مفيش سجلات صيانة" : "No maintenance records"}</div>
             ) : (
               <div className="space-y-2">
                 {maintenance.map((w) => {
@@ -1786,19 +1786,19 @@ export default function Inventory() {
                   const st = MAINT_STATUSES.find((s) => s.value === w.status) ?? MAINT_STATUSES[0];
                   return (
                     <div key={w.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/40 bg-background hover:shadow-sm transition-all">
-                      <Wrench size={14} className="text-amber-500 shrink-0" />
+                      <Wrench size={14} className="text-warning shrink-0" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
-                          <span className="text-[10px] text-muted-foreground">{m.maint_type}</span>
+                          <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                          <span className="text-micro text-muted-foreground">{m.maint_type}</span>
                         </div>
-                        <p className="text-[13px] font-medium truncate">{m.resource_name || w.title_en}</p>
-                        <p className="text-[11px] text-muted-foreground">{m.vendor_name || ""}{w.due_date ? ` · ${w.due_date.slice(0, 10)}` : ""}</p>
+                        <p className="text-body font-medium truncate">{m.resource_name || w.title_en}</p>
+                        <p className="text-micro text-muted-foreground">{m.vendor_name || ""}{w.due_date ? ` · ${w.due_date.slice(0, 10)}` : ""}</p>
                       </div>
-                      {m.cost ? <p className="text-[13px] font-medium tabular-nums shrink-0">{fmtVal(m.cost)}</p> : null}
+                      {m.cost ? <p className="text-body font-medium tabular-nums shrink-0">{fmtVal(m.cost)}</p> : null}
                       {w.status === "planned" && (
                         <button onClick={async () => { await getDataSource().work_items.update(workspace?.id ?? "", w.id, { status: "done", progress: 100 }); const patched = { ...w, status: "done" as WorkItem["status"], progress: 100 }; setLocalMaint((prev) => [patched, ...prev.filter((p) => p.id !== w.id)]); queryClient.invalidateQueries({ queryKey: pagedKey("work_items") }); }}
-                          className="text-[11px] text-emerald-600 font-medium hover:opacity-70 shrink-0">{ar ? "اكتمل" : "Complete"}</button>
+                          className="text-micro text-emerald-600 font-medium hover:opacity-70 shrink-0">{ar ? "اكتمل" : "Complete"}</button>
                       )}
                     </div>
                   );

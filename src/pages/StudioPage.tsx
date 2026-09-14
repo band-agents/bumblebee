@@ -20,7 +20,7 @@ import {
 const STATUS_STYLES: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
   in_progress: "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
-  review: "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+  review: "bg-warning/10 text-warning dark:bg-warning/20 dark:text-warning",
   published: "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
   archived: "bg-muted text-muted-foreground",
 };
@@ -35,7 +35,7 @@ const STATUS_LABELS: Record<string, { en: string; ar: string }> = {
 
 const PRIORITY_STYLES: Record<string, string> = {
   high: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
-  medium: "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+  medium: "bg-warning/10 text-warning dark:bg-warning/20 dark:text-warning",
   low: "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
 };
 
@@ -53,7 +53,7 @@ function Breadcrumbs({ page, isRtl }: { page: StudioPageType; isRtl: boolean }) 
   }
 
   return (
-    <nav className="flex items-center gap-1 text-[12px] text-muted-foreground mb-4 flex-wrap">
+    <nav className="flex items-center gap-1 text-caption text-muted-foreground mb-4 flex-wrap">
       <span className="hover:text-foreground cursor-pointer transition-colors">
         {isRtl ? "الاستوديو" : "Studio"}
       </span>
@@ -93,7 +93,7 @@ function PropertiesPanel({
     <div className="border border-border/30 rounded-xl overflow-hidden mb-8">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-2.5 text-[13px] font-medium text-muted-foreground hover:bg-muted/30 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-2.5 text-body font-medium text-muted-foreground hover:bg-muted/30 transition-colors"
       >
         <span>{t("Page Properties", "خصائص الصفحة")}</span>
         {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -108,14 +108,14 @@ function PropertiesPanel({
           >
             <div className="px-4 pb-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
               {properties.map((prop) => (
-                <div key={prop.label} className="flex items-center gap-2 text-[12px]">
+                <div key={prop.label} className="flex items-center gap-2 text-caption">
                   <prop.icon size={13} className="text-muted-foreground/60 shrink-0" />
                   <span className="text-muted-foreground">{prop.label}:</span>
                   {prop.editable ? (
                     <select
                       value={String(prop.value)}
                       onChange={(e) => onPropertyChange(prop.key, e.target.value)}
-                      className="font-medium truncate px-1.5 py-0.5 rounded-full text-[11px] bg-transparent border border-border/40 outline-none cursor-pointer hover:bg-muted/30 transition-colors"
+                      className="font-medium truncate px-1.5 py-0.5 rounded-full text-micro bg-transparent border border-border/40 outline-none cursor-pointer hover:bg-muted/30 transition-colors"
                     >
                       {prop.key === "status" && Object.entries(STATUS_LABELS).map(([k, v]) => (
                         <option key={k} value={k}>{isRtl ? v.ar : v.en}</option>
@@ -128,7 +128,7 @@ function PropertiesPanel({
                       ))}
                     </select>
                   ) : (
-                    <span className={`font-medium truncate ${prop.style ? `px-1.5 py-0.5 rounded-full text-[11px] ${prop.style}` : ""}`}>
+                    <span className={`font-medium truncate ${prop.style ? `px-1.5 py-0.5 rounded-full text-micro ${prop.style}` : ""}`}>
                       {prop.value}
                     </span>
                   )}
@@ -152,10 +152,10 @@ function CommentsSection({ pageId, isRtl, comments }: { pageId: string; isRtl: b
 
   return (
     <div className="mt-10 pt-8 border-t border-border/30">
-      <h3 className="text-[15px] font-semibold mb-4 flex items-center gap-2">
+      <h3 className="text-body-lg font-semibold mb-4 flex items-center gap-2">
         <MessageSquare size={16} className="text-muted-foreground" />
         {t("Comments", "التعليقات")}
-        <span className="text-[12px] font-normal text-muted-foreground">({rootComments.length})</span>
+        <span className="text-caption font-normal text-muted-foreground">({rootComments.length})</span>
       </h3>
       <div className="space-y-4">
         {rootComments.map((comment) => {
@@ -163,24 +163,24 @@ function CommentsSection({ pageId, isRtl, comments }: { pageId: string; isRtl: b
           return (
             <div key={comment.id}>
               <div className="flex gap-3">
-                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-[11px] font-medium text-primary shrink-0">
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-micro font-medium text-brand-ink shrink-0">
                   {(isRtl ? comment.author_ar : comment.author).charAt(0)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-[12.5px] font-medium">{isRtl ? comment.author_ar : comment.author}</span>
-                    <span className="text-[11px] text-muted-foreground">
+                    <span className="text-caption font-medium">{isRtl ? comment.author_ar : comment.author}</span>
+                    <span className="text-micro text-muted-foreground">
                       {timeAgo(comment.created_at, isRtl)}
                     </span>
                   </div>
-                  <p className="text-[13px] leading-relaxed text-foreground/80">
+                  <p className="text-body leading-relaxed text-foreground/80">
                     {isRtl ? comment.content_ar : comment.content}
                   </p>
                   {comment.reactions.length > 0 && (
                     <div className="flex gap-1 mt-1.5">
                       {comment.reactions.map((r, i) => (
-                        <button key={i} className="text-[12px] px-1.5 py-0.5 bg-muted/50 rounded-full hover:bg-muted/80 transition-colors">
-                          {r.emoji} <span className="text-[10px] text-muted-foreground">{r.users.length}</span>
+                        <button key={i} className="text-caption px-1.5 py-0.5 bg-muted/50 rounded-full hover:bg-muted/80 transition-colors">
+                          {r.emoji} <span className="text-micro text-muted-foreground">{r.users.length}</span>
                         </button>
                       ))}
                     </div>
@@ -189,17 +189,17 @@ function CommentsSection({ pageId, isRtl, comments }: { pageId: string; isRtl: b
                     <div className="mt-3 ml-4 space-y-3">
                       {replies.map((reply) => (
                         <div key={reply.id} className="flex gap-2.5">
-                          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-medium shrink-0">
+                          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-micro font-medium shrink-0">
                             {(isRtl ? reply.author_ar : reply.author).charAt(0)}
                           </div>
                           <div>
                             <div className="flex items-center gap-2 mb-0.5">
-                              <span className="text-[12px] font-medium">{isRtl ? reply.author_ar : reply.author}</span>
-                              <span className="text-[10.5px] text-muted-foreground">
+                              <span className="text-caption font-medium">{isRtl ? reply.author_ar : reply.author}</span>
+                              <span className="text-micro text-muted-foreground">
                                 {timeAgo(reply.created_at, isRtl)}
                               </span>
                             </div>
-                            <p className="text-[12.5px] leading-relaxed text-foreground/75">
+                            <p className="text-caption leading-relaxed text-foreground/75">
                               {isRtl ? reply.content_ar : reply.content}
                             </p>
                           </div>
@@ -214,14 +214,14 @@ function CommentsSection({ pageId, isRtl, comments }: { pageId: string; isRtl: b
         })}
       </div>
       <div className="mt-4 flex gap-3">
-        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-[11px] font-medium text-primary shrink-0">
+        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-micro font-medium text-brand-ink shrink-0">
           A
         </div>
         <input
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder={t("Add a comment...", "أضف تعليقاً...")}
-          className="flex-1 text-[13px] bg-muted/40 border border-border/30 rounded-xl px-3.5 py-2 outline-none focus:ring-1 focus:ring-primary/30 transition-shadow placeholder:text-muted-foreground/50"
+          className="flex-1 text-body bg-muted/40 border border-border/30 rounded-xl px-3.5 py-2 outline-none focus:ring-1 focus:ring-brand-ink/30 transition-shadow placeholder:text-muted-foreground/50"
         />
       </div>
     </div>
@@ -253,17 +253,17 @@ function VersionHistorySidebar({ isRtl, isOpen, onClose, pageId }: { isRtl: bool
             style={{ [isRtl ? "right" : "left"]: 0 }}
           >
             <div className="px-5 py-4 border-b border-border/30 flex items-center justify-between shrink-0">
-              <h3 className="text-[14px] font-semibold flex items-center gap-2">
+              <h3 className="text-body-lg font-semibold flex items-center gap-2">
                 <History size={15} />
                 {t("Version History", "سجل التغييرات")}
               </h3>
-              <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-[18px] leading-none">
+              <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-title leading-none">
                 ×
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-1">
               {versions.length === 0 && (
-                <div className="text-center py-8 text-[13px] text-muted-foreground">
+                <div className="text-center py-8 text-body text-muted-foreground">
                   {t("No versions saved yet", "لا توجد إصدارات محفوظة بعد")}
                 </div>
               )}
@@ -276,13 +276,13 @@ function VersionHistorySidebar({ isRtl, isOpen, onClose, pageId }: { isRtl: bool
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[12.5px] font-medium">{isRtl ? v.title_ar : v.title}</span>
-                    <span className="text-[11px] text-muted-foreground">{timeAgo(v.created_at, isRtl)}</span>
+                    <span className="text-caption font-medium">{isRtl ? v.title_ar : v.title}</span>
+                    <span className="text-micro text-muted-foreground">{timeAgo(v.created_at, isRtl)}</span>
                   </div>
-                  <div className="text-[11.5px] text-muted-foreground mb-1">
+                  <div className="text-micro text-muted-foreground mb-1">
                     {isRtl ? v.author_ar : v.author} · {v.block_count} {t("blocks", "كتلة")}
                   </div>
-                  <div className="text-[11px] text-muted-foreground/70 leading-relaxed">
+                  <div className="text-micro text-muted-foreground/70 leading-relaxed">
                     {isRtl ? v.summary_ar : v.summary}
                   </div>
                   {selectedVersion === v.id && i !== 0 && (
@@ -291,7 +291,7 @@ function VersionHistorySidebar({ isRtl, isOpen, onClose, pageId }: { isRtl: bool
                       animate={{ opacity: 1, height: "auto" }}
                       className="mt-2 pt-2 border-t border-border/30"
                     >
-                      <button className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 text-[11.5px] font-medium rounded-lg bg-primary/10 text-primary hover:bg-primary/15 transition-colors">
+                      <button className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 text-micro font-medium rounded-lg bg-primary/10 text-brand-ink hover:bg-primary/15 transition-colors">
                         <RefreshCw size={12} />
                         {t("Restore this version", "استعادة هذا الإصدار")}
                       </button>
@@ -329,10 +329,10 @@ function FileUploadArea({ isRtl, media }: { isRtl: boolean; media: typeof STUDIO
 
   return (
     <div className="mt-8 pt-6 border-t border-border/30">
-      <h3 className="text-[15px] font-semibold mb-4 flex items-center gap-2">
+      <h3 className="text-body-lg font-semibold mb-4 flex items-center gap-2">
         <FileIcon size={16} className="text-muted-foreground" />
         {t("Files", "الملفات")}
-        {media.length > 0 && <span className="text-[12px] font-normal text-muted-foreground">({media.length})</span>}
+        {media.length > 0 && <span className="text-caption font-normal text-muted-foreground">({media.length})</span>}
       </h3>
 
       <div
@@ -348,10 +348,10 @@ function FileUploadArea({ isRtl, media }: { isRtl: boolean; media: typeof STUDIO
       >
         <input ref={fileInputRef} type="file" multiple className="hidden" />
         <Upload size={24} className="mx-auto mb-2 text-muted-foreground/50" />
-        <p className="text-[13px] text-muted-foreground">
+        <p className="text-body text-muted-foreground">
           {t("Drop files here or click to upload", "اسحب الملفات هنا أو انقر للرفع")}
         </p>
-        <p className="text-[11px] text-muted-foreground/60 mt-1">
+        <p className="text-micro text-muted-foreground/60 mt-1">
           {t("Images, PDFs, documents", "صور، PDFs، مستندات")}
         </p>
       </div>
@@ -363,15 +363,15 @@ function FileUploadArea({ isRtl, media }: { isRtl: boolean; media: typeof STUDIO
               <div className="aspect-[4/3] bg-muted/30 flex items-center justify-center">
                 {file.type === "image" ? (
                   <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                    <Image size={24} className="text-primary/30" />
+                    <Image size={24} className="text-brand-ink/30" />
                   </div>
                 ) : (
                   <span className="text-3xl">{fileTypeIcons[file.type] || "📎"}</span>
                 )}
               </div>
               <div className="p-2.5">
-                <p className="text-[11.5px] font-medium truncate">{file.name}</p>
-                <p className="text-[10.5px] text-muted-foreground mt-0.5">
+                <p className="text-micro font-medium truncate">{file.name}</p>
+                <p className="text-micro text-muted-foreground mt-0.5">
                   {formatSize(file.size)} · {timeAgo(file.uploaded_at, isRtl)}
                 </p>
               </div>
@@ -453,7 +453,7 @@ export default function StudioPage() {
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => setLocation("/studio")}
-            className="flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft size={15} className={isRtl ? "rotate-180" : ""} />
             {t("Back", "رجوع")}
@@ -461,7 +461,7 @@ export default function StudioPage() {
           <div className="flex items-center gap-2">
             {/* Comments count badge */}
             {pageComments.length > 0 && (
-              <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-muted/40 text-[11px] text-muted-foreground">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-muted/40 text-micro text-muted-foreground">
                 <MessageSquare size={12} />
                 {pageComments.length}
               </div>
@@ -469,7 +469,7 @@ export default function StudioPage() {
             {/* Share button */}
             <button
               onClick={() => toast(t("Share link copied", "تم نسخ رابط المشاركة"), { description: t("Link copied to clipboard", "تم نسخ الرابط") })}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-muted/40 hover:bg-muted/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-caption font-medium rounded-lg bg-muted/40 hover:bg-muted/60 transition-colors"
             >
               <Share2 size={13} />
               {t("Share", "مشاركة")}
@@ -478,7 +478,7 @@ export default function StudioPage() {
             <div className="relative">
               <button
                 onClick={() => { setAiMenuOpen(!aiMenuOpen); setActionsMenuOpen(false); }}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-caption font-medium rounded-lg bg-primary/5 text-brand-ink hover:bg-primary/10 transition-colors"
               >
                 <Sparkles size={13} />
                 {t("AI Actions", "إجراءات AI")}
@@ -501,9 +501,9 @@ export default function StudioPage() {
                       <button
                         key={item.action}
                         onClick={() => handleAiAction(item.action)}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] rounded-lg hover:bg-accent/60 transition-colors"
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-caption rounded-lg hover:bg-accent/60 transition-colors"
                       >
-                        <item.icon size={14} className="text-primary/70" />
+                        <item.icon size={14} className="text-brand-ink/70" />
                         {item.label}
                       </button>
                     ))}
@@ -538,7 +538,7 @@ export default function StudioPage() {
                       <button
                         key={item.label}
                         onClick={() => { item.action?.(); setActionsMenuOpen(false); }}
-                        className={`w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] rounded-lg hover:bg-accent/60 transition-colors ${
+                        className={`w-full flex items-center gap-2.5 px-3 py-2 text-caption rounded-lg hover:bg-accent/60 transition-colors ${
                           item.destructive ? "text-destructive hover:bg-destructive/5" : ""
                         }`}
                       >
@@ -565,7 +565,7 @@ export default function StudioPage() {
           ) : (
             <div className="flex flex-col items-center gap-2 text-muted-foreground/40">
               <ImagePlus size={32} />
-              <span className="text-[12px]">{t("Add cover image", "أضف صورة غلاف")}</span>
+              <span className="text-caption">{t("Add cover image", "أضف صورة غلاف")}</span>
             </div>
           )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
@@ -576,7 +576,7 @@ export default function StudioPage() {
           <div className="relative inline-block">
             <button
               onClick={() => setIconPickerOpen(!iconPickerOpen)}
-              className="text-[36px] hover:bg-muted/40 rounded-xl px-2 py-1 transition-colors leading-none mb-1"
+              className="text-display hover:bg-muted/40 rounded-xl px-2 py-1 transition-colors leading-none mb-1"
             >
               {currentPage.icon}
             </button>
@@ -588,7 +588,7 @@ export default function StudioPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   className="absolute top-full left-0 mt-2 w-64 bg-popover border border-popover-border rounded-xl shadow-xl p-3 z-50"
                 >
-                  <p className="text-[11px] text-muted-foreground mb-2">{t("Choose icon", "اختر أيقونة")}</p>
+                  <p className="text-micro text-muted-foreground mb-2">{t("Choose icon", "اختر أيقونة")}</p>
                   <div className="grid grid-cols-8 gap-1">
                     {EMOJI_OPTIONS.map((emoji) => (
                       <button
@@ -597,7 +597,7 @@ export default function StudioPage() {
                           setCurrentPage((prev) => ({ ...prev, icon: emoji }));
                           setIconPickerOpen(false);
                         }}
-                        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-muted/60 transition-colors text-[16px]"
+                        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-muted/60 transition-colors text-title"
                       >
                         {emoji}
                       </button>
@@ -610,13 +610,13 @@ export default function StudioPage() {
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-[32px] font-bold tracking-tight bg-transparent border-0 outline-none placeholder:text-muted-foreground/30"
+            className="w-full text-display font-bold tracking-tight bg-transparent border-0 outline-none placeholder:text-muted-foreground/30"
             style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}
             placeholder={isRtl ? "عنوان الصفحة..." : "Page title..."}
           />
           {/* Status badge */}
           <div className="mt-2">
-            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11.5px] font-medium ${STATUS_STYLES[currentPage.status] || ""}`}>
+            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-micro font-medium ${STATUS_STYLES[currentPage.status] || ""}`}>
               {STATUS_LABELS[currentPage.status]?.[isRtl ? "ar" : "en"] || currentPage.status}
             </span>
           </div>

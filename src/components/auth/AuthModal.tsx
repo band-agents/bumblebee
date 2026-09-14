@@ -65,7 +65,7 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
           {/* Logo */}
           <div className="mb-6">
             <Logo variant="full" size={18} />
-            <p className="text-[12px] text-muted-foreground mt-1.5">
+            <p className="text-caption text-muted-foreground mt-1.5">
               {mode === "login" ? "Sign in to your workspace" : mode === "signup" ? "Create your account" : "Reset your password"}
             </p>
           </div>
@@ -76,7 +76,7 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
               <button
                 type="button"
                 onClick={() => signInWithGoogle()}
-                className="w-full flex items-center justify-center gap-2.5 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/60 transition-colors"
+                className="w-full flex items-center justify-center gap-2.5 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/60 transition-colors"
               >
                 <Chrome size={15} />
                 Continue with Google
@@ -84,7 +84,7 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
               <button
                 type="button"
                 onClick={() => signInWithApple()}
-                className="w-full flex items-center justify-center gap-2.5 h-10 rounded-xl border border-border/60 text-[13px] font-medium hover:bg-muted/60 transition-colors"
+                className="w-full flex items-center justify-center gap-2.5 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/60 transition-colors"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701z"/>
@@ -98,7 +98,7 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
           {mode !== "reset" && (
             <div className="relative mb-5">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border/40" /></div>
-              <div className="relative flex justify-center text-[11px] text-muted-foreground/60 bg-background px-3"><span className="bg-background px-2">or</span></div>
+              <div className="relative flex justify-center text-micro text-muted-foreground/60 bg-background px-3"><span className="bg-background px-2">or</span></div>
             </div>
           )}
 
@@ -106,31 +106,31 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
           <form onSubmit={handleSubmit} className="space-y-3.5">
             {mode === "signup" && (
               <div>
-                <label className="text-[11px] font-medium text-muted-foreground mb-1 block">Full Name</label>
+                <label className="text-micro font-medium text-muted-foreground mb-1 block">Full Name</label>
                 <input
                   type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required
-                  className="w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+                  className="w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/30 transition"
                   placeholder="Your name"
                 />
               </div>
             )}
 
             <div>
-              <label className="text-[11px] font-medium text-muted-foreground mb-1 block">Email</label>
+              <label className="text-micro font-medium text-muted-foreground mb-1 block">Email</label>
               <input
                 type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
-                className="w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+                className="w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/30 transition"
                 placeholder="you@company.com"
               />
             </div>
 
             {mode !== "reset" && (
               <div>
-                <label className="text-[11px] font-medium text-muted-foreground mb-1 block">Password</label>
+                <label className="text-micro font-medium text-muted-foreground mb-1 block">Password</label>
                 <div className="relative">
                   <input
                     type={showPass ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8}
-                    className="w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 pr-10 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+                    className="w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 pr-10 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/30 transition"
                     placeholder="Min. 8 characters"
                   />
                   <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground transition-colors">
@@ -141,18 +141,18 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
             )}
 
             {error && (
-              <div className="flex items-center gap-2 text-[12px] text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3.5 py-2.5">
+              <div className="flex items-center gap-2 text-caption text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3.5 py-2.5">
                 <AlertCircle size={13} />
                 {error}
               </div>
             )}
             {success && (
-              <div className="text-[12px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5">{success}</div>
+              <div className="text-caption text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5">{success}</div>
             )}
 
             <button
               type="submit" disabled={loading}
-              className="w-full h-10 rounded-xl bg-foreground text-background text-[13px] font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="w-full h-10 rounded-xl bg-foreground text-background text-body font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               {loading && <Loader2 size={13} className="animate-spin" />}
               {mode === "login" ? "Sign in" : mode === "signup" ? "Create account" : "Send reset link"}
@@ -160,7 +160,7 @@ export function AuthModal({ open, onClose, defaultMode = "login" }: AuthModalPro
           </form>
 
           {/* Footer links */}
-          <div className="mt-5 flex items-center justify-between text-[11.5px] text-muted-foreground/70">
+          <div className="mt-5 flex items-center justify-between text-micro text-muted-foreground/70">
             {mode === "login" && (
               <>
                 <button onClick={() => { setMode("signup"); setError(null); setSuccess(null); }} className="hover:text-foreground transition-colors">

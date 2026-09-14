@@ -25,17 +25,17 @@ import { type ImportTemplate } from "../lib/csv-export";
 
 type Resource = Database["public"]["Tables"]["resources"]["Row"];
 
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/20 transition placeholder:text-muted-foreground/50";
+const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
 const selectCls = inputCls + " appearance-none cursor-pointer";
-const labelCls = "text-[11px] font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
-const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-[11px] font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
+const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
+const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
+const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/60 text-micro font-medium px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors";
 
 const FABRIC_CATEGORIES = ["Cotton", "Polyester", "Silk", "Wool", "Linen", "Nylon", "Viscose", "Chiffon", "Satin", "Denim", "Jersey", "Fleece", "Velvet", "Lace", "Leather", "Suede", "Neoprene", "Organza", "Crepe", "Georgette", "Taffeta", "Tulle", "Corduroy", "Tweed", "Spandex", "Mesh"];
 const UOMS = ["m", "yard", "roll", "bolt", "kg"];
 const FABRIC_STATUSES = [
   { value: "in_stock", en: "In Stock", ar: "متوفر", pill: "bg-emerald-100 text-emerald-700" },
-  { value: "low_stock", en: "Low Stock", ar: "كمية قليلة", pill: "bg-amber-100 text-amber-700" },
+  { value: "low_stock", en: "Low Stock", ar: "كمية قليلة", pill: "bg-warning/15 text-warning" },
   { value: "out_of_stock", en: "Out of Stock", ar: "نفذ", pill: "bg-rose-100 text-rose-600" },
 ];
 
@@ -199,13 +199,13 @@ export default function InventoryFabricsPage() {
               <ArrowLeft size={16} />
             </Link>
             <div>
-              <h1 className="text-[22px] font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
-                <div className="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
-                  <Palette size={16} className="text-violet-600" />
+              <h1 className="text-heading font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
+                <div className="w-9 h-9 rounded-xl bg-chart-4/15 flex items-center justify-center">
+                  <Palette size={16} className="text-chart-4" />
                 </div>
                 {ar ? "الأقمشة" : "Fabrics"}
               </h1>
-              <p className="text-[13px] text-muted-foreground mt-1 ml-[46px]">
+              <p className="text-body text-muted-foreground mt-1 ml-[46px]">
                 {ar ? `${items.length} نوع قماش` : `${items.length} fabric types`}
               </p>
             </div>
@@ -220,17 +220,17 @@ export default function InventoryFabricsPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: ar ? "إجمالي الأنواع" : "Total Types", value: stats.total, icon: Package, color: "bg-violet-100 text-violet-600" },
+            { label: ar ? "إجمالي الأنواع" : "Total Types", value: stats.total, icon: Package, color: "bg-chart-4/15 text-chart-4" },
             { label: ar ? "الكمية الإجمالية" : "Total Stock", value: `${stats.totalQty.toLocaleString()} m`, icon: Ruler, color: "bg-blue-100 text-blue-600" },
-            { label: ar ? "كمية قليلة" : "Low Stock", value: stats.lowStock, icon: AlertTriangle, color: "bg-amber-100 text-amber-700" },
+            { label: ar ? "كمية قليلة" : "Low Stock", value: stats.lowStock, icon: AlertTriangle, color: "bg-warning/15 text-warning" },
             { label: ar ? "القيمة الإجمالية" : "Total Value", value: stats.totalValue.toLocaleString(), icon: TrendingUp, color: "bg-emerald-100 text-emerald-700" },
           ].map((s, i) => (
             <div key={i} className="p-4 rounded-xl border border-border/40 bg-background">
               <div className="flex items-center gap-2 mb-2">
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${s.color}`}><s.icon size={13} /></div>
-                <span className="text-[11px] text-muted-foreground">{s.label}</span>
+                <span className="text-micro text-muted-foreground">{s.label}</span>
               </div>
-              <p className="text-[18px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
+              <p className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
             </div>
           ))}
         </div>
@@ -239,13 +239,13 @@ export default function InventoryFabricsPage() {
         <div className="flex items-center gap-3">
           <div className="relative flex-1 max-w-[300px]">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث في الأقمشة..." : "Search fabrics..."} className={inputCls + " h-9 pl-9 text-[12px]"} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder={ar ? "بحث في الأقمشة..." : "Search fabrics..."} className={inputCls + " h-9 pl-9 text-caption"} />
           </div>
-          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className={selectCls + " h-9 w-[160px] text-[12px]"}>
+          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className={selectCls + " h-9 w-[160px] text-caption"}>
             <option value="">{ar ? "كل الفئات" : "All Categories"}</option>
             {FABRIC_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
-          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={selectCls + " h-9 w-[140px] text-[12px]"}>
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className={selectCls + " h-9 w-[140px] text-caption"}>
             <option value="">{ar ? "كل الحالات" : "All Statuses"}</option>
             {FABRIC_STATUSES.map(s => <option key={s.value} value={s.value}>{ar ? s.ar : s.en}</option>)}
           </select>
@@ -257,8 +257,8 @@ export default function InventoryFabricsPage() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <Package size={32} className="mx-auto text-muted-foreground/30 mb-3" />
-            <p className="text-[14px] text-muted-foreground">{ar ? "لا توجد أقمشة" : "No fabrics found"}</p>
-            <p className="text-[12px] text-muted-foreground/60 mt-1">{ar ? "اضغط 'إضافة قماش' لبدء الإضافة" : "Click 'Add Fabric' to get started"}</p>
+            <p className="text-body-lg text-muted-foreground">{ar ? "لا توجد أقمشة" : "No fabrics found"}</p>
+            <p className="text-caption text-muted-foreground/60 mt-1">{ar ? "اضغط 'إضافة قماش' لبدء الإضافة" : "Click 'Add Fabric' to get started"}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -276,20 +276,20 @@ export default function InventoryFabricsPage() {
                         <div className="w-8 h-8 rounded-lg border border-border/30" style={{ backgroundColor: m.color }} />
                       )}
                       <div>
-                        <p className="text-[13px] font-medium leading-tight">{r.name_en}</p>
-                        <p className="text-[10px] text-muted-foreground font-mono">{m.sku || "No SKU"}</p>
+                        <p className="text-body font-medium leading-tight">{r.name_en}</p>
+                        <p className="text-micro text-muted-foreground font-mono">{m.sku || "No SKU"}</p>
                       </div>
                     </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${statusDef?.pill || ""}`}>{ar ? statusDef?.ar : statusDef?.en}</span>
+                    <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${statusDef?.pill || ""}`}>{ar ? statusDef?.ar : statusDef?.en}</span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 text-[10px] mb-3">
+                  <div className="grid grid-cols-3 gap-2 text-micro mb-3">
                     <div><span className="text-muted-foreground">{ar ? "الفئة" : "Category"}</span><p className="font-medium">{m.category || "-"}</p></div>
                     <div><span className="text-muted-foreground">{ar ? "العرض" : "Width"}</span><p className="font-medium">{m.width_cm ? `${m.width_cm} cm` : "-"}</p></div>
                     <div><span className="text-muted-foreground">{ar ? "GSM" : "GSM"}</span><p className="font-medium">{m.gsm || "-"}</p></div>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px]">
+                  <div className="flex items-center justify-between text-micro">
                     <div>
                       <span className="text-muted-foreground">{ar ? "المخزون" : "Stock"}</span>
                       <span className="ml-1 font-medium">{m.quantity ?? 0} {m.uom || "m"}</span>
@@ -395,7 +395,7 @@ function FabricModal({ initial, nextSku, ar, wid, onClose, onSaved }: {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-background rounded-2xl border border-border/60 shadow-xl w-full max-w-[560px] max-h-[90vh] overflow-auto" onClick={e => e.stopPropagation()}>
         <div className="sticky top-0 bg-background/95 backdrop-blur px-6 py-4 border-b border-border/40 flex items-center justify-between">
-          <h2 className="text-[16px] font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{initial ? (ar ? "تعديل القماش" : "Edit Fabric") : (ar ? "إضافة قماش" : "Add Fabric")}</h2>
+          <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>{initial ? (ar ? "تعديل القماش" : "Edit Fabric") : (ar ? "إضافة قماش" : "Add Fabric")}</h2>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={15} /></button>
         </div>
         <form onSubmit={submit} className="p-6 grid grid-cols-2 gap-3">
