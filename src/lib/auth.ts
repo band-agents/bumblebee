@@ -45,10 +45,24 @@ export async function signUp(email: string, password: string, fullName?: string)
   return { user: data.user, session: data.session, error };
 }
 
-export async function signIn(email: string, password: string): Promise<AuthResult> {
+/**
+ * Sign in with an email or a username. Staff accounts created from
+ * Users & Access may have only a username; the database maps it to the
+ * account's login email (supabase/staff-accounts.sql → email_for_username).
+ */
+export async function signIn(identifier: string, password: string): Promise<AuthResult> {
   if (isDemoMode || !supabase) {
     console.warn("[Bumblebee] Demo mode — sign in is a no-op");
     return { user: DEMO_USER, session: DEMO_SESSION, error: null };
+  }
+  let email = identifier.trim();
+  if (!email.includes("@")) {
+    const { data: resolved } = await supabase.rpc("email_for_username" as never, { p_username: email } as never);
+    if (!resolved) {
+      // Same message as a wrong password — never reveal which usernames exist.
+      return { user: null, session: null, error: { name: "AuthApiError", message: "Invalid login credentials", status: 400 } as AuthError };
+    }
+    email = resolved as unknown as string;
   }
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   return { user: data.user, session: data.session, error };

@@ -14,7 +14,13 @@ export interface Workspace {
   name: string;
   slug: string;
   plan: string;
-  role: "owner" | "admin" | "member" | "viewer";
+  /** The signed-in user's role here — one of the ROLE_TEMPLATES ids in lib/permissions. */
+  role: "owner" | "admin" | "manager" | "member" | "sales" | "finance" | "production_manager"
+    | "warehouse" | "purchasing" | "qc" | "delivery" | "viewer";
+  /** Per-user overrides on top of the role template. Empty = use the template. */
+  permissions?: Record<string, string[]>;
+  /** "active" or "suspended". A suspended member is signed out of the workspace. */
+  status?: string;
   settings?: Record<string, unknown>;
 }
 
@@ -62,11 +68,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data, error } = await sb
         .from("workspace_members")
-        .select("role, workspaces(*)")
+        .select("role, permissions, status, workspaces(*)")
         .eq("user_id", userId)
         .order("joined_at", { ascending: true })
         .limit(1)
-        .maybeSingle() as unknown as { data: { role: string; workspaces: Record<string, unknown> } | null; error: unknown };
+        .maybeSingle() as unknown as {
+          data: { role: string; permissions: Record<string, string[]> | null; status: string | null; workspaces: Record<string, unknown> } | null;
+          error: unknown;
+        };
 
       if (!error && data && data.workspaces) {
         const ws = data.workspaces;
@@ -76,6 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           slug: ws.slug as string,
           plan: ws.plan as string,
           role: data.role as Workspace["role"],
+          permissions: data.permissions ?? {},
+          status: data.status ?? "active",
           settings: (ws.settings as Record<string, unknown>) ?? {},
         });
       } else {

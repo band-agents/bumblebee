@@ -26,6 +26,17 @@ const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
+/** First line of the copied login details, so the message says what it is. */
+const BRAND_SHARE_HEADER = "Your Bumblebee login";
+
+/** 12 characters, no look-alikes (0/O, 1/l/I), readable aloud over the phone. */
+function generatePassword(): string {
+  const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  const bytes = new Uint32Array(12);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => chars[b % chars.length]).join("");
+}
+
 interface Member {
   id: string;
   user_id: string;
@@ -99,23 +110,51 @@ export default function UsersAccess() {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [showInviteModal, setShowInviteModal] = useState(false);
 
-  // Create user form
+  // Create user form — a login the admin makes and shares (supabase/staff-accounts.sql)
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [createForm, setCreateForm] = useState({
-    name: "", email: "", department: "", role: "viewer", jobTitle: "", password: "",
+    name: "", loginType: "username" as "username" | "email", username: "", email: "",
+    department: "", role: "viewer", password: "",
   });
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  /** Shown once after creation so the admin can copy and share the login. */
+  const [createdLogin, setCreatedLogin] = useState<{ name: string; login: string; password: string; url: string } | null>(null);
 
   function showToast(msg: string) { setToast(msg); setTimeout(() => setToast(null), 2500); }
 
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
+  const loadMembers = useCallback(async () => {
+    const sb = getSupabaseClient();
+    if (isDemoMode || !sb || !workspace) {
       setMembers(DEMO_MEMBERS);
       setInvites(DEMO_INVITES);
       setLoading(false);
-    }, 600);
-  }, []);
+      return;
+    }
+    const [{ data: rows, error }, { data: inv }] = await Promise.all([
+      sb.rpc("list_workspace_members" as never, { p_workspace_id: workspace.id } as never),
+      sb.from("workspace_invitations").select("id, email, display_name, role, department, created_at, status")
+        .eq("workspace_id", workspace.id).order("created_at", { ascending: false }),
+    ]);
+    if (error) console.error("[Bumblebee] list_workspace_members failed:", error);
+    type Row = { id: string; user_id: string; role: string; department: string | null; display_name: string | null; status: string | null;
+      permissions: PermissionMap | null; joined_at: string; email: string | null; username: string | null; last_sign_in_at: string | null; provider: string };
+    setMembers(((rows as unknown as Row[]) ?? []).map((r) => ({
+      id: r.id, user_id: r.user_id, role: r.role, department: r.department ?? undefined,
+      display_name: r.display_name || r.username || r.email || "—",
+      status: r.status ?? "active",
+      email: r.email ?? (r.username ? `@${r.username}` : undefined),
+      permissions: r.permissions && Object.keys(r.permissions).length ? r.permissions : undefined,
+      joined_at: r.joined_at?.slice(0, 10),
+      last_active: r.last_sign_in_at ? new Date(r.last_sign_in_at).toLocaleString() : (ar ? "لم يسجل الدخول بعد" : "Never signed in"),
+    })));
+    setInvites(((inv as { id: string; email: string; display_name: string | null; role: string; department: string | null; created_at: string; status: string }[]) ?? [])
+      .map((i) => ({ id: i.id, email: i.email, name: i.display_name ?? "", role: i.role, department: i.department ?? "",
+        sent_at: new Date(i.created_at).toLocaleDateString(), status: (i.status as PendingInvite["status"]) ?? "pending" })));
+    setLoading(false);
+  }, [workspace, ar]);
+
+  useEffect(() => { setLoading(true); loadMembers(); }, [loadMembers]);
 
   // Filtered members
   const filteredMembers = useMemo(() => {
@@ -162,29 +201,42 @@ export default function UsersAccess() {
   }, [members]);
 
   const handleCreateUser = useCallback(async () => {
-    if (!createForm.name || !createForm.email) return;
+    const login = createForm.loginType === "username" ? createForm.username.trim().toLowerCase() : createForm.email.trim().toLowerCase();
+    if (!createForm.name.trim() || !login || createForm.password.length < 8) return;
     setCreating(true);
-    await new Promise(r => setTimeout(r, 1000));
-    const newMember: Member = {
-      id: `m-${Date.now()}`,
-      user_id: `u-${Date.now()}`,
-      role: createForm.role,
-      department: createForm.department,
-      display_name: createForm.name,
-      status: "active",
-      email: createForm.email,
-      joined_at: new Date().toISOString().slice(0, 10),
-      last_active: "Just now",
-      login_count: 0,
-      two_factor: false,
-      branch_access: [],
-    };
-    setMembers(prev => [newMember, ...prev]);
+    setCreateError(null);
+
+    const sb = getSupabaseClient();
+    if (isDemoMode || !sb || !workspace) {
+      // Demo: show the flow end to end without a database.
+      setMembers(prev => [{
+        id: `m-${Date.now()}`, user_id: `u-${Date.now()}`, role: createForm.role, department: createForm.department,
+        display_name: createForm.name, status: "active", email: createForm.loginType === "email" ? login : `@${login}`,
+        joined_at: new Date().toISOString().slice(0, 10), last_active: ar ? "لم يسجل الدخول بعد" : "Never signed in",
+      }, ...prev]);
+    } else {
+      const { error } = await sb.rpc("create_staff_account" as never, {
+        p_workspace_id: workspace.id,
+        p_full_name: createForm.name.trim(),
+        p_password: createForm.password,
+        p_role: createForm.role,
+        p_username: createForm.loginType === "username" ? login : null,
+        p_email: createForm.loginType === "email" ? login : null,
+        p_department: createForm.department || null,
+      } as never);
+      if (error) {
+        setCreating(false);
+        setCreateError(error.message);
+        return;
+      }
+      await loadMembers();
+    }
+
+    setCreatedLogin({ name: createForm.name.trim(), login, password: createForm.password, url: `${window.location.origin}/auth` });
     setCreating(false);
     setShowCreateForm(false);
-    setCreateForm({ name: "", email: "", department: "", role: "viewer", jobTitle: "", password: "" });
-    showToast(ar ? "تم إنشاء المستخدم ✓" : "User created ✓");
-  }, [createForm, ar]);
+    setCreateForm({ name: "", loginType: "username", username: "", email: "", department: "", role: "viewer", password: "" });
+  }, [createForm, ar, workspace, loadMembers]);
 
   const handleUpdateMember = useCallback((updated: Member) => {
     setMembers(prev => prev.map(m => m.id === updated.id ? updated : m));
@@ -349,23 +401,103 @@ export default function UsersAccess() {
           {/* ═══ MEMBERS ═══ */}
           {tab === "members" && (
             <motion.div key="members" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+              {/* Login just created — shown once so it can be shared */}
+              {createdLogin && (
+                <div className="mb-5 p-5 rounded-xl border border-border bg-brand-wash">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div>
+                      <h3 className="text-body font-semibold flex items-center gap-2"><Key size={14} className="text-brand-ink" />
+                        {ar ? `تم إنشاء حساب ${createdLogin.name}` : `Login ready for ${createdLogin.name}`}</h3>
+                      <p className="text-micro text-muted-foreground mt-0.5">
+                        {ar ? "انسخ البيانات وأرسلها له. لن تظهر كلمة المرور مرة أخرى." : "Copy and send these. The password won't be shown again."}
+                      </p>
+                    </div>
+                    <button onClick={() => setCreatedLogin(null)} aria-label="Close"><X size={14} className="text-muted-foreground" /></button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-caption">
+                    {[
+                      { k: ar ? "الرابط" : "Sign-in page", v: createdLogin.url },
+                      { k: ar ? "اسم المستخدم / الإيميل" : "Username / email", v: createdLogin.login },
+                      { k: ar ? "كلمة المرور" : "Password", v: createdLogin.password },
+                    ].map(({ k, v }) => (
+                      <div key={k} className="rounded-lg bg-card border border-border px-3 py-2 min-w-0">
+                        <p className="text-micro text-muted-foreground">{k}</p>
+                        <p className="font-mono text-caption truncate" title={v}>{v}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard?.writeText(
+                        `${BRAND_SHARE_HEADER}\n${createdLogin.url}\n${ar ? "المستخدم" : "Login"}: ${createdLogin.login}\n${ar ? "كلمة المرور" : "Password"}: ${createdLogin.password}`,
+                      );
+                      showToast(ar ? "تم النسخ ✓" : "Copied ✓");
+                    }}
+                    className={btnPrimary + " mt-3"}
+                  >
+                    <Copy size={12} /> {ar ? "نسخ بيانات الدخول" : "Copy login details"}
+                  </button>
+                </div>
+              )}
+
               {/* Inline Create Form */}
               <AnimatePresence>
                 {showCreateForm && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-5">
                     <div className="p-5 rounded-xl border border-border/40 bg-muted/20 space-y-3">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="text-body font-semibold">{ar ? "إنشاء مستخدم جديد" : "Create New User"}</h3>
+                        <div>
+                          <h3 className="text-body font-semibold">{ar ? "إنشاء حساب لزميل" : "Create a login for a colleague"}</h3>
+                          <p className="text-micro text-muted-foreground">
+                            {ar ? "اختر اسم مستخدم وكلمة مرور وصلاحية، ثم شارك البيانات معه." : "Pick a username or email, a password and an access level, then share them."}
+                          </p>
+                        </div>
                         <button onClick={() => setShowCreateForm(false)}><X size={14} className="text-muted-foreground" /></button>
                       </div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+                      <div className="flex p-1 rounded-lg bg-muted/60 w-fit">
+                        {(["username", "email"] as const).map(t => (
+                          <button key={t} onClick={() => setCreateForm(p => ({ ...p, loginType: t }))}
+                            className={`px-3 py-1 rounded-md text-micro font-medium transition-colors ${createForm.loginType === t ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"}`}>
+                            {t === "username" ? (ar ? "اسم مستخدم" : "Username") : (ar ? "إيميل" : "Email")}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         <div>
                           <label className={labelCls}>{ar ? "الاسم" : "Name"} *</label>
                           <input value={createForm.name} onChange={e => setCreateForm(p => ({ ...p, name: e.target.value }))} className={inputCls} placeholder={ar ? "الاسم الكامل" : "Full name"} />
                         </div>
+                        {createForm.loginType === "username" ? (
+                          <div>
+                            <label className={labelCls}>{ar ? "اسم المستخدم" : "Username"} *</label>
+                            <input value={createForm.username} autoCapitalize="none" spellCheck={false}
+                              onChange={e => setCreateForm(p => ({ ...p, username: e.target.value.replace(/\s/g, "").toLowerCase() }))}
+                              className={inputCls} placeholder="sara.cutting" />
+                          </div>
+                        ) : (
+                          <div>
+                            <label className={labelCls}>{ar ? "الإيميل" : "Email"} *</label>
+                            <input type="email" value={createForm.email} onChange={e => setCreateForm(p => ({ ...p, email: e.target.value }))} className={inputCls} placeholder="sara@cubsgoplaces.com" />
+                          </div>
+                        )}
                         <div>
-                          <label className={labelCls}>{ar ? "الإيميل" : "Email"} *</label>
-                          <input type="email" value={createForm.email} onChange={e => setCreateForm(p => ({ ...p, email: e.target.value }))} className={inputCls} placeholder="user@company.com" />
+                          <label className={labelCls}>{ar ? "كلمة المرور" : "Password"} * <span className="text-muted-foreground/70">({ar ? "8 أحرف على الأقل" : "8+ characters"})</span></label>
+                          <div className="relative">
+                            <input value={createForm.password} onChange={e => setCreateForm(p => ({ ...p, password: e.target.value }))}
+                              className={inputCls + " font-mono pe-20"} placeholder="••••••••" autoComplete="new-password" />
+                            <button type="button" onClick={() => setCreateForm(p => ({ ...p, password: generatePassword() }))}
+                              className="absolute end-1 top-1/2 -translate-y-1/2 h-8 px-2 rounded-lg text-micro font-medium text-brand-ink hover:bg-brand-wash">
+                              {ar ? "توليد" : "Generate"}
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <label className={labelCls}>{ar ? "الصلاحية" : "Access level"}</label>
+                          <select value={createForm.role} onChange={e => setCreateForm(p => ({ ...p, role: e.target.value }))} className={inputCls + " appearance-none cursor-pointer"}>
+                            {ROLE_TEMPLATES.filter(t => t.id !== "owner").map(t => <option key={t.id} value={t.id}>{ar ? t.ar : t.en} — {ar ? t.descriptionAr : t.description}</option>)}
+                          </select>
                         </div>
                         <div>
                           <label className={labelCls}>{ar ? "القسم" : "Department"}</label>
@@ -374,17 +506,16 @@ export default function UsersAccess() {
                             {DEPARTMENTS.map(d => <option key={d.value} value={d.value}>{ar ? d.ar : d.en}</option>)}
                           </select>
                         </div>
-                        <div>
-                          <label className={labelCls}>{ar ? "الدور" : "Role"}</label>
-                          <select value={createForm.role} onChange={e => setCreateForm(p => ({ ...p, role: e.target.value }))} className={inputCls + " appearance-none cursor-pointer"}>
-                            {ROLE_TEMPLATES.map(t => <option key={t.id} value={t.id}>{ar ? t.ar : t.en}</option>)}
-                          </select>
-                        </div>
                       </div>
+                      {createError && (
+                        <p className="text-micro text-destructive bg-destructive/5 border border-destructive/20 rounded-lg px-3 py-2">{createError}</p>
+                      )}
                       <div className="flex justify-end">
-                        <button onClick={handleCreateUser} disabled={creating || !createForm.name || !createForm.email} className={btnPrimary + " px-5"}>
+                        <button onClick={handleCreateUser}
+                          disabled={creating || !createForm.name.trim() || createForm.password.length < 8 || !(createForm.loginType === "username" ? createForm.username.trim() : createForm.email.includes("@"))}
+                          className={btnPrimary + " px-5"}>
                           {creating ? <Loader2 size={12} className="animate-spin" /> : <UserPlus size={12} />}
-                          {ar ? "إنشاء" : "Create"}
+                          {ar ? "إنشاء الحساب" : "Create login"}
                         </button>
                       </div>
                     </div>

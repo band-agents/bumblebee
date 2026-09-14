@@ -101,6 +101,8 @@ const LoyaltyRewardsPage = lazy(() => import("./pages/LoyaltyRewards"));
 const LoyaltyMergePage = lazy(() => import("./pages/LoyaltyMerge"));
 const LoyaltyNotificationsPage = lazy(() => import("./pages/LoyaltyNotifications"));
 import AuthCallback from "./pages/AuthCallback";
+import ResetPassword from "./pages/ResetPassword";
+import { RequireAccess } from "./components/RequireAccess";
 const AdminSettingsPage = lazy(() => import("./pages/AdminSettings"));
 const CodeSettingsPage = lazy(() => import("./pages/CodeSettings"));
 const QuotationDesignerPage = lazy(() => import("./pages/QuotationDesigner"));
@@ -210,7 +212,9 @@ function ShellInner({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Topbar onMenuClick={() => setMobileOpen((prev) => !prev)} />
         <main className="flex-1 overflow-auto">
-          <PageTransition>{children}</PageTransition>
+          <PageTransition>
+            <RequireAccess>{children}</RequireAccess>
+          </PageTransition>
         </main>
       </div>
       <CommandBar />
@@ -418,6 +422,12 @@ function Router() {
   // process the code/token from the redirect.
   if (path.startsWith("/auth/callback")) {
     return <AuthCallback />;
+  }
+
+  // ── Password reset: the recovery link signs the visitor in, so this has to
+  // render before the authenticated app would swallow it ──────────────
+  if (path === "/reset-password") {
+    return <ResetPassword />;
   }
 
   // ── Production mode: require Supabase authentication ──────

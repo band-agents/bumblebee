@@ -11,6 +11,8 @@ import {
 import { Logo } from "./Logo";
 import { useLanguage } from "../context/LanguageContext";
 import { useCommandBar } from "../context/CommandBarContext";
+import { useAuth } from "../context/AuthContext";
+import { canOpenPath, effectivePermissions } from "../lib/access";
 
 /**
  * Two-tier navigation: a narrow icon rail of destinations, and a contextual
@@ -291,6 +293,22 @@ export function ShellNav({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; s
   const { lang } = useLanguage();
   const ar = lang === "ar";
   const { openBar } = useCommandBar();
+  const { workspace, isDemo } = useAuth();
+
+  // Only the modules this member can open. A section with nothing left in it
+  // disappears from the rail entirely rather than showing an empty pane.
+  const visibleSections = useMemo(() => {
+    if (isDemo || !workspace) return SECTIONS;
+    const perms = effectivePermissions(workspace.role, workspace.permissions);
+    const allowed = (p: string) => canOpenPath(workspace.role, perms, p);
+    return SECTIONS.flatMap((s): Section[] => {
+      if (s.path) return allowed(s.path) ? [s] : [];
+      const groups = (s.groups ?? [])
+        .map((g) => ({ ...g, items: g.items.filter((i) => allowed(i.path)) }))
+        .filter((g) => g.items.length > 0);
+      return groups.length ? [{ ...s, groups }] : [];
+    });
+  }, [isDemo, workspace]);
 
   const routeSection = useMemo(() => sectionForPath(location), [location]);
   const activePath = useMemo(() => activeItemPath(location), [location]);
@@ -300,7 +318,7 @@ export function ShellNav({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; s
   // Following a link elsewhere in the app should move the pane with it.
   useEffect(() => { setOpenSection(routeSection); }, [routeSection]);
 
-  const section = SECTIONS.find((s) => s.id === openSection) ?? SECTIONS[0];
+  const section = visibleSections.find((s) => s.id === openSection) ?? visibleSections[0] ?? SECTIONS[0];
   const showPane = !!section.groups && !paneCollapsed;
 
   const rail = (
@@ -321,7 +339,7 @@ export function ShellNav({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; s
         <Search size={18} strokeWidth={1.8} />
       </button>
       <div className="flex-1 overflow-y-auto px-1.5 pb-3 flex flex-col gap-0.5">
-        {SECTIONS.map((s) => (
+        {visibleSections.map((s) => (
           <RailButton
             key={s.id}
             section={s}
