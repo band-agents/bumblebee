@@ -261,7 +261,7 @@ export default function ExecutiveDashboard() {
 
   const companyName = onboardingData?.companyName || workspace?.name || "Bumblebee";
   const industry = onboardingData?.industry || "";
-  const fmt = (v: number) => formatCurrency(v, "SAR");
+  const fmt = (v: number) => formatCurrency(v, "EGP");
 
   // Computed metrics
   const pipeline = deals.filter((d) => !["won", "lost"].includes(d.stage)).reduce((s, d) => s + d.value * d.probability / 100, 0);

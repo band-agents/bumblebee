@@ -22,7 +22,7 @@ function getAllRelationships(): Relationship[] {
   return mergeAutoIntoStore(stored, auto);
 }
 
-function fmt(v: number) { return formatCurrency(v, "SAR"); }
+function fmt(v: number) { return formatCurrency(v, "EGP"); }
 
 // ─── 1. Decision Center ───────────────────────────────────
 

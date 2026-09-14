@@ -40,7 +40,7 @@ interface WalletConfig {
   launcherStyle: LauncherStyle; launcherIcon: LauncherIcon;
   titleEn: string; titleAr: string;
   // settings
-  currency: "EGP" | "SAR" | "AED" | "USD";
+  currency: "EGP" | "AED" | "USD";
   maxBalance: number;
   partialPay: boolean; showInAccount: boolean;
   notifyEmail: boolean; notifySms: boolean; notifyPush: boolean;
@@ -66,7 +66,7 @@ const SWATCHES = ["#059669", "#0ea5e9", "#7c3aed", "#e11d48", "#d97706", "#11182
 
 function fmtMoney(n: number, cur: WalletConfig["currency"], ar: boolean): string {
   const v = n.toLocaleString(undefined, { maximumFractionDigits: 0 });
-  const label = ar ? ({ EGP: "ج.م", SAR: "ر.س", AED: "د.إ", USD: "$" } as const)[cur] : cur;
+  const label = ar ? ({ EGP: "ج.م", AED: "د.إ", USD: "$" } as const)[cur] : cur;
   return ar ? `${v} ${label}` : `${label} ${v}`;
 }
 
@@ -745,7 +745,7 @@ export default function ShopifyWalletPage() {
               </div>
               <select value={cfg.currency} onChange={e => update({ currency: e.target.value as WalletConfig["currency"] })}
                 className={`${inputCls} cursor-pointer`}>
-                {["EGP", "SAR", "AED", "USD"].map(c => <option key={c}>{c}</option>)}
+                {["EGP", "AED", "USD"].map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
             <div className="flex items-center justify-between gap-4">

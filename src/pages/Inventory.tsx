@@ -777,7 +777,7 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
   const isInv = isInventoryItem(resource);
   const cat = RESOURCE_CATEGORIES.find((c) => c.value === resource.type) ?? RESOURCE_CATEGORIES[RESOURCE_CATEGORIES.length - 1];
   const CatIcon = cat.icon;
-  const fmtVal = (v: number) => new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
+  const fmtVal = (v: number) => new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
   const dep = depreciation(m);
   const qty = m.quantity ?? 0;
   const [adjQty, setAdjQty] = useState("");
@@ -1071,7 +1071,7 @@ export default function Inventory() {
   const { workspace } = useAuth();
   const ar = lang === "ar";
   const settings = workspace?.settings as Record<string, unknown> | undefined;
-  const currency = (settings?.currency as string) || "SAR";
+  const currency = (settings?.currency as string) || "EGP";
 
   const [loading, setLoading] = useState(true);
   const [resources, setResources] = useState<Resource[]>([]);
@@ -1122,8 +1122,8 @@ export default function Inventory() {
   const moveCount = mvQ.total + localMoves.filter((l) => !mvQ.rows.some((r) => r.id === l.id)).length;
   const maintCount = mtQ.total + localMaint.filter((l) => !mtQ.rows.some((r) => r.id === l.id)).length;
 
-  const fmtVal = (v: number) => new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
-  const fmtCompact = (v: number) => new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency, notation: "compact", maximumFractionDigits: 1 }).format(v);
+  const fmtVal = (v: number) => new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
+  const fmtCompact = (v: number) => new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency, notation: "compact", maximumFractionDigits: 1 }).format(v);
 
   // ── Metrics ──
   const totalStockValue = invItems.reduce((s, r) => { const m = getMeta(r); return s + ((m.quantity || 0) * (m.unit_cost || 0)); }, 0);

@@ -87,7 +87,7 @@ export default function FinanceDetail() {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
   const ar = lang === "ar";
-  const fmt = (v: number) => fmtCurrency(v, "SAR", ar ? "ar-SA" : "en-SA");
+  const fmt = (v: number) => fmtCurrency(v, "EGP", ar ? "ar-EG" : "en-EG");
 
   const [allInvoices, setAllInvoices] = useState(loadInvoices);
   const inv = allInvoices.find((i) => i.id === id);

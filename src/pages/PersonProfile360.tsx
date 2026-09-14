@@ -292,7 +292,7 @@ export default function PersonProfile360() {
   const timeline = [
     { id: "tl1", kind: "created", titleEn: "Contact created", titleAr: "تم إنشاء جهة الاتصال", descEn: `${person.name} was added as a ${typeMeta.en.toLowerCase()}.`, descAr: `تمت إضافة ${person.nameAr} كـ${typeMeta.ar}.`, dateEn: person.metrics?.sinceEn || "2022", dateAr: person.metrics?.sinceAr || "٢٠٢٢" },
     { id: "tl2", kind: "contact", titleEn: "First contact established", titleAr: "تم تأسيس أول اتصال", descEn: `Initial outreach via email to ${person.email}.`, descAr: `تواصل أولي عبر البريد إلى ${person.email}.`, dateEn: person.metrics?.sinceEn || "2022", dateAr: person.metrics?.sinceAr || "٢٠٢٢" },
-    ...(personDeals.length > 0 ? [{ id: "tl3", kind: "deal", titleEn: `${personDeals.length} opportunity(s) created`, titleAr: `تم إنشاء ${personDeals.length} فرصة`, descEn: `Total influenced: ${formatCurrency(totalInfluenced, "SAR")}`, descAr: `إجمالي التأثير: ${formatCurrencyAr(totalInfluenced, "SAR")}`, dateEn: "2025", dateAr: "٢٠٢٥" }] : []),
+    ...(personDeals.length > 0 ? [{ id: "tl3", kind: "deal", titleEn: `${personDeals.length} opportunity(s) created`, titleAr: `تم إنشاء ${personDeals.length} فرصة`, descEn: `Total influenced: ${formatCurrency(totalInfluenced, "EGP")}`, descAr: `إجمالي التأثير: ${formatCurrencyAr(totalInfluenced, "EGP")}`, dateEn: "2025", dateAr: "٢٠٢٥" }] : []),
     ...(personWork.length > 0 ? [{ id: "tl4", kind: "work", titleEn: `${personWork.length} work item(s) assigned`, titleAr: `تم تعيين ${personWork.length} عنصر عمل`, dateEn: "2025", dateAr: "٢٠٢٥" }] : []),
     { id: "tl5", kind: "note", titleEn: "Notes added", titleAr: "تمت إضافة ملاحظات", dateEn: person.lastContactEn, dateAr: person.lastContactAr },
   ];
@@ -532,7 +532,7 @@ export default function PersonProfile360() {
                   { value: String(activeDeals.length), label: ar ? "نشطة" : "Active" },
                   { value: String(wonDeals.length), label: ar ? "فائزة" : "Won" },
                   { value: String(lostDeals.length), label: ar ? "خاسرة" : "Lost" },
-                  { value: fmtVal(totalInfluenced, "SAR"), label: ar ? "القيمة المؤثرة" : "Influenced" },
+                  { value: fmtVal(totalInfluenced, "EGP"), label: ar ? "القيمة المؤثرة" : "Influenced" },
                 ].map((s, i) => (
                   <div key={i} className="bg-background px-6 py-5 flex flex-col gap-1.5">
                     <p className="text-heading font-medium text-foreground leading-none tabular-nums" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>{s.value}</p>
@@ -701,8 +701,8 @@ export default function PersonProfile360() {
                 color: activeDeals.length > 0 ? "text-warning" : "text-muted-foreground",
                 bg: activeDeals.length > 0 ? "bg-warning/10" : "bg-muted",
                 titleEn: "Opportunities at Risk", titleAr: "الفرص المعرضة للخطر",
-                valueEn: activeDeals.length > 0 ? `${activeDeals.length} open deal(s) worth ${formatCurrency(activeDeals.reduce((s, d) => s + d.value, 0), "SAR")}` : "No open deals — relationship is non-commercial currently",
-                valueAr: activeDeals.length > 0 ? `${activeDeals.length} صفقة مفتوحة بقيمة ${formatCurrencyAr(activeDeals.reduce((s, d) => s + d.value, 0), "SAR")}` : "لا صفقات مفتوحة — العلاقة غير تجارية حالياً",
+                valueEn: activeDeals.length > 0 ? `${activeDeals.length} open deal(s) worth ${formatCurrency(activeDeals.reduce((s, d) => s + d.value, 0), "EGP")}` : "No open deals — relationship is non-commercial currently",
+                valueAr: activeDeals.length > 0 ? `${activeDeals.length} صفقة مفتوحة بقيمة ${formatCurrencyAr(activeDeals.reduce((s, d) => s + d.value, 0), "EGP")}` : "لا صفقات مفتوحة — العلاقة غير تجارية حالياً",
                 descEn: activeDeals.length > 0 ? "Monitor deal progress and maintain champion relationship." : "Consider re-engagement or referral opportunity.",
                 descAr: activeDeals.length > 0 ? "راقب تقدم الصفقات وحافظ على علاقة البطل." : "فكر في إعادة التواصل أو فرصة إحالة.",
               },

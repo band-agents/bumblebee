@@ -81,7 +81,7 @@ function CreateDealModal({ open, onClose, onAdd, lang }: {
       title_en: form.title.trim(),
       title_ar: form.title.trim(),
       value: Number(form.value),
-      currency: "SAR",
+      currency: "EGP",
       stage: form.stage,
       probability: Number(form.probability) || 25,
       org_name_en: form.orgName.trim() || null,
@@ -170,7 +170,7 @@ function CreateDealModal({ open, onClose, onAdd, lang }: {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                  {ar ? "القيمة (ر.س)" : "Value (SAR)"} <span className="text-rose-400">*</span>
+                  {ar ? "القيمة (ج.م)" : "Value (EGP)"} <span className="text-rose-400">*</span>
                 </label>
                 <input type="number" value={form.value} onChange={(e) => field("value", e.target.value)}
                   placeholder="250000"
@@ -383,7 +383,7 @@ function PipelineBoard({ deals, lang, onNavigate, onMoveDeal }: {
                 <span className="text-micro text-muted-foreground/60 tabular-nums ms-auto">{colDeals.length}</span>
               </div>
               <p className="text-micro text-muted-foreground/50 tabular-nums ps-4.5" style={{ paddingInlineStart: "1.125rem" }}>
-                {fmtVal(colValue, "SAR")}
+                {fmtVal(colValue, "EGP")}
               </p>
             </div>
 
@@ -580,11 +580,11 @@ function SalesPage() {
         {/* ── Dashboard metrics ── */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-7">
           {[
-            { icon: DollarSign, value: fmtVal(metrics.pipelineValue, "SAR"), label: ar ? "قيمة الخط" : "Pipeline Value", color: "text-brand-ink" },
+            { icon: DollarSign, value: fmtVal(metrics.pipelineValue, "EGP"), label: ar ? "قيمة الخط" : "Pipeline Value", color: "text-brand-ink" },
             { icon: Target,     value: String(metrics.activeCount), label: ar ? "فرص نشطة" : "Active Deals", color: "text-warning" },
-            { icon: TrendingUp, value: fmtVal(metrics.wonValue, "SAR"), label: ar ? "صفقات فائزة" : "Won Deals", color: "text-emerald-500" },
+            { icon: TrendingUp, value: fmtVal(metrics.wonValue, "EGP"), label: ar ? "صفقات فائزة" : "Won Deals", color: "text-emerald-500" },
             { icon: Percent,    value: `${metrics.convRate}%`, label: ar ? "معدل التحويل" : "Conversion", color: "text-chart-4" },
-            { icon: BarChart3,  value: fmtVal(Math.round(metrics.forecast), "SAR"), label: ar ? "التوقع الشهري" : "Forecast", color: "text-cyan-600" },
+            { icon: BarChart3,  value: fmtVal(Math.round(metrics.forecast), "EGP"), label: ar ? "التوقع الشهري" : "Forecast", color: "text-cyan-600" },
           ].map((m, i) => (
             <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
               <div className="flex items-center gap-2 mb-2">

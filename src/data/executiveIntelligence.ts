@@ -23,7 +23,7 @@ function allRels(): Relationship[] {
   return mergeAutoIntoStore(stored, auto);
 }
 
-function fmt(v: number) { return formatCurrency(v, "SAR"); }
+function fmt(v: number) { return formatCurrency(v, "EGP"); }
 
 // Parse ISO date safely, returning null if invalid
 function parseISO(s?: string): Date | null {

@@ -55,12 +55,12 @@ export const DEAL_PRIORITY_META: Record<DealPriority, { en: string; ar: string; 
 
 // ─── Helpers ──────────────────────────────────────────────
 
-export function formatCurrency(value: number, currency: string = "SAR"): string {
-  return new Intl.NumberFormat("en-SA", { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+export function formatCurrency(value: number, currency: string = "EGP"): string {
+  return new Intl.NumberFormat("en-EG", { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 }
 
-export function formatCurrencyAr(value: number, currency: string = "SAR"): string {
-  return new Intl.NumberFormat("ar-SA", { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+export function formatCurrencyAr(value: number, currency: string = "EGP"): string {
+  return new Intl.NumberFormat("ar-EG", { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 }
 
 // ─── Default data ─────────────────────────────────────────
@@ -75,7 +75,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "negotiation",
     priority: "high",
     value: 2400000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 75,
     ownerEn: "Khalid Al-Mansouri",
     ownerAr: "خالد المنصوري",
@@ -101,7 +101,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "proposal",
     priority: "medium",
     value: 850000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 60,
     ownerEn: "Sara Mahmoud",
     ownerAr: "سارة محمود",
@@ -127,7 +127,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "qualified",
     priority: "medium",
     value: 420000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 45,
     ownerEn: "Nora Al-Farsi",
     ownerAr: "نورة الفارسي",
@@ -151,7 +151,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "lead",
     priority: "high",
     value: 3200000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 25,
     ownerEn: "Khalid Al-Mansouri",
     ownerAr: "خالد المنصوري",
@@ -176,7 +176,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "negotiation",
     priority: "high",
     value: 1800000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 80,
     ownerEn: "Sara Mahmoud",
     ownerAr: "سارة محمود",
@@ -200,7 +200,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "won",
     priority: "medium",
     value: 280000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 100,
     ownerEn: "Fahad Al-Otaibi",
     ownerAr: "فهد العتيبي",
@@ -226,7 +226,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "lead",
     priority: "medium",
     value: 950000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 20,
     ownerEn: "Nora Al-Farsi",
     ownerAr: "نورة الفارسي",
@@ -250,7 +250,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "qualified",
     priority: "high",
     value: 1500000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 40,
     ownerEn: "Khalid Al-Mansouri",
     ownerAr: "خالد المنصوري",
@@ -274,7 +274,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "lost",
     priority: "low",
     value: 180000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 0,
     ownerEn: "Fahad Al-Otaibi",
     ownerAr: "فهد العتيبي",
@@ -298,7 +298,7 @@ const DEFAULT_DEALS: Deal[] = [
     stage: "proposal",
     priority: "high",
     value: 4500000,
-    currency: "SAR",
+    currency: "EGP",
     probability: 55,
     ownerEn: "Sara Mahmoud",
     ownerAr: "سارة محمود",

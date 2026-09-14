@@ -26,11 +26,11 @@ export interface Workspace {
 
 const DEMO_WORKSPACE: Workspace = {
   id: "demo-workspace-id",
-  name: "Demo Workspace",
-  slug: "demo",
+  name: "CUBS",
+  slug: "cubs",
   plan: "pro",
   role: "owner",
-  settings: { currency: "SAR", enabled_modules: ["production", "inventory", "purchasing", "finance", "analytics", "hr", "delivery", "quality"] },
+  settings: { currency: "EGP", enabled_modules: ["production", "inventory", "purchasing", "finance", "analytics", "hr", "delivery", "quality"] },
 };
 
 // ─── Context shape ─────────────────────────────────────────

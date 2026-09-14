@@ -46,12 +46,12 @@ function getGreeting(lang: "en" | "ar"): string {
 function formatDate(lang: "en" | "ar"): string {
   const now = new Date();
   if (lang === "ar") {
-    return now.toLocaleDateString("ar-SA", { weekday: "long", day: "numeric", month: "long" });
+    return now.toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" });
   }
   return now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 }
 
-function fmtCurrency(v: number, currency: string, locale: string = "en-SA"): string {
+function fmtCurrency(v: number, currency: string, locale: string = "en-EG"): string {
   return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
 }
 
@@ -215,7 +215,7 @@ export default function Today() {
   const ar = lang === "ar";
   const settings = workspace?.settings as Record<string, unknown> | undefined;
   const companyName = (settings?.company_name as string) || workspace?.name || "Bumblebee";
-  const currency = (settings?.currency as string) || "SAR";
+  const currency = (settings?.currency as string) || "EGP";
   const greeting = getGreeting(lang);
   const dateStr = formatDate(lang);
 
@@ -266,17 +266,17 @@ export default function Today() {
   const metrics: MetricData[] = [
     {
       labelEn: "Revenue Collected", labelAr: "الإيرادات المحصّلة",
-      value: fmtCurrency(revenue, currency, ar ? "ar-SA" : "en-SA"),
+      value: fmtCurrency(revenue, currency, ar ? "ar-EG" : "en-EG"),
       subEn: `${paidInvoices.length} paid invoices`, subAr: `${paidInvoices.length} فاتورة مدفوعة`,
     },
     {
       labelEn: "Pipeline Value", labelAr: "قيمة الصفقات",
-      value: fmtCurrency(pipelineValue, currency, ar ? "ar-SA" : "en-SA"),
+      value: fmtCurrency(pipelineValue, currency, ar ? "ar-EG" : "en-EG"),
       subEn: `${activeDeals.length} active deals`, subAr: `${activeDeals.length} صفقة نشطة`,
     },
     {
       labelEn: "Outstanding", labelAr: "المستحقات",
-      value: fmtCurrency(outstanding, currency, ar ? "ar-SA" : "en-SA"),
+      value: fmtCurrency(outstanding, currency, ar ? "ar-EG" : "en-EG"),
       subEn: `${overdueInvoices.length} overdue`, subAr: `${overdueInvoices.length} متأخرة`,
     },
     {
@@ -438,7 +438,7 @@ export default function Today() {
                         {inv.number} — {ar ? (inv.org_name_ar ?? inv.org_name_en) : inv.org_name_en}
                       </p>
                       <p className="text-micro text-muted-foreground mt-1">
-                        {fmtCurrency(Number(inv.amount), inv.currency, ar ? "ar-SA" : "en-SA")}
+                        {fmtCurrency(Number(inv.amount), inv.currency, ar ? "ar-EG" : "en-EG")}
                       </p>
                     </div>
                   </div>

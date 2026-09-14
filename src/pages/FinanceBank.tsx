@@ -545,7 +545,7 @@ export default function FinanceBank() {
                       <option value="EGP">EGP</option>
                       <option value="USD">USD</option>
                       <option value="EUR">EUR</option>
-                      <option value="SAR">SAR</option>
+                      <option value="EGP">EGP</option>
                       <option value="AED">AED</option>
                     </select>
                   </div>

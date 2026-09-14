@@ -567,7 +567,7 @@ function CalendarView({
   const year  = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  const monthLabel = currentDate.toLocaleDateString(ar ? "ar-SA" : "en-US", { month: "long", year: "numeric" });
+  const monthLabel = currentDate.toLocaleDateString(ar ? "ar-EG" : "en-US", { month: "long", year: "numeric" });
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfWeek = new Date(year, month, 1).getDay();

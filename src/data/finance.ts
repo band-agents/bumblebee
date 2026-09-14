@@ -91,7 +91,7 @@ export const EXPENSE_STATUS_META: Record<ExpenseStatus, { en: string; ar: string
 
 // ─── Helpers ──────────────────────────────────────────────
 
-export function fmtCurrency(value: number, currency: string = "SAR", locale: string = "en-SA"): string {
+export function fmtCurrency(value: number, currency: string = "EGP", locale: string = "en-EG"): string {
   return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 }
 
@@ -103,7 +103,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Corporate Office Furniture — Phase 1", titleAr: "أثاث مكتبي — المرحلة ١",
     orgNameEn: "Meridian Group", orgNameAr: "مجموعة ميريديان", orgId: "org-1",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
-    amount: 960000, currency: "SAR", status: "paid", paidAmount: 960000,
+    amount: 960000, currency: "EGP", status: "paid", paidAmount: 960000,
     issueDateEn: "Jul 1, 2025", issueDateAr: "١ يوليو ٢٠٢٥",
     dueDateEn: "Jul 30, 2025", dueDateAr: "٣٠ يوليو ٢٠٢٥", dueDateISO: "2025-07-30",
     relatedDealId: "d-001",
@@ -115,7 +115,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Warehouse Racking — Deposit", titleAr: "أرفف المستودعات — عربون",
     orgNameEn: "Gulf Traders LLC", orgNameAr: "تجار الخليج", orgId: "org-2",
     contactNameEn: "Fahad Al-Otaibi", contactNameAr: "فهد العتيبي",
-    amount: 425000, currency: "SAR", status: "sent", paidAmount: 0,
+    amount: 425000, currency: "EGP", status: "sent", paidAmount: 0,
     issueDateEn: "Jul 25, 2025", issueDateAr: "٢٥ يوليو ٢٠٢٥",
     dueDateEn: "Aug 25, 2025", dueDateAr: "٢٥ أغسطس ٢٠٢٥", dueDateISO: "2025-08-25",
     relatedDealId: "d-002",
@@ -125,7 +125,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Break Room Furniture — Final", titleAr: "أثاث غرفة الاستراحة — نهائي",
     orgNameEn: "Atlas Manufacturing", orgNameAr: "أطلس للتصنيع", orgId: "org-3",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
-    amount: 280000, currency: "SAR", status: "paid", paidAmount: 280000,
+    amount: 280000, currency: "EGP", status: "paid", paidAmount: 280000,
     issueDateEn: "Jul 15, 2025", issueDateAr: "١٥ يوليو ٢٠٢٥",
     dueDateEn: "Aug 15, 2025", dueDateAr: "١٥ أغسطس ٢٠٢٥", dueDateISO: "2025-08-15",
     relatedDealId: "d-006",
@@ -135,7 +135,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Lobby Renovation — Progress", titleAr: "تجديد اللوبي — تقدم",
     orgNameEn: "Jeddah Grand Hotel", orgNameAr: "فندق جدة الكبير",
     contactNameEn: "Fatima Al-Zahra", contactNameAr: "فاطمة الزهراء",
-    amount: 720000, currency: "SAR", status: "overdue", paidAmount: 0,
+    amount: 720000, currency: "EGP", status: "overdue", paidAmount: 0,
     issueDateEn: "Jul 5, 2025", issueDateAr: "٥ يوليو ٢٠٢٥",
     dueDateEn: "Aug 5, 2025", dueDateAr: "٥ أغسطس ٢٠٢٥", dueDateISO: "2025-08-05",
     relatedDealId: "d-005",
@@ -145,7 +145,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Penthouse Collection — Deposit", titleAr: "مجموعة البنتهاوس — عربون",
     orgNameEn: "Premium Residences Co.", orgNameAr: "شركة المساكن الفاخرة",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
-    amount: 1350000, currency: "SAR", status: "draft", paidAmount: 0,
+    amount: 1350000, currency: "EGP", status: "draft", paidAmount: 0,
     issueDateEn: "Aug 1, 2025", issueDateAr: "١ أغسطس ٢٠٢٥",
     dueDateEn: "Sep 1, 2025", dueDateAr: "١ سبتمبر ٢٠٢٥", dueDateISO: "2025-09-01",
     relatedDealId: "d-010",
@@ -155,7 +155,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "School Desks — Advance Payment", titleAr: "مقاعد مدرسية — دفعة مقدمة",
     orgNameEn: "Ministry of Education", orgNameAr: "وزارة التعليم",
     contactNameEn: "Ahmed Khalil", contactNameAr: "أحمد خليل",
-    amount: 640000, currency: "SAR", status: "sent", paidAmount: 0,
+    amount: 640000, currency: "EGP", status: "sent", paidAmount: 0,
     issueDateEn: "Aug 3, 2025", issueDateAr: "٣ أغسطس ٢٠٢٥",
     dueDateEn: "Sep 3, 2025", dueDateAr: "٣ سبتمبر ٢٠٢٥", dueDateISO: "2025-09-03",
     relatedDealId: "d-004",
@@ -165,7 +165,7 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Corporate Office — Phase 2", titleAr: "أثاث مكتبي — المرحلة ٢",
     orgNameEn: "Meridian Group", orgNameAr: "مجموعة ميريديان",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
-    amount: 720000, currency: "SAR", status: "sent", paidAmount: 0,
+    amount: 720000, currency: "EGP", status: "sent", paidAmount: 0,
     issueDateEn: "Aug 5, 2025", issueDateAr: "٥ أغسطس ٢٠٢٥",
     dueDateEn: "Sep 5, 2025", dueDateAr: "٥ سبتمبر ٢٠٢٥", dueDateISO: "2025-09-05",
     relatedDealId: "d-001",
@@ -175,29 +175,29 @@ const DEFAULT_INVOICES: Invoice[] = [
     titleEn: "Model Home Staging — Package A", titleAr: "تجهيز بيت نموذجي — حزمة أ",
     orgNameEn: "Al-Bayt Real Estate", orgNameAr: "البيت للعقارات",
     contactNameEn: "Layla Hassan", contactNameAr: "ليلى حسن",
-    amount: 140000, currency: "SAR", status: "cancelled", paidAmount: 0,
+    amount: 140000, currency: "EGP", status: "cancelled", paidAmount: 0,
     issueDateEn: "Jun 20, 2025", issueDateAr: "٢٠ يونيو ٢٠٢٥",
     dueDateEn: "Jul 20, 2025", dueDateAr: "٢٠ يوليو ٢٠٢٥", dueDateISO: "2025-07-20",
   },
 ];
 
 const DEFAULT_PAYMENTS: Payment[] = [
-  { id: "pay-001", invoiceId: "inv-001", invoiceNumber: "INV-2025-001", amount: 480000, currency: "SAR", method: "bank_transfer", dateEn: "Jul 10, 2025", dateAr: "١٠ يوليو ٢٠٢٥", referenceEn: "TRF-78421", referenceAr: "TRF-78421" },
-  { id: "pay-002", invoiceId: "inv-001", invoiceNumber: "INV-2025-001", amount: 480000, currency: "SAR", method: "bank_transfer", dateEn: "Jul 28, 2025", dateAr: "٢٨ يوليو ٢٠٢٥", referenceEn: "TRF-79103", referenceAr: "TRF-79103" },
-  { id: "pay-003", invoiceId: "inv-003", invoiceNumber: "INV-2025-003", amount: 140000, currency: "SAR", method: "bank_transfer", dateEn: "Jul 20, 2025", dateAr: "٢٠ يوليو ٢٠٢٥", referenceEn: "TRF-78890", referenceAr: "TRF-78890" },
-  { id: "pay-004", invoiceId: "inv-003", invoiceNumber: "INV-2025-003", amount: 140000, currency: "SAR", method: "card", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", referenceEn: "CC-45201", referenceAr: "CC-45201" },
-  { id: "pay-005", invoiceId: "inv-001", invoiceNumber: "INV-2025-001", amount: 0, currency: "SAR", method: "cash", dateEn: "Jul 5, 2025", dateAr: "٥ يوليو ٢٠٢٥" },
+  { id: "pay-001", invoiceId: "inv-001", invoiceNumber: "INV-2025-001", amount: 480000, currency: "EGP", method: "bank_transfer", dateEn: "Jul 10, 2025", dateAr: "١٠ يوليو ٢٠٢٥", referenceEn: "TRF-78421", referenceAr: "TRF-78421" },
+  { id: "pay-002", invoiceId: "inv-001", invoiceNumber: "INV-2025-001", amount: 480000, currency: "EGP", method: "bank_transfer", dateEn: "Jul 28, 2025", dateAr: "٢٨ يوليو ٢٠٢٥", referenceEn: "TRF-79103", referenceAr: "TRF-79103" },
+  { id: "pay-003", invoiceId: "inv-003", invoiceNumber: "INV-2025-003", amount: 140000, currency: "EGP", method: "bank_transfer", dateEn: "Jul 20, 2025", dateAr: "٢٠ يوليو ٢٠٢٥", referenceEn: "TRF-78890", referenceAr: "TRF-78890" },
+  { id: "pay-004", invoiceId: "inv-003", invoiceNumber: "INV-2025-003", amount: 140000, currency: "EGP", method: "card", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", referenceEn: "CC-45201", referenceAr: "CC-45201" },
+  { id: "pay-005", invoiceId: "inv-001", invoiceNumber: "INV-2025-001", amount: 0, currency: "EGP", method: "cash", dateEn: "Jul 5, 2025", dateAr: "٥ يوليو ٢٠٢٥" },
 ];
 
 const DEFAULT_EXPENSES: Expense[] = [
-  { id: "exp-001", vendorEn: "Amazon Web Services", vendorAr: "أمازون ويب سيرفيسز", category: "software", amount: 12500, currency: "SAR", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly cloud infrastructure", descAr: "بنية تحتية سحابية شهرية" },
-  { id: "exp-002", vendorEn: "Office Rent — Dubai HQ", vendorAr: "إيجار مكتب — دبي", category: "operations", amount: 85000, currency: "SAR", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly office lease", descAr: "إيجار مكتب شهري" },
-  { id: "exp-003", vendorEn: "Staff Salaries — August", vendorAr: "رواتب الموظفين — أغسطس", category: "payroll", amount: 420000, currency: "SAR", status: "approved", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly payroll for 58 employees", descAr: "رواتب شهرية لـ ٥٨ موظف" },
-  { id: "exp-004", vendorEn: "Google Ads", vendorAr: "إعلانات جوجل", category: "marketing", amount: 35000, currency: "SAR", status: "paid", dateEn: "Jul 28, 2025", dateAr: "٢٨ يوليو ٢٠٢٥", descEn: "Q3 digital campaign", descAr: "حملة رقمية للربع الثالث" },
-  { id: "exp-005", vendorEn: "Dubai → Riyadh Flights", vendorAr: "رحلات دبي → الرياض", category: "travel", amount: 8500, currency: "SAR", status: "pending", dateEn: "Aug 3, 2025", dateAr: "٣ أغسطس ٢٠٢٥", descEn: "Team travel for client meetings", descAr: "سفر الفريق لاجتماعات العملاء" },
-  { id: "exp-006", vendorEn: "Figma Enterprise", vendorAr: "فيجما إنتربرايز", category: "software", amount: 4200, currency: "SAR", status: "paid", dateEn: "Jul 15, 2025", dateAr: "١٥ يوليو ٢٠٢٥", descEn: "Annual design tool license", descAr: "ترخيص سنوي لأداة التصميم" },
-  { id: "exp-007", vendorEn: "Office Supplies", vendorAr: "لوازم مكتبية", category: "operations", amount: 3200, currency: "SAR", status: "paid", dateEn: "Jul 20, 2025", dateAr: "٢٠ يوليو ٢٠٢٥", descEn: "Stationery and printer supplies", descAr: "قرطاسية ومستلزمات طابعة" },
-  { id: "exp-008", vendorEn: "Trade Show Booth — Riyadh", vendorAr: "جناح معرض — الرياض", category: "marketing", amount: 45000, currency: "SAR", status: "approved", dateEn: "Aug 5, 2025", dateAr: "٥ أغسطس ٢٠٢٥", descEn: "Annual furniture expo participation", descAr: "مشاركة في معرض الأثاث السنوي" },
+  { id: "exp-001", vendorEn: "Amazon Web Services", vendorAr: "أمازون ويب سيرفيسز", category: "software", amount: 12500, currency: "EGP", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly cloud infrastructure", descAr: "بنية تحتية سحابية شهرية" },
+  { id: "exp-002", vendorEn: "Office Rent — Dubai HQ", vendorAr: "إيجار مكتب — دبي", category: "operations", amount: 85000, currency: "EGP", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly office lease", descAr: "إيجار مكتب شهري" },
+  { id: "exp-003", vendorEn: "Staff Salaries — August", vendorAr: "رواتب الموظفين — أغسطس", category: "payroll", amount: 420000, currency: "EGP", status: "approved", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly payroll for 58 employees", descAr: "رواتب شهرية لـ ٥٨ موظف" },
+  { id: "exp-004", vendorEn: "Google Ads", vendorAr: "إعلانات جوجل", category: "marketing", amount: 35000, currency: "EGP", status: "paid", dateEn: "Jul 28, 2025", dateAr: "٢٨ يوليو ٢٠٢٥", descEn: "Q3 digital campaign", descAr: "حملة رقمية للربع الثالث" },
+  { id: "exp-005", vendorEn: "Dubai → Riyadh Flights", vendorAr: "رحلات دبي → الرياض", category: "travel", amount: 8500, currency: "EGP", status: "pending", dateEn: "Aug 3, 2025", dateAr: "٣ أغسطس ٢٠٢٥", descEn: "Team travel for client meetings", descAr: "سفر الفريق لاجتماعات العملاء" },
+  { id: "exp-006", vendorEn: "Figma Enterprise", vendorAr: "فيجما إنتربرايز", category: "software", amount: 4200, currency: "EGP", status: "paid", dateEn: "Jul 15, 2025", dateAr: "١٥ يوليو ٢٠٢٥", descEn: "Annual design tool license", descAr: "ترخيص سنوي لأداة التصميم" },
+  { id: "exp-007", vendorEn: "Office Supplies", vendorAr: "لوازم مكتبية", category: "operations", amount: 3200, currency: "EGP", status: "paid", dateEn: "Jul 20, 2025", dateAr: "٢٠ يوليو ٢٠٢٥", descEn: "Stationery and printer supplies", descAr: "قرطاسية ومستلزمات طابعة" },
+  { id: "exp-008", vendorEn: "Trade Show Booth — Riyadh", vendorAr: "جناح معرض — الرياض", category: "marketing", amount: 45000, currency: "EGP", status: "approved", dateEn: "Aug 5, 2025", dateAr: "٥ أغسطس ٢٠٢٥", descEn: "Annual furniture expo participation", descAr: "مشاركة في معرض الأثاث السنوي" },
 ];
 
 // ─── localStorage persistence ─────────────────────────────

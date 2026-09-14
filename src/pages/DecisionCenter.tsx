@@ -917,8 +917,8 @@ function buildDecisionTemplates(): DecisionTemplate[] {
       id: `ws-deal-${deal.id}`, category: "Sales",
       titleEn: `Close decision: ${deal.titleEn}`,
       titleAr: `قرار الإغلاق: ${deal.titleAr}`,
-      contextEn: `${deal.value.toLocaleString()} SAR deal at ${deal.probability}% probability — in negotiation.`,
-      contextAr: `صفقة ${deal.value.toLocaleString()} ر.س باحتمالية ${deal.probability}% — في التفاوض.`,
+      contextEn: `${deal.value.toLocaleString()} EGP deal at ${deal.probability}% probability — in negotiation.`,
+      contextAr: `صفقة ${deal.value.toLocaleString()} ج.م باحتمالية ${deal.probability}% — في التفاوض.`,
       recommendationsEn: [
         "Prepare final commercial proposal with value summary",
         "Identify and address remaining objections",
@@ -987,8 +987,8 @@ function buildDecisionTemplates(): DecisionTemplate[] {
       id: `ws-inv-${inv.id}`, category: "Finance",
       titleEn: `Collection decision: ${inv.number}`,
       titleAr: `قرار التحصيل: ${inv.number}`,
-      contextEn: `${inv.amount.toLocaleString()} SAR overdue from ${inv.orgNameEn}.`,
-      contextAr: `${inv.amount.toLocaleString()} ر.س متأخرة من ${inv.orgNameAr}.`,
+      contextEn: `${inv.amount.toLocaleString()} EGP overdue from ${inv.orgNameEn}.`,
+      contextAr: `${inv.amount.toLocaleString()} ج.م متأخرة من ${inv.orgNameAr}.`,
       recommendationsEn: [
         "Send formal demand letter via registered mail",
         "Escalate to senior management contact at client",

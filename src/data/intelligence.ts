@@ -155,7 +155,7 @@ export function getSalesInsights(): InsightCard[] {
   const stalled = active.filter((d) => d.stage === "lead");
   const negotiating = active.filter((d) => d.stage === "negotiation");
   const largest = [...active].sort((a, b) => b.value - a.value);
-  const fmt = (v: number) => formatCurrency(v, "SAR");
+  const fmt = (v: number) => formatCurrency(v, "EGP");
 
   const insights: InsightCard[] = [];
 
@@ -225,7 +225,7 @@ export function getFinanceInsights(): InsightCard[] {
   const overdue = invoices.filter((i) => i.status === "overdue");
   const revenue = invoices.filter((i) => i.status === "paid").reduce((s, i) => s + i.paidAmount, 0);
   const outstanding = invoices.filter((i) => ["sent", "overdue"].includes(i.status)).reduce((s, i) => s + i.amount - i.paidAmount, 0);
-  const fmt = (v: number) => formatCurrency(v, "SAR");
+  const fmt = (v: number) => formatCurrency(v, "EGP");
 
   const insights: InsightCard[] = [];
 
@@ -253,7 +253,7 @@ export function getResourceInsights(): InsightCard[] {
   const underutil = resources.filter((r) => r.status === "active" && r.utilization < 30);
   const overdueMaint = resources.filter((r) => r.maintenance.some((m) => m.status === "overdue"));
   const highValue = [...resources].sort((a, b) => b.value - a.value).slice(0, 3);
-  const fmt = (v: number) => formatCurrency(v, "SAR");
+  const fmt = (v: number) => formatCurrency(v, "EGP");
 
   const insights: InsightCard[] = [];
 

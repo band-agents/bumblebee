@@ -362,7 +362,7 @@ export default function Purchasing() {
   const { workspace } = useAuth();
   const ar = lang === "ar";
   const settings = workspace?.settings as Record<string, unknown> | undefined;
-  const currency = (settings?.currency as string) || "SAR";
+  const currency = (settings?.currency as string) || "EGP";
 
   const [loading, setLoading] = useState(true);
   const [orgs, setOrgs] = useState<Org[]>([]);
@@ -398,7 +398,7 @@ export default function Purchasing() {
   const totalPRValue = purchaseRequests.reduce((s, p) => s + (getPRMeta(p).estimated_amount || 0), 0);
   const totalPOValue = purchaseOrders.reduce((s, p) => s + (getPRMeta(p).estimated_amount || 0), 0);
 
-  const fmtVal = (v: number) => new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
+  const fmtVal = (v: number) => new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
 
   // Filtered items per tab
   const filteredVendors = useMemo(() => {

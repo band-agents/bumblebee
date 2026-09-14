@@ -422,7 +422,7 @@ function AddDealModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (d: 
     if (!workspace || !form.title.trim()) return;
     setLoading(true); setError(null);
     try {
-      const currency = (workspace.settings?.currency as string) ?? "SAR";
+      const currency = (workspace.settings?.currency as string) ?? "EGP";
       const created = await getDataSource().deals.create(workspace.id, {
         title_en: form.title.trim(), title_ar: form.title.trim(),
         value: parseFloat(form.value) || 0, currency,
@@ -513,7 +513,7 @@ export function SalesLive({ workspaceId, lang }: { workspaceId: string; lang: "e
   };
 
   const fmtVal = (v: number, cur: string) =>
-    new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency: cur, maximumFractionDigits: 0 }).format(v);
+    new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency: cur, maximumFractionDigits: 0 }).format(v);
 
   return (
     <div className="min-h-full py-8 px-7 md:px-10 max-w-[1100px] mx-auto">
@@ -702,7 +702,7 @@ function AddExpenseModal({ onClose, onAdd, ar, currency }: { onClose: () => void
 export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: "en" | "ar" }) {
   const ar = lang === "ar";
   const { workspace } = useAuth();
-  const currency = (workspace?.settings?.currency as string) ?? "SAR";
+  const currency = (workspace?.settings?.currency as string) ?? "EGP";
   const [invoices, setInvoices] = useState<LiveInvoice[]>([]);
   const [expenses, setExpenses] = useState<LiveExpense[]>([]);
   const [payments, setPayments] = useState<LivePayment[]>([]);
@@ -729,7 +729,7 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
   }, [workspaceId]);
 
   const fmtVal = (v: number) =>
-    new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
+    new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
 
   // Metrics
   const totalInvoiced = invoices.reduce((s, i) => s + Number(i.amount), 0);

@@ -140,7 +140,7 @@ function daysUntil(dateStr: string): number {
 
 function fmtDate(dateStr: string, ar: boolean): string {
   const d = new Date(dateStr);
-  return d.toLocaleDateString(ar ? "ar-SA" : "en-US", { year: "numeric", month: "short", day: "numeric" });
+  return d.toLocaleDateString(ar ? "ar-EG" : "en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 
 function daysSinceLastIncident(incidents: SafetyIncident[]): number {

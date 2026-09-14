@@ -52,7 +52,7 @@ function FinancePage() {
   const wid = workspace?.id || "demo";
   const [, navigate] = useLocation();
   const ar = lang === "ar";
-  const fmt = (v: number) => fmtCurrency(v, "SAR", ar ? "ar-SA" : "en-SA");
+  const fmt = (v: number) => fmtCurrency(v, "EGP", ar ? "ar-EG" : "en-EG");
 
   const [invoices, setInvoices] = useState<InvRow[]>([]);
   const [payments, setPayments] = useState<PayRow[]>([]);

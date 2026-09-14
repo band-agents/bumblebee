@@ -35,7 +35,7 @@ type ReportTab = "executive" | "sales" | "finance" | "operations" | "hr" | "purc
 // ─── Helpers ─────────────────────────────────────────────
 
 function fmtC(v: number, currency: string, ar: boolean): string {
-  return new Intl.NumberFormat(ar ? "ar-SA" : "en-SA", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
+  return new Intl.NumberFormat(ar ? "ar-EG" : "en-EG", { style: "currency", currency, maximumFractionDigits: 0 }).format(v);
 }
 
 function pct(num: number, den: number): string {
@@ -515,7 +515,7 @@ export default function Reports() {
   const { workspace } = useAuth();
   const ar = lang === "ar";
   const settings = workspace?.settings as Record<string, unknown> | undefined;
-  const currency = (settings?.currency as string) || "SAR";
+  const currency = (settings?.currency as string) || "EGP";
   const fmt = (v: number) => fmtC(v, currency, ar);
 
   const [loading, setLoading] = useState(true);

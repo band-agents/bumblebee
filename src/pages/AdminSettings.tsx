@@ -27,7 +27,7 @@ type Tab = "profile" | "preferences" | "security" | "company" | "modules" | "not
 
 const CURRENCIES = [
   { code: "EGP", label: "EGP — جنيه مصري" },
-  { code: "SAR", label: "SAR — ريال سعودي" },
+  { code: "EGP", label: "EGP — ريال سعودي" },
   { code: "AED", label: "AED — درهم إماراتي" },
   { code: "USD", label: "USD — دولار أمريكي" },
   { code: "EUR", label: "EUR — يورو" },

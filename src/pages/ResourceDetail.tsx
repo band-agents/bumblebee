@@ -63,7 +63,7 @@ export default function ResourceDetail() {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
   const ar = lang === "ar";
-  const fmt = (v: number) => fmtVal(v, "SAR", ar ? "ar-SA" : "en-SA");
+  const fmt = (v: number) => fmtVal(v, "EGP", ar ? "ar-EG" : "en-EG");
 
   const [allRes, setAllRes] = useState(loadResources);
   const res = allRes.find((r) => r.id === id);

@@ -76,7 +76,7 @@ const GOALS = [
 ];
 
 const CORE_MODULES = ["sales", "inventory", "finance", "analytics"];
-const CURRENCIES = ["EGP", "USD", "EUR", "SAR", "AED", "GBP"];
+const CURRENCIES = ["EGP", "USD", "EUR", "EGP", "AED", "GBP"];
 
 // Clean categories for the module step (clear filters, not one flat grid)
 const GOAL_GROUPS: { id: string; en: string; ar: string; goals: string[] }[] = [

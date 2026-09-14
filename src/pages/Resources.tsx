@@ -52,7 +52,7 @@ function resValue(r: ResRow): number {
   return (rm(r).value as number) || 0;
 }
 function resCurrency(r: ResRow): string {
-  return (rm(r).currency as string) || "SAR";
+  return (rm(r).currency as string) || "EGP";
 }
 function resLocationEn(r: ResRow): string {
   return (rm(r).locationEn as string) || "";
@@ -130,7 +130,7 @@ function ResourceCard({ res, lang, onClick }: { res: ResRow; lang: "en" | "ar"; 
           <span className="text-micro text-muted-foreground">{ar ? sm.ar : sm.en}</span>
         </div>
         <span className="text-caption font-medium text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
-          {fmtVal(resValue(res), resCurrency(res), ar ? "ar-SA" : "en-SA")}
+          {fmtVal(resValue(res), resCurrency(res), ar ? "ar-EG" : "en-EG")}
         </span>
       </div>
     </div>
@@ -167,7 +167,7 @@ function ResourceListView({ items, lang, onNavigate }: { items: ResRow[]; lang: 
             <div className="flex items-center gap-4 shrink-0">
               <span className="text-micro text-muted-foreground tabular-nums hidden sm:block">{res.utilization}%</span>
               <div className="flex items-center gap-1.5"><div className={`w-1.5 h-1.5 rounded-full ${sm.dot}`} /><span className="text-micro text-muted-foreground hidden md:inline">{ar ? sm.ar : sm.en}</span></div>
-              <span className="text-caption font-medium text-foreground tabular-nums hidden lg:block" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(resValue(res), resCurrency(res), ar ? "ar-SA" : "en-SA")}</span>
+              <span className="text-caption font-medium text-foreground tabular-nums hidden lg:block" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(resValue(res), resCurrency(res), ar ? "ar-EG" : "en-EG")}</span>
               <ChevronRight size={14} strokeWidth={1.75} className="text-muted-foreground/30 group-hover:text-brand-ink/50 transition-colors" />
             </div>
           </div>
@@ -184,7 +184,7 @@ function ResourcesPage() {
   const { lang } = useLanguage();
   const [, navigate] = useLocation();
   const ar = lang === "ar";
-  const fmt = (v: number) => fmtVal(v, "SAR", ar ? "ar-SA" : "en-SA");
+  const fmt = (v: number) => fmtVal(v, "EGP", ar ? "ar-EG" : "en-EG");
 
   const [resources, setResources] = useState<ResRow[]>([]);
   const [loading, setLoading] = useState(true);

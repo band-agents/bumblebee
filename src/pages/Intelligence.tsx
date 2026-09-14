@@ -208,7 +208,7 @@ export default function Intelligence() {
           {/* Top metrics */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6">
             {[
-              { icon: TrendingUp, value: fmt(metrics.revenueForecast, "SAR"), label: ar ? "توقع الإيرادات" : "Revenue Forecast", color: "text-emerald-600" },
+              { icon: TrendingUp, value: fmt(metrics.revenueForecast, "EGP"), label: ar ? "توقع الإيرادات" : "Revenue Forecast", color: "text-emerald-600" },
               { icon: Target,     value: String(metrics.openOpportunities), label: ar ? "فرص مفتوحة" : "Open Opps",          color: "text-warning" },
               { icon: AlertTriangle, value: `${metrics.workRiskScore}%`, label: ar ? "مخاطر العمل" : "Work Risk",         color: "text-rose-500" },
               { icon: Gauge,      value: `${metrics.resourceUtilization}%`, label: ar ? "استخدام الموارد" : "Res. Utilization", color: "text-chart-4" },
