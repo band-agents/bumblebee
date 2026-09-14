@@ -164,11 +164,10 @@ function TrendBadge({ value, suffix = "" }: { value: number; suffix?: string }) 
 function StagePipeline({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }) {
   const stageFlow = [
     { key: "order_created", icon: Box, en: "Created", ar: "إنشاء" },
-    { key: "materials_reserved", icon: Package, en: "Materials", ar: "المواد" },
-    { key: "cutting", icon: Scissors, en: "Cutting", ar: "التقطيع" },
-    { key: "edgebanding", icon: Layers, en: "Edgebanding", ar: "الكنار" },
-    { key: "drilling", icon: Wrench, en: "Drilling", ar: "التخريم" },
-    { key: "assembly", icon: Box, en: "Assembly", ar: "التجميع" },
+    { key: "materials_reserved", icon: Package, en: "Fabric", ar: "القماش" },
+    { key: "pattern", icon: Layers, en: "Pattern", ar: "الباترون" },
+    { key: "cutting", icon: Scissors, en: "Cutting", ar: "القص" },
+    { key: "sewing", icon: Wrench, en: "Sewing", ar: "الخياطة" },
     { key: "finishing", icon: Paintbrush, en: "Finishing", ar: "التشطيب" },
     { key: "quality_control", icon: ClipboardCheck, en: "QC", ar: "الجودة" },
     { key: "packaging", icon: Package, en: "Packing", ar: "التغليف" },

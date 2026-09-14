@@ -31,6 +31,20 @@ export const BRAND = {
   logPrefix: "[Bumblebee]",
 } as const;
 
+/**
+ * The client this deployment is tailored for. Bumblebee's own identity above
+ * never changes; the client's mark sits beside it ("Bumblebee × CUBS") on the
+ * sign-in page, the landing page and the app shell. Swap this block, and the
+ * file in public/brand/, to re-tailor a deployment for another client.
+ */
+export const CLIENT = {
+  name: "CUBS",
+  tagline: "Go Places",
+  /** Transparent, black artwork — invert it on dark surfaces. */
+  logo: "/brand/cubs-logo.webp",
+  website: "https://cubsgoplaces.com",
+} as const;
+
 /** `storageKey("onboarding")` -> `"bumblebee_onboarding"` */
 export function storageKey(name: string): string {
   return `${BRAND.storagePrefix}${name}`;

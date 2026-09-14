@@ -11,6 +11,10 @@ import {
 import type { MfgStage, DependencyType } from "../lib/furniture-engine";
 
 const DEPT_ICONS: Record<string, { icon: React.ElementType; bg: string; color: string }> = {
+  pattern:      { icon: Layers,         bg: "bg-indigo-50",   color: "text-indigo-600" },
+  sewing:       { icon: Wrench,         bg: "bg-cyan-50",     color: "text-cyan-600" },
+  embroidery:   { icon: Paintbrush,     bg: "bg-rose-50",     color: "text-rose-600" },
+  pressing:     { icon: Square,         bg: "bg-orange-50",   color: "text-orange-600" },
   cutting:      { icon: Scissors,       bg: "bg-blue-50",     color: "text-blue-600" },
   cnc:          { icon: Cpu,            bg: "bg-indigo-50",   color: "text-indigo-600" },
   edgebanding:  { icon: Layers,         bg: "bg-cyan-50",     color: "text-cyan-600" },

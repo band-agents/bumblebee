@@ -32,11 +32,10 @@ type DesignBrief = Database["public"]["Tables"]["design_briefs"]["Row"];
 
 const STAGES = [
   { value: "pending",       en: "Pending",       ar: "في الانتظار",    icon: Clock,          color: "bg-zinc-100 text-zinc-600" },
-  { value: "cutting",       en: "Cutting",       ar: "التقطيع",       icon: Scissors,       color: "bg-blue-50 text-blue-600" },
-  { value: "edgebanding",   en: "Edgebanding",   ar: "الكنار",        icon: Layers,         color: "bg-indigo-50 text-indigo-600" },
-  { value: "drilling",      en: "Drilling",      ar: "التخريم",       icon: Wrench,         color: "bg-chart-4/10 text-chart-4" },
-  { value: "assembly",      en: "Assembly",      ar: "التجميع",       icon: Box,            color: "bg-cyan-50 text-cyan-600" },
-  { value: "finishing",     en: "Finishing",      ar: "الدهان/التشطيب", icon: Paintbrush,     color: "bg-warning/10 text-warning" },
+  { value: "pattern",       en: "Pattern & Marker", ar: "الباترون والماركر", icon: Layers,     color: "bg-indigo-50 text-indigo-600" },
+  { value: "cutting",       en: "Cutting",       ar: "القص",          icon: Scissors,       color: "bg-blue-50 text-blue-600" },
+  { value: "sewing",        en: "Sewing",        ar: "الخياطة",       icon: Wrench,         color: "bg-cyan-50 text-cyan-600" },
+  { value: "finishing",     en: "Finishing & Pressing", ar: "التشطيب والكي", icon: Paintbrush, color: "bg-warning/10 text-warning" },
   { value: "quality_check", en: "Quality Check",  ar: "مراقبة الجودة",  icon: ClipboardCheck, color: "bg-orange-50 text-orange-600" },
   { value: "packing",       en: "Packing",       ar: "التغليف",       icon: Package,        color: "bg-teal-50 text-teal-600" },
   { value: "ready",         en: "Ready",         ar: "جاهز للتسليم",   icon: CheckCircle2,   color: "bg-emerald-50 text-emerald-600" },
@@ -123,7 +122,7 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
         const created = await ds.production_orders.create(workspaceId, payload);
         // Auto-create stage log entries
         if (created) {
-          const stageNames = ["cutting","edgebanding","drilling","assembly","finishing","quality_check","packing"];
+          const stageNames = ["pattern","cutting","sewing","finishing","quality_check","packing"];
           for (const stage of stageNames) {
             await ds.production_stage_log.create(workspaceId, {
               workspace_id: workspaceId, production_order_id: created.id,
@@ -250,36 +249,31 @@ function CuttingModal({ onClose, onSaved, poId, editItem, ar, workspaceId }: {
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
           <div className="grid grid-cols-2 gap-3">
-            <div><label className={labelCls}>{ar ? "اسم القطعة" : "Part Name"}</label>
-              <input className={inputCls} value={partName} onChange={e => setPartName(e.target.value)} placeholder={ar ? "مثال: باب علوي" : "e.g. Upper Door"} /></div>
-            <div><label className={labelCls}>{ar ? "الخامة" : "Material"}</label>
-              <input className={inputCls} value={material} onChange={e => setMaterial(e.target.value)} placeholder="MDF 18mm" /></div>
+            {/* Garment cutting: columns are the shared cutting_list_items schema,
+                relabelled — thickness holds plies, cnc_program holds the size ratio. */}
+            <div><label className={labelCls}>{ar ? "اسم القطعة" : "Panel"}</label>
+              <input className={inputCls} value={partName} onChange={e => setPartName(e.target.value)} placeholder={ar ? "مثال: الأمام" : "e.g. Front body"} /></div>
+            <div><label className={labelCls}>{ar ? "القماش" : "Fabric"}</label>
+              <input className={inputCls} value={material} onChange={e => setMaterial(e.target.value)} placeholder={ar ? "جيرسي قطن 180 جرام" : "Cotton jersey 180gsm"} /></div>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            <div><label className={labelCls}>{ar ? "السُمك" : "Thickness"}</label>
+            <div><label className={labelCls}>{ar ? "عدد الطبقات" : "Plies"}</label>
               <input type="number" className={inputCls} value={thickness} onChange={e => setThickness(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "العرض" : "Width"}</label>
+            <div><label className={labelCls}>{ar ? "عرض الماركر (سم)" : "Marker width (cm)"}</label>
               <input type="number" className={inputCls} value={width} onChange={e => setWidth(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "الطول" : "Length"}</label>
+            <div><label className={labelCls}>{ar ? "طول الماركر (سم)" : "Marker length (cm)"}</label>
               <input type="number" className={inputCls} value={length} onChange={e => setLength(e.target.value)} /></div>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div><label className={labelCls}>{ar ? "الكمية" : "Qty"}</label>
+            <div><label className={labelCls}>{ar ? "عدد القطع" : "Pieces"}</label>
               <input type="number" className={inputCls} value={qty} onChange={e => setQty(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "اتجاه الألياف" : "Grain"}</label>
+            <div><label className={labelCls}>{ar ? "اتجاه النسيج" : "Grain"}</label>
               <select className={inputCls} value={grain} onChange={e => setGrain(e.target.value as never)}>
                 {GRAIN_DIRS.map(g => <option key={g.value} value={g.value}>{ar ? g.ar : g.en}</option>)}
               </select></div>
           </div>
-          <p className="text-micro text-muted-foreground font-medium">{ar ? "الكنار (حواف)" : "Edge Banding"}</p>
-          <div className="grid grid-cols-4 gap-2">
-            <div><label className={labelCls}>{ar ? "أعلى" : "Top"}</label><input className={inputCls + " text-micro"} value={edgeTop} onChange={e => setEdgeTop(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "أسفل" : "Bottom"}</label><input className={inputCls + " text-micro"} value={edgeBottom} onChange={e => setEdgeBottom(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "يسار" : "Left"}</label><input className={inputCls + " text-micro"} value={edgeLeft} onChange={e => setEdgeLeft(e.target.value)} /></div>
-            <div><label className={labelCls}>{ar ? "يمين" : "Right"}</label><input className={inputCls + " text-micro"} value={edgeRight} onChange={e => setEdgeRight(e.target.value)} /></div>
-          </div>
-          <div><label className={labelCls}>{ar ? "برنامج CNC" : "CNC Program"}</label>
-            <input className={inputCls} value={cnc} onChange={e => setCnc(e.target.value)} /></div>
+          <div><label className={labelCls}>{ar ? "نسبة المقاسات" : "Size ratio"}</label>
+            <input className={inputCls} value={cnc} onChange={e => setCnc(e.target.value)} placeholder="2Y:1 4Y:2 6Y:2 8Y:2 10Y:1" /></div>
           <div><label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
             <textarea className={inputCls + " h-14 py-2 resize-none"} value={notes} onChange={e => setNotes(e.target.value)} /></div>
         </div>
@@ -322,7 +316,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
   useEffect(() => { loadData(); }, [po.id]);
 
   // Stage progression
-  const stageOrder = ["cutting","edgebanding","drilling","assembly","finishing","quality_check","packing"];
+  const stageOrder = ["pattern","cutting","sewing","finishing","quality_check","packing"];
 
   async function advanceStage(stage: string, action: "start" | "complete") {
     const ds = getDataSource();

@@ -1,6 +1,9 @@
 /**
- * Production Module — Data Layer (Furniture Manufacturing)
+ * Production Module — Data Layer (Garment Manufacturing)
  * Complete production tracking: orders, stages, rate, QC, materials, costs, alerts
+ *
+ * Built for an in-house apparel maker: pattern → cut → sew → finish → QC → pack,
+ * with imported fabric and trims tracked as raw material.
  */
 
 // ─── Types ────────────────────────────────────────────────
@@ -137,21 +140,22 @@ export interface WorkstationInfo {
   last_maintenance: string;
 }
 
-// ─── Default Stage Template (Furniture Manufacturing) ──────
+// ─── Default Stage Template (Garment Manufacturing) ───────
 
 export const DEFAULT_STAGES = [
-  { key: "order_created",       en: "Order Created",       ar: "إنشاء الأمر",         sequence: 0 },
-  { key: "materials_reserved",  en: "Materials Reserved",  ar: "تحديد المواد",        sequence: 1 },
-  { key: "cutting",             en: "Cutting",             ar: "التقطيع",            sequence: 2 },
-  { key: "edgebanding",         en: "Edgebanding",         ar: "الكنار",             sequence: 3 },
-  { key: "drilling",            en: "Drilling / CNC",      ar: "التخريم / CNC",      sequence: 4 },
-  { key: "assembly",            en: "Assembly",            ar: "التجميع",            sequence: 5 },
-  { key: "finishing",           en: "Finishing / Painting", ar: "التشطيب / الدهان",   sequence: 6 },
-  { key: "quality_control",     en: "Quality Control",     ar: "مراقبة الجودة",       sequence: 7 },
-  { key: "packaging",           en: "Packaging",           ar: "التغليف",            sequence: 8 },
-  { key: "ready_dispatch",      en: "Ready for Dispatch",  ar: "جاهز للتسليم",       sequence: 9 },
-  { key: "completed",           en: "Completed",           ar: "مكتمل",              sequence: 10 },
+  { key: "order_created",       en: "Order Created",        ar: "إنشاء الأمر",        sequence: 0 },
+  { key: "materials_reserved",  en: "Fabric & Trims",       ar: "القماش والإكسسوار",  sequence: 1 },
+  { key: "pattern",             en: "Pattern & Marker",     ar: "الباترون والماركر",  sequence: 2 },
+  { key: "cutting",             en: "Cutting",              ar: "القص",               sequence: 3 },
+  { key: "sewing",              en: "Sewing",               ar: "الخياطة",            sequence: 4 },
+  { key: "finishing",           en: "Finishing & Pressing", ar: "التشطيب والكي",      sequence: 5 },
+  { key: "quality_control",     en: "Quality Control",      ar: "مراقبة الجودة",      sequence: 6 },
+  { key: "packaging",           en: "Packing & Labels",     ar: "التغليف والتيكيت",   sequence: 7 },
+  { key: "ready_dispatch",      en: "Ready for Dispatch",   ar: "جاهز للتسليم",       sequence: 8 },
+  { key: "completed",           en: "Completed",            ar: "مكتمل",              sequence: 9 },
 ] as const;
+
+type StageKey = (typeof DEFAULT_STAGES)[number]["key"];
 
 // ─── Demo Data ────────────────────────────────────────────
 
@@ -174,202 +178,214 @@ function tsAgo(n: number): string {
   return d.toISOString();
 }
 
+/** One stage row. Names come from DEFAULT_STAGES so labels never drift from the template. */
+function stage(
+  order: string, key: StageKey, status: StageStatus, qty: number,
+  opts: { start?: number; end?: number; planned?: number; actual?: number; done?: number; rejected?: number; rework?: number; team?: string; operator?: string; notes?: string } = {},
+): ProductionStage {
+  const def = DEFAULT_STAGES.find(s => s.key === key)!;
+  const done = opts.done ?? (status === "completed" ? qty : 0);
+  return {
+    id: `${order}-${key}`, order_id: order, stage_key: key,
+    stage_name_en: def.en, stage_name_ar: def.ar, status,
+    started_at: opts.start != null ? daysAgo(opts.start) : null,
+    finished_at: opts.end != null ? daysAgo(opts.end) : null,
+    planned_duration_hours: opts.planned ?? 8,
+    actual_duration_hours: opts.actual ?? null,
+    completed_qty: done, remaining_qty: Math.max(0, qty - done),
+    rejected_qty: opts.rejected ?? 0, rework_qty: opts.rework ?? 0,
+    assigned_team: opts.team ?? "", assigned_operator: opts.operator ?? "",
+    notes: opts.notes ?? "", sequence: def.sequence,
+  };
+}
+
 const DEMO_STAGES: ProductionStage[] = [
-  // PO-01: Meridian Kitchen — Modern Handleless
-  { id: "s1-1", order_id: "po-01", stage_key: "order_created", stage_name_en: "Order Created", stage_name_ar: "إنشاء الأمر", status: "completed", started_at: daysAgo(30), finished_at: daysAgo(30), planned_duration_hours: 1, actual_duration_hours: 0.5, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Operations", assigned_operator: "System", notes: "", sequence: 0 },
-  { id: "s1-2", order_id: "po-01", stage_key: "materials_reserved", stage_name_en: "Materials Reserved", stage_name_ar: "تحديد المواد", status: "completed", started_at: daysAgo(30), finished_at: daysAgo(28), planned_duration_hours: 8, actual_duration_hours: 10, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Warehouse", assigned_operator: "Tariq Hassan", notes: "18 sheets MDF, 45m edgeband, 28 hinges, 12 slides reserved", sequence: 1 },
-  { id: "s1-3", order_id: "po-01", stage_key: "cutting", stage_name_en: "Cutting", stage_name_ar: "التقطيع", status: "completed", started_at: daysAgo(28), finished_at: daysAgo(25), planned_duration_hours: 24, actual_duration_hours: 28, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Cutting Team", assigned_operator: "Ahmad Khalil", notes: "CNC cutting — 5 pieces had edge defects, recut", sequence: 2 },
-  { id: "s1-4", order_id: "po-01", stage_key: "edgebanding", stage_name_en: "Edgebanding", stage_name_ar: "الكنار", status: "completed", started_at: daysAgo(25), finished_at: daysAgo(22), planned_duration_hours: 16, actual_duration_hours: 18, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Edgebanding", assigned_operator: "Salman Rizq", notes: "1mm and 2mm edgeband applied", sequence: 3 },
-  { id: "s1-5", order_id: "po-01", stage_key: "drilling", stage_name_en: "Drilling / CNC", stage_name_ar: "التخريم / CNC", status: "completed", started_at: daysAgo(22), finished_at: daysAgo(20), planned_duration_hours: 12, actual_duration_hours: 10, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "CNC Team", assigned_operator: "Youssef Ali", notes: "Push-to-open drilling pattern applied", sequence: 4 },
-  { id: "s1-6", order_id: "po-01", stage_key: "assembly", stage_name_en: "Assembly", stage_name_ar: "التجميع", status: "completed", started_at: daysAgo(20), finished_at: daysAgo(16), planned_duration_hours: 32, actual_duration_hours: 36, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Assembly A", assigned_operator: "Rami Saad", notes: "Blum tip-on hardware installed", sequence: 5 },
-  { id: "s1-7", order_id: "po-01", stage_key: "finishing", stage_name_en: "Finishing / Painting", stage_name_ar: "التشطيب / الدهان", status: "completed", started_at: daysAgo(16), finished_at: daysAgo(12), planned_duration_hours: 20, actual_duration_hours: 22, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Finishing", assigned_operator: "Khaled Mansour", notes: "Lacquer spray coat — 2 coats applied", sequence: 6 },
-  { id: "s1-8", order_id: "po-01", stage_key: "quality_control", stage_name_en: "Quality Control", stage_name_ar: "مراقبة الجودة", status: "completed", started_at: daysAgo(12), finished_at: daysAgo(10), planned_duration_hours: 8, actual_duration_hours: 6, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "QC Team", assigned_operator: "Layla Qasim", notes: "All panels within spec — minor edge chip on piece #7 acceptable", sequence: 7 },
-  { id: "s1-9", order_id: "po-01", stage_key: "packaging", stage_name_en: "Packaging", stage_name_ar: "التغليف", status: "in_progress", started_at: daysAgo(10), finished_at: null, planned_duration_hours: 8, actual_duration_hours: null, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, assigned_team: "Packing", assigned_operator: "Omar Hassan", notes: "Awaiting final hardware kit", sequence: 8 },
+  // PO-01: Explorer Zip Hoodie — 600 pcs, at packing
+  stage("po-01", "order_created", "completed", 600, { start: 24, end: 24, planned: 1, actual: 0.5, team: "Planning", operator: "System" }),
+  stage("po-01", "materials_reserved", "completed", 600, { start: 24, end: 22, planned: 8, actual: 10, team: "Fabric Store", operator: "Tarek Hassan", notes: "Imported 320gsm French terry (Turkey) + YKK zips issued" }),
+  stage("po-01", "pattern", "completed", 600, { start: 22, end: 21, planned: 10, actual: 9, team: "Pattern Room", operator: "Mona Adel", notes: "Graded 2Y–12Y, marker efficiency 86%" }),
+  stage("po-01", "cutting", "completed", 600, { start: 21, end: 19, planned: 16, actual: 18, rejected: 6, team: "Cutting Table 1", operator: "Ahmed Khalil", notes: "6 panels recut — shade variation on roll 14" }),
+  stage("po-01", "sewing", "completed", 600, { start: 19, end: 11, planned: 96, actual: 104, rework: 14, team: "Sewing Line A", operator: "Hoda Saeed", notes: "Zip insertion was the slow operation" }),
+  stage("po-01", "finishing", "completed", 600, { start: 11, end: 8, planned: 24, actual: 22, team: "Finishing", operator: "Khaled Mansour", notes: "Thread trimming, pressing, CUBS woven label check" }),
+  stage("po-01", "quality_control", "completed", 600, { start: 8, end: 6, planned: 12, actual: 11, rejected: 9, team: "QC", operator: "Laila Qasim", notes: "AQL 2.5 passed — 9 pcs to seconds" }),
+  stage("po-01", "packaging", "in_progress", 600, { start: 6, done: 420, planned: 12, team: "Packing", operator: "Omar Hassan", notes: "Polybag + hang tag + size sticker" }),
 
-  // PO-02: Meridian Master Wardrobe
-  { id: "s2-1", order_id: "po-02", stage_key: "order_created", stage_name_en: "Order Created", stage_name_ar: "إنشاء الأمر", status: "completed", started_at: daysAgo(28), finished_at: daysAgo(28), planned_duration_hours: 1, actual_duration_hours: 0.5, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Operations", assigned_operator: "System", notes: "", sequence: 0 },
-  { id: "s2-2", order_id: "po-02", stage_key: "materials_reserved", stage_name_en: "Materials Reserved", stage_name_ar: "تحديد المواد", status: "completed", started_at: daysAgo(28), finished_at: daysAgo(26), planned_duration_hours: 8, actual_duration_hours: 12, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Warehouse", assigned_operator: "Tariq Hassan", notes: "12 sheets, 30m edgeband, sliding door tracks ordered", sequence: 1 },
-  { id: "s2-3", order_id: "po-02", stage_key: "cutting", stage_name_en: "Cutting", stage_name_ar: "التقطيع", status: "completed", started_at: daysAgo(26), finished_at: daysAgo(23), planned_duration_hours: 20, actual_duration_hours: 22, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Cutting Team", assigned_operator: "Ahmad Khalil", notes: "", sequence: 2 },
-  { id: "s2-4", order_id: "po-02", stage_key: "edgebanding", stage_name_en: "Edgebanding", stage_name_ar: "الكنار", status: "completed", started_at: daysAgo(23), finished_at: daysAgo(20), planned_duration_hours: 14, actual_duration_hours: 12, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Edgebanding", assigned_operator: "Salman Rizq", notes: "", sequence: 3 },
-  { id: "s2-5", order_id: "po-02", stage_key: "drilling", stage_name_en: "Drilling / CNC", stage_name_ar: "التخريم / CNC", status: "completed", started_at: daysAgo(20), finished_at: daysAgo(18), planned_duration_hours: 10, actual_duration_hours: 8, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "CNC Team", assigned_operator: "Youssef Ali", notes: "", sequence: 4 },
-  { id: "s2-6", order_id: "po-02", stage_key: "assembly", stage_name_en: "Assembly", stage_name_ar: "التجميع", status: "in_progress", started_at: daysAgo(18), finished_at: null, planned_duration_hours: 28, actual_duration_hours: null, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, assigned_team: "Assembly B", assigned_operator: "Rami Saad", notes: "Waiting for sliding door tracks from supplier", sequence: 5 },
+  // PO-02: Adventure Jogger Set — 800 sets, sewing
+  stage("po-02", "order_created", "completed", 800, { start: 18, end: 18, planned: 1, actual: 0.5, team: "Planning", operator: "System" }),
+  stage("po-02", "materials_reserved", "completed", 800, { start: 18, end: 15, planned: 8, actual: 16, team: "Fabric Store", operator: "Tarek Hassan", notes: "Local cotton fleece in; imported rib trim arrived 2 days late" }),
+  stage("po-02", "pattern", "completed", 800, { start: 15, end: 14, planned: 8, actual: 8, team: "Pattern Room", operator: "Mona Adel" }),
+  stage("po-02", "cutting", "completed", 800, { start: 14, end: 12, planned: 20, actual: 19, team: "Cutting Table 2", operator: "Ahmed Khalil" }),
+  stage("po-02", "sewing", "in_progress", 800, { start: 12, done: 460, planned: 120, rework: 22, team: "Sewing Line B", operator: "Samah Fathy", notes: "Waistband elastic running low — 2nd lot ordered" }),
 
-  // PO-03: Al-Noor Reception Counter (Curved)
-  { id: "s3-1", order_id: "po-03", stage_key: "order_created", stage_name_en: "Order Created", stage_name_ar: "إنشاء الأمر", status: "completed", started_at: daysAgo(15), finished_at: daysAgo(15), planned_duration_hours: 1, actual_duration_hours: 0.5, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Operations", assigned_operator: "System", notes: "", sequence: 0 },
-  { id: "s3-2", order_id: "po-03", stage_key: "materials_reserved", stage_name_en: "Materials Reserved", stage_name_ar: "تحديد المواد", status: "completed", started_at: daysAgo(15), finished_at: daysAgo(13), planned_duration_hours: 8, actual_duration_hours: 14, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Warehouse", assigned_operator: "Tariq Hassan", notes: "Walnut veneer + Corian from external supplier delayed 1 day", sequence: 1 },
-  { id: "s3-3", order_id: "po-03", stage_key: "cutting", stage_name_en: "Cutting", stage_name_ar: "التقطيع", status: "in_progress", started_at: daysAgo(13), finished_at: null, planned_duration_hours: 20, actual_duration_hours: null, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, assigned_team: "Cutting Team", assigned_operator: "Ahmad Khalil", notes: "Curved panels — CNC routing required", sequence: 2 },
+  // PO-03: Little Cub Pyjama Set — 1,200 sets, cutting, delayed
+  stage("po-03", "order_created", "completed", 1200, { start: 10, end: 10, planned: 1, actual: 0.5, team: "Planning", operator: "System" }),
+  stage("po-03", "materials_reserved", "completed", 1200, { start: 10, end: 6, planned: 8, actual: 30, team: "Fabric Store", operator: "Tarek Hassan", notes: "Printed interlock held at customs 3 days" }),
+  stage("po-03", "pattern", "completed", 1200, { start: 6, end: 5, planned: 10, actual: 12, team: "Pattern Room", operator: "Mona Adel", notes: "Print direction locked on marker" }),
+  stage("po-03", "cutting", "in_progress", 1200, { start: 5, done: 540, planned: 28, team: "Cutting Table 1", operator: "Ahmed Khalil", notes: "Pattern matching on print slows spreading" }),
 
-  // PO-04: Villa Al-Rashidi TV Unit
-  { id: "s4-1", order_id: "po-04", stage_key: "order_created", stage_name_en: "Order Created", stage_name_ar: "إنشاء الأمر", status: "completed", started_at: daysAgo(5), finished_at: daysAgo(5), planned_duration_hours: 1, actual_duration_hours: 0.5, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Operations", assigned_operator: "System", notes: "", sequence: 0 },
-  { id: "s4-2", order_id: "po-04", stage_key: "materials_reserved", stage_name_en: "Materials Reserved", stage_name_ar: "تحديد المواد", status: "waiting", started_at: null, finished_at: null, planned_duration_hours: 4, actual_duration_hours: null, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, assigned_team: "Warehouse", assigned_operator: "", notes: "Waiting for design approval — classic profile moulding needed", sequence: 1 },
+  // PO-04: Trail Windbreaker — 400 pcs, planned
+  stage("po-04", "order_created", "completed", 400, { start: 3, end: 3, planned: 1, actual: 0.5, team: "Planning", operator: "System" }),
+  stage("po-04", "materials_reserved", "waiting", 400, { planned: 6, team: "Fabric Store", notes: "Imported ripstop nylon on the water — ETA 9 days" }),
 
-  // PO-05: Residential Kitchen — Al-Hamra Villa (COMPLETED)
-  { id: "s5-1", order_id: "po-05", stage_key: "order_created", stage_name_en: "Order Created", stage_name_ar: "إنشاء الأمر", status: "completed", started_at: daysAgo(60), finished_at: daysAgo(60), planned_duration_hours: 1, actual_duration_hours: 0.5, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Operations", assigned_operator: "System", notes: "", sequence: 0 },
-  { id: "s5-2", order_id: "po-05", stage_key: "materials_reserved", stage_name_en: "Materials Reserved", stage_name_ar: "تحديد المواد", status: "completed", started_at: daysAgo(60), finished_at: daysAgo(58), planned_duration_hours: 8, actual_duration_hours: 6, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Warehouse", assigned_operator: "Tariq Hassan", notes: "", sequence: 1 },
-  { id: "s5-3", order_id: "po-05", stage_key: "cutting", stage_name_en: "Cutting", stage_name_ar: "التقطيع", status: "completed", started_at: daysAgo(58), finished_at: daysAgo(55), planned_duration_hours: 24, actual_duration_hours: 22, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Cutting Team", assigned_operator: "Ahmad Khalil", notes: "", sequence: 2 },
-  { id: "s5-4", order_id: "po-05", stage_key: "edgebanding", stage_name_en: "Edgebanding", stage_name_ar: "الكنار", status: "completed", started_at: daysAgo(55), finished_at: daysAgo(52), planned_duration_hours: 16, actual_duration_hours: 14, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Edgebanding", assigned_operator: "Salman Rizq", notes: "", sequence: 3 },
-  { id: "s5-5", order_id: "po-05", stage_key: "drilling", stage_name_en: "Drilling / CNC", stage_name_ar: "التخريم / CNC", status: "completed", started_at: daysAgo(52), finished_at: daysAgo(50), planned_duration_hours: 12, actual_duration_hours: 10, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "CNC Team", assigned_operator: "Youssef Ali", notes: "", sequence: 4 },
-  { id: "s5-6", order_id: "po-05", stage_key: "assembly", stage_name_en: "Assembly", stage_name_ar: "التجميع", status: "completed", started_at: daysAgo(50), finished_at: daysAgo(45), planned_duration_hours: 36, actual_duration_hours: 34, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Assembly A", assigned_operator: "Rami Saad", notes: "", sequence: 5 },
-  { id: "s5-7", order_id: "po-05", stage_key: "finishing", stage_name_en: "Finishing / Painting", stage_name_ar: "التشطيب / الدهان", status: "completed", started_at: daysAgo(45), finished_at: daysAgo(40), planned_duration_hours: 20, actual_duration_hours: 18, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Finishing", assigned_operator: "Khaled Mansour", notes: "", sequence: 6 },
-  { id: "s5-8", order_id: "po-05", stage_key: "quality_control", stage_name_en: "Quality Control", stage_name_ar: "مراقبة الجودة", status: "completed", started_at: daysAgo(40), finished_at: daysAgo(38), planned_duration_hours: 8, actual_duration_hours: 6, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "QC Team", assigned_operator: "Layla Qasim", notes: "", sequence: 7 },
-  { id: "s5-9", order_id: "po-05", stage_key: "packaging", stage_name_en: "Packaging", stage_name_ar: "التغليف", status: "completed", started_at: daysAgo(38), finished_at: daysAgo(36), planned_duration_hours: 8, actual_duration_hours: 6, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Packing", assigned_operator: "Omar Hassan", notes: "22 packages ready", sequence: 8 },
-  { id: "s5-10", order_id: "po-05", stage_key: "ready_dispatch", stage_name_en: "Ready for Dispatch", stage_name_ar: "جاهز للتسليم", status: "completed", started_at: daysAgo(36), finished_at: daysAgo(36), planned_duration_hours: 1, actual_duration_hours: 0.5, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, assigned_team: "Logistics", assigned_operator: "Khaled Mansour", notes: "", sequence: 9 },
+  // PO-05: Everyday Tee 3-Pack — 1,500 packs, completed
+  stage("po-05", "order_created", "completed", 1500, { start: 40, end: 40, planned: 1, actual: 0.5, team: "Planning", operator: "System" }),
+  stage("po-05", "materials_reserved", "completed", 1500, { start: 40, end: 39, planned: 6, actual: 5, team: "Fabric Store", operator: "Tarek Hassan" }),
+  stage("po-05", "pattern", "completed", 1500, { start: 39, end: 38, planned: 6, actual: 6, team: "Pattern Room", operator: "Mona Adel" }),
+  stage("po-05", "cutting", "completed", 1500, { start: 38, end: 36, planned: 20, actual: 18, team: "Cutting Table 2", operator: "Ahmed Khalil" }),
+  stage("po-05", "sewing", "completed", 1500, { start: 36, end: 26, planned: 110, actual: 102, rework: 18, team: "Sewing Line A", operator: "Hoda Saeed" }),
+  stage("po-05", "finishing", "completed", 1500, { start: 26, end: 23, planned: 24, actual: 22, team: "Finishing", operator: "Khaled Mansour" }),
+  stage("po-05", "quality_control", "completed", 1500, { start: 23, end: 21, planned: 14, actual: 12, rejected: 21, team: "QC", operator: "Laila Qasim" }),
+  stage("po-05", "packaging", "completed", 1500, { start: 21, end: 19, planned: 14, actual: 13, team: "Packing", operator: "Omar Hassan", notes: "Packed 3-per-box, 50 boxes per carton" }),
+  stage("po-05", "ready_dispatch", "completed", 1500, { start: 19, end: 19, planned: 1, actual: 0.5, team: "Warehouse", operator: "Omar Hassan" }),
 ];
 
 const DEMO_ORDERS: ProductionOrder[] = [
   {
-    id: "po-01", order_number: "PO-2026-001", product_name: "Meridian Kitchen — Modern Handleless", product_sku: "KIT-MHD-001",
-    sales_order_ref: "SO-2026-089", customer_name: "Meridian Trading", priority: "high", status: "in_progress",
-    current_stage: "packaging", current_stage_en: "Packaging", current_stage_ar: "التغليف",
-    planned_qty: 1, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
-    passed_qty: 1, progress_pct: 85, production_rate_per_hour: 0.12, production_rate_per_day: 1,
-    efficiency_pct: 87, planned_rate_per_hour: 0.14, start_date: daysAgo(30), due_date: daysFromNow(5),
-    estimated_completion: daysFromNow(4), is_delayed: false, delay_days: 0, delay_reason: "",
-    assigned_team: "Assembly A", assigned_lead: "Rami Saad", workstation: "Station A",
-    material_status: "available", qc_status: "passed", estimated_cost: 45000, actual_cost: 42800,
-    material_cost: 28000, labor_cost: 14800, notes: "Push-to-open system — verify Blum tip-on compatibility",
-    created_at: tsAgo(30), updated_at: tsAgo(2),
+    id: "po-01", order_number: "PO-2026-041", product_name: "Explorer Zip Hoodie — Sage", product_sku: "CUB-HOOD-EXP-SAG",
+    sales_order_ref: "SO-2026-212", customer_name: "CUBS Online Store", priority: "high", status: "in_progress",
+    current_stage: "packaging", current_stage_en: "Packing & Labels", current_stage_ar: "التغليف والتيكيت",
+    planned_qty: 600, completed_qty: 420, remaining_qty: 180, rejected_qty: 15, rework_qty: 14, waste_qty: 6,
+    passed_qty: 591, progress_pct: 90, production_rate_per_hour: 6.8, production_rate_per_day: 54,
+    efficiency_pct: 91, planned_rate_per_hour: 7.5, start_date: daysAgo(24), due_date: daysFromNow(3),
+    estimated_completion: daysFromNow(2), is_delayed: false, delay_days: 0, delay_reason: "",
+    assigned_team: "Sewing Line A", assigned_lead: "Hoda Saeed", workstation: "Packing Bay",
+    material_status: "available", qc_status: "passed", estimated_cost: 186000, actual_cost: 179400,
+    material_cost: 121800, labor_cost: 57600, notes: "Size run 2Y–12Y. Ships to online store + City Stars branch.",
+    created_at: tsAgo(24), updated_at: tsAgo(1),
     stages: DEMO_STAGES.filter(s => s.order_id === "po-01"),
     materials: [
-      { id: "mat1-1", name: "White MDF 18mm", required_qty: 18, reserved_qty: 18, used_qty: 18, remaining_qty: 0, unit: "sheets", status: "available", supplier: "MDF Egypt", warehouse_location: "A-12" },
-      { id: "mat1-2", name: "Edgeband 1mm White", required_qty: 30, reserved_qty: 30, used_qty: 28, remaining_qty: 2, unit: "meters", status: "available", supplier: "Rehau", warehouse_location: "B-03" },
-      { id: "mat1-3", name: "Edgeband 2mm Grey", required_qty: 15, reserved_qty: 15, used_qty: 14, remaining_qty: 1, unit: "meters", status: "available", supplier: "Rehau", warehouse_location: "B-03" },
-      { id: "mat1-4", name: "Blum Tip-On Hardware", required_qty: 28, reserved_qty: 28, used_qty: 28, remaining_qty: 0, unit: "sets", status: "available", supplier: "Blum", warehouse_location: "C-07" },
-      { id: "mat1-5", name: "Hinges 110°", required_qty: 28, reserved_qty: 28, used_qty: 28, remaining_qty: 0, unit: "pcs", status: "available", supplier: "Blum", warehouse_location: "C-07" },
-      { id: "mat1-6", name: "Drawer Slides 500mm", required_qty: 12, reserved_qty: 12, used_qty: 12, remaining_qty: 0, unit: "pairs", status: "available", supplier: "Blum", warehouse_location: "C-07" },
+      { id: "m1-1", name: "French Terry 320gsm — Sage (imported, Turkey)", required_qty: 540, reserved_qty: 540, used_qty: 528, remaining_qty: 12, unit: "m", status: "available", supplier: "Bursa Tekstil", warehouse_location: "F-02" },
+      { id: "m1-2", name: "YKK Metal Zip 35cm (imported)", required_qty: 600, reserved_qty: 600, used_qty: 600, remaining_qty: 0, unit: "pcs", status: "available", supplier: "YKK Middle East", warehouse_location: "T-01" },
+      { id: "m1-3", name: "Rib 1x1 Cuff — Sage", required_qty: 90, reserved_qty: 90, used_qty: 86, remaining_qty: 4, unit: "m", status: "available", supplier: "Nile Knit", warehouse_location: "F-05" },
+      { id: "m1-4", name: "CUBS Woven Neck Label", required_qty: 600, reserved_qty: 600, used_qty: 600, remaining_qty: 0, unit: "pcs", status: "available", supplier: "Label House Cairo", warehouse_location: "T-04" },
+      { id: "m1-5", name: "Hang Tag + Polybag", required_qty: 600, reserved_qty: 600, used_qty: 420, remaining_qty: 180, unit: "sets", status: "available", supplier: "PackRight", warehouse_location: "P-01" },
     ],
     qc_checks: [
-      { id: "qc1-1", stage: "quality_control", inspector: "Layla Qasim", status: "passed", passed_qty: 1, failed_qty: 0, defect_type: "", defect_pct: 0, notes: "All panels within spec — minor edge chip on piece #7 acceptable", checked_at: tsAgo(10) },
+      { id: "qc1-1", stage: "quality_control", inspector: "Laila Qasim", status: "passed", passed_qty: 591, failed_qty: 9, defect_type: "Open seam at zip end", defect_pct: 1.5, notes: "AQL 2.5 passed — 9 pcs to seconds", checked_at: tsAgo(6) },
     ],
     activity_log: [
-      { id: "al1-1", action: "created", description_en: "Production order PO-2026-001 created for Meridian Kitchen", description_ar: "تم إنشاء أمر التشغيل PO-2026-001 لمطبخ ميريديان", user: "System", timestamp: tsAgo(30), type: "status_change" },
-      { id: "al1-2", action: "materials_reserved", description_en: "All materials reserved — 18 MDF sheets, edgeband, Blum hardware", description_ar: "تم حجز جميع المواد — 18 لوح MDF، كنار، يورونات Blum", user: "Tariq Hassan", timestamp: tsAgo(28), type: "material" },
-      { id: "al1-3", action: "stage_completed", description_en: "Cutting completed — 50 panels cut on CNC", description_ar: "اكتمل التقطيع — 50 لوحة تم قطعها على CNC", user: "Ahmad Khalil", timestamp: tsAgo(25), type: "stage_change" },
-      { id: "al1-4", action: "stage_completed", description_en: "Edgebanding completed — all panels banded", description_ar: "اكتمل الكنار — جميع الألواح بالكبار", user: "Salman Rizq", timestamp: tsAgo(22), type: "stage_change" },
-      { id: "al1-5", action: "stage_completed", description_en: "Drilling completed — push-to-open pattern applied", description_ar: "اكتمل التخريم — نمط فتح بالضغط تم تطبيقه", user: "Youssef Ali", timestamp: tsAgo(20), type: "stage_change" },
-      { id: "al1-6", action: "stage_completed", description_en: "Assembly completed — Blum tip-on hardware installed", description_ar: "اكتمل التجميع — يورونات Blum تم تركيبها", user: "Rami Saad", timestamp: tsAgo(16), type: "stage_change" },
-      { id: "al1-7", action: "stage_completed", description_en: "Finishing completed — 2 coats lacquer applied", description_ar: "اكتمل التشطيب — طبقتين لتر تم تطبيقهما", user: "Khaled Mansour", timestamp: tsAgo(12), type: "stage_change" },
-      { id: "al1-8", action: "qc_check", description_en: "QC passed — all panels within spec", description_ar: "اجتاز فحص الجودة — جميع الألواح ضمن المواصفات", user: "Layla Qasim", timestamp: tsAgo(10), type: "qc" },
+      { id: "a1-1", action: "created", description_en: "Production order PO-2026-041 created for 600 Explorer hoodies", description_ar: "تم إنشاء أمر التشغيل PO-2026-041 لـ 600 هودي إكسبلورر", user: "System", timestamp: tsAgo(24), type: "status_change" },
+      { id: "a1-2", action: "materials_reserved", description_en: "Imported French terry and YKK zips issued to cutting", description_ar: "تم صرف قماش الفرنش تيري المستورد وسوست YKK للقص", user: "Tarek Hassan", timestamp: tsAgo(22), type: "material" },
+      { id: "a1-3", action: "stage_completed", description_en: "Cutting done — 6 panels recut for shade variation", description_ar: "اكتمل القص — إعادة قص 6 قطع بسبب اختلاف درجة اللون", user: "Ahmed Khalil", timestamp: tsAgo(19), type: "stage_change" },
+      { id: "a1-4", action: "stage_completed", description_en: "Sewing done on Line A — 14 pcs reworked", description_ar: "اكتملت الخياطة على الخط A — إعادة تشغيل 14 قطعة", user: "Hoda Saeed", timestamp: tsAgo(11), type: "stage_change" },
+      { id: "a1-5", action: "qc_check", description_en: "QC passed at AQL 2.5 — 9 pcs to seconds", description_ar: "اجتاز فحص الجودة AQL 2.5 — 9 قطع درجة ثانية", user: "Laila Qasim", timestamp: tsAgo(6), type: "qc" },
     ],
   },
   {
-    id: "po-02", order_number: "PO-2026-002", product_name: "Meridian Master Wardrobe", product_sku: "WRD-MST-003",
-    sales_order_ref: "SO-2026-090", customer_name: "Meridian Trading", priority: "medium", status: "in_progress",
-    current_stage: "assembly", current_stage_en: "Assembly", current_stage_ar: "التجميع",
-    planned_qty: 1, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
-    passed_qty: 0, progress_pct: 55, production_rate_per_hour: 0.1, production_rate_per_day: 0.8,
-    efficiency_pct: 82, planned_rate_per_hour: 0.12, start_date: daysAgo(28), due_date: daysFromNow(8),
+    id: "po-02", order_number: "PO-2026-043", product_name: "Adventure Jogger Set — Navy", product_sku: "CUB-SET-ADV-NVY",
+    sales_order_ref: "SO-2026-219", customer_name: "CUBS Retail Branches", priority: "medium", status: "in_progress",
+    current_stage: "sewing", current_stage_en: "Sewing", current_stage_ar: "الخياطة",
+    planned_qty: 800, completed_qty: 0, remaining_qty: 800, rejected_qty: 0, rework_qty: 22, waste_qty: 0,
+    passed_qty: 0, progress_pct: 52, production_rate_per_hour: 5.2, production_rate_per_day: 42,
+    efficiency_pct: 84, planned_rate_per_hour: 6.2, start_date: daysAgo(18), due_date: daysFromNow(9),
     estimated_completion: daysFromNow(10), is_delayed: false, delay_days: 0, delay_reason: "",
-    assigned_team: "Assembly B", assigned_lead: "Rami Saad", workstation: "Station B",
-    material_status: "partial", qc_status: "pending", estimated_cost: 38000, actual_cost: 22000,
-    material_cost: 15000, labor_cost: 7000, notes: "Sliding door tracks from supplier — confirm delivery",
-    created_at: tsAgo(28), updated_at: tsAgo(3),
+    assigned_team: "Sewing Line B", assigned_lead: "Samah Fathy", workstation: "Sewing Line B",
+    material_status: "partial", qc_status: "pending", estimated_cost: 212000, actual_cost: 118500,
+    material_cost: 96000, labor_cost: 22500, notes: "Back-to-school drop. Elastic 2nd lot must land before day 6.",
+    created_at: tsAgo(18), updated_at: tsAgo(0),
     stages: DEMO_STAGES.filter(s => s.order_id === "po-02"),
     materials: [
-      { id: "mat2-1", name: "White MDF 18mm", required_qty: 12, reserved_qty: 12, used_qty: 12, remaining_qty: 0, unit: "sheets", status: "available", supplier: "MDF Egypt", warehouse_location: "A-12" },
-      { id: "mat2-2", name: "Edgeband 1mm White", required_qty: 20, reserved_qty: 20, used_qty: 20, remaining_qty: 0, unit: "meters", status: "available", supplier: "Rehau", warehouse_location: "B-03" },
-      { id: "mat2-3", name: "Sliding Door Track 2400mm", required_qty: 3, reserved_qty: 1, used_qty: 0, remaining_qty: 2, unit: "pcs", status: "partial", supplier: "Hettich", warehouse_location: "C-05" },
-      { id: "mat2-4", name: "LED Strip 2m", required_qty: 2, reserved_qty: 2, used_qty: 0, remaining_qty: 2, unit: "pcs", status: "available", supplier: "LED Plus", warehouse_location: "D-02" },
+      { id: "m2-1", name: "Cotton Fleece 280gsm — Navy", required_qty: 960, reserved_qty: 960, used_qty: 940, remaining_qty: 20, unit: "m", status: "available", supplier: "Misr Spinning", warehouse_location: "F-01" },
+      { id: "m2-2", name: "Waistband Elastic 30mm", required_qty: 560, reserved_qty: 320, used_qty: 300, remaining_qty: 260, unit: "m", status: "partial", supplier: "Delta Trims", warehouse_location: "T-02" },
+      { id: "m2-3", name: "Rib Trim (imported, China)", required_qty: 120, reserved_qty: 120, used_qty: 70, remaining_qty: 50, unit: "m", status: "available", supplier: "Shaoxing Rib Co.", warehouse_location: "F-05" },
     ],
     qc_checks: [],
     activity_log: [
-      { id: "al2-1", action: "created", description_en: "Production order PO-2026-002 created", description_ar: "تم إنشاء أمر التشغيل PO-2026-002", user: "System", timestamp: tsAgo(28), type: "status_change" },
-      { id: "al2-2", action: "stage_started", description_en: "Assembly started — waiting for sliding door tracks", description_ar: "بدأ التجميع — في انتظار سكك الأبواب المنزلقة", user: "Rami Saad", timestamp: tsAgo(18), type: "stage_change" },
+      { id: "a2-1", action: "created", description_en: "Production order PO-2026-043 created", description_ar: "تم إنشاء أمر التشغيل PO-2026-043", user: "System", timestamp: tsAgo(18), type: "status_change" },
+      { id: "a2-2", action: "delay_detected", description_en: "Imported rib trim arrived 2 days late", description_ar: "وصل الريب المستورد متأخراً يومين", user: "Tarek Hassan", timestamp: tsAgo(15), type: "delay" },
+      { id: "a2-3", action: "quantity_update", description_en: "Sewing Line B: 460 of 800 sets complete", description_ar: "خط الخياطة B: اكتمل 460 من 800 طقم", user: "Samah Fathy", timestamp: tsAgo(0), type: "quantity_update" },
     ],
   },
   {
-    id: "po-03", order_number: "PO-2026-003", product_name: "Al-Noor Reception Counter (Curved)", product_sku: "RCT-ALN-001",
-    sales_order_ref: "SO-2026-095", customer_name: "Al-Noor Furniture", priority: "urgent", status: "in_progress",
-    current_stage: "cutting", current_stage_en: "Cutting", current_stage_ar: "التقطيع",
-    planned_qty: 1, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
-    passed_qty: 0, progress_pct: 15, production_rate_per_hour: 0.05, production_rate_per_day: 0.4,
-    efficiency_pct: 75, planned_rate_per_hour: 0.08, start_date: daysAgo(15), due_date: daysFromNow(10),
-    estimated_completion: daysFromNow(14), is_delayed: true, delay_days: 3, delay_reason: "Corian top from external supplier delayed 2 days",
-    assigned_team: "Cutting Team", assigned_lead: "Ahmad Khalil", workstation: "Station A",
-    material_status: "partial", qc_status: "pending", estimated_cost: 62000, actual_cost: 12000,
-    material_cost: 12000, labor_cost: 0, notes: "Curved panels — CNC routing required. Corian top from external supplier.",
-    created_at: tsAgo(15), updated_at: tsAgo(1),
+    id: "po-03", order_number: "PO-2026-045", product_name: "Little Cub Pyjama Set — Bear Print", product_sku: "CUB-PJ-LCB-PRT",
+    sales_order_ref: "SO-2026-224", customer_name: "CUBS Online Store", priority: "urgent", status: "in_progress",
+    current_stage: "cutting", current_stage_en: "Cutting", current_stage_ar: "القص",
+    planned_qty: 1200, completed_qty: 0, remaining_qty: 1200, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
+    passed_qty: 0, progress_pct: 28, production_rate_per_hour: 19, production_rate_per_day: 150,
+    efficiency_pct: 76, planned_rate_per_hour: 25, start_date: daysAgo(10), due_date: daysFromNow(12),
+    estimated_completion: daysFromNow(15), is_delayed: true, delay_days: 3, delay_reason: "Imported printed interlock held at customs for 3 days",
+    assigned_team: "Cutting Table 1", assigned_lead: "Ahmed Khalil", workstation: "Cutting Table 1",
+    material_status: "available", qc_status: "pending", estimated_cost: 264000, actual_cost: 98000,
+    material_cost: 92000, labor_cost: 6000, notes: "Winter campaign hero product. Print must match across front panels.",
+    created_at: tsAgo(10), updated_at: tsAgo(0),
     stages: DEMO_STAGES.filter(s => s.order_id === "po-03"),
     materials: [
-      { id: "mat3-1", name: "Walnut Veneer MDF 18mm", required_qty: 8, reserved_qty: 8, used_qty: 0, remaining_qty: 8, unit: "sheets", status: "available", supplier: "VeneerCo", warehouse_location: "A-05" },
-      { id: "mat3-2", name: "Corian Glacier White 12mm", required_qty: 4, reserved_qty: 2, used_qty: 0, remaining_qty: 2, unit: "sqm", status: "partial", supplier: "Corian Egypt", warehouse_location: "" },
-      { id: "mat3-3", name: "Edgeband Walnut 1mm", required_qty: 10, reserved_qty: 10, used_qty: 0, remaining_qty: 10, unit: "meters", status: "available", supplier: "Rehau", warehouse_location: "B-03" },
+      { id: "m3-1", name: "Printed Interlock 200gsm — Bear (imported, Portugal)", required_qty: 1380, reserved_qty: 1380, used_qty: 620, remaining_qty: 760, unit: "m", status: "available", supplier: "Lisboa Prints", warehouse_location: "F-03" },
+      { id: "m3-2", name: "Snap Buttons 12mm", required_qty: 4800, reserved_qty: 4800, used_qty: 0, remaining_qty: 4800, unit: "pcs", status: "available", supplier: "Delta Trims", warehouse_location: "T-03" },
+      { id: "m3-3", name: "Care Label (EN/AR)", required_qty: 1200, reserved_qty: 1200, used_qty: 0, remaining_qty: 1200, unit: "pcs", status: "available", supplier: "Label House Cairo", warehouse_location: "T-04" },
     ],
     qc_checks: [],
     activity_log: [
-      { id: "al3-1", action: "created", description_en: "Production order PO-2026-003 created — URGENT", description_ar: "تم إنشاء أمر التشغيل PO-2026-003 — عاجل", user: "System", timestamp: tsAgo(15), type: "status_change" },
-      { id: "al3-2", action: "delay_detected", description_en: "Corian top delivery delayed 2 days from supplier", description_ar: "تأخر تسليم تاج الكوريان من المورد بيومين", user: "System", timestamp: tsAgo(5), type: "delay" },
-      { id: "al3-3", action: "stage_started", description_en: "Cutting started — curved CNC routing in progress", description_ar: "بدأ التقطيع — تقطيع منحني CNC جارٍ", user: "Ahmad Khalil", timestamp: tsAgo(3), type: "stage_change" },
+      { id: "a3-1", action: "created", description_en: "Production order PO-2026-045 created — URGENT", description_ar: "تم إنشاء أمر التشغيل PO-2026-045 — عاجل", user: "System", timestamp: tsAgo(10), type: "status_change" },
+      { id: "a3-2", action: "delay_detected", description_en: "Printed interlock held at customs 3 days", description_ar: "القماش المطبوع محجوز في الجمارك 3 أيام", user: "System", timestamp: tsAgo(7), type: "delay" },
+      { id: "a3-3", action: "stage_started", description_en: "Cutting started — print-matched spreading", description_ar: "بدأ القص — فرد القماش مع مطابقة الطباعة", user: "Ahmed Khalil", timestamp: tsAgo(5), type: "stage_change" },
     ],
   },
   {
-    id: "po-04", order_number: "PO-2026-004", product_name: "Villa Al-Rashidi TV Unit", product_sku: "TVU-ALR-001",
-    sales_order_ref: "SO-2026-100", customer_name: "Mohammed Al-Rashidi", priority: "low", status: "planned",
-    current_stage: "materials_reserved", current_stage_en: "Materials Reserved", current_stage_ar: "تحديد المواد",
-    planned_qty: 1, completed_qty: 0, remaining_qty: 1, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
+    id: "po-04", order_number: "PO-2026-047", product_name: "Trail Windbreaker — Mustard", product_sku: "CUB-JKT-TRL-MUS",
+    sales_order_ref: "SO-2026-230", customer_name: "CUBS Retail Branches", priority: "low", status: "planned",
+    current_stage: "materials_reserved", current_stage_en: "Fabric & Trims", current_stage_ar: "القماش والإكسسوار",
+    planned_qty: 400, completed_qty: 0, remaining_qty: 400, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
     passed_qty: 0, progress_pct: 0, production_rate_per_hour: 0, production_rate_per_day: 0,
-    efficiency_pct: 0, planned_rate_per_hour: 0.1, start_date: daysFromNow(3), due_date: daysFromNow(20),
-    estimated_completion: daysFromNow(20), is_delayed: false, delay_days: 0, delay_reason: "",
+    efficiency_pct: 0, planned_rate_per_hour: 4, start_date: daysFromNow(9), due_date: daysFromNow(30),
+    estimated_completion: daysFromNow(30), is_delayed: false, delay_days: 0, delay_reason: "",
     assigned_team: "", assigned_lead: "", workstation: "",
-    material_status: "shortage", qc_status: "pending", estimated_cost: 18000, actual_cost: 0,
-    material_cost: 0, labor_cost: 0, notes: "Waiting for design approval. Classic profile moulding needed.",
-    created_at: tsAgo(5), updated_at: tsAgo(5),
+    material_status: "shortage", qc_status: "pending", estimated_cost: 148000, actual_cost: 0,
+    material_cost: 0, labor_cost: 0, notes: "Imported ripstop on the water. Starts when fabric clears customs.",
+    created_at: tsAgo(3), updated_at: tsAgo(3),
     stages: DEMO_STAGES.filter(s => s.order_id === "po-04"),
     materials: [
-      { id: "mat4-1", name: "Walnut MDF 18mm", required_qty: 6, reserved_qty: 0, used_qty: 0, remaining_qty: 6, unit: "sheets", status: "shortage", supplier: "MDF Egypt", warehouse_location: "" },
-      { id: "mat4-2", name: "Classic Profile Moulding", required_qty: 8, reserved_qty: 0, used_qty: 0, remaining_qty: 8, unit: "meters", status: "shortage", supplier: "MouldingCo", warehouse_location: "" },
+      { id: "m4-1", name: "Ripstop Nylon — Mustard (imported, China)", required_qty: 520, reserved_qty: 0, used_qty: 0, remaining_qty: 520, unit: "m", status: "shortage", supplier: "Jiangsu Outdoor Fabrics", warehouse_location: "" },
+      { id: "m4-2", name: "Mesh Lining", required_qty: 400, reserved_qty: 0, used_qty: 0, remaining_qty: 400, unit: "m", status: "shortage", supplier: "Nile Knit", warehouse_location: "" },
     ],
     qc_checks: [],
     activity_log: [
-      { id: "al4-1", action: "created", description_en: "Production order PO-2026-004 created — waiting for design", description_ar: "تم إنشاء أمر التشغيل PO-2026-004 — في انتظار التصميم", user: "System", timestamp: tsAgo(5), type: "status_change" },
+      { id: "a4-1", action: "created", description_en: "Production order PO-2026-047 planned — waiting for imported fabric", description_ar: "تم تخطيط أمر التشغيل PO-2026-047 — في انتظار القماش المستورد", user: "System", timestamp: tsAgo(3), type: "status_change" },
     ],
   },
   {
-    id: "po-05", order_number: "PO-2025-098", product_name: "Residential Kitchen — Al-Hamra Villa", product_sku: "KIT-AHV-012",
-    sales_order_ref: "SO-2025-142", customer_name: "Faisal Al-Hamra", priority: "high", status: "completed",
+    id: "po-05", order_number: "PO-2026-032", product_name: "Everyday Tee 3-Pack — Multicolour", product_sku: "CUB-TEE-EVD-3PK",
+    sales_order_ref: "SO-2026-188", customer_name: "CUBS Online Store", priority: "high", status: "completed",
     current_stage: "ready_dispatch", current_stage_en: "Ready for Dispatch", current_stage_ar: "جاهز للتسليم",
-    planned_qty: 1, completed_qty: 1, remaining_qty: 0, rejected_qty: 0, rework_qty: 0, waste_qty: 0,
-    passed_qty: 1, progress_pct: 100, production_rate_per_hour: 0.15, production_rate_per_day: 1.2,
-    efficiency_pct: 92, planned_rate_per_hour: 0.14, start_date: daysAgo(60), due_date: daysAgo(10),
-    estimated_completion: daysAgo(8), is_delayed: false, delay_days: 0, delay_reason: "",
-    assigned_team: "Assembly A", assigned_lead: "Rami Saad", workstation: "Station A",
-    material_status: "available", qc_status: "passed", estimated_cost: 52000, actual_cost: 48000,
-    material_cost: 32000, labor_cost: 16000, notes: "Complete — awaiting delivery scheduling",
-    created_at: tsAgo(60), updated_at: tsAgo(8),
+    planned_qty: 1500, completed_qty: 1479, remaining_qty: 0, rejected_qty: 21, rework_qty: 18, waste_qty: 0,
+    passed_qty: 1479, progress_pct: 100, production_rate_per_hour: 14, production_rate_per_day: 112,
+    efficiency_pct: 94, planned_rate_per_hour: 13.5, start_date: daysAgo(40), due_date: daysAgo(17),
+    estimated_completion: daysAgo(19), is_delayed: false, delay_days: 0, delay_reason: "",
+    assigned_team: "Sewing Line A", assigned_lead: "Hoda Saeed", workstation: "Warehouse",
+    material_status: "available", qc_status: "passed", estimated_cost: 255000, actual_cost: 243600,
+    material_cost: 168000, labor_cost: 75600, notes: "Delivered 2 days early.",
+    created_at: tsAgo(40), updated_at: tsAgo(19),
     stages: DEMO_STAGES.filter(s => s.order_id === "po-05"),
     materials: [
-      { id: "mat5-1", name: "White MDF 18mm", required_qty: 22, reserved_qty: 22, used_qty: 22, remaining_qty: 0, unit: "sheets", status: "available", supplier: "MDF Egypt", warehouse_location: "A-12" },
-      { id: "mat5-2", name: "Edgeband 1mm White", required_qty: 35, reserved_qty: 35, used_qty: 34, remaining_qty: 1, unit: "meters", status: "available", supplier: "Rehau", warehouse_location: "B-03" },
-      { id: "mat5-3", name: "Edgeband 2mm White", required_qty: 20, reserved_qty: 20, used_qty: 19, remaining_qty: 1, unit: "meters", status: "available", supplier: "Rehau", warehouse_location: "B-03" },
-      { id: "mat5-4", name: "Hinges 110° Soft-Close", required_qty: 36, reserved_qty: 36, used_qty: 36, remaining_qty: 0, unit: "pcs", status: "available", supplier: "Blum", warehouse_location: "C-07" },
-      { id: "mat5-5", name: "Drawer Slides 600mm", required_qty: 16, reserved_qty: 16, used_qty: 16, remaining_qty: 0, unit: "pairs", status: "available", supplier: "Blum", warehouse_location: "C-07" },
+      { id: "m5-1", name: "Combed Cotton Jersey 180gsm", required_qty: 2700, reserved_qty: 2700, used_qty: 2660, remaining_qty: 40, unit: "m", status: "available", supplier: "Misr Spinning", warehouse_location: "F-01" },
+      { id: "m5-2", name: "CUBS Printed Neck Label", required_qty: 4500, reserved_qty: 4500, used_qty: 4500, remaining_qty: 0, unit: "pcs", status: "available", supplier: "Label House Cairo", warehouse_location: "T-04" },
     ],
     qc_checks: [
-      { id: "qc5-1", stage: "quality_control", inspector: "Layla Qasim", status: "passed", passed_qty: 1, failed_qty: 0, defect_type: "", defect_pct: 0, notes: "Excellent quality — all panels and hardware verified", checked_at: tsAgo(38) },
+      { id: "qc5-1", stage: "quality_control", inspector: "Laila Qasim", status: "passed", passed_qty: 1479, failed_qty: 21, defect_type: "Neck rib twist", defect_pct: 1.4, notes: "AQL 2.5 passed", checked_at: tsAgo(21) },
     ],
     activity_log: [
-      { id: "al5-1", action: "completed", description_en: "Production completed — kitchen ready for delivery", description_ar: "اكتمل الإنتاج — المطبخ جاهز للتسليم", user: "Rami Saad", timestamp: tsAgo(8), type: "completion" },
+      { id: "a5-1", action: "completed", description_en: "Production completed — 1,479 packs ready for dispatch", description_ar: "اكتمل الإنتاج — 1,479 عبوة جاهزة للتسليم", user: "Omar Hassan", timestamp: tsAgo(19), type: "completion" },
     ],
   },
 ];
 
 const DEMO_ALERTS: ProductionAlert[] = [
-  { id: "alert-1", order_id: "po-03", order_number: "PO-2026-003", type: "deadline_risk", severity: "warning", message_en: "Corian top delayed — may impact curved counter delivery", message_ar: "تأخر تاج الكوريان — قد يؤثر على تسليم العداد المنحني", created_at: tsAgo(1), dismissed: false },
-  { id: "alert-2", order_id: "po-02", order_number: "PO-2026-002", type: "material_shortage", severity: "warning", message_en: "Sliding door tracks — only 1 of 3 delivered, 2 pending", message_ar: "سكك الأبواب المنزلقة — تم تسليم 1 من 3، 2 معلقة", created_at: tsAgo(5), dismissed: false },
-  { id: "alert-3", order_id: "po-04", order_number: "PO-2026-004", type: "material_shortage", severity: "info", message_en: "Design approval pending — cannot reserve materials", message_ar: "موافقة التصميم معلقة — لا يمكن حجز المواد", created_at: tsAgo(5), dismissed: false },
-  { id: "alert-4", order_id: "po-03", order_number: "PO-2026-003", type: "stage_stuck", severity: "warning", message_en: "Cutting stage taking longer than planned — CNC routing complexity", message_ar: "مرحلة التقطيع تستغرق وقتاً أطول — تعقيد التقطيع CNC", created_at: tsAgo(2), dismissed: false },
+  { id: "alert-1", order_id: "po-03", order_number: "PO-2026-045", type: "deadline_risk", severity: "warning", message_en: "Customs hold on printed interlock — pyjama set 3 days behind", message_ar: "حجز جمركي على القماش المطبوع — طقم البيجامة متأخر 3 أيام", created_at: tsAgo(1), dismissed: false },
+  { id: "alert-2", order_id: "po-02", order_number: "PO-2026-043", type: "material_shortage", severity: "warning", message_en: "Waistband elastic — 260 m short, second lot ordered", message_ar: "أستك الوسط — ناقص 260 متر، تم طلب دفعة ثانية", created_at: tsAgo(2), dismissed: false },
+  { id: "alert-3", order_id: "po-04", order_number: "PO-2026-047", type: "material_shortage", severity: "info", message_en: "Imported ripstop ETA 9 days — windbreaker cannot start", message_ar: "الريب ستوب المستورد يصل خلال 9 أيام — لا يمكن بدء الجاكيت", created_at: tsAgo(3), dismissed: false },
+  { id: "alert-4", order_id: "po-02", order_number: "PO-2026-043", type: "rate_low", severity: "warning", message_en: "Sewing Line B at 84% of planned rate", message_ar: "خط الخياطة B يعمل بنسبة 84% من المعدل المخطط", created_at: tsAgo(0), dismissed: false },
 ];
 
 const DEMO_WORKSTATIONS: WorkstationInfo[] = [
-  { id: "ws-1", name: "Station A — CNC Cutting", status: "active", current_order: "po-03", operator: "Ahmad Khalil", capacity: 85, queue_count: 1, last_maintenance: daysAgo(10) },
-  { id: "ws-2", name: "Station B — CNC Cutting", status: "idle", current_order: null, operator: "", capacity: 100, queue_count: 0, last_maintenance: daysAgo(8) },
-  { id: "ws-3", name: "Edgebanding Station", status: "active", current_order: null, operator: "Salman Rizq", capacity: 90, queue_count: 0, last_maintenance: daysAgo(12) },
-  { id: "ws-4", name: "CNC Drilling", status: "active", current_order: null, operator: "Youssef Ali", capacity: 95, queue_count: 0, last_maintenance: daysAgo(7) },
-  { id: "ws-5", name: "Assembly Bay A", status: "active", current_order: "po-01", operator: "Rami Saad", capacity: 80, queue_count: 0, last_maintenance: daysAgo(15) },
-  { id: "ws-6", name: "Assembly Bay B", status: "active", current_order: "po-02", operator: "Rami Saad", capacity: 70, queue_count: 1, last_maintenance: daysAgo(15) },
-  { id: "ws-7", name: "Paint / Lacquer Booth", status: "active", current_order: null, operator: "Khaled Mansour", capacity: 88, queue_count: 0, last_maintenance: daysAgo(5) },
-  { id: "ws-8", name: "QC Station", status: "active", current_order: null, operator: "Layla Qasim", capacity: 100, queue_count: 0, last_maintenance: daysAgo(7) },
-  { id: "ws-9", name: "Packing Bay", status: "maintenance", current_order: null, operator: "", capacity: 0, queue_count: 1, last_maintenance: daysAgo(30) },
+  { id: "ws-1", name: "Pattern & CAD Room", status: "active", current_order: null, operator: "Mona Adel", capacity: 70, queue_count: 1, last_maintenance: daysAgo(20) },
+  { id: "ws-2", name: "Cutting Table 1", status: "active", current_order: "po-03", operator: "Ahmed Khalil", capacity: 95, queue_count: 0, last_maintenance: daysAgo(9) },
+  { id: "ws-3", name: "Cutting Table 2", status: "idle", current_order: null, operator: "", capacity: 0, queue_count: 1, last_maintenance: daysAgo(6) },
+  { id: "ws-4", name: "Sewing Line A (18 machines)", status: "active", current_order: "po-01", operator: "Hoda Saeed", capacity: 88, queue_count: 1, last_maintenance: daysAgo(11) },
+  { id: "ws-5", name: "Sewing Line B (14 machines)", status: "active", current_order: "po-02", operator: "Samah Fathy", capacity: 84, queue_count: 0, last_maintenance: daysAgo(13) },
+  { id: "ws-6", name: "Embroidery Machine", status: "maintenance", current_order: null, operator: "", capacity: 0, queue_count: 2, last_maintenance: daysAgo(30) },
+  { id: "ws-7", name: "Finishing & Pressing", status: "active", current_order: null, operator: "Khaled Mansour", capacity: 60, queue_count: 0, last_maintenance: daysAgo(5) },
+  { id: "ws-8", name: "QC Station", status: "active", current_order: null, operator: "Laila Qasim", capacity: 75, queue_count: 0, last_maintenance: daysAgo(7) },
+  { id: "ws-9", name: "Packing Bay", status: "active", current_order: "po-01", operator: "Omar Hassan", capacity: 90, queue_count: 0, last_maintenance: daysAgo(12) },
 ];
 
 // ─── In-memory store (demo mode) ──────────────────────────
@@ -451,8 +467,6 @@ export interface AIInsight {
 
 export function getAIInsights(): AIInsight[] {
   const stats = getProductionStats();
-  const delayedOrders = _orders.filter(o => o.is_delayed);
-  const shortageOrders = _orders.filter(o => o.material_status === "shortage");
 
   return [
     {
@@ -464,30 +478,30 @@ export function getAIInsights(): AIInsight[] {
     },
     {
       id: "ai-2", type: "bottleneck",
-      title_en: "Bottleneck: Assembly Stage", title_ar: "عائق: مرحلة التجميع",
-      detail_en: "Assembly is the slowest stage across active orders. PO-2026-002 is waiting for sliding door tracks — consider expediting with supplier Hettich.",
-      detail_ar: "التجميع هي أبطأ مرحلة في الأوامر النشطة. PO-2026-002 في انتظار سكك الأبواب المنزلقة — فكّر في تسريع التسليم من المورد Hettich.",
+      title_en: "Bottleneck: Sewing", title_ar: "عائق: الخياطة",
+      detail_en: "Sewing is the slowest stage across active orders. Zip insertion and waistband attaching take the most minutes per piece — consider moving two operators from Line A to Line B this week.",
+      detail_ar: "الخياطة هي أبطأ مرحلة في الأوامر النشطة. تركيب السوستة والأستك يستهلكان أكبر وقت للقطعة — فكّر في نقل عاملتين من الخط A إلى الخط B هذا الأسبوع.",
       severity: "warning",
     },
     {
       id: "ai-3", type: "prediction",
-      title_en: "PO-2026-003: Curved Counter Risk", title_ar: "PO-2026-003: خطر العداد المنحني",
-      detail_en: "CNC curved routing is taking 40% longer than planned. Based on current rate, completion estimated 4 days late. Consider assigning second CNC operator.",
-      detail_ar: "التقطيع المنحني على CNC يستغرق 40% أكثر من المخطط. بناءً على المعدل الحالي، الإكمال متوقع بتأخير 4 أيام. فكّر في تعيين مشغل CNC ثاني.",
+      title_en: "PO-2026-045: Pyjama Set Late", title_ar: "PO-2026-045: تأخر طقم البيجامة",
+      detail_en: "The customs hold cost 3 days and print-matched cutting runs 24% below plan. At this rate the order finishes 3 days after its due date unless Cutting Table 2 joins.",
+      detail_ar: "الحجز الجمركي أضاع 3 أيام والقص مع مطابقة الطباعة أقل من الخطة بنسبة 24%. بهذا المعدل سينتهي الأمر بعد موعده بـ 3 أيام ما لم تنضم طاولة القص 2.",
       severity: "warning",
     },
     {
       id: "ai-4", type: "recommendation",
-      title_en: "Expedite Sliding Door Tracks", title_ar: "تسريع سكك الأبواب المنزلقة",
-      detail_en: "PO-2026-002 assembly is blocked. Only 1 of 3 sliding door tracks delivered from Hettich. Contact supplier for urgent delivery.",
-      detail_ar: "تم حظر تجميع PO-2026-002. تم تسليم 1 من 3 سكك من Hettich. اتصل بالمورد للتسليم العاجل.",
+      title_en: "Order Elastic Now", title_ar: "اطلب الأستك الآن",
+      detail_en: "PO-2026-043 has 260 m of waistband elastic left to source. Line B runs out in about 2 days — confirm the second lot with Delta Trims today.",
+      detail_ar: "ينقص PO-2026-043 حوالي 260 متر أستك. سينفد في الخط B خلال يومين تقريباً — أكّد الدفعة الثانية مع Delta Trims اليوم.",
       severity: "critical",
     },
     {
-      id: "ai-5", type: "recommendation",
-      title_en: "Packing Bay Maintenance Overdue", title_ar: "صيانة خليج التغليف متأخرة",
-      detail_en: "Packing Bay last maintenance was 30 days ago (recommended: every 14 days). Schedule maintenance to prevent downtime during peak production.",
-      detail_ar: "آخر صيانة لخليج التغليف قبل 30 يوماً (الموصى: كل 14 يوماً). جدول الصيانة لمنع التوقف أثناء الذروة.",
+      id: "ai-5", type: "risk",
+      title_en: "Imported Fabric Lead Times", title_ar: "مدة توريد القماش المستورد",
+      detail_en: "2 of 4 active orders were held up by imported fabric this month. Build 2 weeks of customs buffer into orders that use imported rolls.",
+      detail_ar: "تأخر أمران من 4 أوامر نشطة هذا الشهر بسبب القماش المستورد. أضف أسبوعين احتياطي للجمارك في الأوامر التي تستخدم أقمشة مستوردة.",
       severity: "warning",
     },
   ];

@@ -29,6 +29,9 @@ export interface FlowStage {
 // ─── Stage icon & color mapping ───────────────────────────
 
 const STAGE_META: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
+  pattern:      { icon: Layers,         color: "#6366F1", bg: "bg-indigo-50" },
+  sewing:       { icon: Wrench,         color: "#06B6D4", bg: "bg-cyan-50" },
+  finishing:    { icon: Paintbrush,     color: "#F97316", bg: "bg-orange-50" },
   cutting:      { icon: Scissors,       color: "#3B82F6", bg: "bg-blue-50" },
   cnc:          { icon: Cpu,            color: "#6366F1", bg: "bg-indigo-50" },
   edgebanding:  { icon: Layers,         color: "#06B6D4", bg: "bg-cyan-50" },
@@ -195,6 +198,9 @@ export default function ProductionFlowMap({ stages, ar = false, compact = false,
 
 export function stageIdsToFlow(ids: string[], currentIdx: number = -1): FlowStage[] {
   const STAGE_NAMES: Record<string, { en: string; ar: string }> = {
+    pattern: { en: "Pattern & Marker", ar: "الباترون" },
+    sewing: { en: "Sewing", ar: "الخياطة" },
+    finishing: { en: "Finishing & Pressing", ar: "التشطيب والكي" },
     cutting: { en: "Cutting", ar: "تقطيع" },
     cnc: { en: "CNC", ar: "CNC" },
     edgebanding: { en: "Edge Banding", ar: "حواف" },

@@ -33,10 +33,9 @@ type ViewMode = "dashboard" | "list" | "kanban" | "detail" | "reports" | "alerts
 const STAGE_COLORS: Record<string, string> = {
   order_created: "bg-zinc-100 text-zinc-600",
   materials_reserved: "bg-warning/10 text-warning",
+  pattern: "bg-indigo-50 text-indigo-600",
   cutting: "bg-blue-50 text-blue-600",
-  edgebanding: "bg-indigo-50 text-indigo-600",
-  drilling: "bg-chart-4/10 text-chart-4",
-  assembly: "bg-cyan-50 text-cyan-600",
+  sewing: "bg-cyan-50 text-cyan-600",
   finishing: "bg-chart-4/10 text-chart-4",
   quality_control: "bg-orange-50 text-orange-600",
   packaging: "bg-teal-50 text-teal-600",
@@ -47,10 +46,9 @@ const STAGE_COLORS: Record<string, string> = {
 const STAGE_DOT: Record<string, string> = {
   order_created: "bg-zinc-400",
   materials_reserved: "bg-warning",
+  pattern: "bg-indigo-500",
   cutting: "bg-blue-500",
-  edgebanding: "bg-indigo-500",
-  drilling: "bg-chart-4",
-  assembly: "bg-cyan-500",
+  sewing: "bg-cyan-500",
   finishing: "bg-chart-4",
   quality_control: "bg-orange-500",
   packaging: "bg-teal-500",
@@ -414,14 +412,13 @@ function ListView({ ar, onSelectOrder }: { ar: boolean; onSelectOrder: (id: stri
 
 function KanbanView({ ar, onSelectOrder }: { ar: boolean; onSelectOrder: (id: string) => void }) {
   const orders = getProductionOrders();
-  const stageKeys = ["planned", "materials_reserved", "cutting", "edgebanding", "drilling", "assembly", "finishing", "quality_control", "packaging", "ready_dispatch"];
+  const stageKeys = ["planned", "materials_reserved", "pattern", "cutting", "sewing", "finishing", "quality_control", "packaging", "ready_dispatch"];
   const stageLabels: Record<string, { en: string; ar: string }> = {
     planned: { en: "Planned", ar: "مخطط" },
-    materials_reserved: { en: "Materials", ar: "المواد" },
-    cutting: { en: "Cutting", ar: "التقطيع" },
-    edgebanding: { en: "Edgebanding", ar: "الكنار" },
-    drilling: { en: "Drilling", ar: "التخريم" },
-    assembly: { en: "Assembly", ar: "التجميع" },
+    materials_reserved: { en: "Fabric & Trims", ar: "القماش" },
+    pattern: { en: "Pattern", ar: "الباترون" },
+    cutting: { en: "Cutting", ar: "القص" },
+    sewing: { en: "Sewing", ar: "الخياطة" },
     finishing: { en: "Finishing", ar: "التشطيب" },
     quality_control: { en: "QC", ar: "الجودة" },
     packaging: { en: "Packaging", ar: "التغليف" },
