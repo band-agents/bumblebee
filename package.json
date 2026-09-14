@@ -10,7 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "video:studio": "remotion studio remotion/index.ts",
+    "video:render": "remotion render remotion/index.ts HeroLoop public/landing/hero.mp4 --codec=h264 --crf=26 --pixel-format=yuv420p"
   },
   "dependencies": {
     "@sentry/react": "^10.62.0",
