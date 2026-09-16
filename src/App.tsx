@@ -421,6 +421,10 @@ function Router() {
   // workspace has had their membership removed — there is nothing to set up.
   if (!workspace) return <NoWorkspace />;
 
+  // Signing in happens on /auth; once the session exists, that URL has no page
+  // inside the app, so move the user to the dashboard instead of a 404.
+  if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" replace />;
+
   return <AppRoutes />;
 }
 
