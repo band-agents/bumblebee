@@ -23,6 +23,24 @@ interface Props {
 }
 interface State { error: Error | null; showDetail: boolean }
 
+export function isStaleChunkError(error: unknown): boolean {
+  const msg = String((error as Error)?.message ?? error);
+  return /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module|Loading chunk .* failed/i.test(msg);
+}
+
+/** Reloads the page unless we already did so in the last 30 seconds (avoids a loop if the server is down). */
+export function reloadOnceForNewBuild(): boolean {
+  try {
+    const last = Number(sessionStorage.getItem("bumblebee_chunk_reload") || 0);
+    if (Date.now() - last < 30_000) return false;
+    sessionStorage.setItem("bumblebee_chunk_reload", String(Date.now()));
+  } catch {
+    return false;
+  }
+  window.location.reload();
+  return true;
+}
+
 export class RouteErrorBoundary extends Component<Props, State> {
   state: State = { error: null, showDetail: false };
 
@@ -38,6 +56,9 @@ export class RouteErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string | null }) {
+    // A tab opened before a new deploy asks for page files that no longer
+    // exist. Reloading fetches the new build — do it once, automatically.
+    if (isStaleChunkError(error) && reloadOnceForNewBuild()) return;
     console.error("[Bumblebee] Page error:", error, info.componentStack);
     reportError(error, { componentStack: info.componentStack, route: this.props.resetKey });
   }

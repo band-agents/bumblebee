@@ -4,11 +4,18 @@ import { reportError } from "./lib/sentry";
 import { installGlobalErrorSurface } from "./lib/errors";
 import { migrateLegacyStorage } from "./lib/brand";
 import App from "./App";
+import { reloadOnceForNewBuild } from "./components/RouteErrorBoundary";
 import "./index.css";
 
 // Carry pre-rename localStorage forward before anything reads it.
 migrateLegacyStorage();
 installGlobalErrorSurface();
+
+// Vite fires this when a lazy page's file is gone (the app was redeployed while
+// this tab was open). Reload once to load the new build instead of erroring.
+window.addEventListener("vite:preloadError", (event) => {
+  if (reloadOnceForNewBuild()) event.preventDefault();
+});
 
 /**
  * Root error boundary — a crash anywhere in the tree used to render a

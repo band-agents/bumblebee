@@ -244,8 +244,9 @@ function AppRoutes() {
 /** The page area: one crash here must not take the shell with it. */
 function RoutedArea() {
   const [path] = useLocation();
+  const { lang } = useLanguage();
   return (
-    <RouteErrorBoundary resetKey={path}>
+    <RouteErrorBoundary resetKey={path} ar={lang === "ar"}>
       <Suspense fallback={<LoadingScreen />}>
       <Switch>
         {/* ── Executive OS ── */}

@@ -10,20 +10,29 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>("en");
+const LANG_KEY = "bumblebee_language";
 
-  useEffect(() => {
-    const saved = localStorage.getItem("bumblebee_onboarding");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.language && (parsed.language === "en" || parsed.language === "ar")) {
-          setLang(parsed.language);
-        }
-      } catch (e) {}
-    }
-  }, []);
+/** The saved choice wins; onboarding's language is only a first-visit default. */
+function initialLanguage(): Language {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === "en" || saved === "ar") return saved;
+    const onboarding = JSON.parse(localStorage.getItem("bumblebee_onboarding") || "null");
+    if (onboarding?.language === "en" || onboarding?.language === "ar") return onboarding.language;
+  } catch {
+    // storage blocked — fall through
+  }
+  return "en";
+}
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  // Read synchronously so a reload never flashes English before switching back.
+  const [lang, setLangState] = useState<Language>(initialLanguage);
+
+  const setLang = (next: Language) => {
+    setLangState(next);
+    try { localStorage.setItem(LANG_KEY, next); } catch { /* storage blocked */ }
+  };
 
   const isRtl = lang === "ar";
 
