@@ -71,6 +71,7 @@ export const SECTIONS: Section[] = [
       { label: "Floor", labelAr: "الأرضية", items: [
         { id: "production", label: "Production", labelAr: "الإنتاج", path: "/production", icon: Factory },
         { id: "prod-exec", label: "Overview", labelAr: "نظرة عامة", path: "/production/exec", icon: BarChart3 },
+        { id: "prod-planning", label: "Planning & Cutting", labelAr: "التخطيط والقص", path: "/production/planning", icon: Receipt },
         { id: "work", label: "Work Items", labelAr: "المهام", path: "/work", icon: Layers },
         { id: "operations", label: "Operations", labelAr: "العمليات", path: "/operations", icon: Wrench },
         { id: "quality", label: "Quality Control", labelAr: "الجودة", path: "/quality", icon: Shield },

@@ -76,7 +76,7 @@ async function logActivity(wid: string, type: string, eid: string, en: string, a
 
 // ─── Create / Edit PO Modal ───────────────────────────────
 
-function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }: {
+export function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }: {
   onClose: () => void; onSaved: () => void;
   orders: WorkItem[]; designs: DesignBrief[];
   editPO: ProdOrder | null; ar: boolean; workspaceId: string;
@@ -91,6 +91,7 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
   const [startDate, setStartDate] = useState(editPO?.start_date || "");
   const [dueDate, setDueDate] = useState(editPO?.due_date || "");
   const [notes, setNotes] = useState(editPO?.notes || "");
+  const [plannedQty, setPlannedQty] = useState(String(((editPO?.metadata as Record<string, unknown> | null)?.planned_qty as number | undefined) ?? ""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -114,6 +115,7 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
       customer_name: customerName || null, assigned_station: assignedStation || null,
       priority, start_date: startDate || null, due_date: dueDate || null,
       notes: notes || null, status: editPO ? undefined : "pending",
+      metadata: { ...((editPO?.metadata as Record<string, unknown> | null) ?? {}), planned_qty: parseInt(plannedQty) || 0 },
     };
     try {
       if (editPO) {
@@ -157,7 +159,9 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
               </select></div>
           </div>
           <div><label className={labelCls}>{ar ? "العنوان" : "Title"}</label>
-            <input className={inputCls} value={title} onChange={e => setTitle(e.target.value)} placeholder={ar ? "مثال: مطبخ فيلا المعادي" : "e.g. Villa Maadi Kitchen"} /></div>
+            <input className={inputCls} value={title} onChange={e => setTitle(e.target.value)} placeholder={ar ? "مثال: هودي إكسبلورر — أخضر" : "e.g. Explorer Zip Hoodie — Sage"} /></div>
+          <div><label className={labelCls}>{ar ? "الكمية (قطعة)" : "Quantity (pieces)"}</label>
+            <input type="number" min={0} className={inputCls} value={plannedQty} onChange={e => setPlannedQty(e.target.value)} placeholder="600" /></div>
           <div><label className={labelCls}>{ar ? "ملف التصميم (لسحب البيانات)" : "Design Brief (auto-fills)"}</label>
             <select className={inputCls} value={designBriefId} onChange={e => handleDesignSelect(e.target.value)}>
               <option value="">{ar ? "— اختر —" : "— Select —"}</option>
@@ -175,7 +179,7 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
               </select></div>
           </div>
           <div><label className={labelCls}>{ar ? "المحطة / الورشة" : "Station / Workshop"}</label>
-            <input className={inputCls} value={assignedStation} onChange={e => setAssignedStation(e.target.value)} placeholder={ar ? "مثال: ورشة 1" : "e.g. Workshop 1"} /></div>
+            <input className={inputCls} value={assignedStation} onChange={e => setAssignedStation(e.target.value)} placeholder={ar ? "مثال: خط الخياطة A" : "e.g. Sewing Line A"} /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelCls}>{ar ? "تاريخ البدء" : "Start Date"}</label>
               <input type="date" className={inputCls} value={startDate} onChange={e => setStartDate(e.target.value)} /></div>

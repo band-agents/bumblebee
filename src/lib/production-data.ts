@@ -6,6 +6,13 @@
  * with imported fabric and trims tracked as raw material.
  */
 
+import { useCallback, useEffect, useState } from "react";
+import { isDemoMode } from "./supabase";
+import { getDataSource } from "./data-source";
+import type { Database } from "./database.types";
+
+type Tables = Database["public"]["Tables"];
+
 // ─── Types ────────────────────────────────────────────────
 
 export type StageStatus = "not_started" | "waiting" | "in_progress" | "paused" | "blocked" | "completed" | "failed_qc" | "rework_required";
@@ -388,11 +395,139 @@ const DEMO_WORKSTATIONS: WorkstationInfo[] = [
   { id: "ws-9", name: "Packing Bay", status: "active", current_order: "po-01", operator: "Omar Hassan", capacity: 90, queue_count: 0, last_maintenance: daysAgo(12) },
 ];
 
-// ─── In-memory store (demo mode) ──────────────────────────
+// ─── Store ────────────────────────────────────────────────
+// Demo mode starts on the sample CUBS runs. Live mode starts EMPTY and is
+// filled from the database by loadLiveProduction() — sample orders must never
+// show up in a real workspace.
 
-let _orders = [...DEMO_ORDERS];
-let _alerts = [...DEMO_ALERTS];
-let _workstations = [...DEMO_WORKSTATIONS];
+let _orders: ProductionOrder[] = isDemoMode ? [...DEMO_ORDERS] : [];
+let _alerts: ProductionAlert[] = isDemoMode ? [...DEMO_ALERTS] : [];
+let _workstations: WorkstationInfo[] = isDemoMode ? [...DEMO_WORKSTATIONS] : [];
+
+// ─── Live data (Supabase) ─────────────────────────────────
+
+type PORow = Tables["production_orders"]["Row"];
+type StageRow = Tables["production_stage_log"]["Row"];
+
+/** production_stage_log uses the planning page's keys; the dashboards use DEFAULT_STAGES keys. */
+const LOG_TO_STAGE: Record<string, StageKey> = {
+  pattern: "pattern", cutting: "cutting", sewing: "sewing", finishing: "finishing",
+  quality_check: "quality_control", packing: "packaging",
+};
+
+function stageDef(key: string) {
+  return DEFAULT_STAGES.find((s) => s.key === key);
+}
+
+function mapOrder(po: PORow, logs: StageRow[]): ProductionOrder {
+  const meta = (po.metadata ?? {}) as Record<string, unknown>;
+  const planned = Number(meta.planned_qty) || 0;
+  const today = new Date(new Date().toDateString());
+  const done = po.status === "ready" || po.status === "delivered";
+  const isDelayed = !!po.due_date && !done && po.status !== "cancelled" && new Date(po.due_date) < today;
+  const delayDays = isDelayed ? Math.ceil((today.getTime() - new Date(po.due_date!).getTime()) / 86_400_000) : 0;
+
+  const status: ProductionStatus =
+    po.status === "cancelled" ? "cancelled"
+    : done ? "completed"
+    : po.status === "pending" ? "planned"
+    : isDelayed ? "delayed" : "in_progress";
+
+  const currentKey: string = done ? "ready_dispatch"
+    : po.status === "pending" ? "order_created"
+    : LOG_TO_STAGE[po.status] ?? LOG_TO_STAGE[po.current_stage ?? ""] ?? po.status;
+  const cur = stageDef(currentKey);
+
+  const stages: ProductionStage[] = logs
+    .map((l) => {
+      const key = LOG_TO_STAGE[l.stage] ?? l.stage;
+      const def = stageDef(key);
+      const st: StageStatus = l.status === "completed" ? "completed" : l.status === "in_progress" ? "in_progress" : "not_started";
+      return {
+        id: l.id, order_id: po.id, stage_key: key,
+        stage_name_en: def?.en ?? l.stage, stage_name_ar: def?.ar ?? l.stage, status: st,
+        started_at: l.started_at, finished_at: l.completed_at,
+        planned_duration_hours: 0,
+        actual_duration_hours: l.duration_minutes != null ? Math.round(l.duration_minutes / 6) / 10 : null,
+        completed_qty: st === "completed" ? planned : 0, remaining_qty: st === "completed" ? 0 : planned,
+        rejected_qty: 0, rework_qty: 0,
+        assigned_team: l.station ?? "", assigned_operator: l.worker_name ?? "", notes: l.notes ?? "",
+        sequence: def?.sequence ?? 99,
+      };
+    })
+    .sort((a, b) => a.sequence - b.sequence);
+
+  const workers = Array.isArray(po.assigned_workers) ? (po.assigned_workers as string[]) : [];
+  const completedQty = done ? planned : 0;
+
+  return {
+    id: po.id, order_number: po.po_number, product_name: po.title,
+    product_sku: String(meta.sku ?? ""), sales_order_ref: po.sales_order_id ?? "",
+    customer_name: po.customer_name ?? "", priority: po.priority, status,
+    current_stage: currentKey, current_stage_en: cur?.en ?? currentKey, current_stage_ar: cur?.ar ?? currentKey,
+    planned_qty: planned, completed_qty: completedQty, remaining_qty: planned - completedQty,
+    rejected_qty: 0, rework_qty: 0, waste_qty: 0, passed_qty: completedQty,
+    progress_pct: po.progress ?? 0,
+    // Rates and costs are not recorded yet — show zero rather than invent them.
+    production_rate_per_hour: 0, production_rate_per_day: 0, efficiency_pct: 0, planned_rate_per_hour: 0,
+    start_date: po.start_date ?? "", due_date: po.due_date ?? "", estimated_completion: po.due_date ?? "",
+    is_delayed: isDelayed, delay_days: delayDays, delay_reason: "",
+    assigned_team: po.assigned_station ?? "", assigned_lead: workers[0] ?? "", workstation: po.assigned_station ?? "",
+    material_status: "available", qc_status: done ? "passed" : "pending",
+    estimated_cost: 0, actual_cost: 0, material_cost: 0, labor_cost: 0,
+    notes: po.notes ?? "", created_at: po.created_at, updated_at: po.updated_at,
+    stages, materials: [], qc_checks: [], activity_log: [],
+  };
+}
+
+/** Reads production orders and their stage log for a workspace into the store. */
+export async function loadLiveProduction(workspaceId: string): Promise<void> {
+  if (isDemoMode) return;
+  const ds = getDataSource();
+  const [pos, logs] = await Promise.all([
+    ds.production_orders.list(workspaceId),
+    ds.production_stage_log.list(workspaceId),
+  ]);
+  const byOrder = new Map<string, StageRow[]>();
+  for (const l of logs as StageRow[]) {
+    const list = byOrder.get(l.production_order_id) ?? [];
+    list.push(l);
+    byOrder.set(l.production_order_id, list);
+  }
+  _orders = (pos as PORow[]).map((po) => mapOrder(po, byOrder.get(po.id) ?? []));
+  _workstations = [];
+  _alerts = _orders
+    .filter((o) => o.is_delayed)
+    .map((o) => ({
+      id: `late-${o.id}`, order_id: o.id, order_number: o.order_number, type: "deadline_risk" as const,
+      severity: o.delay_days > 3 ? ("critical" as const) : ("warning" as const),
+      message_en: `${o.product_name} is ${o.delay_days} day${o.delay_days === 1 ? "" : "s"} past its due date`,
+      message_ar: `${o.product_name} متأخر ${o.delay_days} يوم عن موعد التسليم`,
+      created_at: new Date().toISOString(), dismissed: false,
+    }));
+}
+
+/**
+ * Loads live production data for the page that calls it and re-renders when it
+ * arrives. Demo mode is ready immediately.
+ */
+export function useProductionData(workspaceId: string | undefined) {
+  const [state, setState] = useState<{ loading: boolean; error: string | null; version: number }>(
+    { loading: !isDemoMode, error: null, version: 0 },
+  );
+  const reload = useCallback(async () => {
+    if (isDemoMode || !workspaceId) { setState((st) => ({ ...st, loading: false })); return; }
+    setState((st) => ({ ...st, loading: true, error: null }));
+    try {
+      await loadLiveProduction(workspaceId);
+      setState((st) => ({ loading: false, error: null, version: st.version + 1 }));
+    } catch (e) {
+      setState((st) => ({ ...st, loading: false, error: e instanceof Error ? e.message : String(e) }));
+    }
+  }, [workspaceId]);
+  useEffect(() => { reload(); }, [reload]);
+  return { ...state, reload };
+}
 
 // ─── Public API ───────────────────────────────────────────
 
@@ -467,6 +602,31 @@ export interface AIInsight {
 
 export function getAIInsights(): AIInsight[] {
   const stats = getProductionStats();
+
+  if (!isDemoMode) {
+    // Only what the data actually says — no canned advice about orders that don't exist.
+    const insights: AIInsight[] = [{
+      id: "ai-summary", type: "summary",
+      title_en: "Production Summary", title_ar: "ملخص الإنتاج",
+      detail_en: stats.totalOrders === 0
+        ? "No production orders yet. Create one with New Order to start tracking."
+        : `${stats.activeOrders} orders in progress, ${stats.plannedOrders} planned, ${stats.completedOrders} completed. ${stats.delayedOrders} past their due date.`,
+      detail_ar: stats.totalOrders === 0
+        ? "لا توجد أوامر تشغيل بعد. أنشئ أمراً جديداً لبدء المتابعة."
+        : `${stats.activeOrders} أوامر قيد التنفيذ، ${stats.plannedOrders} مخططة، ${stats.completedOrders} مكتملة. ${stats.delayedOrders} متأخرة عن موعدها.`,
+      severity: stats.delayedOrders > 0 ? "warning" : "info",
+    }];
+    for (const o of _orders.filter((x) => x.is_delayed)) {
+      insights.push({
+        id: `ai-late-${o.id}`, type: "risk",
+        title_en: `${o.order_number}: past due`, title_ar: `${o.order_number}: متأخر`,
+        detail_en: `${o.product_name} was due ${o.due_date} and is at ${o.current_stage_en} (${o.progress_pct}%).`,
+        detail_ar: `${o.product_name} كان موعده ${o.due_date} وهو الآن في مرحلة ${o.current_stage_ar} (${o.progress_pct}%).`,
+        severity: o.delay_days > 3 ? "critical" : "warning",
+      });
+    }
+    return insights;
+  }
 
   return [
     {

@@ -5,9 +5,11 @@
 
 import { useState, useMemo } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
+import { isDemoMode } from "../lib/supabase";
 import {
   getProductionOrders, getProductionStats, getProductionAlerts,
-  getAIInsights, getWorkstations, DEFAULT_STAGES,
+  getAIInsights, getWorkstations, DEFAULT_STAGES, useProductionData,
   type ProductionOrder, type ProductionStage,
 } from "../lib/production-data";
 import {
@@ -555,15 +557,18 @@ function CostAnalysis({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }
 export default function ProductionExecutiveDashboard() {
   const { lang } = useLanguage();
   const ar = lang === "ar";
-  const orders = useMemo(() => getProductionOrders(), []);
-  const stats = useMemo(() => getProductionStats(), []);
-  const alerts = useMemo(() => getProductionAlerts(), []);
-  const insights = useMemo(() => getAIInsights(), []);
-  const workstations = useMemo(() => getWorkstations(), []);
+  const { workspace } = useAuth();
+  const data = useProductionData(workspace?.id);
+  const orders = useMemo(() => getProductionOrders(), [data.version]);
+  const stats = useMemo(() => getProductionStats(), [data.version]);
+  const alerts = useMemo(() => getProductionAlerts(), [data.version]);
+  const insights = useMemo(() => getAIInsights(), [data.version]);
+  const workstations = useMemo(() => getWorkstations(), [data.version]);
 
-  // Simulated trend data (last 7 days)
-  const dailyTrend = [42, 38, 55, 48, 62, 51, 58];
-  const efficiencyTrend = [82, 85, 80, 88, 86, 84, 87];
+  // Output/efficiency history isn't recorded in live mode yet — the sample
+  // trend only belongs to the demo workspace.
+  const dailyTrend = isDemoMode ? [42, 38, 55, 48, 62, 51, 58] : [0, 0, 0, 0, 0, 0, 0];
+  const efficiencyTrend = isDemoMode ? [82, 85, 80, 88, 86, 84, 87] : [0, 0, 0, 0, 0, 0, 0];
 
   const activeOrders = orders.filter(o => o.status === "in_progress" || o.status === "delayed");
   const completedOrders = orders.filter(o => o.status === "completed");

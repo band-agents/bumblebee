@@ -3,12 +3,18 @@
  * Dashboard • List View • Kanban • Order Detail • Reports • Alerts • AI
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { Link } from "wouter";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
+import { getDataSource } from "../lib/data-source";
+import { isDemoMode } from "../lib/supabase";
+import { POModal } from "./ProductionPlanning";
+import type { Database } from "../lib/database.types";
 import {
   getProductionOrders, getProductionOrder, getProductionStats, getProductionAlerts,
   getAIInsights, getWorkstations, dismissAlert,
-  DEFAULT_STAGES,
+  DEFAULT_STAGES, useProductionData,
   type ProductionOrder, type ProductionStage, type AIInsight, type ProductionAlert, type WorkstationInfo,
 } from "../lib/production-data";
 import {
@@ -488,10 +494,9 @@ function KanbanView({ ar, onSelectOrder }: { ar: boolean; onSelectOrder: (id: st
 // ─── Order Detail ─────────────────────────────────────────
 
 function OrderDetail({ orderId, onBack, ar }: { orderId: string; onBack: () => void; ar: boolean }) {
+  const [tab, setTab] = useState<"overview" | "stages" | "materials" | "qc" | "activity">("overview");
   const order = getProductionOrder(orderId);
   if (!order) return <div className="py-16 text-center text-body text-muted-foreground">{t(ar, "Order not found", "الأمر غير موجود")}</div>;
-
-  const [tab, setTab] = useState<"overview" | "stages" | "materials" | "qc" | "activity">("overview");
 
   const totalRejected = order.stages.reduce((s, st) => s + st.rejected_qty, 0);
   const totalRework = order.stages.reduce((s, st) => s + st.rework_qty, 0);
@@ -987,16 +992,66 @@ function ReportsView({ ar }: { ar: boolean }) {
 
 // ─── Main Page ────────────────────────────────────────────
 
+type WorkItemRow = Database["public"]["Tables"]["work_items"]["Row"];
+type DesignRow = Database["public"]["Tables"]["design_briefs"]["Row"];
+
+/** New production order, saved to the database; lists sales orders and approved designs to link. */
+function NewOrderModal({ ar, onClose, onSaved }: { ar: boolean; onClose: () => void; onSaved: () => void }) {
+  const { workspace } = useAuth();
+  const [links, setLinks] = useState<{ orders: WorkItemRow[]; designs: DesignRow[] } | null>(null);
+  useEffect(() => {
+    const wid = workspace?.id || "demo";
+    const ds = getDataSource();
+    Promise.all([ds.work_items.list(wid, { type: "sales_order" }), ds.design_briefs.list(wid)])
+      .then(([orders, designs]) => setLinks({ orders: orders as WorkItemRow[], designs: designs as DesignRow[] }))
+      .catch(() => setLinks({ orders: [], designs: [] }));
+  }, [workspace?.id]);
+  if (!links) return null;
+  return (
+    <POModal
+      ar={ar}
+      workspaceId={workspace?.id || "demo"}
+      orders={links.orders}
+      designs={links.designs}
+      editPO={null}
+      onClose={onClose}
+      onSaved={() => { onSaved(); onClose(); }}
+    />
+  );
+}
+
 export default function ProductionPage() {
   const { lang } = useLanguage();
   const ar = lang === "ar";
+  const { workspace } = useAuth();
   const [view, setView] = useState<ViewMode>("dashboard");
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [newOrder, setNewOrder] = useState(false);
+  const data = useProductionData(workspace?.id);
+
+  if (data.loading && data.version === 0) {
+    return <div className="py-24 text-center text-body text-muted-foreground">{ar ? "جاري تحميل الإنتاج..." : "Loading production…"}</div>;
+  }
+  if (data.error) {
+    return (
+      <div className="max-w-xl mx-auto py-20 text-center">
+        <p className="text-body text-destructive mb-4">{ar ? "تعذّر تحميل أوامر التشغيل" : "Couldn't load production orders"}: {data.error}</p>
+        <button onClick={data.reload} className="h-10 px-5 rounded-xl bg-primary text-primary-foreground text-body font-medium">{ar ? "أعد المحاولة" : "Try again"}</button>
+      </div>
+    );
+  }
+  const modal = newOrder && <NewOrderModal ar={ar} onClose={() => setNewOrder(false)} onSaved={data.reload} />;
 
   if (selectedOrderId) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-6">
         <OrderDetail orderId={selectedOrderId} onBack={() => setSelectedOrderId(null)} ar={ar} />
+        {!isDemoMode && (
+          <p className="mt-6 text-caption text-muted-foreground">
+            {ar ? "لتحديث المراحل وقوائم القص افتح " : "To move stages forward or edit cutting lists, open "}
+            <Link href="/production/planning" className="text-brand-ink font-medium hover:underline">{ar ? "التخطيط والقص" : "Planning & Cutting"}</Link>.
+          </p>
+        )}
       </div>
     );
   }
@@ -1013,10 +1068,22 @@ export default function ProductionPage() {
             {ar ? "تتبع الإنتاج — أوامر، مراحل، معدلات، جودة" : "Track manufacturing — orders, stages, rates, quality"}
           </p>
         </div>
-        <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 h-10 hover:opacity-90 transition-opacity">
+        <button onClick={() => setNewOrder(true)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-5 h-10 hover:opacity-90 transition-opacity">
           <Plus size={14} />{ar ? "أمر جديد" : "New Order"}
         </button>
       </div>
+      {modal}
+
+      {getProductionOrders().length === 0 && (
+        <div className="mb-6 rounded-2xl border border-dashed border-border p-10 text-center">
+          <Factory size={26} className="mx-auto text-brand-ink mb-3" />
+          <p className="text-title font-semibold mb-1">{ar ? "لا توجد أوامر تشغيل بعد" : "No production orders yet"}</p>
+          <p className="text-body text-muted-foreground mb-5">{ar ? "أنشئ أول أمر تشغيل لتبدأ متابعة المراحل من الباترون حتى التغليف." : "Create your first production order to track it from pattern to packing."}</p>
+          <button onClick={() => setNewOrder(true)} className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-primary text-primary-foreground text-body font-medium">
+            <Plus size={14} />{ar ? "أمر جديد" : "New Order"}
+          </button>
+        </div>
+      )}
 
       {/* View Tabs */}
       <div className="flex gap-1 mb-5 border-b border-border/30 pb-2 overflow-x-auto">

@@ -276,6 +276,7 @@ function RoutedArea() {
         <Route path="/designs" component={DesignsPage} />
         <Route path="/production" component={ProductionPage} />
         <Route path="/production/exec" component={ProductionExecDashboard} />
+        <Route path="/production/planning" component={ProductionPlanningPage} />
         <Route path="/quality" component={QualityControlPage} />
         <Route path="/delivery" component={DeliveryInstallationPage} />
         <Route path="/hr/dashboard" component={HRDashboardPage} />
