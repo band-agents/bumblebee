@@ -34,7 +34,7 @@ type Org = Database["public"]["Tables"]["organizations"]["Row"];
 const DESIGN_STATUSES = [
   { value: "draft",           en: "Draft",           ar: "مسودة",          pill: "bg-zinc-100 text-zinc-600" },
   { value: "in_progress",     en: "In Progress",     ar: "جاري التصميم",   pill: "bg-blue-50 text-blue-600" },
-  { value: "internal_review", en: "Internal Review",  ar: "مراجعة داخلية",  pill: "bg-chart-4/10 text-chart-4" },
+  { value: "internal_review", en: "Internal Review",  ar: "مراجعة داخلية",  pill: "bg-chart-4/10 text-violet-600" },
   { value: "client_review",   en: "Client Review",    ar: "مراجعة العميل",  pill: "bg-warning/10 text-warning" },
   { value: "revision",        en: "Revision",         ar: "تعديلات",        pill: "bg-orange-50 text-orange-600" },
   { value: "approved",        en: "Approved",         ar: "تم الاعتماد",    pill: "bg-emerald-50 text-emerald-600" },
@@ -278,7 +278,7 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
             <input className={inputCls} value={form.preferredMaterials} onChange={e => set("preferredMaterials", e.target.value)} /></div>
           <div><label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
             <textarea className={inputCls + " h-20 py-2 resize-none"} value={form.specialNotes} onChange={e => set("specialNotes", e.target.value)} /></div>
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
@@ -468,7 +468,7 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
         </div>
         <div className="flex gap-2 shrink-0 flex-wrap">
           {brief.status === "draft" && <button onClick={() => updateStatus("in_progress")} className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200"><PenTool size={11} /> {ar ? "ابدأ التصميم" : "Start Design"}</button>}
-          {brief.status === "in_progress" && <button onClick={() => updateStatus("internal_review")} className="text-micro text-chart-4 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-chart-4/30"><Eye size={11} /> {ar ? "مراجعة داخلية" : "Internal Review"}</button>}
+          {brief.status === "in_progress" && <button onClick={() => updateStatus("internal_review")} className="text-micro text-violet-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-chart-4/30"><Eye size={11} /> {ar ? "مراجعة داخلية" : "Internal Review"}</button>}
           {brief.status === "internal_review" && <button onClick={() => updateStatus("client_review")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-warning/30"><Send size={11} /> {ar ? "أرسل للعميل" : "Send to Client"}</button>}
           {brief.status === "client_review" && (
             <>
@@ -544,7 +544,7 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                               {f.file_format && <span className="text-micro text-muted-foreground/50 uppercase">{f.file_format}</span>}
                             </div>
                           </div>
-                          <button onClick={() => deleteFile(f.id)} className="p-1 rounded hover:bg-rose-50 text-rose-400 opacity-0 group-hover:opacity-100"><Trash2 size={11} /></button>
+                          <button onClick={() => deleteFile(f.id)} className="p-1 rounded hover:bg-rose-50 text-rose-600 opacity-0 group-hover:opacity-100"><Trash2 size={11} /></button>
                         </div>
                       </div>
                     );
@@ -570,7 +570,7 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                           <span className="text-body font-medium">{d.room}</span>
                           {d.label && <span className="text-micro text-muted-foreground">— {d.label}</span>}
                           {rtDef && <span className="text-micro bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{ar ? rtDef.ar : rtDef.en}</span>}
-                          {d.approval === "approved" && <CheckCircle2 size={11} className="text-emerald-500" />}
+                          {d.approval === "approved" && <CheckCircle2 size={11} className="text-emerald-600" />}
                         </div>
                         <div className="flex items-center gap-4 text-micro text-muted-foreground">
                           {d.width != null && <span>{ar ? "عرض" : "W"}: {d.width} cm</span>}
@@ -632,7 +632,7 @@ function BriefDetail({ brief, onBack, ar, workspaceId, orders, onRefresh }: {
                           {ctDef && <span className="text-micro text-muted-foreground">{ar ? ctDef.ar : ctDef.en}</span>}
                           <span className="text-micro text-muted-foreground/50 ml-auto">{new Date(c.created_at).toLocaleDateString()}</span>
                           <button onClick={() => toggleResolve(c.id, c.resolved)} title={c.resolved ? "Unresolve" : "Resolve"}
-                            className={`p-1 rounded ${c.resolved ? "text-emerald-500" : "text-muted-foreground/30 hover:text-emerald-500"}`}>
+                            className={`p-1 rounded ${c.resolved ? "text-emerald-600" : "text-muted-foreground/30 hover:text-emerald-600"}`}>
                             <CheckCircle2 size={12} />
                           </button>
                         </div>

@@ -41,7 +41,7 @@ export const STATUS_META: Record<WorkStatus, { en: string; ar: string; dot: stri
   backlog:     { en: "Backlog",     ar: "قائمة الانتظار", dot: "bg-stone-400",          pill: "bg-stone-100 text-stone-600 border border-stone-200" },
   planned:     { en: "Planned",     ar: "مخطط",          dot: "bg-primary",             pill: "bg-primary/8 text-brand-ink border border-primary/20" },
   in_progress: { en: "In Progress", ar: "قيد التنفيذ",    dot: "bg-warning",           pill: "bg-warning/10 text-warning border border-warning/30" },
-  review:      { en: "Review",      ar: "مراجعة",        dot: "bg-chart-4",           pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  review:      { en: "Review",      ar: "مراجعة",        dot: "bg-chart-4",           pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   done:        { en: "Done",        ar: "مكتمل",         dot: "bg-emerald-500",          pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
 };
 
@@ -54,7 +54,7 @@ export const PRIORITY_META: Record<WorkPriority, { en: string; ar: string; dot: 
 
 export const KIND_META: Record<WorkKind, { en: string; ar: string; pill: string }> = {
   task:             { en: "Task",             ar: "مهمة",        pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-  ticket:           { en: "Ticket",           ar: "تذكرة",       pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  ticket:           { en: "Ticket",           ar: "تذكرة",       pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   work_order:       { en: "Work Order",       ar: "أمر عمل",     pill: "bg-warning/10 text-warning border border-warning/30" },
   request:          { en: "Request",          ar: "طلب",         pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
   production_order: { en: "Production Order", ar: "أمر إنتاج",   pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },

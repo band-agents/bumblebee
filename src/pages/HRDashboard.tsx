@@ -68,12 +68,12 @@ const slideIn: Variants = {
 
 const DEPT_META: Record<string, { en: string; ar: string; color: string }> = {
   management: { en: "Management", ar: "الإدارة العليا", color: "#1E3A5F" },
-  sales: { en: "Sales", ar: "المبيعات", color: "#E07A5F" },
-  production: { en: "Production", ar: "الإنتاج", color: "#3B82F6" },
-  design: { en: "Design", ar: "التصميم", color: "#EC4899" },
-  warehouse: { en: "Warehouse", ar: "المخزن", color: "#F59E0B" },
-  delivery: { en: "Delivery", ar: "التوصيل", color: "#F97316" },
-  admin: { en: "Admin", ar: "الإدارة", color: "#10B981" },
+  sales: { en: "Sales", ar: "المبيعات", color: "#EDA994" },
+  production: { en: "Production", ar: "الإنتاج", color: "#8AB0EA" },
+  design: { en: "Design", ar: "التصميم", color: "#EFA3C6" },
+  warehouse: { en: "Warehouse", ar: "المخزن", color: "#EFC274" },
+  delivery: { en: "Delivery", ar: "التوصيل", color: "#F2AE82" },
+  admin: { en: "Admin", ar: "الإدارة", color: "#6FC39E" },
 };
 
 /* ─── Timeline Event Icons ─────────────────────────────────── */
@@ -176,7 +176,7 @@ export default function HRDashboard() {
       label: ar ? "فتحات التوظيف" : "Open Positions",
       value: HR_METRICS.open_positions,
       icon: Briefcase,
-      color: "text-chart-4",
+      color: "text-violet-600",
       bg: "bg-chart-4/10",
       border: "border-chart-4/30",
       detail: `${HR_METRICS.offer_acceptance_rate}% ${ar ? "معدل القبول" : "acceptance"}`,
@@ -302,7 +302,7 @@ export default function HRDashboard() {
           </span>
           {[
             { label: ar ? "موظف جديد" : "New Employee", icon: UserPlus, path: "/hr/employees", color: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100" },
-            { label: ar ? "جدولة مقابلة" : "Schedule Interview", icon: Calendar, path: "/hr/recruitment", color: "bg-chart-4/10 text-chart-4 border-chart-4/30 hover:bg-chart-4/15" },
+            { label: ar ? "جدولة مقابلة" : "Schedule Interview", icon: Calendar, path: "/hr/recruitment", color: "bg-chart-4/10 text-violet-600 border-chart-4/30 hover:bg-chart-4/15" },
             { label: ar ? "تشغيل المرتبات" : "Run Payroll", icon: Banknote, path: "/hr/payroll", color: "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100" },
             { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/hr/reports", color: "bg-warning/10 text-warning border-warning/30 hover:bg-warning/15" },
           ].map((action) => (
@@ -323,7 +323,7 @@ export default function HRDashboard() {
         <motion.div variants={cardV} custom={3} initial="hidden" animate="visible">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <AlertTriangle size={14} className="text-rose-500" />
+              <AlertTriangle size={14} className="text-rose-600" />
               {ar ? "تنبيهات" : "Alerts"}
               {stats.criticalAlerts > 0 && (
                 <span className="text-micro px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">
@@ -421,7 +421,7 @@ export default function HRDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <Clock size={14} className="text-blue-500" />
+              <Clock size={14} className="text-blue-600" />
               {ar ? "حضور اليوم" : "Today's Attendance"}
             </h3>
             <span className="text-micro text-muted-foreground">
@@ -635,7 +635,7 @@ export default function HRDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <Building2 size={14} className="text-chart-4" />
+              <Building2 size={14} className="text-violet-600" />
               {ar ? "توزيع الأقسام" : "Department Breakdown"}
             </h3>
             <span className="text-micro text-muted-foreground">
@@ -699,7 +699,7 @@ export default function HRDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <TrendingUp size={14} className="text-cyan-500" />
+              <TrendingUp size={14} className="text-cyan-600" />
               {ar ? "اتجاه عدد الموظفين" : "Headcount Trend"}
             </h3>
           </div>
@@ -782,7 +782,7 @@ export default function HRDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <Activity size={14} className="text-cyan-500" />
+              <Activity size={14} className="text-cyan-600" />
               {ar ? "آخر النشاطات" : "Recent Activity"}
             </h3>
           </div>
@@ -841,7 +841,7 @@ export default function HRDashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <TrendingDown size={14} className="text-rose-500" />
+              <TrendingDown size={14} className="text-rose-600" />
               {ar ? "الدوران حسب القسم" : "Turnover by Department"}
             </h3>
           </div>
@@ -886,10 +886,10 @@ export default function HRDashboard() {
                         style={{
                           backgroundColor:
                             dept.rate > 10
-                              ? "#f43f5e"
+                              ? "#EEA2B3"
                               : dept.rate > 0
-                              ? "#f59e0b"
-                              : "#10b981",
+                              ? "#EFC274"
+                              : "#6FC39E",
                         }}
                       />
                     </div>
@@ -932,7 +932,7 @@ export default function HRDashboard() {
             label: ar ? "مرتبات معلقة" : "Pending Payroll",
             value: stats.pendingPayroll,
             icon: DollarSign,
-            color: "text-chart-4",
+            color: "text-violet-600",
           },
           {
             label: ar ? "ساعات تدريب" : "Training Hours",

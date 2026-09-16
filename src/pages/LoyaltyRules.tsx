@@ -355,7 +355,7 @@ export default function LoyaltyRulesPage() {
                     <Edit3 size={13} />
                   </button>
                   <button onClick={() => deleteRule(rule.id)} title="Delete"
-                    className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-500 transition-colors">
+                    className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-600 transition-colors">
                     <Trash2 size={13} />
                   </button>
                 </div>

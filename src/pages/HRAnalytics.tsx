@@ -200,22 +200,22 @@ export default function HRAnalytics() {
   const tenureTotal = Object.values(metrics.tenure_distribution).reduce((a, b) => a + b, 0);
 
   const genderSegments = [
-    { value: metrics.diversity_ratio.male, color: "#3B82F6", label: "Male", labelAr: "ذكور" },
-    { value: metrics.diversity_ratio.female, color: "#EC4899", label: "Female", labelAr: "إناث" },
+    { value: metrics.diversity_ratio.male, color: "#8AB0EA", label: "Male", labelAr: "ذكور" },
+    { value: metrics.diversity_ratio.female, color: "#EFA3C6", label: "Female", labelAr: "إناث" },
   ];
 
   const ageSegments = [
-    { value: metrics.age_distribution["18-25"], color: "#10B981", label: "18–25", labelAr: "١٨–٢٥" },
-    { value: metrics.age_distribution["26-35"], color: "#3B82F6", label: "26–35", labelAr: "٢٦–٣٥" },
-    { value: metrics.age_distribution["36-45"], color: "#F59E0B", label: "36–45", labelAr: "٣٦–٤٥" },
-    { value: metrics.age_distribution["46+"], color: "#EF4444", label: "46+", labelAr: "٤٦+" },
+    { value: metrics.age_distribution["18-25"], color: "#6FC39E", label: "18–25", labelAr: "١٨–٢٥" },
+    { value: metrics.age_distribution["26-35"], color: "#8AB0EA", label: "26–35", labelAr: "٢٦–٣٥" },
+    { value: metrics.age_distribution["36-45"], color: "#EFC274", label: "36–45", labelAr: "٣٦–٤٥" },
+    { value: metrics.age_distribution["46+"], color: "#EE9E9E", label: "46+", labelAr: "٤٦+" },
   ];
 
   const tenureSegments = [
-    { value: metrics.tenure_distribution["<1yr"], color: "#8B5CF6", label: "<1yr", labelAr: "أقل من سنة" },
-    { value: metrics.tenure_distribution["1-3yr"], color: "#3B82F6", label: "1–3yr", labelAr: "١–٣ سنوات" },
-    { value: metrics.tenure_distribution["3-5yr"], color: "#10B981", label: "3–5yr", labelAr: "٣–٥ سنوات" },
-    { value: metrics.tenure_distribution["5+yr"], color: "#F59E0B", label: "5+yr", labelAr: "أكثر من ٥ سنوات" },
+    { value: metrics.tenure_distribution["<1yr"], color: "#B6A0EA", label: "<1yr", labelAr: "أقل من سنة" },
+    { value: metrics.tenure_distribution["1-3yr"], color: "#8AB0EA", label: "1–3yr", labelAr: "١–٣ سنوات" },
+    { value: metrics.tenure_distribution["3-5yr"], color: "#6FC39E", label: "3–5yr", labelAr: "٣–٥ سنوات" },
+    { value: metrics.tenure_distribution["5+yr"], color: "#EFC274", label: "5+yr", labelAr: "أكثر من ٥ سنوات" },
   ];
 
   const trainingUtilization = Math.round(
@@ -290,7 +290,7 @@ export default function HRAnalytics() {
       icon: UserPlus,
       label: ar ? "توظيفات العام" : "New Hires YTD",
       value: metrics.new_hires_ytd,
-      color: "text-chart-4",
+      color: "text-violet-600",
       bg: "bg-chart-4/10 dark:bg-chart-4/30",
       detail: `${ar ? "متوسط مدة التوظيف" : "Avg time to fill"}: ${metrics.time_to_fill_days}d`,
     },
@@ -342,8 +342,8 @@ export default function HRAnalytics() {
           </p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 bg-chart-4/10 dark:bg-chart-4/30 rounded-full border border-chart-4/30 dark:border-chart-4/30">
-          <Brain className="w-4 h-4 text-chart-4" />
-          <span className="text-caption font-medium text-chart-4">
+          <Brain className="w-4 h-4 text-violet-600" />
+          <span className="text-caption font-medium text-violet-600">
             {ar ? "مدعوم بالذكاء الاصطناعي" : "AI-Powered Insights"}
           </span>
         </div>
@@ -456,8 +456,8 @@ export default function HRAnalytics() {
           <div className="space-y-3">
             {turnover.map((t, i) => {
               const colors = [
-                "#EF4444", "#3B82F6", "#EC4899", "#F59E0B",
-                "#F97316", "#10B981", "#8B5CF6",
+                "#EE9E9E", "#8AB0EA", "#EFA3C6", "#EFC274",
+                "#F2AE82", "#6FC39E", "#B6A0EA",
               ];
               return (
                 <HorizontalBar
@@ -484,7 +484,7 @@ export default function HRAnalytics() {
           className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800"
         >
           <div className="flex items-center gap-2 mb-5">
-            <Users className="w-5 h-5 text-chart-4" />
+            <Users className="w-5 h-5 text-violet-600" />
             <h2 className="text-title font-semibold text-gray-900 dark:text-white">
               {ar ? "تكوين القوى العاملة" : "Workforce Composition"}
             </h2>
@@ -626,11 +626,11 @@ export default function HRAnalytics() {
         className="bg-gradient-to-br from-chart-4/20 to-blue-50 dark:from-chart-4/20 dark:to-blue-950/20 rounded-2xl p-6 border border-chart-4/30 dark:border-chart-4/30"
       >
         <div className="flex items-center gap-2 mb-5">
-          <Lightbulb className="w-5 h-5 text-chart-4" />
+          <Lightbulb className="w-5 h-5 text-violet-600" />
           <h2 className="text-title font-semibold text-gray-900 dark:text-white">
             {ar ? "رؤى استراتيجية" : "Strategic Insights"}
           </h2>
-          <span className="ml-auto text-micro text-chart-4 bg-chart-4/15 dark:bg-chart-4/40 px-2 py-0.5 rounded-full">
+          <span className="ml-auto text-micro text-violet-600 bg-chart-4/15 dark:bg-chart-4/40 px-2 py-0.5 rounded-full">
             {ar ? "مُولَّدة بالذكاء الاصطناعي" : "AI-Generated"}
           </span>
         </div>

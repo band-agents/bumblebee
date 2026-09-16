@@ -151,10 +151,10 @@ export default function FinanceDetail() {
 
   const TL_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
     created: { Icon: Plus, color: "text-brand-ink", bg: "bg-primary/8" },
-    sent: { Icon: Send, color: "text-blue-500", bg: "bg-blue-50" },
-    payment: { Icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-50" },
-    paid: { Icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-50" },
-    overdue: { Icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-50" },
+    sent: { Icon: Send, color: "text-blue-600", bg: "bg-blue-50" },
+    payment: { Icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
+    paid: { Icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50" },
+    overdue: { Icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50" },
   };
 
   // Activity
@@ -176,7 +176,7 @@ export default function FinanceDetail() {
     },
     {
       icon: inv.status === "overdue" ? AlertTriangle : Shield,
-      color: inv.status === "overdue" ? "text-rose-500" : "text-brand-ink",
+      color: inv.status === "overdue" ? "text-rose-600" : "text-brand-ink",
       bg: inv.status === "overdue" ? "bg-rose-50" : "bg-primary/8",
       titleEn: "Risk Assessment", titleAr: "تقييم المخاطر",
       valueEn: inv.status === "overdue" ? "High risk — overdue" : inv.status === "paid" ? "No risk — fully paid" : "Normal — within terms",
@@ -185,7 +185,7 @@ export default function FinanceDetail() {
       descAr: inv.status === "overdue" ? "صعّد لمدير الحساب. فكر في خطة دفع." : "لا إجراء مطلوب.",
     },
     {
-      icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10",
+      icon: Zap, color: "text-violet-600", bg: "bg-chart-4/10",
       titleEn: "Recommended Action", titleAr: "الإجراء الموصى به",
       valueEn: inv.status === "draft" ? "Send to client" : inv.status === "sent" ? "Follow up on payment" : inv.status === "overdue" ? "Escalate immediately" : "Archive and close",
       valueAr: inv.status === "draft" ? "أرسل للعميل" : inv.status === "sent" ? "تابع الدفع" : inv.status === "overdue" ? "صعّد فوراً" : "أرشف وأغلق",
@@ -253,7 +253,7 @@ export default function FinanceDetail() {
             </div>
 
             {inv.status === "draft" && <button onClick={() => changeStatus("sent")} className="h-8 px-3.5 rounded-xl bg-primary text-primary-foreground text-caption font-medium hover:opacity-90 flex items-center gap-1.5 transition-opacity"><Send size={13} strokeWidth={1.75} />{ar ? "إرسال" : "Mark Sent"}</button>}
-            {["sent", "overdue"].includes(inv.status) && <button onClick={() => changeStatus("paid")} className="h-8 px-3.5 rounded-xl bg-emerald-500 text-white text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors"><CheckCircle2 size={13} strokeWidth={2} />{ar ? "تم الدفع" : "Mark Paid"}</button>}
+            {["sent", "overdue"].includes(inv.status) && <button onClick={() => changeStatus("paid")} className="h-8 px-3.5 rounded-xl bg-emerald-500 text-emerald-900 text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors"><CheckCircle2 size={13} strokeWidth={2} />{ar ? "تم الدفع" : "Mark Paid"}</button>}
             <button onClick={() => setNoteModalOpen(true)} className="h-8 px-3.5 rounded-xl border border-border text-caption font-medium text-foreground hover:bg-muted flex items-center gap-1.5 transition-colors"><StickyNote size={13} strokeWidth={1.75} />{ar ? "ملاحظة" : "Add Note"}</button>
           </div>
         </div>

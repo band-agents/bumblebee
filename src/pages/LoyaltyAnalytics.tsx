@@ -134,7 +134,7 @@ export default function LoyaltyAnalyticsPage() {
           { value: fmtPts(a.totalIssued), label: ar ? "إجمالي النقاط المصدرة" : "Total Points Issued", icon: Award, color: "text-brand-ink", sub: `${a.totalMembers} ${ar ? "عضو" : "members"}` },
           { value: `${a.redemptionRate}%`, label: ar ? "معدل الاستبدال" : "Redemption Rate", icon: Target, color: "text-emerald-600", sub: `${fmtPts(a.totalRedeemed)} ${ar ? "مستبدلة" : "redeemed"}` },
           { value: fmtCurrency(a.pointsLiability), label: ar ? "الالتزامات المستحقة" : "Points Liability", icon: Wallet, color: "text-warning", sub: `${fmtPts(a.outstanding)} ${ar ? "نقطة معلقة" : "outstanding pts"}` },
-          { value: `${a.repeatRate}%`, label: ar ? "تكرار الشراء" : "Repeat Purchase", icon: Repeat, color: "text-chart-4", sub: `${a.repeatMembers}/${a.totalMembers} ${ar ? "عضو" : "members"}` },
+          { value: `${a.repeatRate}%`, label: ar ? "تكرار الشراء" : "Repeat Purchase", icon: Repeat, color: "text-violet-600", sub: `${a.repeatMembers}/${a.totalMembers} ${ar ? "عضو" : "members"}` },
         ].map((kpi, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
             <kpi.icon size={14} className={`${kpi.color} mb-2`} />
@@ -160,7 +160,7 @@ export default function LoyaltyAnalyticsPage() {
           <div className="flex gap-4 mb-3">
             <div className="flex-1">
               <div className="flex items-center gap-1.5 mb-1">
-                <ShoppingBag size={10} className="text-chart-4" />
+                <ShoppingBag size={10} className="text-violet-600" />
                 <span className="text-micro text-muted-foreground">{ar ? "أونلاين" : "Online"}</span>
               </div>
               <p className="text-title font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{a.shopifyPct}%</p>
@@ -273,7 +273,7 @@ export default function LoyaltyAnalyticsPage() {
             <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
               {ar ? "أعلى المكتسبين" : "Top Earners"}
             </h3>
-            <TrendingUp size={13} className="text-emerald-500" />
+            <TrendingUp size={13} className="text-emerald-600" />
           </div>
           <div className="divide-y divide-border/20">
             {a.topEarners.map((m, i) => {
@@ -364,7 +364,7 @@ export default function LoyaltyAnalyticsPage() {
             { label: ar ? "مستبدلة" : "Redeemed", value: fmtPts(a.totalRedeemed), color: "text-brand-ink" },
             { label: ar ? "منتهية" : "Expired", value: fmtPts(a.totalExpired), color: "text-muted-foreground" },
             { label: ar ? "قائمة" : "Outstanding", value: fmtPts(a.outstanding), color: "text-warning" },
-            { label: ar ? "الالتزام المالي" : "Liability", value: fmtCurrency(a.pointsLiability), color: "text-rose-500" },
+            { label: ar ? "الالتزام المالي" : "Liability", value: fmtCurrency(a.pointsLiability), color: "text-rose-600" },
           ].map((item, i) => (
             <div key={i} className="text-center">
               <p className="text-micro text-muted-foreground mb-1">{item.label}</p>

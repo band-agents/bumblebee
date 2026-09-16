@@ -144,15 +144,15 @@ function FinancePage() {
               { icon: DollarSign,    value: fmt(revenue),        label: ar ? "الإيرادات" : "Revenue",       color: "text-emerald-600", trend: "+12%", up: true },
               { icon: FileText,      value: fmt(outstanding),    label: ar ? "فواتير معلقة" : "Outstanding", color: "text-warning",   trend: null, up: false },
               { icon: CreditCard,    value: fmt(paymentsTotal),  label: ar ? "مدفوعات مستلمة" : "Received",  color: "text-brand-ink",     trend: "+8%", up: true },
-              { icon: ArrowDownRight,value: fmt(expensesTotal),  label: ar ? "المصروفات" : "Expenses",      color: "text-rose-500",    trend: "-3%", up: false },
-              { icon: Wallet,        value: fmt(cashPosition),   label: ar ? "الموقف النقدي" : "Cash Position", color: cashPosition >= 0 ? "text-emerald-600" : "text-rose-500", trend: null, up: cashPosition >= 0 },
-              { icon: PiggyBank,     value: fmt(profitEstimate), label: ar ? "تقدير الربح" : "Profit Est.",  color: profitEstimate >= 0 ? "text-emerald-600" : "text-rose-500", trend: null, up: profitEstimate >= 0 },
+              { icon: ArrowDownRight,value: fmt(expensesTotal),  label: ar ? "المصروفات" : "Expenses",      color: "text-rose-600",    trend: "-3%", up: false },
+              { icon: Wallet,        value: fmt(cashPosition),   label: ar ? "الموقف النقدي" : "Cash Position", color: cashPosition >= 0 ? "text-emerald-600" : "text-rose-600", trend: null, up: cashPosition >= 0 },
+              { icon: PiggyBank,     value: fmt(profitEstimate), label: ar ? "تقدير الربح" : "Profit Est.",  color: profitEstimate >= 0 ? "text-emerald-600" : "text-rose-600", trend: null, up: profitEstimate >= 0 },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <div className="flex items-center justify-between mb-2">
                   <m.icon size={14} strokeWidth={1.75} className={m.color} />
                   {m.trend && (
-                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-600"}`}>
                       {m.trend}
                     </span>
                   )}
@@ -301,7 +301,7 @@ function FinancePage() {
                 return (
                   <div key={exp.id} className="flex items-center gap-4 px-5 py-4 hover:bg-muted/15 transition-colors">
                     <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
-                      <ArrowDownRight size={16} strokeWidth={1.75} className="text-rose-500" />
+                      <ArrowDownRight size={16} strokeWidth={1.75} className="text-rose-600" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
@@ -311,7 +311,7 @@ function FinancePage() {
                       <h4 className="text-body font-medium text-foreground">{ar ? vendorAr : vendorEn}</h4>
                       <p className="text-micro text-muted-foreground mt-0.5">{ar ? (exp.description_ar || exp.description_en) : exp.description_en} · {dateStr}</p>
                     </div>
-                    <p className="text-body-lg font-semibold text-rose-500 tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmt(exp.amount)}</p>
+                    <p className="text-body-lg font-semibold text-rose-600 tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmt(exp.amount)}</p>
                   </div>
                 );
               })}

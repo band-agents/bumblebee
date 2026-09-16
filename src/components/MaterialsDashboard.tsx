@@ -55,7 +55,7 @@ interface InvMeta {
   images?: { url: string }[] | string[];
 }
 
-const MATERIAL_PALETTE = ["#8b5cf6", "#3b82f6", "#f59e0b", "#10b981", "#f43f5e", "#06b6d4", "#a16207", "#94a3b8"];
+const MATERIAL_PALETTE = ["#B6A0EA", "#8AB0EA", "#EFC274", "#6FC39E", "#EEA2B3", "#84CCDA", "#a16207", "#94a3b8"];
 
 function getPM(r: Resource): ProductMeta { return (r.metadata ?? {}) as ProductMeta; }
 function getIM(r: Resource): InvMeta { return (r.metadata ?? {}) as InvMeta; }
@@ -181,9 +181,9 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
   }, Infinity);
 
   const costSegments = [
-    { label: ar ? "خامات" : "Materials", value: matPerUnit, color: "#8b5cf6" },
-    { label: ar ? "عمالة" : "Labor", value: labor, color: "#3b82f6" },
-    { label: ar ? "ماكينات" : "Machine", value: machine, color: "#f59e0b" },
+    { label: ar ? "خامات" : "Materials", value: matPerUnit, color: "#B6A0EA" },
+    { label: ar ? "عمالة" : "Labor", value: labor, color: "#8AB0EA" },
+    { label: ar ? "ماكينات" : "Machine", value: machine, color: "#EFC274" },
     { label: ar ? "مصاريف" : "Overhead", value: overhead, color: "#94a3b8" },
   ];
 
@@ -233,7 +233,7 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
             </div>
             <div className="p-3.5 rounded-xl border border-border/40">
               <p className="text-micro text-muted-foreground mb-1">{ar ? "ممكن تتصنع من المخزون" : "Buildable from stock"}</p>
-              <p className={`text-title font-medium tabular-nums ${buildable === Infinity ? "text-muted-foreground/50" : buildable >= n ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+              <p className={`text-title font-medium tabular-nums ${buildable === Infinity ? "text-muted-foreground/50" : buildable >= n ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                 {buildable === Infinity ? "—" : `${buildable} ${ar ? "وحدة" : "units"}`}
               </p>
             </div>
@@ -295,7 +295,7 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
                         ) : (
                           <div className="space-y-1">
                             <CoverageBar pct={l.coverage ?? 0} />
-                            <p className={`text-micro text-end tabular-nums ${l.onHand >= l.need ? "text-emerald-600" : "text-rose-500"}`}>{l.onHand} {ar ? "متاح" : "on hand"}</p>
+                            <p className={`text-micro text-end tabular-nums ${l.onHand >= l.need ? "text-emerald-600" : "text-rose-600"}`}>{l.onHand} {ar ? "متاح" : "on hand"}</p>
                           </div>
                         )}
                       </div>
@@ -333,7 +333,7 @@ function ProductDrawer({ product, invItems, ar, fmtVal, onClose }: {
                 <div className="h-px bg-border/40" />
                 <div className="flex items-center justify-between">
                   <p className="text-micro font-medium">{ar ? `ربح ×${n}` : `Profit ×${n}`}</p>
-                  <p className={`text-body-lg font-semibold tabular-nums ${price - totalPerUnit >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                  <p className={`text-body-lg font-semibold tabular-nums ${price - totalPerUnit >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                     {price ? fmtVal((price - totalPerUnit) * n) : "—"}
                   </p>
                 </div>
@@ -441,9 +441,9 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
   const costStacks = productRows.slice(0, 5).map((row) => ({
     name: row.p.name_en,
     parts: [
-      { v: row.matCost, color: "#8b5cf6" },
-      { v: row.m.labor_cost || 0, color: "#3b82f6" },
-      { v: row.m.machine_cost || 0, color: "#f59e0b" },
+      { v: row.matCost, color: "#B6A0EA" },
+      { v: row.m.labor_cost || 0, color: "#8AB0EA" },
+      { v: row.m.machine_cost || 0, color: "#EFC274" },
       { v: row.m.overhead_cost || 0, color: "#94a3b8" },
     ],
     total: row.total,
@@ -474,12 +474,12 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
       {/* KPI strip */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {[
-          { icon: Boxes, value: `${products.length}`, label: ar ? "منتجات" : "Products", color: "text-chart-4" },
+          { icon: Boxes, value: `${products.length}`, label: ar ? "منتجات" : "Products", color: "text-violet-600" },
           { icon: Layers, value: `${withBom.length}`, label: ar ? "بمكونات خامات" : "With BOM", color: "text-blue-600" },
           { icon: Hammer, value: `${materials.length}`, label: ar ? "خامات مستخدمة" : "Raw Materials", color: "text-warning" },
           { icon: Wallet, value: fmtCompact(catalogMaterialCost), label: ar ? "تكلفة خامات الكتالوج" : "Catalog Material Cost", color: "text-brand-ink" },
           { icon: Percent, value: avgMargin === null ? "—" : `${avgMargin.toFixed(0)}%`, label: ar ? "متوسط الهامش" : "Avg Margin", color: avgMargin !== null && avgMargin >= 25 ? "text-emerald-600" : "text-warning" },
-          { icon: AlertTriangle, value: `${shortMaterials.length}`, label: ar ? "خامات تحت الطلب" : "Materials Short", color: shortMaterials.length > 0 ? "text-rose-500" : "text-slate-400" },
+          { icon: AlertTriangle, value: `${shortMaterials.length}`, label: ar ? "خامات تحت الطلب" : "Materials Short", color: shortMaterials.length > 0 ? "text-rose-600" : "text-slate-400" },
         ].map((k, i) => (
           <div key={i} className="bg-background border border-border/40 rounded-xl px-3.5 py-3">
             <k.icon size={13} strokeWidth={1.75} className={`${k.color} mb-1.5`} />
@@ -516,7 +516,7 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-micro text-foreground/80 truncate flex-1">{d.name}</p>
                     <p className="text-micro tabular-nums text-muted-foreground shrink-0">
-                      {d.demand.toLocaleString()} {ar ? "مطلوب" : "need"}{d.onHand !== null && <span className={d.onHand >= d.demand ? " text-emerald-600" : " text-rose-500"}> · {d.onHand} {ar ? "متاح" : "have"}</span>}
+                      {d.demand.toLocaleString()} {ar ? "مطلوب" : "need"}{d.onHand !== null && <span className={d.onHand >= d.demand ? " text-emerald-600" : " text-rose-600"}> · {d.onHand} {ar ? "متاح" : "have"}</span>}
                     </p>
                   </div>
                   <div className="relative h-2.5">
@@ -551,7 +551,7 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
                 </div>
               ))}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
-                {[[ar ? "خامات" : "Materials", "#8b5cf6"], [ar ? "عمالة" : "Labor", "#3b82f6"], [ar ? "ماكينات" : "Machine", "#f59e0b"], [ar ? "مصاريف" : "Overhead", "#94a3b8"]].map(([l, c], i) => (
+                {[[ar ? "خامات" : "Materials", "#B6A0EA"], [ar ? "عمالة" : "Labor", "#8AB0EA"], [ar ? "ماكينات" : "Machine", "#EFC274"], [ar ? "مصاريف" : "Overhead", "#94a3b8"]].map(([l, c], i) => (
                   <span key={i} className="flex items-center gap-1.5 text-micro text-muted-foreground"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: c as string }} />{l}</span>
                 ))}
               </div>
@@ -655,7 +655,7 @@ export function MaterialsDashboard({ products, invItems, ar, fmtVal, fmtCompact 
                     </div>
                     <p className="text-micro tabular-nums text-end">{mt.usedIn}</p>
                     <p className="text-micro font-medium tabular-nums text-end">{mt.demandPerCatalog.toLocaleString()} <span className="text-micro text-muted-foreground font-normal">{mt.unit}</span></p>
-                    <p className={`text-micro tabular-nums text-end ${onHand === null ? "text-muted-foreground/40" : onHand >= mt.demandPerCatalog ? "text-emerald-600" : "text-rose-500"}`}>
+                    <p className={`text-micro tabular-nums text-end ${onHand === null ? "text-muted-foreground/40" : onHand >= mt.demandPerCatalog ? "text-emerald-600" : "text-rose-600"}`}>
                       {onHand === null ? "—" : onHand.toLocaleString()}
                     </p>
                     <p className="text-micro font-medium tabular-nums text-end">{fmtVal(mt.demandValue)}</p>

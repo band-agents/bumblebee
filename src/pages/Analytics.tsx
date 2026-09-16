@@ -53,7 +53,7 @@ function MetricCard({ value, label, icon: Icon, color, trend, sub }: {
       <div className="flex items-start justify-between mb-2">
         <Icon size={15} className={color} />
         {trend !== undefined && (
-          <span className={`text-micro font-medium flex items-center gap-0.5 ${trend >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+          <span className={`text-micro font-medium flex items-center gap-0.5 ${trend >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
             {trend >= 0 ? <ArrowUp size={9} /> : <ArrowDown size={9} />}
             {Math.abs(trend)}%
           </span>
@@ -351,9 +351,9 @@ export default function Analytics() {
 
   // Status colors for donut
   const statusColors: Record<string, string> = {
-    draft: "#94a3b8", pending: "#f59e0b", approved: "#3b82f6", in_progress: "#8b5cf6",
-    done: "#22c55e", completed: "#22c55e", cancelled: "#ef4444", blocked: "#ef4444",
-    on_hold: "#f97316", review: "#06b6d4",
+    draft: "#94a3b8", pending: "#EFC274", approved: "#8AB0EA", in_progress: "#B6A0EA",
+    done: "#7CCB9A", completed: "#7CCB9A", cancelled: "#EE9E9E", blocked: "#EE9E9E",
+    on_hold: "#F2AE82", review: "#84CCDA",
   };
 
   return (
@@ -412,14 +412,14 @@ export default function Analytics() {
                   {/* KPIs */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={fmt(totalRevenue)} label={ar ? `إجمالي الإيراد (${currency})` : `Total Revenue (${currency})`} icon={DollarSign} color="text-foreground" />
-                    <MetricCard value={activeOrders.length} label={ar ? "طلبات نشطة" : "Active Orders"} icon={Package} color="text-chart-4" />
-                    <MetricCard value={overdueOrders.length} label={ar ? "طلبات متأخرة" : "Overdue"} icon={AlertTriangle} color={overdueOrders.length > 0 ? "text-rose-500" : "text-emerald-600"} />
+                    <MetricCard value={activeOrders.length} label={ar ? "طلبات نشطة" : "Active Orders"} icon={Package} color="text-violet-600" />
+                    <MetricCard value={overdueOrders.length} label={ar ? "طلبات متأخرة" : "Overdue"} icon={AlertTriangle} color={overdueOrders.length > 0 ? "text-rose-600" : "text-emerald-600"} />
                     <MetricCard value={customers.length} label={ar ? "العملاء" : "Customers"} icon={Users} color="text-brand-ink" />
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-warning" />
                     <MetricCard value={prodOrders.length} label={ar ? "أوامر تشغيل" : "Production Orders"} icon={Factory} color="text-orange-600" />
-                    <MetricCard value={fmt(unpaid)} label={ar ? `غير مدفوع (${currency})` : `Outstanding (${currency})`} icon={DollarSign} color={unpaid > 0 ? "text-rose-500" : "text-emerald-600"} />
+                    <MetricCard value={fmt(unpaid)} label={ar ? `غير مدفوع (${currency})` : `Outstanding (${currency})`} icon={DollarSign} color={unpaid > 0 ? "text-rose-600" : "text-emerald-600"} />
                     <MetricCard value={lowStockItems.length} label={ar ? "خامات ناقصة" : "Low Stock"} icon={Boxes} color={lowStockItems.length > 0 ? "text-warning" : "text-emerald-600"} />
                   </div>
 
@@ -525,7 +525,7 @@ export default function Analytics() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={prodOrders.length} label={ar ? "أوامر التشغيل" : "Production Orders"} icon={Factory} color="text-orange-600" />
-                    <MetricCard value={prodOrders.filter(p => ["pattern","cutting","sewing","finishing","quality_check","packing"].includes(p.status)).length} label={ar ? "قيد التنفيذ" : "In Progress"} icon={Activity} color="text-chart-4" />
+                    <MetricCard value={prodOrders.filter(p => ["pattern","cutting","sewing","finishing","quality_check","packing"].includes(p.status)).length} label={ar ? "قيد التنفيذ" : "In Progress"} icon={Activity} color="text-violet-600" />
                     <MetricCard value={prodOrders.filter(p => ["completed", "done"].includes(p.status)).length} label={ar ? "مكتمل" : "Completed"} icon={CheckCircle2} color="text-emerald-600" />
                     <MetricCard value={readyForProd.length} label={ar ? "بانتظار التشغيل" : "Awaiting Production"} icon={Clock} color="text-warning" />
                   </div>
@@ -574,7 +574,7 @@ export default function Analytics() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={inventory.length} label={ar ? "أصناف المخزن" : "Stock Items"} icon={Boxes} color="text-brand-ink" />
                     <MetricCard value={lowStockItems.length} label={ar ? "تحت الحد" : "Low Stock"} icon={AlertTriangle} color={lowStockItems.length > 0 ? "text-warning" : "text-emerald-600"} />
-                    <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-chart-4" />
+                    <MetricCard value={products.length} label={ar ? "المنتجات" : "Products"} icon={Package} color="text-violet-600" />
                     <MetricCard value={vendors.length} label={ar ? "الموردين" : "Vendors"} icon={Users} color="text-cyan-600" />
                   </div>
 
@@ -589,7 +589,7 @@ export default function Analytics() {
                             return (
                               <div key={item.id} className="flex items-center justify-between text-micro">
                                 <span className="truncate max-w-[150px]">{ar ? (item.name_ar || item.name_en) : item.name_en}</span>
-                                <span className="text-rose-500 font-medium">{m.current_qty || 0} / {m.reorder_level || "?"}</span>
+                                <span className="text-rose-600 font-medium">{m.current_qty || 0} / {m.reorder_level || "?"}</span>
                               </div>
                             );
                           })}</div>
@@ -599,8 +599,8 @@ export default function Analytics() {
                     <Section title={ar ? "توزيع المخزن" : "Stock Distribution"}>
                       <DonutChart
                         segments={[
-                          { label: ar ? "فوق الحد" : "Adequate", value: inventory.length - lowStockItems.length, color: "#22c55e" },
-                          { label: ar ? "تحت الحد" : "Low", value: lowStockItems.length, color: "#ef4444" },
+                          { label: ar ? "فوق الحد" : "Adequate", value: inventory.length - lowStockItems.length, color: "#7CCB9A" },
+                          { label: ar ? "تحت الحد" : "Low", value: lowStockItems.length, color: "#EE9E9E" },
                         ]}
                         size={100}
                       />
@@ -621,7 +621,7 @@ export default function Analytics() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={purchaseOrders.length} label={ar ? "أوامر الشراء" : "Purchase Orders"} icon={ShoppingCart} color="text-brand-ink" />
                     <MetricCard value={fmt(totalPurchaseValue)} label={ar ? `قيمة المشتريات (${currency})` : `Purchase Value (${currency})`} icon={DollarSign} color="text-orange-600" />
-                    <MetricCard value={vendors.length} label={ar ? "الموردين" : "Vendors"} icon={Users} color="text-chart-4" />
+                    <MetricCard value={vendors.length} label={ar ? "الموردين" : "Vendors"} icon={Users} color="text-violet-600" />
                     <MetricCard value={lowStockItems.length} label={ar ? "خامات ناقصة" : "Needs Reorder"} icon={AlertTriangle} color={lowStockItems.length > 0 ? "text-warning" : "text-emerald-600"} />
                   </div>
 
@@ -657,7 +657,7 @@ export default function Analytics() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={fmt(totalRevenue)} label={ar ? "الإيراد" : "Revenue"} icon={DollarSign} color="text-foreground" />
                     <MetricCard value={fmt(totalPaid)} label={ar ? "المحصّل" : "Collected"} icon={CheckCircle2} color="text-emerald-600" />
-                    <MetricCard value={fmt(unpaid)} label={ar ? "المتبقي" : "Outstanding"} icon={AlertTriangle} color={unpaid > 0 ? "text-rose-500" : "text-emerald-600"} />
+                    <MetricCard value={fmt(unpaid)} label={ar ? "المتبقي" : "Outstanding"} icon={AlertTriangle} color={unpaid > 0 ? "text-rose-600" : "text-emerald-600"} />
                     <MetricCard value={totalRevenue > 0 ? `${pct(totalPaid, totalRevenue)}%` : "0%"} label={ar ? "نسبة التحصيل" : "Collection Rate"} icon={TrendingUp} color="text-brand-ink" />
                   </div>
 
@@ -670,12 +670,12 @@ export default function Analytics() {
                         </div>
                         <div className="flex items-center justify-between text-caption">
                           <span className="text-muted-foreground">{ar ? "المشتريات" : "Purchases"}</span>
-                          <span className="font-semibold text-rose-500">-{fmt(totalPurchaseValue)} {currency}</span>
+                          <span className="font-semibold text-rose-600">-{fmt(totalPurchaseValue)} {currency}</span>
                         </div>
                         <div className="h-px bg-border/60 my-1" />
                         <div className="flex items-center justify-between text-caption">
                           <span className="font-medium">{ar ? "الصافي" : "Net"}</span>
-                          <span className={`font-bold ${totalRevenue - totalPurchaseValue >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                          <span className={`font-bold ${totalRevenue - totalPurchaseValue >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
                             {fmt(totalRevenue - totalPurchaseValue)} {currency}
                           </span>
                         </div>
@@ -714,7 +714,7 @@ export default function Analytics() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <MetricCard value={customers.length} label={ar ? "إجمالي العملاء" : "Total Customers"} icon={Users} color="text-brand-ink" />
-                    <MetricCard value={topCustomers.length > 0 ? topCustomers.filter(c => c.count > 1).length : 0} label={ar ? "عملاء متكررين" : "Repeat Customers"} icon={Target} color="text-chart-4" />
+                    <MetricCard value={topCustomers.length > 0 ? topCustomers.filter(c => c.count > 1).length : 0} label={ar ? "عملاء متكررين" : "Repeat Customers"} icon={Target} color="text-violet-600" />
                     <MetricCard value={orders.length > 0 && customers.length > 0 ? (orders.length / customers.length).toFixed(1) : "0"} label={ar ? "طلبات / عميل" : "Orders / Customer"} icon={Package} color="text-cyan-600" />
                     <MetricCard value={totalRevenue > 0 && customers.length > 0 ? fmt(Math.round(totalRevenue / customers.length)) : "0"} label={ar ? `متوسط القيمة (${currency})` : `Avg Value (${currency})`} icon={DollarSign} color="text-warning" />
                   </div>

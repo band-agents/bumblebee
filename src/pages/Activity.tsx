@@ -21,16 +21,16 @@ import {
 // ─── Kind visual metadata ─────────────────────────────────
 
 const KIND_META: Record<string, { Icon: LucideIcon; bg: string; color: string }> = {
-  customer_added:      { Icon: UserPlus,       bg: "bg-chart-4/10",    color: "text-chart-4" },
+  customer_added:      { Icon: UserPlus,       bg: "bg-chart-4/10",    color: "text-violet-600" },
   quotation_created:   { Icon: FileText,       bg: "bg-warning/10",     color: "text-warning" },
   invoice_sent:        { Icon: Send,           bg: "bg-blue-50",      color: "text-blue-600" },
   invoice_paid:        { Icon: CheckCircle2,   bg: "bg-emerald-50",   color: "text-emerald-600" },
   payment_received:    { Icon: DollarSign,     bg: "bg-emerald-50",   color: "text-emerald-600" },
-  order_placed:        { Icon: Package,        bg: "bg-orange-50",    color: "text-orange-500" },
+  order_placed:        { Icon: Package,        bg: "bg-orange-50",    color: "text-orange-600" },
   work_completed:      { Icon: CheckSquare,    bg: "bg-emerald-50",   color: "text-emerald-600" },
   employee_assigned:   { Icon: Users,          bg: "bg-cyan-50",      color: "text-cyan-600" },
   note_added:          { Icon: StickyNote,     bg: "bg-muted/70",     color: "text-muted-foreground" },
-  meeting_scheduled:   { Icon: Calendar,       bg: "bg-chart-4/10",    color: "text-chart-4" },
+  meeting_scheduled:   { Icon: Calendar,       bg: "bg-chart-4/10",    color: "text-violet-600" },
   contract_signed:     { Icon: FileCheck,      bg: "bg-blue-50",      color: "text-blue-600" },
   file_uploaded:       { Icon: Paperclip,      bg: "bg-muted/70",     color: "text-muted-foreground" },
   organization_added:  { Icon: Building2,      bg: "bg-cyan-50",      color: "text-cyan-600" },
@@ -40,10 +40,10 @@ const KIND_META: Record<string, { Icon: LucideIcon; bg: string; color: string }>
   work_assigned:       { Icon: Users,          bg: "bg-cyan-50",      color: "text-cyan-600" },
   work_status_changed: { Icon: ArrowRightCircle, bg: "bg-warning/10",   color: "text-warning" },
   deal_created:        { Icon: ShoppingBag,    bg: "bg-warning/10",     color: "text-warning" },
-  deal_stage_changed:  { Icon: ArrowRightCircle, bg: "bg-chart-4/10",  color: "text-chart-4" },
+  deal_stage_changed:  { Icon: ArrowRightCircle, bg: "bg-chart-4/10",  color: "text-violet-600" },
   deal_won:            { Icon: Trophy,         bg: "bg-emerald-50",   color: "text-emerald-600" },
-  deal_lost:           { Icon: XCircle,        bg: "bg-rose-50",      color: "text-rose-500" },
-  person_added:        { Icon: UserPlus,       bg: "bg-chart-4/10",    color: "text-chart-4" },
+  deal_lost:           { Icon: XCircle,        bg: "bg-rose-50",      color: "text-rose-600" },
+  person_added:        { Icon: UserPlus,       bg: "bg-chart-4/10",    color: "text-violet-600" },
   contacted:           { Icon: Phone,          bg: "bg-primary/8",    color: "text-brand-ink" },
 };
 
@@ -270,7 +270,7 @@ function IntelligencePanel({ allEvents, lang }: { allEvents: ActivityEvent[]; la
 
   const cards = [
     {
-      icon: Users, color: "text-chart-4", bg: "bg-chart-4/10",
+      icon: Users, color: "text-violet-600", bg: "bg-chart-4/10",
       titleEn: "Most Active Person", titleAr: "أكثر شخص نشاطاً",
       valueEn: topAuthor ? `${topAuthor[0]} — ${topAuthor[1]} activities` : "No data",
       valueAr: topAuthor ? `${topAuthor[0]} — ${topAuthor[1]} نشاط` : "لا بيانات",
@@ -431,8 +431,8 @@ export default function ActivityFeed() {
             {[
               { value: todayCount, label: ar ? "اليوم" : "Today", icon: Calendar, color: "text-brand-ink" },
               { value: thisWeekCount, label: ar ? "هذا الأسبوع" : "This Week", icon: TrendingUp, color: "text-warning" },
-              { value: activeUsers, label: ar ? "مستخدمين نشطين" : "Active Users", icon: Users, color: "text-chart-4" },
-              { value: openOpps, label: ar ? "فرص مفتوحة" : "Open Opps", icon: Target, color: "text-emerald-500" },
+              { value: activeUsers, label: ar ? "مستخدمين نشطين" : "Active Users", icon: Users, color: "text-violet-600" },
+              { value: openOpps, label: ar ? "فرص مفتوحة" : "Open Opps", icon: Target, color: "text-emerald-600" },
               { value: completedWork, label: ar ? "عمل مكتمل" : "Completed", icon: CheckSquare, color: "text-cyan-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">

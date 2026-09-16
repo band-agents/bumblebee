@@ -92,7 +92,7 @@ const Q_STATUSES: { value: string; en: string; ar: string; pill: string }[] = [
   { value: "approved",  en: "Approved",  ar: "تمت الموافقة",  pill: "bg-emerald-100 text-emerald-700" },
   { value: "rejected",  en: "Rejected",  ar: "مرفوض",         pill: "bg-rose-100 text-rose-600" },
   { value: "expired",   en: "Expired",   ar: "منتهي",         pill: "bg-warning/15 text-warning" },
-  { value: "converted", en: "Converted", ar: "تم التحويل",    pill: "bg-chart-4/15 text-chart-4" },
+  { value: "converted", en: "Converted", ar: "تم التحويل",    pill: "bg-chart-4/15 text-violet-600" },
   { value: "cancelled", en: "Cancelled", ar: "ملغي",          pill: "bg-muted text-muted-foreground" },
 ];
 
@@ -382,7 +382,7 @@ function ItemRow({ item, index, onChange, onRemove, onEdit, ar, products, curren
           <button type="button" onClick={() => onEdit(index)} className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground/60 hover:text-brand-ink hover:bg-primary/10 transition-colors" title={ar ? "تعديل" : "Edit"}>
             <Edit3 size={11} />
           </button>
-          <button type="button" onClick={() => onRemove(index)} className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground/40 hover:text-rose-500 hover:bg-rose-50 transition-colors">
+          <button type="button" onClick={() => onRemove(index)} className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground/40 hover:text-rose-600 hover:bg-rose-50 transition-colors">
             <X size={12} />
           </button>
         </div>
@@ -405,7 +405,7 @@ function ItemRow({ item, index, onChange, onRemove, onEdit, ar, products, curren
       <div className="flex flex-wrap gap-1.5">
         {item.width ? <span className="text-micro px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">{item.width}×{item.height || "?"}×{item.depth || "?"} cm</span> : null}
         {item.material ? <span className="text-micro px-2 py-0.5 rounded-full bg-warning/10 text-warning">{item.material}</span> : null}
-        {item.finish ? <span className="text-micro px-2 py-0.5 rounded-full bg-chart-4/10 text-chart-4">{item.finish}</span> : null}
+        {item.finish ? <span className="text-micro px-2 py-0.5 rounded-full bg-chart-4/10 text-violet-600">{item.finish}</span> : null}
         {item.color ? <span className="text-micro px-2 py-0.5 rounded-full bg-pink-50 text-pink-600">{item.color}</span> : null}
         {item.accessories ? <span className="text-micro px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">{item.accessories}</span> : null}
       </div>
@@ -563,7 +563,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
           {/* Header fields */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelCls}>{ar ? "رقم عرض السعر" : "Quotation #"} <span className="text-rose-400">*</span></label>
+              <label className={labelCls}>{ar ? "رقم عرض السعر" : "Quotation #"} <span className="text-rose-600">*</span></label>
               <input type="text" value={form.quotNumber} onChange={(e) => setForm((f) => ({ ...f, quotNumber: e.target.value }))} required className={inputCls} />
             </div>
             <div>
@@ -699,7 +699,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
               <span className="font-medium tabular-nums">{breakdown.subtotal.toLocaleString()} {currency}</span>
             </div>
             {breakdown.orderDisc > 0 && (
-              <div className="flex justify-between text-caption text-rose-500">
+              <div className="flex justify-between text-caption text-rose-600">
                 <span>{ar ? "الخصم" : "Discount"}{form.orderDiscountType === "pct" ? ` (${form.orderDiscount}%)` : ""}</span>
                 <span className="font-medium tabular-nums">− {Math.round(breakdown.orderDisc).toLocaleString()} {currency}</span>
               </div>
@@ -717,7 +717,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
             {totalCost > 0 && (
               <div className="flex justify-between text-micro text-muted-foreground pt-1">
                 <span>{ar ? "الربح المتوقع" : "Est. Profit"} {sellingPrice > 0 ? `· ${((expectedProfit / sellingPrice) * 100).toFixed(0)}%` : ""}</span>
-                <span className={`tabular-nums ${expectedProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{Math.round(expectedProfit).toLocaleString()} {currency}</span>
+                <span className={`tabular-nums ${expectedProfit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{Math.round(expectedProfit).toLocaleString()} {currency}</span>
               </div>
             )}
           </div>
@@ -727,7 +727,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
             <textarea value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} className={inputCls + " h-16 py-2.5 resize-none"} />
           </div>
 
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </form>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
@@ -872,12 +872,12 @@ export default function Quotations() {
               <p className="text-micro text-muted-foreground">{ar ? "مسودة" : "Draft"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <Clock size={14} className="text-blue-500 mb-2" />
+              <Clock size={14} className="text-blue-600 mb-2" />
               <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{sentCount}</p>
               <p className="text-micro text-muted-foreground">{ar ? "مُرسل" : "Sent"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <CheckCircle2 size={14} className="text-emerald-500 mb-2" />
+              <CheckCircle2 size={14} className="text-emerald-600 mb-2" />
               <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{approvedCount}</p>
               <p className="text-micro text-muted-foreground">{ar ? "تمت الموافقة" : "Approved"}</p>
             </div>
@@ -956,7 +956,7 @@ export default function Quotations() {
                     <div className="text-right shrink-0">
                       <p className="text-title font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(itemsTotal)}</p>
                       {costs > 0 && (
-                        <p className={`text-micro mt-0.5 ${profit >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                        <p className={`text-micro mt-0.5 ${profit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
                           {ar ? "ربح" : "Profit"} {fmt(profit)}
                         </p>
                       )}
@@ -974,7 +974,7 @@ export default function Quotations() {
                         <button onClick={() => updateStatus(q.id, "approved")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1">
                           <CheckCircle2 size={11} /> {ar ? "موافقة" : "Approve"}
                         </button>
-                        <button onClick={() => updateStatus(q.id, "rejected")} className="text-micro text-rose-500 font-medium hover:opacity-70 flex items-center gap-1">
+                        <button onClick={() => updateStatus(q.id, "rejected")} className="text-micro text-rose-600 font-medium hover:opacity-70 flex items-center gap-1">
                           <XCircle size={11} /> {ar ? "رفض" : "Reject"}
                         </button>
                       </>
@@ -985,9 +985,9 @@ export default function Quotations() {
                       </button>
                     )}
                     {q.status === "converted" && (
-                      <span className="text-micro text-chart-4 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تم التحويل لأمر بيع" : "Converted to Sales Order"}</span>
+                      <span className="text-micro text-violet-600 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تم التحويل لأمر بيع" : "Converted to Sales Order"}</span>
                     )}
-                    <button onClick={() => setDeleteTarget(q)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors">
+                    <button onClick={() => setDeleteTarget(q)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
                       <Trash2 size={12} />
                     </button>
                   </div>

@@ -42,7 +42,7 @@ export const STAGE_META: Record<DealStage, { en: string; ar: string; dot: string
   lead:        { en: "Lead",        ar: "عميل محتمل",  dot: "bg-stone-400",    pill: "bg-stone-100 text-stone-600 border border-stone-200" },
   qualified:   { en: "Qualified",   ar: "مؤهل",       dot: "bg-primary",      pill: "bg-primary/8 text-brand-ink border border-primary/20" },
   proposal:    { en: "Proposal",    ar: "عرض سعر",    dot: "bg-warning",    pill: "bg-warning/10 text-warning border border-warning/30" },
-  negotiation: { en: "Negotiation", ar: "تفاوض",      dot: "bg-chart-4",   pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  negotiation: { en: "Negotiation", ar: "تفاوض",      dot: "bg-chart-4",   pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   won:         { en: "Won",         ar: "فاز",        dot: "bg-emerald-500",  pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   lost:        { en: "Lost",        ar: "خسر",        dot: "bg-rose-500",     pill: "bg-rose-50 text-rose-600 border border-rose-200" },
 };

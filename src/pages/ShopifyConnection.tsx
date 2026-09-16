@@ -145,7 +145,7 @@ function DirectionPill({ dir, ar }: { dir: SyncDirection; ar: boolean }) {
   const map = {
     off: { icon: Ban, en: "Off", ar: "موقوف", cls: "bg-muted text-muted-foreground" },
     import: { icon: ArrowLeft, en: "Shopify → Bumblebee", ar: "شوبيفاي ← بامبلبي", cls: "bg-blue-50 text-blue-600" },
-    export: { icon: ArrowRight, en: "Bumblebee → Shopify", ar: "بامبلبي ← شوبيفاي", cls: "bg-chart-4/10 text-chart-4" },
+    export: { icon: ArrowRight, en: "Bumblebee → Shopify", ar: "بامبلبي ← شوبيفاي", cls: "bg-chart-4/10 text-violet-600" },
     both: { icon: ArrowLeftRight, en: "Two-way", ar: "اتجاهين", cls: "bg-emerald-50 text-emerald-700" },
   } as const;
   const m = map[dir];
@@ -435,7 +435,7 @@ export default function ShopifyConnectionPage() {
                           <p className="text-micro text-blue-600 flex items-center gap-1.5"><ArrowLeft size={9} className="shrink-0" />{ar ? ent.importAr : ent.importEn}</p>
                         )}
                         {(dir === "export" || dir === "both") && ent.exportEn && (
-                          <p className="text-micro text-chart-4 flex items-center gap-1.5"><ArrowRight size={9} className="shrink-0" />{ar ? ent.exportAr : ent.exportEn}</p>
+                          <p className="text-micro text-violet-600 flex items-center gap-1.5"><ArrowRight size={9} className="shrink-0" />{ar ? ent.exportAr : ent.exportEn}</p>
                         )}
                       </div>
                     )}
@@ -488,7 +488,7 @@ export default function ShopifyConnectionPage() {
               isConnected ? "bg-emerald-100" : status === "error" ? "bg-rose-100" : "bg-muted"
             }`}>
               {isConnected ? <Wifi size={24} className="text-emerald-600" /> :
-               status === "error" ? <AlertTriangle size={24} className="text-rose-500" /> :
+               status === "error" ? <AlertTriangle size={24} className="text-rose-600" /> :
                <WifiOff size={24} className="text-muted-foreground" />}
             </div>
             <div className="flex-1">
@@ -520,7 +520,7 @@ export default function ShopifyConnectionPage() {
                   {ar ? "زامن الكل" : "Sync All"}
                 </button>
                 <button onClick={handleDisconnect}
-                  className="h-8 px-3 rounded-lg border border-rose-200 text-micro font-medium text-rose-500 hover:bg-rose-50 flex items-center gap-1.5 transition-colors">
+                  className="h-8 px-3 rounded-lg border border-rose-200 text-micro font-medium text-rose-600 hover:bg-rose-50 flex items-center gap-1.5 transition-colors">
                   <XCircle size={12} />{ar ? "قطع" : "Disconnect"}
                 </button>
               </div>
@@ -618,7 +618,7 @@ export default function ShopifyConnectionPage() {
                       ? (ar ? "منين أجيب Client ID والـ Secret؟ (دليل خطوة بخطوة)" : "Where do I find my Client ID & Secret? (step-by-step guide)")
                       : (ar ? "منين أجيب رمز الوصول؟ (دليل خطوة بخطوة)" : "Where do I find my access token? (step-by-step guide)")}
                   </span>
-                  <ChevronRight size={13} className={`text-blue-500 transition-transform ${showGuide ? "rotate-90" : ""}`} />
+                  <ChevronRight size={13} className={`text-blue-600 transition-transform ${showGuide ? "rotate-90" : ""}`} />
                 </button>
                 {showGuide && (
                   <div className="px-4 py-4 rounded-xl bg-muted/20 border border-border/30 space-y-2.5">
@@ -762,7 +762,7 @@ export default function ShopifyConnectionPage() {
 
               {error && (
                 <div className="flex items-start gap-2.5 p-4 rounded-xl border border-rose-200/60 bg-rose-50/40">
-                  <AlertTriangle size={14} className="text-rose-500 shrink-0 mt-0.5" />
+                  <AlertTriangle size={14} className="text-rose-600 shrink-0 mt-0.5" />
                   <p className="text-caption text-rose-600">{error}</p>
                 </div>
               )}

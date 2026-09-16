@@ -365,8 +365,8 @@ export default function AdminSettings() {
                     <button key={theme}
                       className="p-4 rounded-xl border-2 border-border/30 text-center hover:border-primary/40 transition-all">
                       {theme === "light" ? <Sun size={20} className="mx-auto mb-2 text-warning" /> :
-                       theme === "dark" ? <Moon size={20} className="mx-auto mb-2 text-chart-4" /> :
-                       <Monitor size={20} className="mx-auto mb-2 text-blue-500" />}
+                       theme === "dark" ? <Moon size={20} className="mx-auto mb-2 text-violet-600" /> :
+                       <Monitor size={20} className="mx-auto mb-2 text-blue-600" />}
                       <p className="text-caption font-medium capitalize">{theme}</p>
                     </button>
                   ))}
@@ -508,11 +508,11 @@ export default function AdminSettings() {
                     {s.current ? (
                       <span className="text-micro px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">{ar ? "الحالية" : "Current"}</span>
                     ) : (
-                      <button className="text-micro text-rose-500 hover:underline">{ar ? "إنهاء" : "Revoke"}</button>
+                      <button className="text-micro text-rose-600 hover:underline">{ar ? "إنهاء" : "Revoke"}</button>
                     )}
                   </div>
                 ))}
-                <button className="w-full h-9 rounded-lg border border-rose-200 text-rose-500 text-micro font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5">
+                <button className="w-full h-9 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5">
                   <LogOut size={12} /> {ar ? "إنهاء جميع الجلسات الأخرى" : "Revoke All Other Sessions"}
                 </button>
               </div>

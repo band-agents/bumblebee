@@ -135,13 +135,13 @@ function CreateDealModal({ open, onClose, onAdd, lang }: {
             {/* Title */}
             <div>
               <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                {ar ? "اسم الصفقة" : "Deal Name"} <span className="text-rose-400">*</span>
+                {ar ? "اسم الصفقة" : "Deal Name"} <span className="text-rose-600">*</span>
               </label>
               <input ref={titleRef} type="text" value={form.title} onChange={(e) => field("title", e.target.value)}
                 placeholder={ar ? "مثال: أثاث مكتبي لشركة…" : "e.g. Office furniture for..."}
                 className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.title ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.title && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.title}</p>}
+              {errors.title && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.title}</p>}
             </div>
 
             {/* Stage + Priority */}
@@ -170,13 +170,13 @@ function CreateDealModal({ open, onClose, onAdd, lang }: {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                  {ar ? "القيمة (ج.م)" : "Value (EGP)"} <span className="text-rose-400">*</span>
+                  {ar ? "القيمة (ج.م)" : "Value (EGP)"} <span className="text-rose-600">*</span>
                 </label>
                 <input type="number" value={form.value} onChange={(e) => field("value", e.target.value)}
                   placeholder="250000"
                   className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.value ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
                 />
-                {errors.value && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.value}</p>}
+                {errors.value && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.value}</p>}
               </div>
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الاحتمالية %" : "Probability %"}</label>
@@ -190,13 +190,13 @@ function CreateDealModal({ open, onClose, onAdd, lang }: {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                  {ar ? "المسؤول" : "Owner"} <span className="text-rose-400">*</span>
+                  {ar ? "المسؤول" : "Owner"} <span className="text-rose-600">*</span>
                 </label>
                 <input type="text" value={form.owner} onChange={(e) => field("owner", e.target.value)}
                   placeholder={ar ? "اسم المسؤول" : "Owner name"}
                   className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.owner ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
                 />
-                {errors.owner && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.owner}</p>}
+                {errors.owner && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.owner}</p>}
               </div>
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الإغلاق المتوقع" : "Expected Close"}</label>
@@ -582,8 +582,8 @@ function SalesPage() {
           {[
             { icon: DollarSign, value: fmtVal(metrics.pipelineValue, "EGP"), label: ar ? "قيمة الخط" : "Pipeline Value", color: "text-brand-ink" },
             { icon: Target,     value: String(metrics.activeCount), label: ar ? "فرص نشطة" : "Active Deals", color: "text-warning" },
-            { icon: TrendingUp, value: fmtVal(metrics.wonValue, "EGP"), label: ar ? "صفقات فائزة" : "Won Deals", color: "text-emerald-500" },
-            { icon: Percent,    value: `${metrics.convRate}%`, label: ar ? "معدل التحويل" : "Conversion", color: "text-chart-4" },
+            { icon: TrendingUp, value: fmtVal(metrics.wonValue, "EGP"), label: ar ? "صفقات فائزة" : "Won Deals", color: "text-emerald-600" },
+            { icon: Percent,    value: `${metrics.convRate}%`, label: ar ? "معدل التحويل" : "Conversion", color: "text-violet-600" },
             { icon: BarChart3,  value: fmtVal(Math.round(metrics.forecast), "EGP"), label: ar ? "التوقع الشهري" : "Forecast", color: "text-cyan-600" },
           ].map((m, i) => (
             <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">

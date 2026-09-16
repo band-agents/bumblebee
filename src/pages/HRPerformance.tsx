@@ -24,10 +24,10 @@ import {
 } from "lucide-react";
 
 function scoreColor(score: number) {
-  if (score >= 90) return "text-emerald-400";
+  if (score >= 90) return "text-emerald-600";
   if (score >= 75) return "text-warning";
-  if (score >= 60) return "text-orange-400";
-  return "text-red-400";
+  if (score >= 60) return "text-orange-600";
+  return "text-red-600";
 }
 
 function scoreBg(score: number) {
@@ -46,15 +46,15 @@ function progressColor(pct: number) {
 
 function statusBadge(status: string, ar: boolean) {
   const labels: Record<string, { en: string; ar: string; cls: string }> = {
-    completed: { en: "Completed", ar: "مكتمل", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
-    in_progress: { en: "In Progress", ar: "قيد التنفيذ", cls: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
-    acknowledged: { en: "Acknowledged", ar: "معترف به", cls: "bg-chart-4/15 text-chart-4 border-chart-4/30" },
+    completed: { en: "Completed", ar: "مكتمل", cls: "bg-emerald-500/15 text-emerald-600 border-emerald-500/30" },
+    in_progress: { en: "In Progress", ar: "قيد التنفيذ", cls: "bg-blue-500/15 text-blue-600 border-blue-500/30" },
+    acknowledged: { en: "Acknowledged", ar: "معترف به", cls: "bg-chart-4/15 text-violet-600 border-chart-4/30" },
     draft: { en: "Draft", ar: "مسودة", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
-    self_review: { en: "Self Review", ar: "تقييم ذاتي", cls: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
+    self_review: { en: "Self Review", ar: "تقييم ذاتي", cls: "bg-blue-500/15 text-blue-600 border-blue-500/30" },
     manager_review: { en: "Manager Review", ar: "تقييم المدير", cls: "bg-warning/15 text-warning border-warning/30" },
-    hr_review: { en: "HR Review", ar: "تقييم الموارد البشرية", cls: "bg-orange-500/15 text-orange-400 border-orange-500/30" },
+    hr_review: { en: "HR Review", ar: "تقييم الموارد البشرية", cls: "bg-orange-500/15 text-orange-600 border-orange-500/30" },
     not_started: { en: "Not Started", ar: "لم يبدأ", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
-    missed: { en: "Missed", ar: "فائت", cls: "bg-red-500/15 text-red-400 border-red-500/30" },
+    missed: { en: "Missed", ar: "فائت", cls: "bg-red-500/15 text-red-600 border-red-500/30" },
   };
   const s = labels[status] || { en: status, ar: status, cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" };
   return (
@@ -65,11 +65,11 @@ function statusBadge(status: string, ar: boolean) {
 }
 
 const categoryMeta: Record<string, { en: string; ar: string; icon: string; color: string }> = {
-  sales: { en: "Sales", ar: "المبيعات", icon: "💰", color: "#E07A5F" },
-  production: { en: "Production", ar: "الإنتاج", icon: "🏭", color: "#3B82F6" },
-  quality: { en: "Quality", ar: "الجودة", icon: "✅", color: "#10B981" },
-  customer: { en: "Customer", ar: "العملاء", icon: "👥", color: "#EC4899" },
-  growth: { en: "Growth", ar: "النمو", icon: "📈", color: "#F59E0B" },
+  sales: { en: "Sales", ar: "المبيعات", icon: "💰", color: "#EDA994" },
+  production: { en: "Production", ar: "الإنتاج", icon: "🏭", color: "#8AB0EA" },
+  quality: { en: "Quality", ar: "الجودة", icon: "✅", color: "#6FC39E" },
+  customer: { en: "Customer", ar: "العملاء", icon: "👥", color: "#EFA3C6" },
+  growth: { en: "Growth", ar: "النمو", icon: "📈", color: "#EFC274" },
 };
 
 const relationshipMeta: Record<string, { en: string; ar: string }> = {
@@ -506,7 +506,7 @@ export default function HRPerformance() {
                       </div>
                       <div className="flex items-center gap-2">
                         {f.anonymous && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-chart-4/15 text-chart-4 text-micro font-medium border border-chart-4/30">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-chart-4/15 text-violet-600 text-micro font-medium border border-chart-4/30">
                             <EyeOff className="w-2.5 h-2.5" />
                             {ar ? "مجهول" : "Anonymous"}
                           </span>
@@ -564,7 +564,7 @@ export default function HRPerformance() {
             </div>
             <div className="mt-6 pt-4 border-t border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="text-center">
-                <p className="text-display font-bold text-emerald-400">
+                <p className="text-display font-bold text-emerald-600">
                   {filteredReviews.filter((r) => r.final_score >= 90).length}
                 </p>
                 <p className="text-caption text-white/40">{ar ? "ممتاز (90+)" : "Excellent (90+)"}</p>
@@ -576,13 +576,13 @@ export default function HRPerformance() {
                 <p className="text-caption text-white/40">{ar ? "جيد جداً (75-89)" : "Good (75-89)"}</p>
               </div>
               <div className="text-center">
-                <p className="text-display font-bold text-orange-400">
+                <p className="text-display font-bold text-orange-600">
                   {filteredReviews.filter((r) => r.final_score >= 60 && r.final_score < 75).length}
                 </p>
                 <p className="text-caption text-white/40">{ar ? "مقبول (60-74)" : "Fair (60-74)"}</p>
               </div>
               <div className="text-center">
-                <p className="text-display font-bold text-red-400">
+                <p className="text-display font-bold text-red-600">
                   {filteredReviews.filter((r) => r.final_score < 60).length}
                 </p>
                 <p className="text-caption text-white/40">{ar ? "يحتاج تحسين (<60)" : "Needs Work (<60)"}</p>
@@ -665,8 +665,8 @@ export default function HRPerformance() {
                 {/* Strengths */}
                 <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/10 p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <ArrowUpRight className="w-4 h-4 text-emerald-400" />
-                    <h4 className="text-caption font-semibold text-emerald-400 uppercase tracking-wider">
+                    <ArrowUpRight className="w-4 h-4 text-emerald-600" />
+                    <h4 className="text-caption font-semibold text-emerald-600 uppercase tracking-wider">
                       {ar ? "نقاط القوة" : "Strengths"}
                     </h4>
                   </div>
@@ -691,8 +691,8 @@ export default function HRPerformance() {
                 {/* Goals Next */}
                 <div className="rounded-xl bg-blue-500/5 border border-blue-500/10 p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Target className="w-4 h-4 text-blue-400" />
-                    <h4 className="text-caption font-semibold text-blue-400 uppercase tracking-wider">
+                    <Target className="w-4 h-4 text-blue-600" />
+                    <h4 className="text-caption font-semibold text-blue-600 uppercase tracking-wider">
                       {ar ? "الأهداف القادمة" : "Goals for Next Period"}
                     </h4>
                   </div>

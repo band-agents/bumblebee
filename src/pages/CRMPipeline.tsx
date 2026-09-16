@@ -234,13 +234,13 @@ export default function CRMPipeline() {
                 <button onClick={() => {
                   setLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, stage: "won" } : l));
                   setSelectedLead(null);
-                }} className="flex-1 h-10 rounded-xl bg-emerald-500 text-white text-caption font-medium hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1.5">
+                }} className="flex-1 h-10 rounded-xl bg-emerald-500 text-emerald-900 text-caption font-medium hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1.5">
                   <CheckCircle2 size={13} /> {ar ? "تم الفوز" : "Mark Won"}
                 </button>
                 <button onClick={() => {
                   setLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, stage: "lost" } : l));
                   setSelectedLead(null);
-                }} className="h-10 px-4 rounded-xl border border-rose-200 text-rose-500 text-caption font-medium hover:bg-rose-50 transition-colors">
+                }} className="h-10 px-4 rounded-xl border border-rose-200 text-rose-600 text-caption font-medium hover:bg-rose-50 transition-colors">
                   {ar ? "خاسر" : "Lost"}
                 </button>
               </div>

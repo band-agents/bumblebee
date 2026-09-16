@@ -246,7 +246,7 @@ export default function ProductDetail() {
               <button onClick={() => setTab("edit")} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                 <Edit3 size={13} /> {ar ? "تعديل" : "Edit"}
               </button>
-              <button onClick={() => setShowDelete(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-rose-200 text-caption font-medium text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition-colors">
+              <button onClick={() => setShowDelete(true)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-rose-200 text-caption font-medium text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors">
                 <Trash2 size={13} /> {ar ? "حذف" : "Delete"}
               </button>
             </div>
@@ -276,8 +276,8 @@ export default function ProductDetail() {
             </div>
             {m.suggested_price && m.suggested_price > 0 && costInfo.totalCost > 0 && (
               <div className="bg-background border border-border/40 rounded-xl px-4 py-3">
-                <Tag size={13} className="text-emerald-500 mb-1.5" />
-                <p className={`text-title font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
+                <Tag size={13} className="text-emerald-600 mb-1.5" />
+                <p className={`text-title font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)" }}>
                   {Math.round(((m.suggested_price - costInfo.totalCost) / m.suggested_price) * 100)}%
                 </p>
                 <p className="text-micro text-muted-foreground">{ar ? "هامش الربح" : "Margin"}</p>
@@ -420,7 +420,7 @@ export default function ProductDetail() {
                   {m.suggested_price && m.suggested_price > 0 && costInfo.totalCost > 0 && (
                     <div className="bg-muted/20 rounded-xl p-4">
                       <p className="text-micro text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
-                      <p className={`text-heading font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                      <p className={`text-heading font-medium tabular-nums ${(m.suggested_price - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
                         {Math.round(((m.suggested_price - costInfo.totalCost) / m.suggested_price) * 100)}%
                       </p>
                       <p className="text-micro text-muted-foreground mt-1">{ar ? "صافي الربح:" : "Profit:"} {Math.round(m.suggested_price - costInfo.totalCost).toLocaleString()} {currency}</p>

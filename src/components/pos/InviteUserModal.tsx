@@ -125,7 +125,7 @@ export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; o
             return (
               <div key={idx} className="p-4 rounded-xl border border-border/40 space-y-3 relative">
                 {invites.length > 1 && (
-                  <button onClick={() => removeInvite(idx)} className="absolute top-3 right-3 w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 transition-colors">
+                  <button onClick={() => removeInvite(idx)} className="absolute top-3 right-3 w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-rose-600 hover:bg-rose-50 transition-colors">
                     <Trash2 size={11} />
                   </button>
                 )}

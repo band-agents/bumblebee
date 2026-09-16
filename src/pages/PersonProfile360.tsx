@@ -281,10 +281,10 @@ export default function PersonProfile360() {
   const files = person.files || [];
 
   const FILE_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
-    pdf: { Icon: FileText, color: "text-rose-500", bg: "bg-rose-50" },
-    doc: { Icon: FileText, color: "text-blue-500", bg: "bg-blue-50" },
+    pdf: { Icon: FileText, color: "text-rose-600", bg: "bg-rose-50" },
+    doc: { Icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
     xls: { Icon: Sheet, color: "text-emerald-600", bg: "bg-emerald-50" },
-    img: { Icon: Image, color: "text-chart-4", bg: "bg-chart-4/10" },
+    img: { Icon: Image, color: "text-violet-600", bg: "bg-chart-4/10" },
     zip: { Icon: FolderArchive, color: "text-warning", bg: "bg-warning/10" },
   };
 
@@ -299,10 +299,10 @@ export default function PersonProfile360() {
 
   const TL_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
     created: { Icon: UserPlus, color: "text-brand-ink", bg: "bg-primary/8" },
-    contact: { Icon: Mail, color: "text-chart-4", bg: "bg-chart-4/10" },
-    deal: { Icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-50" },
+    contact: { Icon: Mail, color: "text-violet-600", bg: "bg-chart-4/10" },
+    deal: { Icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
     work: { Icon: Briefcase, color: "text-warning", bg: "bg-warning/10" },
-    note: { Icon: StickyNote, color: "text-blue-500", bg: "bg-blue-50" },
+    note: { Icon: StickyNote, color: "text-blue-600", bg: "bg-blue-50" },
     meeting: { Icon: Calendar, color: "text-cyan-600", bg: "bg-cyan-50" },
   };
 
@@ -317,14 +317,14 @@ export default function PersonProfile360() {
 
   const ACT_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
     email: { Icon: Mail, color: "text-brand-ink", bg: "bg-primary/8" },
-    call: { Icon: Phone, color: "text-chart-4", bg: "bg-chart-4/10" },
+    call: { Icon: Phone, color: "text-violet-600", bg: "bg-chart-4/10" },
     meeting: { Icon: Calendar, color: "text-cyan-600", bg: "bg-cyan-50" },
-    payment: { Icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-50" },
+    payment: { Icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
     order: { Icon: ShoppingBag, color: "text-warning", bg: "bg-warning/10" },
-    note: { Icon: StickyNote, color: "text-blue-500", bg: "bg-blue-50" },
-    contract: { Icon: FileText, color: "text-blue-500", bg: "bg-blue-50" },
+    note: { Icon: StickyNote, color: "text-blue-600", bg: "bg-blue-50" },
+    contract: { Icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
     added: { Icon: UserPlus, color: "text-muted-foreground", bg: "bg-muted" },
-    deal: { Icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-50" },
+    deal: { Icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
     work: { Icon: Briefcase, color: "text-warning", bg: "bg-warning/10" },
   };
 
@@ -707,7 +707,7 @@ export default function PersonProfile360() {
                 descAr: activeDeals.length > 0 ? "راقب تقدم الصفقات وحافظ على علاقة البطل." : "فكر في إعادة التواصل أو فرصة إحالة.",
               },
               {
-                icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10",
+                icon: Zap, color: "text-violet-600", bg: "bg-chart-4/10",
                 titleEn: "Recommended Next Action", titleAr: "الإجراء التالي الموصى به",
                 valueEn: personDeals.length > 0 ? "Follow up on active proposals" : personWork.length > 0 ? "Check work delivery progress" : "Schedule a catch-up call",
                 valueAr: personDeals.length > 0 ? "متابعة العروض النشطة" : personWork.length > 0 ? "التحقق من تقدم تسليم العمل" : "جدولة مكالمة متابعة",

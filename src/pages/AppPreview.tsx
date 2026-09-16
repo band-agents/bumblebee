@@ -39,10 +39,10 @@ function timeAgo(dateStr: string | null, ar: boolean): string {
 
 const buildStatusMeta: Record<string, { en: string; ar: string; color: string; bg: string; dot: string }> = {
   pending: { en: "Pending", ar: "قيد الانتظار", color: "text-muted-foreground", bg: "bg-muted/40", dot: "bg-muted-foreground" },
-  building: { en: "Building", ar: "جارٍ البناء", color: "text-blue-500", bg: "bg-blue-500/10", dot: "bg-blue-500 animate-pulse" },
+  building: { en: "Building", ar: "جارٍ البناء", color: "text-blue-600", bg: "bg-blue-500/10", dot: "bg-blue-500 animate-pulse" },
   testing: { en: "Testing", ar: "جارٍ الاختبار", color: "text-warning", bg: "bg-warning/10", dot: "bg-warning animate-pulse" },
-  ready: { en: "Ready", ar: "جاهز", color: "text-emerald-500", bg: "bg-emerald-500/10", dot: "bg-emerald-500" },
-  failed: { en: "Failed", ar: "فشل", color: "text-red-500", bg: "bg-red-500/10", dot: "bg-red-500" },
+  ready: { en: "Ready", ar: "جاهز", color: "text-emerald-600", bg: "bg-emerald-500/10", dot: "bg-emerald-500" },
+  failed: { en: "Failed", ar: "فشل", color: "text-red-600", bg: "bg-red-500/10", dot: "bg-red-500" },
 };
 
 const featureIconMap: Record<string, React.ElementType> = {
@@ -154,7 +154,7 @@ function FeatureChecklist({ app, ar }: { app: MobileApp; ar: boolean }) {
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
-        <CheckCircle2 size={14} strokeWidth={1.75} className="text-emerald-500" />
+        <CheckCircle2 size={14} strokeWidth={1.75} className="text-emerald-600" />
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "قائمة المميزات" : "Feature Checklist"}
         </h3>
@@ -164,12 +164,12 @@ function FeatureChecklist({ app, ar }: { app: MobileApp; ar: boolean }) {
           const enabled = app[key as keyof MobileApp] as boolean;
           return (
             <div key={key} className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted/20 transition-colors">
-              <Icon size={13} className={enabled ? "text-emerald-500" : "text-muted-foreground/40"} />
+              <Icon size={13} className={enabled ? "text-emerald-600" : "text-muted-foreground/40"} />
               <span className={`flex-1 text-caption ${enabled ? "text-foreground" : "text-muted-foreground/50 line-through"}`}>
                 {ar ? labelAr : labelEn}
               </span>
               {enabled ? (
-                <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+                <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
               ) : (
                 <XCircle size={14} className="text-muted-foreground/30 shrink-0" />
               )}
@@ -187,7 +187,7 @@ function AppStoreListing({ app, ar }: { app: MobileApp; ar: boolean }) {
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Package size={14} strokeWidth={1.75} className="text-blue-500" />
+        <Package size={14} strokeWidth={1.75} className="text-blue-600" />
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "معاينة متجر التطبيقات" : "App Store Listing"}
         </h3>
@@ -251,7 +251,7 @@ function BuildStatusIndicator({ app, ar }: { app: MobileApp; ar: boolean }) {
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Hammer size={14} strokeWidth={1.75} className="text-blue-500" />
+        <Hammer size={14} strokeWidth={1.75} className="text-blue-600" />
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "حالة البناء" : "Build Status"}
         </h3>

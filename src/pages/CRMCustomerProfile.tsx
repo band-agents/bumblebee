@@ -17,7 +17,7 @@ function formatEGP(n: number) {
 }
 
 const VIP_COLORS: Record<string, string> = {
-  platinum: "bg-chart-4/15 text-chart-4 border-chart-4/30",
+  platinum: "bg-chart-4/15 text-violet-600 border-chart-4/30",
   gold: "bg-warning/15 text-warning border-warning/30",
   silver: "bg-slate-100 text-slate-600 border-slate-200",
   none: "",
@@ -28,7 +28,7 @@ const TIMELINE_ICONS: Record<string, { icon: React.ElementType; color: string; b
   pos_order: { icon: ShoppingCart, color: "text-emerald-600", bg: "bg-emerald-100" },
   shopify_order: { icon: ShoppingCart, color: "text-emerald-600", bg: "bg-emerald-100" },
   invoice: { icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },
-  payment: { icon: CreditCard, color: "text-chart-4", bg: "bg-chart-4/15" },
+  payment: { icon: CreditCard, color: "text-violet-600", bg: "bg-chart-4/15" },
   quotation: { icon: FileText, color: "text-cyan-600", bg: "bg-cyan-100" },
   whatsapp: { icon: MessageSquare, color: "text-emerald-600", bg: "bg-emerald-100" },
   email: { icon: Mail, color: "text-blue-600", bg: "bg-blue-100" },
@@ -110,9 +110,9 @@ export default function CRMCustomerProfile() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
-            <button onClick={() => setShowLogModal("call")} className="h-8 px-3 rounded-lg bg-emerald-500 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-600 transition-colors"><Phone size={11} />{ar ? "اتصال" : "Call"}</button>
+            <button onClick={() => setShowLogModal("call")} className="h-8 px-3 rounded-lg bg-emerald-500 text-emerald-900 text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-600 transition-colors"><Phone size={11} />{ar ? "اتصال" : "Call"}</button>
             <button onClick={() => setShowLogModal("whatsapp")} className="h-8 px-3 rounded-lg bg-emerald-600 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-700 transition-colors"><MessageSquare size={11} />WhatsApp</button>
-            <button onClick={() => setShowLogModal("email")} className="h-8 px-3 rounded-lg bg-blue-500 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-blue-600 transition-colors"><Mail size={11} />{ar ? "بريد" : "Email"}</button>
+            <button onClick={() => setShowLogModal("email")} className="h-8 px-3 rounded-lg bg-blue-500 text-blue-900 text-micro font-medium flex items-center gap-1.5 hover:bg-blue-600 transition-colors"><Mail size={11} />{ar ? "بريد" : "Email"}</button>
           </div>
         </div>
 
@@ -246,8 +246,8 @@ export default function CRMCustomerProfile() {
                     {/* Follow-up date */}
                     {note.follow_up_date && (
                       <div className="flex items-center gap-1.5 mt-2">
-                        <Clock size={10} className={note.is_completed ? "text-emerald-500" : "text-warning"} />
-                        <span className={`text-micro font-medium ${note.is_completed ? "text-emerald-500" : "text-warning"}`}>
+                        <Clock size={10} className={note.is_completed ? "text-emerald-600" : "text-warning"} />
+                        <span className={`text-micro font-medium ${note.is_completed ? "text-emerald-600" : "text-warning"}`}>
                           {ar ? "متابعة:" : "Follow-up:"} {note.follow_up_date}
                           {note.is_completed && (ar ? " (مكتمل)" : " (Completed)")}
                         </span>
@@ -274,7 +274,7 @@ export default function CRMCustomerProfile() {
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className={`text-micro px-1.5 py-0.5 rounded-full ${task.priority === "urgent" ? "bg-rose-100 text-rose-600" : task.priority === "high" ? "bg-warning/15 text-warning" : "bg-muted text-muted-foreground"}`}>{task.priority}</span>
                         <span className="text-micro text-muted-foreground">{task.due_date}</span>
-                        {task.status === "overdue" && <span className="text-micro text-rose-500 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
+                        {task.status === "overdue" && <span className="text-micro text-rose-600 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
                       </div>
                     </div>
                     <span className="text-micro text-muted-foreground shrink-0">{task.assigned_to}</span>
@@ -445,7 +445,7 @@ export default function CRMCustomerProfile() {
                     { icon: MessageSquare, labelEn: "Write WhatsApp Follow-up", labelAr: "كتابة متابعة واتساب", color: "text-emerald-600 bg-emerald-50" },
                     { icon: Mail, labelEn: "Write Email Follow-up", labelAr: "كتابة متابعة بريد", color: "text-blue-600 bg-blue-50" },
                     { icon: AlertTriangle, labelEn: "Predict Churn Risk", labelAr: "تحليل خطر الفقد", color: "text-rose-600 bg-rose-50" },
-                    { icon: TrendingUp, labelEn: "Recommend Product", labelAr: "توصية منتج", color: "text-chart-4 bg-chart-4/10" },
+                    { icon: TrendingUp, labelEn: "Recommend Product", labelAr: "توصية منتج", color: "text-violet-600 bg-chart-4/10" },
                     { icon: Eye, labelEn: "Explain Customer History", labelAr: "شرح تاريخ العميل", color: "text-cyan-600 bg-cyan-50" },
                   ].map((action, i) => (
                     <button key={i} className={`p-3.5 rounded-xl border border-border/40 text-left hover:shadow-sm transition-all ${action.color.split(" ")[1]}`}>

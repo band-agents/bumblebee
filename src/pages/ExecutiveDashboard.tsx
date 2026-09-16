@@ -46,7 +46,7 @@ const FEED_STYLE: Record<FeedItemType, { bg: string; border: string; iconCl: str
   opportunity: { bg: "bg-warning/10",   border: "border-warning/30",  iconCl: "text-warning",   icon: Lightbulb,     dot: "bg-warning" },
   insight:     { bg: "bg-primary/8",  border: "border-primary/20",    iconCl: "text-brand-ink",     icon: Activity,      dot: "bg-primary" },
   risk:        { bg: "bg-orange-50",  border: "border-orange-200/60", iconCl: "text-orange-600",  icon: Shield,        dot: "bg-orange-500" },
-  action:      { bg: "bg-chart-4/10",  border: "border-chart-4/30", iconCl: "text-chart-4",  icon: Zap,           dot: "bg-chart-4" },
+  action:      { bg: "bg-chart-4/10",  border: "border-chart-4/30", iconCl: "text-violet-600",  icon: Zap,           dot: "bg-chart-4" },
 };
 
 const MODULE_ICON: Record<string, React.ElementType> = {
@@ -73,8 +73,8 @@ function ScoreBar({ score, color }: { score: number; color: string }) {
 }
 
 function TrendIcon({ trend }: { trend: "up" | "stable" | "down" }) {
-  if (trend === "up") return <TrendingUp size={12} strokeWidth={2} className="text-emerald-500" />;
-  if (trend === "down") return <TrendingDown size={12} strokeWidth={2} className="text-rose-500" />;
+  if (trend === "up") return <TrendingUp size={12} strokeWidth={2} className="text-emerald-600" />;
+  if (trend === "down") return <TrendingDown size={12} strokeWidth={2} className="text-rose-600" />;
   return <Minus size={12} strokeWidth={2} className="text-muted-foreground/50" />;
 }
 
@@ -82,7 +82,7 @@ function HealthRing({ score, size = 90 }: { score: number; size?: number }) {
   const r = (size - 10) / 2;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
-  const color = score >= 75 ? "#10b981" : score >= 55 ? "hsl(var(--primary))" : score >= 35 ? "#f59e0b" : "#ef4444";
+  const color = score >= 75 ? "#6FC39E" : score >= 55 ? "hsl(var(--primary))" : score >= 35 ? "#EFC274" : "#EE9E9E";
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
@@ -153,7 +153,7 @@ function DetailDrawer({ item, onClose, onFullView }: {
                 item.type === "win" ? "bg-emerald-50 text-emerald-700 border border-emerald-200" :
                 item.type === "risk" ? "bg-orange-50 text-orange-700 border border-orange-200" :
                 item.type === "opportunity" ? "bg-warning/10 text-warning border border-warning/30" :
-                item.type === "action" ? "bg-chart-4/10 text-chart-4 border border-chart-4/30" :
+                item.type === "action" ? "bg-chart-4/10 text-violet-600 border border-chart-4/30" :
                 "bg-primary/10 text-brand-ink border border-primary/20"
               }`}>
                 {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
@@ -282,9 +282,9 @@ export default function ExecutiveDashboard() {
   const topMetrics = [
     { labelEn: "Pipeline", labelAr: "خط الأنابيب", value: fmt(pipeline), color: "text-warning", icon: ShoppingCart, trend: pipeline > 500000 ? "up" as const : "stable" as const },
     { labelEn: "Revenue", labelAr: "الإيرادات", value: fmt(totalRevenue), color: "text-emerald-600", icon: CircleDollarSign, trend: "up" as const },
-    { labelEn: "In Progress", labelAr: "قيد التنفيذ", value: `${inFlightWork.length}`, color: "text-blue-500", icon: Factory, trend: "stable" as const },
+    { labelEn: "In Progress", labelAr: "قيد التنفيذ", value: `${inFlightWork.length}`, color: "text-blue-600", icon: Factory, trend: "stable" as const },
     { labelEn: "Completion", labelAr: "الإنجاز", value: `${doneRate}%`, color: "text-emerald-600", icon: CheckCircle2, trend: doneRate >= 50 ? "up" as const : "down" as const },
-    { labelEn: "Overdue Inv.", labelAr: "فواتير متأخرة", value: `${overdueInvoices.length}`, color: overdueInvoices.length > 0 ? "text-rose-500" : "text-emerald-600", icon: Clock, trend: overdueInvoices.length > 0 ? "down" as const : "up" as const },
+    { labelEn: "Overdue Inv.", labelAr: "فواتير متأخرة", value: `${overdueInvoices.length}`, color: overdueInvoices.length > 0 ? "text-rose-600" : "text-emerald-600", icon: Clock, trend: overdueInvoices.length > 0 ? "down" as const : "up" as const },
     { labelEn: "Health", labelAr: "الصحة", value: `${health.score}`, color: "text-brand-ink", icon: Activity, trend: health.score >= 65 ? "up" as const : "stable" as const },
   ];
 
@@ -442,7 +442,7 @@ export default function ExecutiveDashboard() {
                   </div>
                   <TrendIcon trend={cashFlowTrend} />
                 </div>
-                <p className={`text-heading font-semibold tabular-nums ${cashFlow >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ ...serif, letterSpacing: "-0.02em" }}>
+                <p className={`text-heading font-semibold tabular-nums ${cashFlow >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ ...serif, letterSpacing: "-0.02em" }}>
                   {cashFlow >= 0 ? "+" : ""}{fmt(cashFlow)}
                 </p>
                 <p className="text-micro text-muted-foreground/60 mt-1">{ar ? "إيرادات ناقص مصروفات" : "revenue minus expenses"}</p>
@@ -463,7 +463,7 @@ export default function ExecutiveDashboard() {
             <div className="border border-border/40 rounded-xl p-5 bg-background">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Factory size={14} className="text-blue-500" />
+                  <Factory size={14} className="text-blue-600" />
                   <h2 className="text-body font-medium text-foreground">{ar ? "الطلبات والإنتاج" : "Orders & Production"}</h2>
                 </div>
                 <button className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/orders")}>
@@ -547,7 +547,7 @@ export default function ExecutiveDashboard() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Flame size={13} strokeWidth={1.75} className="text-orange-500" />
+                  <Flame size={13} strokeWidth={1.75} className="text-orange-600" />
                   <h2 className="text-body-lg font-medium text-foreground" style={{ ...serif, letterSpacing: "-0.01em" }}>
                     {ar ? "أولويات اليوم" : "Today's Priorities"}
                   </h2>
@@ -562,7 +562,7 @@ export default function ExecutiveDashboard() {
                   const catColor: Record<string, string> = {
                     revenue: "text-warning bg-warning/10",
                     operations: "text-blue-600 bg-blue-50",
-                    relationships: "text-chart-4 bg-chart-4/10",
+                    relationships: "text-violet-600 bg-chart-4/10",
                     risk: "text-rose-600 bg-rose-50",
                   };
                   return (
@@ -616,7 +616,7 @@ export default function ExecutiveDashboard() {
             {overdueInvoices.length > 0 && (
               <div className="border border-rose-200/60 bg-rose-50/30 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <AlertTriangle size={13} className="text-rose-500" />
+                  <AlertTriangle size={13} className="text-rose-600" />
                   <p className="text-micro font-medium text-foreground">{ar ? "فواتير متأخرة" : "Overdue Invoices"}</p>
                 </div>
                 <div className="space-y-2">
@@ -659,7 +659,7 @@ export default function ExecutiveDashboard() {
                   <div key={item.name} className="flex items-center justify-between text-micro">
                     <span className="text-foreground truncate">{item.name}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-rose-500 font-medium tabular-nums">{item.stock} {item.unit}</span>
+                      <span className="text-rose-600 font-medium tabular-nums">{item.stock} {item.unit}</span>
                       <span className="text-muted-foreground/40">/ {item.min}</span>
                     </div>
                   </div>
@@ -671,7 +671,7 @@ export default function ExecutiveDashboard() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Shield size={13} strokeWidth={1.75} className="text-rose-500" />
+                  <Shield size={13} strokeWidth={1.75} className="text-rose-600" />
                   <h3 className="text-body font-medium text-foreground">{ar ? "أبرز المخاطر" : "Top Risks"}</h3>
                 </div>
                 <button className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1" onClick={() => navigate("/risk")}>
@@ -724,11 +724,11 @@ export default function ExecutiveDashboard() {
               <p className="text-micro font-medium text-foreground mb-3">{ar ? "التنقل السريع" : "Quick Navigation"}</p>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { labelEn: "Work Queue", labelAr: "قائمة المهام", path: "/queue", icon: Target, color: "text-orange-500 bg-orange-50" },
-                  { labelEn: "Risk Radar", labelAr: "رادار المخاطر", path: "/risk", icon: Shield, color: "text-rose-500 bg-rose-50" },
-                  { labelEn: "Forecast", labelAr: "التوقعات", path: "/forecast", icon: TrendingUp, color: "text-blue-500 bg-blue-50" },
-                  { labelEn: "Analytics", labelAr: "التحليلات", path: "/analytics", icon: BarChart3, color: "text-chart-4 bg-chart-4/10" },
-                  { labelEn: "Finance", labelAr: "المالية", path: "/finance", icon: Landmark, color: "text-emerald-500 bg-emerald-50" },
+                  { labelEn: "Work Queue", labelAr: "قائمة المهام", path: "/queue", icon: Target, color: "text-orange-600 bg-orange-50" },
+                  { labelEn: "Risk Radar", labelAr: "رادار المخاطر", path: "/risk", icon: Shield, color: "text-rose-600 bg-rose-50" },
+                  { labelEn: "Forecast", labelAr: "التوقعات", path: "/forecast", icon: TrendingUp, color: "text-blue-600 bg-blue-50" },
+                  { labelEn: "Analytics", labelAr: "التحليلات", path: "/analytics", icon: BarChart3, color: "text-violet-600 bg-chart-4/10" },
+                  { labelEn: "Finance", labelAr: "المالية", path: "/finance", icon: Landmark, color: "text-emerald-600 bg-emerald-50" },
                   { labelEn: "Inventory", labelAr: "المخزن", path: "/inventory", icon: Package, color: "text-warning bg-warning/10" },
                 ].map((t) => {
                   const Icon = t.icon;

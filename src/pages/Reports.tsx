@@ -317,8 +317,8 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
   };
 
   const statusColors: Record<string, string> = {
-    draft: "#94a3b8", pending: "#f59e0b", approved: "#3b82f6", in_progress: "#8b5cf6",
-    done: "#22c55e", completed: "#22c55e", cancelled: "#ef4444", blocked: "#ef4444",
+    draft: "#94a3b8", pending: "#EFC274", approved: "#8AB0EA", in_progress: "#B6A0EA",
+    done: "#7CCB9A", completed: "#7CCB9A", cancelled: "#EE9E9E", blocked: "#EE9E9E",
   };
 
   return (
@@ -331,7 +331,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
             {savedReports.map(r => (
               <div key={r.id} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-micro font-medium cursor-pointer transition-all ${activeReport === r.id ? "border-primary bg-primary/5 text-brand-ink" : "border-border/40 text-muted-foreground hover:border-border/80"}`}>
                 <button onClick={() => loadReport(r)}>{r.name}</button>
-                <button onClick={() => deleteReport(r.id)} className="text-muted-foreground/40 hover:text-rose-500"><X size={10} /></button>
+                <button onClick={() => deleteReport(r.id)} className="text-muted-foreground/40 hover:text-rose-600"><X size={10} /></button>
               </div>
             ))}
           </div>
@@ -395,7 +395,7 @@ function ReportBuilder({ ar, workItems, resources, orgs, currency }: {
                   {FILTER_OPERATORS.map(op => <option key={op.id} value={op.id}>{ar ? op.ar : op.en}</option>)}
                 </select>
                 <input value={f.value} onChange={e => updateFilter(i, "value", e.target.value)} className={inputCls + " max-w-[180px]"} placeholder={ar ? "القيمة..." : "Value..."} />
-                <button onClick={() => removeFilter(i)} className="text-muted-foreground/40 hover:text-rose-500 p-1"><X size={12} /></button>
+                <button onClick={() => removeFilter(i)} className="text-muted-foreground/40 hover:text-rose-600 p-1"><X size={12} /></button>
               </div>
             ))}
           </div>
@@ -686,15 +686,15 @@ export default function Reports() {
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
               <KPI icon={DollarSign} value={fmt(revenue)} label={ar ? "الإيرادات" : "Revenue"} color="text-emerald-600" />
-              <KPI icon={Receipt} value={fmt(totalExpenses)} label={ar ? "المصاريف" : "Expenses"} color="text-rose-500" />
-              <KPI icon={TrendingUp} value={fmt(profit)} label={ar ? "صافي الربح" : "Profit"} color={profit >= 0 ? "text-emerald-600" : "text-rose-500"} />
+              <KPI icon={Receipt} value={fmt(totalExpenses)} label={ar ? "المصاريف" : "Expenses"} color="text-rose-600" />
+              <KPI icon={TrendingUp} value={fmt(profit)} label={ar ? "صافي الربح" : "Profit"} color={profit >= 0 ? "text-emerald-600" : "text-rose-600"} />
               <KPI icon={FileText} value={fmt(outstanding)} label={ar ? "مستحقات" : "Outstanding"} color="text-warning" sub={`${overdueInv.length} ${ar ? "متأخر" : "overdue"}`} />
               <KPI icon={TrendingUp} value={fmt(pipeline)} label={ar ? "الصفقات" : "Pipeline"} color="text-blue-600" sub={`${activeDeals.length} ${ar ? "نشط" : "active"}`} />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
               <KPI icon={Briefcase} value={openWork.length} label={ar ? "شغل مفتوح" : "Open Work"} color="text-blue-600" />
-              <KPI icon={AlertTriangle} value={overdueWork.length} label={ar ? "متأخر" : "Overdue"} color={overdueWork.length > 0 ? "text-rose-500" : "text-emerald-600"} />
-              <KPI icon={Users} value={activeEmployees.length} label={ar ? "موظفين نشطين" : "Active Employees"} color="text-chart-4" />
+              <KPI icon={AlertTriangle} value={overdueWork.length} label={ar ? "متأخر" : "Overdue"} color={overdueWork.length > 0 ? "text-rose-600" : "text-emerald-600"} />
+              <KPI icon={Users} value={activeEmployees.length} label={ar ? "موظفين نشطين" : "Active Employees"} color="text-violet-600" />
               <KPI icon={ShoppingCart} value={pendingPRs.length} label={ar ? "مستني موافقة" : "Pending PRs"} color="text-warning" />
               <KPI icon={Package} value={resources.length} label={ar ? "الأصول" : "Assets"} color="text-orange-600" />
             </div>
@@ -742,7 +742,7 @@ export default function Reports() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               <KPI icon={TrendingUp} value={fmt(pipeline)} label={ar ? "قيمة الصفقات" : "Pipeline Value"} color="text-blue-600" />
               <KPI icon={CheckCircle2} value={wonDeals.length} label={ar ? "صفقات مكسوبة" : "Won Deals"} color="text-emerald-600" sub={fmt(wonDeals.reduce((s, d) => s + Number(d.value), 0))} />
-              <KPI icon={ArrowDownRight} value={lostDeals.length} label={ar ? "صفقات خسرانة" : "Lost Deals"} color="text-rose-500" />
+              <KPI icon={ArrowDownRight} value={lostDeals.length} label={ar ? "صفقات خسرانة" : "Lost Deals"} color="text-rose-600" />
               <KPI icon={Target} value={pct(wonDeals.length, wonDeals.length + lostDeals.length)} label={ar ? "معدل التحويل" : "Conversion Rate"} color="text-brand-ink" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -772,11 +772,11 @@ export default function Reports() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
               <KPI icon={DollarSign} value={fmt(revenue)} label={ar ? "الإيرادات" : "Revenue"} color="text-emerald-600" />
-              <KPI icon={Receipt} value={fmt(totalExpenses)} label={ar ? "المصاريف" : "Expenses"} color="text-rose-500" />
-              <KPI icon={TrendingUp} value={fmt(profit)} label={ar ? "صافي الربح" : "Net Profit"} color={profit >= 0 ? "text-emerald-600" : "text-rose-500"} />
+              <KPI icon={Receipt} value={fmt(totalExpenses)} label={ar ? "المصاريف" : "Expenses"} color="text-rose-600" />
+              <KPI icon={TrendingUp} value={fmt(profit)} label={ar ? "صافي الربح" : "Net Profit"} color={profit >= 0 ? "text-emerald-600" : "text-rose-600"} />
               <KPI icon={FileText} value={fmt(outstanding)} label={ar ? "مستحقات" : "Outstanding"} color="text-warning" />
               <KPI icon={CheckCircle2} value={paidInv.length} label={ar ? "مدفوعة" : "Paid"} color="text-emerald-600" />
-              <KPI icon={AlertTriangle} value={overdueInv.length} label={ar ? "متأخرة" : "Overdue"} color={overdueInv.length > 0 ? "text-rose-500" : "text-emerald-600"} />
+              <KPI icon={AlertTriangle} value={overdueInv.length} label={ar ? "متأخرة" : "Overdue"} color={overdueInv.length > 0 ? "text-rose-600" : "text-emerald-600"} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -815,7 +815,7 @@ export default function Reports() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               <KPI icon={Layers} value={openWork.length} label={ar ? "شغل مفتوح" : "Open Work"} color="text-blue-600" />
               <KPI icon={CheckCircle2} value={doneWork.length} label={ar ? "مكتمل" : "Completed"} color="text-emerald-600" />
-              <KPI icon={AlertTriangle} value={overdueWork.length} label={ar ? "متأخر" : "Overdue"} color={overdueWork.length > 0 ? "text-rose-500" : "text-emerald-600"} />
+              <KPI icon={AlertTriangle} value={overdueWork.length} label={ar ? "متأخر" : "Overdue"} color={overdueWork.length > 0 ? "text-rose-600" : "text-emerald-600"} />
               <KPI icon={Target} value={pct(doneWork.length, allWork.length)} label={ar ? "معدل الإنجاز" : "Completion Rate"} color="text-brand-ink" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -841,7 +841,7 @@ export default function Reports() {
         {tab === "hr" && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              <KPI icon={Users} value={teamMembers.length} label={ar ? "إجمالي الفريق" : "Team Size"} color="text-chart-4" />
+              <KPI icon={Users} value={teamMembers.length} label={ar ? "إجمالي الفريق" : "Team Size"} color="text-violet-600" />
               <KPI icon={CheckCircle2} value={activeEmployees.length} label={ar ? "نشط" : "Active"} color="text-emerald-600" />
               <KPI icon={Building2} value={empByDept.length} label={ar ? "أقسام" : "Departments"} color="text-blue-600" />
               <KPI icon={Briefcase} value={openWork.length} label={ar ? "مهام مفتوحة" : "Open Tasks"} color="text-warning" />
@@ -877,7 +877,7 @@ export default function Reports() {
               )}
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              <KPI icon={Building2} value={vendors.length} label={ar ? "الموردين" : "Vendors"} color="text-chart-4" />
+              <KPI icon={Building2} value={vendors.length} label={ar ? "الموردين" : "Vendors"} color="text-violet-600" />
               <KPI icon={FileText} value={purchaseRequests.length} label={ar ? "طلبات شراء" : "Purchase Requests"} color="text-blue-600" />
               <KPI icon={Clock} value={pendingPRs.length} label={ar ? "مستني موافقة" : "Pending Approval"} color="text-warning" />
               <KPI icon={ShoppingCart} value={purchaseOrders.length} label={ar ? "أوامر شراء" : "Purchase Orders"} color="text-brand-ink" />

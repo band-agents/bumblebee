@@ -161,20 +161,20 @@ export interface StudioVersion {
 
 export const STUDIO_PAGES: StudioPage[] = [
   { id: "p01", workspace_id: W, title: "Bumblebee Knowledge Base", title_ar: "قاعدة معرفة ثوت", icon: "📚", cover_image: null, type: "knowledge", status: "published", parent_id: null, owner_id: "e01", owner_name: "Ahmed Ali", owner_name_ar: "أحمد علي", owner_avatar: "#1E3A5F", tags: ["knowledge", "company"], is_favorite: true, is_template: false, is_public: true, published_url: "/public/kb", properties: { department: "All", priority: "high" }, created_at: d(90), updated_at: d(1), last_edited_by: "Ahmed Ali", view_count: 245, word_count: 3200 },
-  { id: "p02", workspace_id: W, title: "HR Handbook", title_ar: "دليل الموارد البشرية", icon: "📋", cover_image: null, type: "handbook", status: "published", parent_id: "p01", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#10B981", tags: ["hr", "policies", "onboarding"], is_favorite: true, is_template: false, is_public: false, published_url: null, properties: { department: "HR", priority: "high", status: "published" }, created_at: d(60), updated_at: d(5), last_edited_by: "Mona Saad", view_count: 89, word_count: 5400 },
-  { id: "p03", workspace_id: W, title: "Marketing Plan 2026", title_ar: "خطة التسويق ٢٠٢٦", icon: "📊", cover_image: null, type: "project", status: "in_progress", parent_id: null, owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#E07A5F", tags: ["marketing", "strategy", "2026"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "high", budget: "500,000 EGP" }, created_at: d(30), updated_at: d(0), last_edited_by: "Sara Mahmoud", view_count: 42, word_count: 1800 },
-  { id: "p04", workspace_id: W, title: "Sales SOP", title_ar: "إجراءات المبيعات", icon: "💰", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#E07A5F", tags: ["sales", "sop", "process"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium", review_date: "2026-09-01" }, created_at: d(45), updated_at: d(10), last_edited_by: "Sara Mahmoud", view_count: 34, word_count: 1200 },
-  { id: "p05", workspace_id: W, title: "Warehouse SOP", title_ar: "إجراءات المخزن", icon: "🏭", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e05", owner_name: "Omar Salah", owner_name_ar: "عمر صلاح", owner_avatar: "#F59E0B", tags: ["warehouse", "sop", "operations"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Operations", priority: "medium" }, created_at: d(40), updated_at: d(8), last_edited_by: "Omar Salah", view_count: 28, word_count: 980 },
-  { id: "p06", workspace_id: W, title: "Product Roadmap Q2-Q3", title_ar: "خارطة طريق المنتجات Q2-Q3", icon: "🗺️", cover_image: null, type: "project", status: "in_progress", parent_id: null, owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EC4899", tags: ["product", "roadmap", "design"], is_favorite: true, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "high" }, created_at: d(20), updated_at: d(0), last_edited_by: "Fatma Hassan", view_count: 56, word_count: 2100 },
+  { id: "p02", workspace_id: W, title: "HR Handbook", title_ar: "دليل الموارد البشرية", icon: "📋", cover_image: null, type: "handbook", status: "published", parent_id: "p01", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#6FC39E", tags: ["hr", "policies", "onboarding"], is_favorite: true, is_template: false, is_public: false, published_url: null, properties: { department: "HR", priority: "high", status: "published" }, created_at: d(60), updated_at: d(5), last_edited_by: "Mona Saad", view_count: 89, word_count: 5400 },
+  { id: "p03", workspace_id: W, title: "Marketing Plan 2026", title_ar: "خطة التسويق ٢٠٢٦", icon: "📊", cover_image: null, type: "project", status: "in_progress", parent_id: null, owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#EDA994", tags: ["marketing", "strategy", "2026"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "high", budget: "500,000 EGP" }, created_at: d(30), updated_at: d(0), last_edited_by: "Sara Mahmoud", view_count: 42, word_count: 1800 },
+  { id: "p04", workspace_id: W, title: "Sales SOP", title_ar: "إجراءات المبيعات", icon: "💰", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#EDA994", tags: ["sales", "sop", "process"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium", review_date: "2026-09-01" }, created_at: d(45), updated_at: d(10), last_edited_by: "Sara Mahmoud", view_count: 34, word_count: 1200 },
+  { id: "p05", workspace_id: W, title: "Warehouse SOP", title_ar: "إجراءات المخزن", icon: "🏭", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e05", owner_name: "Omar Salah", owner_name_ar: "عمر صلاح", owner_avatar: "#EFC274", tags: ["warehouse", "sop", "operations"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Operations", priority: "medium" }, created_at: d(40), updated_at: d(8), last_edited_by: "Omar Salah", view_count: 28, word_count: 980 },
+  { id: "p06", workspace_id: W, title: "Product Roadmap Q2-Q3", title_ar: "خارطة طريق المنتجات Q2-Q3", icon: "🗺️", cover_image: null, type: "project", status: "in_progress", parent_id: null, owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EFA3C6", tags: ["product", "roadmap", "design"], is_favorite: true, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "high" }, created_at: d(20), updated_at: d(0), last_edited_by: "Fatma Hassan", view_count: 56, word_count: 2100 },
   { id: "p07", workspace_id: W, title: "Team Meeting — June 10", title_ar: "اجتماع الفريق — ١٠ يونيو", icon: "📅", cover_image: null, type: "meeting", status: "published", parent_id: null, owner_id: "e01", owner_name: "Ahmed Ali", owner_name_ar: "أحمد علي", owner_avatar: "#1E3A5F", tags: ["meeting", "team"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { date: "2026-06-10", attendees: "All managers" }, created_at: d(4), updated_at: d(4), last_edited_by: "Ahmed Ali", view_count: 12, word_count: 650 },
-  { id: "p08", workspace_id: W, title: "Brand Guidelines", title_ar: "إرشادات العلامة التجارية", icon: "🎨", cover_image: null, type: "document", status: "published", parent_id: "p01", owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EC4899", tags: ["brand", "design", "guidelines"], is_favorite: true, is_template: false, is_public: true, published_url: "/public/brand", properties: { department: "Design", priority: "high" }, created_at: d(90), updated_at: d(15), last_edited_by: "Fatma Hassan", view_count: 120, word_count: 1500 },
-  { id: "p09", workspace_id: W, title: "CRM SOP — Customer Follow-up", title_ar: "إجراءات CRM — متابعة العملاء", icon: "🤝", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#10B981", tags: ["crm", "sop", "customer"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium" }, created_at: d(35), updated_at: d(12), last_edited_by: "Mona Saad", view_count: 18, word_count: 800 },
-  { id: "p10", workspace_id: W, title: "Production Quality Checklist", title_ar: "قائمة جودة الإنتاج", icon: "✅", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e03", owner_name: "Mohamed Gamal", owner_name_ar: "محمد جمال", owner_avatar: "#3B82F6", tags: ["production", "quality", "checklist"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Production", priority: "high" }, created_at: d(50), updated_at: d(3), last_edited_by: "Mohamed Gamal", view_count: 45, word_count: 600 },
-  { id: "p11", workspace_id: W, title: "Summer Collection Brief", title_ar: "بريف مجموعة الصيف", icon: "☀️", cover_image: null, type: "brief", status: "in_progress", parent_id: null, owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EC4899", tags: ["collection", "summer", "design"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "high", deadline: "2026-07-15" }, created_at: d(10), updated_at: d(0), last_edited_by: "Fatma Hassan", view_count: 22, word_count: 1100 },
-  { id: "p12", workspace_id: W, title: "Employee Onboarding Guide", title_ar: "دليل تأهيل الموظف الجديد", icon: "🎓", cover_image: null, type: "handbook", status: "published", parent_id: "p02", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#10B981", tags: ["hr", "onboarding", "guide"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "HR", priority: "medium" }, created_at: d(55), updated_at: d(7), last_edited_by: "Mona Saad", view_count: 15, word_count: 750 },
-  { id: "p13", workspace_id: W, title: "Brand Identity 2026", title_ar: "هوية العلامة التجارية ٢٠٢٦", icon: "✨", cover_image: null, type: "document", status: "in_progress", parent_id: "p08", owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EC4899", tags: ["brand", "identity", "2026"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "high" }, created_at: d(15), updated_at: d(1), last_edited_by: "Fatma Hassan", view_count: 33, word_count: 900 },
-  { id: "p14", workspace_id: W, title: "Client Welcome Kit", title_ar: "حزمة ترحيب العملاء", icon: "🎁", cover_image: null, type: "template", status: "published", parent_id: null, owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#E07A5F", tags: ["client", "welcome", "template"], is_favorite: false, is_template: true, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium" }, created_at: d(25), updated_at: d(10), last_edited_by: "Sara Mahmoud", view_count: 8, word_count: 500 },
-  { id: "p15", workspace_id: W, title: "Shooting Notes — June", title_ar: "ملاحظات التصوير — يونيو", icon: "📸", cover_image: null, type: "meeting", status: "draft", parent_id: null, owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EC4899", tags: ["photo", "shooting", "june"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "medium", date: "2026-06-20" }, created_at: d(2), updated_at: d(0), last_edited_by: "Fatma Hassan", view_count: 5, word_count: 300 },
+  { id: "p08", workspace_id: W, title: "Brand Guidelines", title_ar: "إرشادات العلامة التجارية", icon: "🎨", cover_image: null, type: "document", status: "published", parent_id: "p01", owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EFA3C6", tags: ["brand", "design", "guidelines"], is_favorite: true, is_template: false, is_public: true, published_url: "/public/brand", properties: { department: "Design", priority: "high" }, created_at: d(90), updated_at: d(15), last_edited_by: "Fatma Hassan", view_count: 120, word_count: 1500 },
+  { id: "p09", workspace_id: W, title: "CRM SOP — Customer Follow-up", title_ar: "إجراءات CRM — متابعة العملاء", icon: "🤝", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#6FC39E", tags: ["crm", "sop", "customer"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium" }, created_at: d(35), updated_at: d(12), last_edited_by: "Mona Saad", view_count: 18, word_count: 800 },
+  { id: "p10", workspace_id: W, title: "Production Quality Checklist", title_ar: "قائمة جودة الإنتاج", icon: "✅", cover_image: null, type: "sop", status: "published", parent_id: "p01", owner_id: "e03", owner_name: "Mohamed Gamal", owner_name_ar: "محمد جمال", owner_avatar: "#8AB0EA", tags: ["production", "quality", "checklist"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Production", priority: "high" }, created_at: d(50), updated_at: d(3), last_edited_by: "Mohamed Gamal", view_count: 45, word_count: 600 },
+  { id: "p11", workspace_id: W, title: "Summer Collection Brief", title_ar: "بريف مجموعة الصيف", icon: "☀️", cover_image: null, type: "brief", status: "in_progress", parent_id: null, owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EFA3C6", tags: ["collection", "summer", "design"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "high", deadline: "2026-07-15" }, created_at: d(10), updated_at: d(0), last_edited_by: "Fatma Hassan", view_count: 22, word_count: 1100 },
+  { id: "p12", workspace_id: W, title: "Employee Onboarding Guide", title_ar: "دليل تأهيل الموظف الجديد", icon: "🎓", cover_image: null, type: "handbook", status: "published", parent_id: "p02", owner_id: "e08", owner_name: "Mona Saad", owner_name_ar: "منى سعد", owner_avatar: "#6FC39E", tags: ["hr", "onboarding", "guide"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "HR", priority: "medium" }, created_at: d(55), updated_at: d(7), last_edited_by: "Mona Saad", view_count: 15, word_count: 750 },
+  { id: "p13", workspace_id: W, title: "Brand Identity 2026", title_ar: "هوية العلامة التجارية ٢٠٢٦", icon: "✨", cover_image: null, type: "document", status: "in_progress", parent_id: "p08", owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EFA3C6", tags: ["brand", "identity", "2026"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "high" }, created_at: d(15), updated_at: d(1), last_edited_by: "Fatma Hassan", view_count: 33, word_count: 900 },
+  { id: "p14", workspace_id: W, title: "Client Welcome Kit", title_ar: "حزمة ترحيب العملاء", icon: "🎁", cover_image: null, type: "template", status: "published", parent_id: null, owner_id: "e02", owner_name: "Sara Mahmoud", owner_name_ar: "سارة محمود", owner_avatar: "#EDA994", tags: ["client", "welcome", "template"], is_favorite: false, is_template: true, is_public: false, published_url: null, properties: { department: "Sales", priority: "medium" }, created_at: d(25), updated_at: d(10), last_edited_by: "Sara Mahmoud", view_count: 8, word_count: 500 },
+  { id: "p15", workspace_id: W, title: "Shooting Notes — June", title_ar: "ملاحظات التصوير — يونيو", icon: "📸", cover_image: null, type: "meeting", status: "draft", parent_id: null, owner_id: "e04", owner_name: "Fatma Hassan", owner_name_ar: "فاطمة حسن", owner_avatar: "#EFA3C6", tags: ["photo", "shooting", "june"], is_favorite: false, is_template: false, is_public: false, published_url: null, properties: { department: "Design", priority: "medium", date: "2026-06-20" }, created_at: d(2), updated_at: d(0), last_edited_by: "Fatma Hassan", view_count: 5, word_count: 300 },
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -250,8 +250,8 @@ export const STUDIO_BLOCKS: StudioBlock[] = [
 // ═══════════════════════════════════════════════════════════
 
 export const STUDIO_COMMENTS: StudioComment[] = [
-  { id: "cm01", workspace_id: W, page_id: "p02", block_id: "b07", author: "Sara Mahmoud", author_ar: "سارة محمود", author_avatar: "#E07A5F", content: "Should we add paternity leave to this policy?", content_ar: "هل يجب إضافة إجازة الأبوة لهذه السياسة؟", mentions: [], reactions: [{ emoji: "👍", users: ["Mona Saad"] }], resolved: false, parent_comment_id: null, created_at: d(20), replies: [
-    { id: "cm02", workspace_id: W, page_id: "p02", block_id: "b07", author: "Mona Saad", author_ar: "منى سعد", author_avatar: "#10B981", content: "Good point! I'll add it in the next update. Egyptian law allows 3 days paternity leave.", content_ar: "نقطة جيدة! سأضيفها في التحديث التالي. القانون المصري يسمح بـ ٣ أيام إجازة أبوة.", mentions: [], reactions: [], resolved: false, parent_comment_id: "cm01", created_at: d(19), replies: [] },
+  { id: "cm01", workspace_id: W, page_id: "p02", block_id: "b07", author: "Sara Mahmoud", author_ar: "سارة محمود", author_avatar: "#EDA994", content: "Should we add paternity leave to this policy?", content_ar: "هل يجب إضافة إجازة الأبوة لهذه السياسة؟", mentions: [], reactions: [{ emoji: "👍", users: ["Mona Saad"] }], resolved: false, parent_comment_id: null, created_at: d(20), replies: [
+    { id: "cm02", workspace_id: W, page_id: "p02", block_id: "b07", author: "Mona Saad", author_ar: "منى سعد", author_avatar: "#6FC39E", content: "Good point! I'll add it in the next update. Egyptian law allows 3 days paternity leave.", content_ar: "نقطة جيدة! سأضيفها في التحديث التالي. القانون المصري يسمح بـ ٣ أيام إجازة أبوة.", mentions: [], reactions: [], resolved: false, parent_comment_id: "cm01", created_at: d(19), replies: [] },
   ]},
   { id: "cm03", workspace_id: W, page_id: "p11", block_id: "b45", author: "Ahmed Ali", author_ar: "أحمد علي", author_avatar: "#1E3A5F", content: "This deadline is tight. Can we get an extension?", content_ar: "هذا الموعد النهائي ضيق. هل يمكننا الحصول على تمديد؟", mentions: ["Fatma Hassan"], reactions: [{ emoji: "⏰", users: ["Fatma Hassan"] }], resolved: false, parent_comment_id: null, created_at: d(5), replies: [] },
   { id: "cm04", workspace_id: W, page_id: "p07", block_id: "b34", author: "Ahmed Ali", author_ar: "أحمد علي", author_avatar: "#1E3A5F", content: "Please prioritize the VIP clients first — they drive 60% of our revenue.", content_ar: "يرجى أولوية عملاء VIP أولاً — يمثلون ٦٠٪ من إيراداتنا.", mentions: ["Sara Mahmoud"], reactions: [{ emoji: "✅", users: ["Sara Mahmoud"] }], resolved: false, parent_comment_id: null, created_at: d(3), replies: [] },
@@ -269,7 +269,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t01", workspace_id: W, name: "Meeting Notes", name_ar: "محضر اجتماع",
     description: "Comprehensive meeting notes with agenda, discussion, decisions, action items, and follow-up tracking",
     description_ar: "محضر اجتماع شامل مع جدول الأعمال والنقاش والقرارات والإجراءات المطلوبة ومتابعة التنفيذ",
-    icon: "📅", category: "meetings", color: "#3B82F6",
+    icon: "📅", category: "meetings", color: "#8AB0EA",
     blocks: [
       { type: "h1", content: "📋 Meeting Notes — [Meeting Title]", content_ar: "📋 محضر اجتماع — [عنوان الاجتماع]" },
       { type: "divider", content: "", content_ar: "" },
@@ -311,7 +311,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t02", workspace_id: W, name: "Weekly Report", name_ar: "تقرير أسبوعي",
     description: "Detailed weekly status report with highlights, metrics, blockers, and next week plan",
     description_ar: "تقرير حالة أسبوعي تفصيلي مع أبرز النقاط والمؤشرات والعقبات وخطة الأسبوع القادم",
-    icon: "📊", category: "reports", color: "#8B5CF6",
+    icon: "📊", category: "reports", color: "#B6A0EA",
     blocks: [
       { type: "h1", content: "📊 Weekly Report — [WEEK DATES]", content_ar: "📊 التقرير الأسبوعي — [تواريخ الأسبوع]" },
       { type: "divider", content: "", content_ar: "" },
@@ -353,7 +353,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t03", workspace_id: W, name: "Standard Operating Procedure", name_ar: "إجراءات عملياتية معيارية",
     description: "Complete SOP template with purpose, scope, step-by-step procedure, safety notes, and revision history",
     description_ar: "قالب إجراءات عملياتية معيارية شامل مع الغرض والنطاق والخطوات التفصيلية وملاحظات السلامة وسجل المراجعات",
-    icon: "📋", category: "process", color: "#F59E0B",
+    icon: "📋", category: "process", color: "#EFC274",
     blocks: [
       { type: "h1", content: "📋 SOP: [Procedure Title]", content_ar: "📋 إجراء: [عنوان الإجراء]" },
       { type: "divider", content: "", content_ar: "" },
@@ -400,7 +400,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t04", workspace_id: W, name: "Project Plan", name_ar: "خطة مشروع",
     description: "Comprehensive project plan with objectives, milestones, resources, risks, budget, and timeline",
     description_ar: "خطة مشروع شاملة مع الأهداف والمعالم والموارد والمخاطر والميزانية والجدول الزمني",
-    icon: "🗺️", category: "projects", color: "#10B981",
+    icon: "🗺️", category: "projects", color: "#6FC39E",
     blocks: [
       { type: "h1", content: "🗺️ Project: [Project Name]", content_ar: "🗺️ المشروع: [اسم المشروع]" },
       { type: "divider", content: "", content_ar: "" },
@@ -440,7 +440,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t05", workspace_id: W, name: "Marketing Campaign Brief", name_ar: "بريف حملة تسويقية",
     description: "Complete marketing brief with objectives, audience, channels, budget, timeline, and KPIs",
     description_ar: "بريف تسويقي شامل مع الأهداف والجمهور والقنوات والميزانية والجدول الزمني ومؤشرات الأداء",
-    icon: "📣", category: "marketing", color: "#EC4899",
+    icon: "📣", category: "marketing", color: "#EFA3C6",
     blocks: [
       { type: "h1", content: "📣 Marketing Campaign Brief", content_ar: "📣 بريف حملة تسويقية" },
       { type: "divider", content: "", content_ar: "" },
@@ -481,7 +481,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t06", workspace_id: W, name: "Product Launch Checklist", name_ar: "قائمة التحقق من إطلاق المنتج",
     description: "Complete product launch checklist with pre-launch, launch day, and post-launch phases",
     description_ar: "قائمة تحقق شاملة لإطلاق المنتج مع مراحل ما قبل الإطلاق ويوم الإطلاق وما بعد الإطلاق",
-    icon: "🚀", category: "marketing", color: "#EF4444",
+    icon: "🚀", category: "marketing", color: "#EE9E9E",
     blocks: [
       { type: "h1", content: "🚀 Product Launch: [Product Name]", content_ar: "🚀 إطلاق المنتج: [اسم المنتج]" },
       { type: "divider", content: "", content_ar: "" },
@@ -534,7 +534,7 @@ export const STUDIO_TEMPLATES: StudioTemplate[] = [
     id: "t07", workspace_id: W, name: "Hiring Process", name_ar: "عملية التوظيف",
     description: "Complete hiring process with job description, interview stages, evaluation criteria, and onboarding",
     description_ar: "عملية توظيف شاملة مع وصف الوظيفة ومراحل المقابلة ومعايير التقييم والتأهيل",
-    icon: "👥", category: "hr", color: "#06B6D4",
+    icon: "👥", category: "hr", color: "#84CCDA",
     blocks: [
       { type: "h1", content: "👥 Hiring: [Position Title]", content_ar: "👥 التوظيف: [المنصب]" },
       { type: "divider", content: "", content_ar: "" },
@@ -686,8 +686,8 @@ export const STUDIO_DATABASES: StudioDatabase[] = [
     id: "db01", workspace_id: W, page_id: "p06", name: "Product Roadmap", name_ar: "خارطة طريق المنتجات", icon: "🗺️",
     properties: [
       { id: "dp01", name: "Feature", name_ar: "الميزة", type: "text" },
-      { id: "dp02", name: "Status", name_ar: "الحالة", type: "status", options: [{ label: "Planned", label_ar: "مخطط", color: "#94A3B8" }, { label: "In Progress", label_ar: "قيد التنفيذ", color: "#3B82F6" }, { label: "Review", label_ar: "مراجعة", color: "#F59E0B" }, { label: "Done", label_ar: "مكتمل", color: "#10B981" }] },
-      { id: "dp03", name: "Priority", name_ar: "الأولوية", type: "select", options: [{ label: "High", label_ar: "عالية", color: "#EF4444" }, { label: "Medium", label_ar: "متوسطة", color: "#F59E0B" }, { label: "Low", label_ar: "منخفضة", color: "#10B981" }] },
+      { id: "dp02", name: "Status", name_ar: "الحالة", type: "status", options: [{ label: "Planned", label_ar: "مخطط", color: "#94A3B8" }, { label: "In Progress", label_ar: "قيد التنفيذ", color: "#8AB0EA" }, { label: "Review", label_ar: "مراجعة", color: "#EFC274" }, { label: "Done", label_ar: "مكتمل", color: "#6FC39E" }] },
+      { id: "dp03", name: "Priority", name_ar: "الأولوية", type: "select", options: [{ label: "High", label_ar: "عالية", color: "#EE9E9E" }, { label: "Medium", label_ar: "متوسطة", color: "#EFC274" }, { label: "Low", label_ar: "منخفضة", color: "#6FC39E" }] },
       { id: "dp04", name: "Assignee", name_ar: "المسؤول", type: "person" },
       { id: "dp05", name: "Due Date", name_ar: "الموعد", type: "date" },
     ],
@@ -701,8 +701,8 @@ export const STUDIO_DATABASES: StudioDatabase[] = [
     id: "db02", workspace_id: W, page_id: "p03", name: "Marketing Tasks", name_ar: "مهام التسويق", icon: "📣",
     properties: [
       { id: "dp06", name: "Task", name_ar: "المهمة", type: "text" },
-      { id: "dp07", name: "Status", name_ar: "الحالة", type: "status", options: [{ label: "To Do", label_ar: "للتنفيذ", color: "#94A3B8" }, { label: "In Progress", label_ar: "قيد التنفيذ", color: "#3B82F6" }, { label: "Done", label_ar: "مكتمل", color: "#10B981" }] },
-      { id: "dp08", name: "Channel", name_ar: "القناة", type: "multi_select", options: [{ label: "Instagram", label_ar: "انستغرام", color: "#E1306C" }, { label: "Facebook", label_ar: "فيسبوك", color: "#1877F2" }, { label: "WhatsApp", label_ar: "واتساب", color: "#25D366" }, { label: "Email", label_ar: "بريد", color: "#3B82F6" }] },
+      { id: "dp07", name: "Status", name_ar: "الحالة", type: "status", options: [{ label: "To Do", label_ar: "للتنفيذ", color: "#94A3B8" }, { label: "In Progress", label_ar: "قيد التنفيذ", color: "#8AB0EA" }, { label: "Done", label_ar: "مكتمل", color: "#6FC39E" }] },
+      { id: "dp08", name: "Channel", name_ar: "القناة", type: "multi_select", options: [{ label: "Instagram", label_ar: "انستغرام", color: "#E1306C" }, { label: "Facebook", label_ar: "فيسبوك", color: "#1877F2" }, { label: "WhatsApp", label_ar: "واتساب", color: "#25D366" }, { label: "Email", label_ar: "بريد", color: "#8AB0EA" }] },
       { id: "dp09", name: "Budget", name_ar: "الميزانية", type: "currency" },
       { id: "dp10", name: "Due Date", name_ar: "الموعد", type: "date" },
     ],
@@ -747,11 +747,11 @@ export const STUDIO_MEDIA: StudioMedia[] = [
 
 export const STUDIO_MEMBERS: StudioMember[] = [
   { id: "sm01", workspace_id: W, name: "Ahmed Ali", name_ar: "أحمد علي", email: "ahmed@bumblebee.com", avatar: "#1E3A5F", role: "admin", last_active: d(0), status: "active" },
-  { id: "sm02", workspace_id: W, name: "Sara Mahmoud", name_ar: "سارة محمود", email: "sara@bumblebee.com", avatar: "#E07A5F", role: "manager", last_active: d(0), status: "active" },
-  { id: "sm03", workspace_id: W, name: "Mohamed Gamal", name_ar: "محمد جمال", email: "mohamed@bumblebee.com", avatar: "#3B82F6", role: "editor", last_active: d(1), status: "active" },
-  { id: "sm04", workspace_id: W, name: "Fatma Hassan", name_ar: "فاطمة حسن", email: "fatma@bumblebee.com", avatar: "#EC4899", role: "editor", last_active: d(0), status: "active" },
-  { id: "sm05", workspace_id: W, name: "Mona Saad", name_ar: "منى سعد", email: "mona@bumblebee.com", avatar: "#10B981", role: "editor", last_active: d(0), status: "active" },
-  { id: "sm06", workspace_id: W, name: "Omar Salah", name_ar: "عمر صلاح", email: "omar@bumblebee.com", avatar: "#F59E0B", role: "commenter", last_active: d(3), status: "active" },
+  { id: "sm02", workspace_id: W, name: "Sara Mahmoud", name_ar: "سارة محمود", email: "sara@bumblebee.com", avatar: "#EDA994", role: "manager", last_active: d(0), status: "active" },
+  { id: "sm03", workspace_id: W, name: "Mohamed Gamal", name_ar: "محمد جمال", email: "mohamed@bumblebee.com", avatar: "#8AB0EA", role: "editor", last_active: d(1), status: "active" },
+  { id: "sm04", workspace_id: W, name: "Fatma Hassan", name_ar: "فاطمة حسن", email: "fatma@bumblebee.com", avatar: "#EFA3C6", role: "editor", last_active: d(0), status: "active" },
+  { id: "sm05", workspace_id: W, name: "Mona Saad", name_ar: "منى سعد", email: "mona@bumblebee.com", avatar: "#6FC39E", role: "editor", last_active: d(0), status: "active" },
+  { id: "sm06", workspace_id: W, name: "Omar Salah", name_ar: "عمر صلاح", email: "omar@bumblebee.com", avatar: "#EFC274", role: "commenter", last_active: d(3), status: "active" },
 ];
 
 export const STUDIO_INVITES: StudioInvite[] = [
@@ -782,13 +782,13 @@ export interface StudioFolder {
 }
 
 export const STUDIO_FOLDERS: StudioFolder[] = [
-  { id: "f01", name: "Knowledge Base", name_ar: "قاعدة المعرفة", icon: "📚", parent_id: null, page_ids: ["p01", "p08", "p09"], is_expanded: true, color: "#3B82F6" },
-  { id: "f02", name: "HR", name_ar: "الموارد البشرية", icon: "👥", parent_id: null, page_ids: ["p02", "p12"], is_expanded: false, color: "#10B981" },
-  { id: "f03", name: "Sales", name_ar: "المبيعات", icon: "💰", parent_id: null, page_ids: ["p04", "p14"], is_expanded: false, color: "#F59E0B" },
-  { id: "f04", name: "Operations", name_ar: "العمليات", icon: "🏭", parent_id: null, page_ids: ["p05", "p10"], is_expanded: false, color: "#6366F1" },
-  { id: "f05", name: "Marketing", name_ar: "التسويق", icon: "📣", parent_id: null, page_ids: ["p03", "p11"], is_expanded: false, color: "#EC4899" },
-  { id: "f06", name: "Design", name_ar: "التصميم", icon: "🎨", parent_id: null, page_ids: ["p06", "p13", "p15"], is_expanded: false, color: "#8B5CF6" },
-  { id: "f07", name: "Meetings", name_ar: "الاجتماعات", icon: "📅", parent_id: null, page_ids: ["p07"], is_expanded: false, color: "#06B6D4" },
+  { id: "f01", name: "Knowledge Base", name_ar: "قاعدة المعرفة", icon: "📚", parent_id: null, page_ids: ["p01", "p08", "p09"], is_expanded: true, color: "#8AB0EA" },
+  { id: "f02", name: "HR", name_ar: "الموارد البشرية", icon: "👥", parent_id: null, page_ids: ["p02", "p12"], is_expanded: false, color: "#6FC39E" },
+  { id: "f03", name: "Sales", name_ar: "المبيعات", icon: "💰", parent_id: null, page_ids: ["p04", "p14"], is_expanded: false, color: "#EFC274" },
+  { id: "f04", name: "Operations", name_ar: "العمليات", icon: "🏭", parent_id: null, page_ids: ["p05", "p10"], is_expanded: false, color: "#A3A9EE" },
+  { id: "f05", name: "Marketing", name_ar: "التسويق", icon: "📣", parent_id: null, page_ids: ["p03", "p11"], is_expanded: false, color: "#EFA3C6" },
+  { id: "f06", name: "Design", name_ar: "التصميم", icon: "🎨", parent_id: null, page_ids: ["p06", "p13", "p15"], is_expanded: false, color: "#B6A0EA" },
+  { id: "f07", name: "Meetings", name_ar: "الاجتماعات", icon: "📅", parent_id: null, page_ids: ["p07"], is_expanded: false, color: "#84CCDA" },
 ];
 
 // ═══════════════════════════════════════════════════════════

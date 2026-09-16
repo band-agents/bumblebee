@@ -56,16 +56,16 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { id: "decisions",      labelEn: "Decisions",      labelAr: "القرارات",      icon: Target,       color: "text-rose-500" },
+  { id: "decisions",      labelEn: "Decisions",      labelAr: "القرارات",      icon: Target,       color: "text-rose-600" },
   { id: "opportunities",  labelEn: "Opportunities",  labelAr: "الفرص",         icon: Lightbulb,    color: "text-warning" },
-  { id: "patterns",       labelEn: "Patterns",       labelAr: "الأنماط",       icon: BarChart3,    color: "text-blue-500" },
-  { id: "goal-drift",     labelEn: "Goal Drift",     labelAr: "انحراف الأهداف", icon: Compass,     color: "text-chart-4" },
+  { id: "patterns",       labelEn: "Patterns",       labelAr: "الأنماط",       icon: BarChart3,    color: "text-blue-600" },
+  { id: "goal-drift",     labelEn: "Goal Drift",     labelAr: "انحراف الأهداف", icon: Compass,     color: "text-violet-600" },
   { id: "health",         labelEn: "Health",         labelAr: "الصحة",         icon: Heart,        color: "text-emerald-600" },
-  { id: "focus",          labelEn: "Focus",          labelAr: "التركيز",       icon: Zap,          color: "text-orange-500" },
+  { id: "focus",          labelEn: "Focus",          labelAr: "التركيز",       icon: Zap,          color: "text-orange-600" },
   { id: "relationships",  labelEn: "Relationships",  labelAr: "العلاقات",      icon: Network,      color: "text-cyan-600" },
-  { id: "friction",       labelEn: "Friction",       labelAr: "الاحتكاك",      icon: AlertOctagon, color: "text-red-500" },
-  { id: "weekly",         labelEn: "Weekly",         labelAr: "الأسبوعي",      icon: FileText,     color: "text-indigo-500" },
-  { id: "alignment",      labelEn: "Alignment",      labelAr: "التوافق",       icon: Star,         color: "text-yellow-500" },
+  { id: "friction",       labelEn: "Friction",       labelAr: "الاحتكاك",      icon: AlertOctagon, color: "text-red-600" },
+  { id: "weekly",         labelEn: "Weekly",         labelAr: "الأسبوعي",      icon: FileText,     color: "text-indigo-600" },
+  { id: "alignment",      labelEn: "Alignment",      labelAr: "التوافق",       icon: Star,         color: "text-yellow-600" },
   { id: "workspace",     labelEn: "Workspace",      labelAr: "مساحة العمل",   icon: FileText,     color: "text-teal-600" },
 ];
 
@@ -142,7 +142,7 @@ function DecisionsTab({ ar, navigate }: { ar: boolean; navigate: (p: string) => 
       {/* Blockers */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle size={14} strokeWidth={1.75} className="text-rose-500" />
+          <AlertTriangle size={14} strokeWidth={1.75} className="text-rose-600" />
           <h3 className="text-body font-medium text-foreground">{ar ? "العوائق النشطة" : "Active Blockers"}</h3>
           {data.blockers.length > 0 && (
             <span className="text-micro bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded-full font-medium">{data.blockers.length}</span>
@@ -203,10 +203,10 @@ function DecisionsTab({ ar, navigate }: { ar: boolean; navigate: (p: string) => 
       {/* Unresolved */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <Eye size={14} strokeWidth={1.75} className="text-chart-4" />
+          <Eye size={14} strokeWidth={1.75} className="text-violet-600" />
           <h3 className="text-body font-medium text-foreground">{ar ? "قرارات غير محلولة" : "Unresolved Decisions"}</h3>
           {data.unresolved.length > 0 && (
-            <span className="text-micro bg-chart-4/10 text-chart-4 border border-chart-4/30 px-2 py-0.5 rounded-full font-medium">{data.unresolved.length}</span>
+            <span className="text-micro bg-chart-4/10 text-violet-600 border border-chart-4/30 px-2 py-0.5 rounded-full font-medium">{data.unresolved.length}</span>
           )}
         </div>
         {data.unresolved.length === 0 ? (
@@ -216,7 +216,7 @@ function DecisionsTab({ ar, navigate }: { ar: boolean; navigate: (p: string) => 
             {data.unresolved.map((u) => (
               <div key={u.id} className="flex items-start gap-3.5 px-5 py-3.5 hover:bg-muted/10 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-chart-4/10 flex items-center justify-center shrink-0">
-                  <Eye size={14} strokeWidth={1.75} className="text-chart-4" />
+                  <Eye size={14} strokeWidth={1.75} className="text-violet-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-body font-medium text-foreground">{ar ? u.titleAr : u.titleEn}</p>
@@ -241,7 +241,7 @@ function OpportunitiesTab({ ar }: { ar: boolean }) {
     Revenue: "bg-emerald-50 text-emerald-700 border border-emerald-200",
     Growth: "bg-blue-50 text-blue-700 border border-blue-200",
     Pipeline: "bg-warning/10 text-warning border border-warning/30",
-    Retention: "bg-chart-4/10 text-chart-4 border border-chart-4/30",
+    Retention: "bg-chart-4/10 text-violet-600 border border-chart-4/30",
   };
 
   return (
@@ -290,7 +290,7 @@ function PatternsTab({ ar }: { ar: boolean }) {
   const data = useMemo(analyzePatterns, []);
 
   const trendIcon = data.velocityTrend === "improving" ? TrendingUp : data.velocityTrend === "declining" ? TrendingDown : Minus;
-  const trendColor = data.velocityTrend === "improving" ? "text-emerald-600" : data.velocityTrend === "declining" ? "text-rose-500" : "text-muted-foreground";
+  const trendColor = data.velocityTrend === "improving" ? "text-emerald-600" : data.velocityTrend === "declining" ? "text-rose-600" : "text-muted-foreground";
   const trendLabelEn = data.velocityTrend === "improving" ? "Improving" : data.velocityTrend === "declining" ? "Declining" : "Stable";
   const trendLabelAr = data.velocityTrend === "improving" ? "يتحسن" : data.velocityTrend === "declining" ? "يتراجع" : "مستقر";
 
@@ -306,7 +306,7 @@ function PatternsTab({ ar }: { ar: boolean }) {
   };
   const patternIconColor: Record<string, string> = {
     success: "text-emerald-600",
-    failure: "text-rose-500",
+    failure: "text-rose-600",
     neutral: "text-muted-foreground",
   };
 
@@ -467,7 +467,7 @@ function HealthTab({ ar }: { ar: boolean }) {
                 <div className="flex items-start gap-4">
                   <ScoreRing
                     score={p.score}
-                    color={p.level === "healthy" ? "#10b981" : p.level === "at_risk" ? "#f59e0b" : "#ef4444"}
+                    color={p.level === "healthy" ? "#6FC39E" : p.level === "at_risk" ? "#EFC274" : "#EE9E9E"}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-2">
@@ -494,7 +494,7 @@ function HealthTab({ ar }: { ar: boolean }) {
                       <span>{p.assigneeEn}</span>
                       <span>·</span>
                       <span>{ar ? "موعد: " : "Due: "}{p.dueDateEn}</span>
-                      {p.blockerCount > 0 && <span className="text-rose-500">· {p.blockerCount} {ar ? "عائق" : "blocker(s)"}</span>}
+                      {p.blockerCount > 0 && <span className="text-rose-600">· {p.blockerCount} {ar ? "عائق" : "blocker(s)"}</span>}
                     </div>
                   </div>
                 </div>
@@ -522,7 +522,7 @@ function FocusTab({ ar, navigate }: { ar: boolean; navigate: (p: string) => void
   };
   const moduleIconColor: Record<string, string> = {
     finance: "text-emerald-600", sales: "text-warning", work: "text-blue-600",
-    resources: "text-chart-4", organizations: "text-cyan-600", people: "text-rose-500",
+    resources: "text-violet-600", organizations: "text-cyan-600", people: "text-rose-600",
   };
 
   function handleClick(item: FocusItem) {
@@ -558,7 +558,7 @@ function FocusTab({ ar, navigate }: { ar: boolean; navigate: (p: string) => void
                     <div className="flex items-center gap-2 shrink-0">
                       <Pill color="bg-muted text-muted-foreground border border-border/40">{item.timeEst}</Pill>
                       <div className="flex items-center gap-1">
-                        <Flame size={11} strokeWidth={1.75} className={item.leverageScore >= 90 ? "text-rose-500" : "text-warning"} />
+                        <Flame size={11} strokeWidth={1.75} className={item.leverageScore >= 90 ? "text-rose-600" : "text-warning"} />
                         <span className="text-micro font-medium text-muted-foreground">{item.leverageScore}</span>
                       </div>
                     </div>
@@ -678,7 +678,7 @@ function FrictionTab({ ar }: { ar: boolean }) {
     bottleneck: "bg-rose-50", inactive: "bg-warning/10", overload: "bg-orange-50", gap: "bg-chart-4/10",
   };
   const frictionColor: Record<string, string> = {
-    bottleneck: "text-rose-600", inactive: "text-warning", overload: "text-orange-600", gap: "text-chart-4",
+    bottleneck: "text-rose-600", inactive: "text-warning", overload: "text-orange-600", gap: "text-violet-600",
   };
   const frictionLabelEn: Record<string, string> = {
     bottleneck: "Bottleneck", inactive: "Inactive", overload: "Overload", gap: "Gap",
@@ -732,7 +732,7 @@ function FrictionTab({ ar }: { ar: boolean }) {
 function WeeklyTab({ ar }: { ar: boolean }) {
   const report = useMemo(generateWeeklyReport, []);
 
-  const scoreColor = report.overallScore >= 70 ? "#10b981" : report.overallScore >= 50 ? "hsl(var(--primary))" : "#ef4444";
+  const scoreColor = report.overallScore >= 70 ? "#6FC39E" : report.overallScore >= 50 ? "hsl(var(--primary))" : "#EE9E9E";
   const circ = 2 * Math.PI * 46;
   const offset = circ - (report.overallScore / 100) * circ;
 
@@ -749,7 +749,7 @@ function WeeklyTab({ ar }: { ar: boolean }) {
     { key: "wins",         titleEn: "Wins",         titleAr: "الانتصارات",    icon: TrendingUp,    bg: "bg-emerald-50",  iconCl: "text-emerald-600", border: "border-emerald-200/60", pillCl: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
     { key: "risks",        titleEn: "Risks",         titleAr: "المخاطر",      icon: AlertTriangle, bg: "bg-rose-50",     iconCl: "text-rose-600",    border: "border-rose-200/60",    pillCl: "bg-rose-50 text-rose-700 border border-rose-200" },
     { key: "opportunities",titleEn: "Opportunities", titleAr: "الفرص",        icon: Lightbulb,     bg: "bg-warning/10",    iconCl: "text-warning",   border: "border-warning/30",   pillCl: "bg-warning/10 text-warning border border-warning/30" },
-    { key: "bottlenecks",  titleEn: "Bottlenecks",   titleAr: "عوائق",        icon: AlertOctagon,  bg: "bg-chart-4/10",   iconCl: "text-chart-4",  border: "border-chart-4/30",  pillCl: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+    { key: "bottlenecks",  titleEn: "Bottlenecks",   titleAr: "عوائق",        icon: AlertOctagon,  bg: "bg-chart-4/10",   iconCl: "text-violet-600",  border: "border-chart-4/30",  pillCl: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   ];
 
   return (
@@ -778,9 +778,9 @@ function WeeklyTab({ ar }: { ar: boolean }) {
           <div className="flex gap-2 flex-wrap">
             {[
               { count: report.wins.length, labelEn: "wins", labelAr: "انتصار", color: "text-emerald-600" },
-              { count: report.risks.length, labelEn: "risks", labelAr: "خطر", color: "text-rose-500" },
+              { count: report.risks.length, labelEn: "risks", labelAr: "خطر", color: "text-rose-600" },
               { count: report.opportunities.length, labelEn: "opps", labelAr: "فرصة", color: "text-warning" },
-              { count: report.bottlenecks.length, labelEn: "blocks", labelAr: "عائق", color: "text-chart-4" },
+              { count: report.bottlenecks.length, labelEn: "blocks", labelAr: "عائق", color: "text-violet-600" },
             ].map((s) => (
               <span key={s.labelEn} className={`text-micro font-medium ${s.color}`}>
                 {s.count} {ar ? s.labelAr : s.labelEn}
@@ -828,10 +828,10 @@ function AlignmentTab({ ar, industry, companySize }: { ar: boolean; industry?: s
   const data = useMemo(() => computeLifeAlignment(industry, companySize), [industry, companySize]);
 
   const trendIcon = (t: string) => t === "up" ? TrendingUp : t === "down" ? TrendingDown : Minus;
-  const trendCl = (t: string) => t === "up" ? "text-emerald-600" : t === "down" ? "text-rose-500" : "text-muted-foreground";
+  const trendCl = (t: string) => t === "up" ? "text-emerald-600" : t === "down" ? "text-rose-600" : "text-muted-foreground";
 
   const scoreColor = (s: number) =>
-    s >= 70 ? "#10b981" : s >= 50 ? "hsl(var(--primary))" : s >= 30 ? "#f59e0b" : "#ef4444";
+    s >= 70 ? "#6FC39E" : s >= 50 ? "hsl(var(--primary))" : s >= 30 ? "#EFC274" : "#EE9E9E";
 
   return (
     <div className="space-y-7">
@@ -1065,7 +1065,7 @@ function WorkspaceTab({ ar }: { ar: boolean }) {
     Sales: "bg-warning/10 text-warning border border-warning/30",
     Operations: "bg-blue-50 text-blue-700 border border-blue-200",
     Finance: "bg-rose-50 text-rose-700 border border-rose-200",
-    Relationships: "bg-chart-4/10 text-chart-4 border border-chart-4/30",
+    Relationships: "bg-chart-4/10 text-violet-600 border border-chart-4/30",
   };
 
   const urgencyDot: Record<string, string> = {
@@ -1077,7 +1077,7 @@ function WorkspaceTab({ ar }: { ar: boolean }) {
   if (templates.length === 0) {
     return (
       <div className="flex flex-col items-center py-16">
-        <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-400 mb-3" />
+        <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-600 mb-3" />
         <p className="text-body-lg text-muted-foreground">{ar ? "لا قرارات مطلوبة حالياً" : "No decisions required right now"}</p>
       </div>
     );
@@ -1150,13 +1150,13 @@ function WorkspaceTab({ ar }: { ar: boolean }) {
               {/* Risks */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <Shield size={13} strokeWidth={1.75} className="text-rose-500" />
+                  <Shield size={13} strokeWidth={1.75} className="text-rose-600" />
                   <p className="text-caption font-semibold text-foreground">{ar ? "المخاطر" : "Risks"}</p>
                 </div>
                 <div className="space-y-1.5">
                   {(ar ? selectedItem.risksAr : selectedItem.risksEn).map((r, i) => (
                     <div key={i} className="flex items-start gap-2 text-micro text-foreground/75 bg-rose-50/30 border border-rose-100 rounded-lg px-3 py-2">
-                      <AlertTriangle size={11} strokeWidth={1.75} className="text-rose-400 shrink-0 mt-0.5" />
+                      <AlertTriangle size={11} strokeWidth={1.75} className="text-rose-600 shrink-0 mt-0.5" />
                       <span className="leading-relaxed">{r}</span>
                     </div>
                   ))}
@@ -1167,12 +1167,12 @@ function WorkspaceTab({ ar }: { ar: boolean }) {
               <div className="grid grid-cols-2 gap-5">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <Users size={13} strokeWidth={1.75} className="text-chart-4" />
+                    <Users size={13} strokeWidth={1.75} className="text-violet-600" />
                     <p className="text-caption font-semibold text-foreground">{ar ? "المعنيون" : "Stakeholders"}</p>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {(ar ? selectedItem.stakeholdersAr : selectedItem.stakeholdersEn).map((s, i) => (
-                      <span key={i} className="text-micro px-2 py-1 bg-chart-4/10 text-chart-4 border border-chart-4/30 rounded-full">{s}</span>
+                      <span key={i} className="text-micro px-2 py-1 bg-chart-4/10 text-violet-600 border border-chart-4/30 rounded-full">{s}</span>
                     ))}
                   </div>
                 </div>
@@ -1225,10 +1225,10 @@ export default function DecisionCenter() {
   );
 
   const heroMetrics = [
-    { labelEn: "Blockers", labelAr: "عوائق", value: decisionData.blockers.length, color: "text-rose-500" },
+    { labelEn: "Blockers", labelAr: "عوائق", value: decisionData.blockers.length, color: "text-rose-600" },
     { labelEn: "Stalled", labelAr: "متوقف", value: decisionData.stalled.length, color: "text-warning" },
     { labelEn: "Weekly Score", labelAr: "درجة الأسبوع", value: weeklyReport.overallScore, color: "text-brand-ink" },
-    { labelEn: "Alignment", labelAr: "التوافق", value: `${alignment.overallScore}%`, color: "text-chart-4" },
+    { labelEn: "Alignment", labelAr: "التوافق", value: `${alignment.overallScore}%`, color: "text-violet-600" },
   ];
 
   const activeTabMeta = TABS.find((t) => t.id === activeTab)!;

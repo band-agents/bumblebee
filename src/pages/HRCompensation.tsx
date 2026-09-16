@@ -35,7 +35,7 @@ const PAYSLIP_STATUS: Record<string, { en: string; ar: string; pill: string }> =
 
 const BENEFIT_TYPE_META: Record<string, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   insurance: { en: "Insurance", ar: "تأمين", icon: Shield, color: "text-blue-600", bg: "bg-blue-50" },
-  retirement: { en: "Retirement", ar: "تقاعد", icon: Building2, color: "text-chart-4", bg: "bg-chart-4/10" },
+  retirement: { en: "Retirement", ar: "تقاعد", icon: Building2, color: "text-violet-600", bg: "bg-chart-4/10" },
   leave: { en: "Leave", ar: "إجازة", icon: Leaf, color: "text-emerald-600", bg: "bg-emerald-50" },
   perk: { en: "Perk", ar: "مزايا", icon: Gift, color: "text-warning", bg: "bg-warning/10" },
   wellness: { en: "Wellness", ar: "صحة", icon: Heart, color: "text-rose-600", bg: "bg-rose-50" },
@@ -161,7 +161,7 @@ export default function HRCompensation() {
       {/* Benefits Catalog */}
       <motion.div variants={cardV} custom={6} initial="hidden" animate="visible">
         <div className="flex items-center gap-2 mb-3">
-          <Heart size={14} className="text-rose-500" />
+          <Heart size={14} className="text-rose-600" />
           <h3 className="text-body font-semibold">{ar ? "كتالوج المزايا" : "Benefits Catalog"}</h3>
           <span className="text-micro px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">{HR_BENEFITS.length}</span>
         </div>
@@ -193,7 +193,7 @@ export default function HRCompensation() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-micro text-muted-foreground">{ar ? "الموظف" : "Employee"}</span>
-                      <span className="text-micro font-medium text-rose-500">{formatEGP(benefit.employee_contribution)}</span>
+                      <span className="text-micro font-medium text-rose-600">{formatEGP(benefit.employee_contribution)}</span>
                     </div>
                   </div>
                 )}
@@ -213,7 +213,7 @@ export default function HRCompensation() {
       <motion.div variants={cardV} custom={7} initial="hidden" animate="visible">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <FileText size={14} className="text-blue-500" />
+            <FileText size={14} className="text-blue-600" />
             <h3 className="text-body font-semibold">{ar ? "كراسات الرواتب" : "Payslips"}</h3>
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function HRCompensation() {
                       <td className="px-4 py-3 text-caption text-muted-foreground">{ps.period}</td>
                       <td className="px-4 py-3 text-caption text-right font-medium">{formatEGP(ps.basic_salary)}</td>
                       <td className="px-4 py-3 text-caption text-right text-emerald-600">+{formatEGP(allowances)}</td>
-                      <td className="px-4 py-3 text-caption text-right text-rose-500">-{formatEGP(deductions)}</td>
+                      <td className="px-4 py-3 text-caption text-right text-rose-600">-{formatEGP(deductions)}</td>
                       <td className="px-4 py-3 text-body text-right font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(ps.net_salary)}</td>
                       <td className="px-4 py-3 text-center">
                         <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
@@ -341,7 +341,7 @@ export default function HRCompensation() {
                   ].filter(r => r.value > 0).map((row, i) => (
                     <div key={i} className="flex items-center justify-between py-1">
                       <span className="text-micro text-muted-foreground">{row.label}</span>
-                      <span className="text-caption font-medium text-rose-500">-{formatEGP(row.value)}</span>
+                      <span className="text-caption font-medium text-rose-600">-{formatEGP(row.value)}</span>
                     </div>
                   ))}
                 </div>

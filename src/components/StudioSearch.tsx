@@ -12,9 +12,9 @@ import { searchStudio, STUDIO_TEMPLATES, type StudioSearchResult } from "../lib/
 const EASE_OUT_QUINT = [0.22, 1, 0.36, 1] as const;
 
 const TYPE_BADGES: Record<string, { en: string; ar: string; color: string }> = {
-  page: { en: "Page", ar: "صفحة", color: "bg-chart-4/10 text-chart-4 dark:text-chart-4" },
-  block: { en: "Block", ar: "كتلة", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
-  database: { en: "Database", ar: "قاعدة بيانات", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+  page: { en: "Page", ar: "صفحة", color: "bg-chart-4/10 text-violet-600 dark:text-violet-600" },
+  block: { en: "Block", ar: "كتلة", color: "bg-blue-500/10 text-blue-600 dark:text-blue-600" },
+  database: { en: "Database", ar: "قاعدة بيانات", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-600" },
   template: { en: "Template", ar: "قالب", color: "bg-warning/10 text-warning dark:text-warning" },
 };
 

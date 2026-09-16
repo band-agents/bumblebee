@@ -295,7 +295,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                   {/* Sign Out */}
                   <div className="px-2 py-2">
                     <button onClick={handleSignOut}
-                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-caption text-rose-500 hover:bg-rose-50 transition-colors">
+                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-caption text-rose-600 hover:bg-rose-50 transition-colors">
                       <LogOut size={13} />
                       {ar ? "تسجيل الخروج" : "Sign Out"}
                     </button>

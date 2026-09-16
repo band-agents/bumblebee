@@ -53,7 +53,7 @@ function detectDuplicates(members: LoyaltyMemberDemo[]): DuplicateCandidate[] {
     candidates.push({
       id: "dup-002",
       member1: members[4], // Youssef Nabil
-      member2: { ...members[4], id: "lm-phantom", nameEn: "Youssef N.", nameAr: "يوسف ن.", email: "y.nabil@email.com", phone: "01156781235", currentPoints: 450, lifetimePoints: 1200, totalSpend: 1100, orderCount: 2, memberNumber: "LYL-00099", tier: "bronze" as LoyaltyTierSlug, redeemedPoints: 500, expiredPoints: 250, lastPurchaseAt: "2026-04-10", avatarColor: "#EF4444", favoriteCategories: ["Living Room"] },
+      member2: { ...members[4], id: "lm-phantom", nameEn: "Youssef N.", nameAr: "يوسف ن.", email: "y.nabil@email.com", phone: "01156781235", currentPoints: 450, lifetimePoints: 1200, totalSpend: 1100, orderCount: 2, memberNumber: "LYL-00099", tier: "bronze" as LoyaltyTierSlug, redeemedPoints: 500, expiredPoints: 250, lastPurchaseAt: "2026-04-10", avatarColor: "#EE9E9E", favoriteCategories: ["Living Room"] },
       matchReason: "Name fuzzy match (Youssef Nabil ↔ Youssef N.) + same phone prefix",
       matchReasonAr: "تطابق تقريبي للاسم (يوسف نبيل ↔ يوسف ن.) + نفس بداية الهاتف",
       confidence: "high",
@@ -65,7 +65,7 @@ function detectDuplicates(members: LoyaltyMemberDemo[]): DuplicateCandidate[] {
     candidates.push({
       id: "dup-003",
       member1: members[3], // Fatima Hassan
-      member2: { ...members[3], id: "lm-phantom2", nameEn: "Fatima H.", nameAr: "فاطمة ح.", email: "fatima.hassan@gmail.com", phone: "01087654322", currentPoints: 200, lifetimePoints: 600, totalSpend: 580, orderCount: 1, memberNumber: "LYL-00088", tier: "bronze" as LoyaltyTierSlug, redeemedPoints: 0, expiredPoints: 0, lastPurchaseAt: "2026-05-20", avatarColor: "#F59E0B", favoriteCategories: ["Textiles"] },
+      member2: { ...members[3], id: "lm-phantom2", nameEn: "Fatima H.", nameAr: "فاطمة ح.", email: "fatima.hassan@gmail.com", phone: "01087654322", currentPoints: 200, lifetimePoints: 600, totalSpend: 580, orderCount: 1, memberNumber: "LYL-00088", tier: "bronze" as LoyaltyTierSlug, redeemedPoints: 0, expiredPoints: 0, lastPurchaseAt: "2026-05-20", avatarColor: "#EFC274", favoriteCategories: ["Textiles"] },
       matchReason: "Name match (Fatima Hassan ↔ Fatima H.) + similar email",
       matchReasonAr: "تطابق الاسم (فاطمة حسن ↔ فاطمة ح.) + بريد مشابه",
       confidence: "medium",
@@ -271,7 +271,7 @@ export default function LoyaltyMergePage() {
           <p className="text-micro text-muted-foreground">{ar ? "تكرار محتمل" : "Pending Review"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <GitMerge size={14} className="text-emerald-500 mb-2" />
+          <GitMerge size={14} className="text-emerald-600 mb-2" />
           <p className="text-heading font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{merged.length}</p>
           <p className="text-micro text-muted-foreground">{ar ? "تم الدمج" : "Merged"}</p>
         </div>
@@ -340,7 +340,7 @@ export default function LoyaltyMergePage() {
                   <div key={c.id} className="border border-border/25 rounded-xl p-3 bg-muted/10 mb-2 opacity-60">
                     <div className="flex items-center gap-3">
                       <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${c.status === "merged" ? "bg-emerald-50" : "bg-muted/50"}`}>
-                        {c.status === "merged" ? <GitMerge size={11} className="text-emerald-500" /> : <X size={11} className="text-muted-foreground" />}
+                        {c.status === "merged" ? <GitMerge size={11} className="text-emerald-600" /> : <X size={11} className="text-muted-foreground" />}
                       </div>
                       <p className="text-micro text-muted-foreground flex-1">
                         {ar ? c.member1.nameAr : c.member1.nameEn} ↔ {ar ? c.member2.nameAr : c.member2.nameEn}

@@ -92,7 +92,7 @@ export const ROLE_TEMPLATES: RoleTemplate[] = [
   },
   {
     id: "admin", en: "Admin", ar: "مسؤول النظام",
-    color: "bg-chart-4/15 text-chart-4",
+    color: "bg-chart-4/15 text-violet-600",
     description: "Full access, cannot delete workspace", descriptionAr: "صلاحيات كاملة، لا يمكنه حذف المساحة",
     permissions: allModulesWithPerms(ALL_ACTIONS),
     risk: "high",

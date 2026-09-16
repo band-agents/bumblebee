@@ -161,11 +161,11 @@ export default function StudioSidebar() {
       {/* Quick Actions */}
       <div className="px-3 py-3 border-b border-border/20">
         <div className="grid grid-cols-2 gap-1.5">
-          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-chart-4/20 to-indigo-500/8 border border-chart-4/30 text-micro font-medium text-chart-4 dark:text-chart-4 hover:from-chart-4/20 hover:to-indigo-500/15 transition-all">
+          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-chart-4/20 to-indigo-500/8 border border-chart-4/30 text-micro font-medium text-violet-600 dark:text-violet-600 hover:from-chart-4/20 hover:to-indigo-500/15 transition-all">
             <FileText size={12} />
             <span>{lang === "ar" ? "صفحة جديدة" : "New Page"}</span>
           </button>
-          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-emerald-500/8 to-teal-500/8 border border-emerald-500/15 text-micro font-medium text-emerald-600 dark:text-emerald-400 hover:from-emerald-500/15 hover:to-teal-500/15 transition-all">
+          <button className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-gradient-to-r from-emerald-500/8 to-teal-500/8 border border-emerald-500/15 text-micro font-medium text-emerald-600 dark:text-emerald-600 hover:from-emerald-500/15 hover:to-teal-500/15 transition-all">
             <Database size={12} />
             <span>{lang === "ar" ? "قاعدة بيانات" : "New Database"}</span>
           </button>

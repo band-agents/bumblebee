@@ -180,7 +180,7 @@ function KnowledgeGraph({
           <line
             key={e.id}
             x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-            stroke={isSelected ? "#8b5cf6" : "#cbd5e1"}
+            stroke={isSelected ? "#B6A0EA" : "#cbd5e1"}
             strokeWidth={isSelected ? 1.5 : 1}
             strokeOpacity={isSelected ? 0.7 : 0.35}
             markerEnd="url(#arrow)"

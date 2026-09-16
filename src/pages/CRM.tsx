@@ -121,20 +121,20 @@ export default function CRM() {
 
   // Customer segments
   const segments = useMemo(() => [
-    { label: "Platinum", labelAr: "بلاتيني", value: CRM_CUSTOMERS.filter(c => c.vip_level === "platinum").length, color: "#8B5CF6" },
-    { label: "Gold", labelAr: "ذهبي", value: CRM_CUSTOMERS.filter(c => c.vip_level === "gold").length, color: "#F59E0B" },
+    { label: "Platinum", labelAr: "بلاتيني", value: CRM_CUSTOMERS.filter(c => c.vip_level === "platinum").length, color: "#B6A0EA" },
+    { label: "Gold", labelAr: "ذهبي", value: CRM_CUSTOMERS.filter(c => c.vip_level === "gold").length, color: "#EFC274" },
     { label: "Silver", labelAr: "فضي", value: CRM_CUSTOMERS.filter(c => c.vip_level === "silver").length, color: "#94A3B8" },
     { label: "Regular", labelAr: "عادي", value: CRM_CUSTOMERS.filter(c => c.vip_level === "none").length, color: "#CBD5E1" },
   ], []);
 
   // Pipeline funnel
   const funnelStages = useMemo(() => [
-    { label: "New", labelAr: "جديد", value: CRM_LEADS.filter(l => l.stage === "new").length, color: "#3B82F6" },
-    { label: "Qualified", labelAr: "مؤهل", value: CRM_LEADS.filter(l => l.stage === "qualified").length, color: "#8B5CF6" },
-    { label: "Meeting", labelAr: "اجتماع", value: CRM_LEADS.filter(l => l.stage === "meeting").length, color: "#F59E0B" },
-    { label: "Quotation", labelAr: "عرض سعر", value: CRM_LEADS.filter(l => l.stage === "quotation").length, color: "#06B6D4" },
-    { label: "Negotiation", labelAr: "تفاوض", value: CRM_LEADS.filter(l => l.stage === "negotiation").length, color: "#F97316" },
-    { label: "Won", labelAr: "مكتسب", value: CRM_LEADS.filter(l => l.stage === "won").length, color: "#10B981" },
+    { label: "New", labelAr: "جديد", value: CRM_LEADS.filter(l => l.stage === "new").length, color: "#8AB0EA" },
+    { label: "Qualified", labelAr: "مؤهل", value: CRM_LEADS.filter(l => l.stage === "qualified").length, color: "#B6A0EA" },
+    { label: "Meeting", labelAr: "اجتماع", value: CRM_LEADS.filter(l => l.stage === "meeting").length, color: "#EFC274" },
+    { label: "Quotation", labelAr: "عرض سعر", value: CRM_LEADS.filter(l => l.stage === "quotation").length, color: "#84CCDA" },
+    { label: "Negotiation", labelAr: "تفاوض", value: CRM_LEADS.filter(l => l.stage === "negotiation").length, color: "#F2AE82" },
+    { label: "Won", labelAr: "مكتسب", value: CRM_LEADS.filter(l => l.stage === "won").length, color: "#6FC39E" },
   ], []);
 
   // Top customers by spend
@@ -216,14 +216,14 @@ export default function CRM() {
         {[
           { label: ar ? "إجمالي الإيرادات" : "Total Revenue", value: formatEGP(stats.totalRevenue), icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50/80", change: "+18%", up: true },
           { label: ar ? "العملاء النشطون" : "Active Customers", value: stats.active, icon: Users, color: "text-brand-ink", bg: "bg-primary/5", change: "+3", up: true },
-          { label: ar ? "صفقات مفتوحة" : "Open Deals", value: stats.openLeads, icon: Target, color: "text-chart-4", bg: "bg-chart-4/10", change: formatEGP(stats.avgDealSize), up: true },
+          { label: ar ? "صفقات مفتوحة" : "Open Deals", value: stats.openLeads, icon: Target, color: "text-violet-600", bg: "bg-chart-4/10", change: formatEGP(stats.avgDealSize), up: true },
           { label: ar ? "معدل التحويل" : "Conversion", value: `${stats.conversionRate}%`, icon: TrendingUp, color: "text-warning", bg: "bg-warning/10", change: "+5%", up: true },
         ].map((kpi, i) => (
           <motion.div key={i} variants={cardV} custom={i + 1} initial="hidden" animate="visible"
             className={`${kpi.bg} rounded-xl p-4 border border-border/30`}>
             <div className="flex items-center justify-between mb-2">
               <kpi.icon size={15} className={kpi.color} />
-              <span className={`text-micro font-medium flex items-center gap-0.5 ${kpi.up ? "text-emerald-600" : "text-rose-500"}`}>
+              <span className={`text-micro font-medium flex items-center gap-0.5 ${kpi.up ? "text-emerald-600" : "text-rose-600"}`}>
                 {kpi.up ? <ArrowUpRight size={9} /> : <ArrowDownRight size={9} />}
                 {kpi.change}
               </span>
@@ -239,7 +239,7 @@ export default function CRM() {
         <motion.div variants={cardV} custom={5} initial="hidden" animate="visible">
           <div className="flex items-center justify-between mb-2.5">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <AlertTriangle size={14} className="text-rose-500" />
+              <AlertTriangle size={14} className="text-rose-600" />
               {ar ? "تنبيهات حرجة" : "Critical Alerts"}
               <span className="text-micro px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">{stats.criticalAlerts}</span>
             </h3>
@@ -321,7 +321,7 @@ export default function CRM() {
         <motion.div variants={cardV} custom={8} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <Target size={14} className="text-chart-4" />
+              <Target size={14} className="text-violet-600" />
               {ar ? "قمع التحويل" : "Conversion Funnel"}
             </h3>
             <button onClick={() => navigate("/crm/pipeline")} className="text-micro text-brand-ink hover:underline flex items-center gap-0.5">
@@ -339,7 +339,7 @@ export default function CRM() {
         <motion.div variants={cardV} custom={9} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <TrendingUp size={14} className="text-emerald-500" />
+              <TrendingUp size={14} className="text-emerald-600" />
               {ar ? "أكبر العملاء" : "Top Customers"}
             </h3>
             <button onClick={() => navigate("/crm/customers")} className="text-micro text-brand-ink hover:underline flex items-center gap-0.5">
@@ -370,7 +370,7 @@ export default function CRM() {
         <motion.div variants={cardV} custom={10} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <Calendar size={14} className="text-blue-500" />
+              <Calendar size={14} className="text-blue-600" />
               {ar ? "مهام اليوم" : "Today's Tasks"}
               <span className="text-micro px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-600 font-medium">{todayTasks.length}</span>
             </h3>
@@ -395,7 +395,7 @@ export default function CRM() {
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <span className="text-micro text-muted-foreground">{task.customer_name}</span>
                         <span className={`w-1.5 h-1.5 rounded-full ${task.priority === "urgent" ? "bg-rose-500" : task.priority === "high" ? "bg-warning" : "bg-blue-500"}`} />
-                        {isOverdue && <span className="text-micro text-rose-500 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
+                        {isOverdue && <span className="text-micro text-rose-600 font-medium">{ar ? "متأخر" : "Overdue"}</span>}
                       </div>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
@@ -413,7 +413,7 @@ export default function CRM() {
         <motion.div variants={cardV} custom={11} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <Activity size={14} className="text-cyan-500" />
+              <Activity size={14} className="text-cyan-600" />
               {ar ? "آخر النشاطات" : "Recent Activity"}
             </h3>
           </div>

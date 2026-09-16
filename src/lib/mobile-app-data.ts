@@ -178,7 +178,7 @@ export const MOBILE_APPS: MobileApp[] = [
   {
     id: "app02", workspace_id: W, name: "Bumblebee Wholesale", name_ar: "ثوت بالجملة",
     website_url: "https://wholesale.bumblebeefashion.com", platform: "both", status: "draft",
-    app_icon_url: "/wholesale-icon.png", splash_screen_color: "#059669", primary_color: "#059669", secondary_color: "#10B981",
+    app_icon_url: "/wholesale-icon.png", splash_screen_color: "#5DAE8B", primary_color: "#5DAE8B", secondary_color: "#6FC39E",
     splash_screen_type: "color", splash_screen_url: "",
     app_store_name: "Bumblebee Wholesale Portal", app_store_name_ar: "بوابة ثوت بالجملة",
     app_description: "B2B wholesale portal for Bumblebee Fashion retailers. Browse catalog, place bulk orders, track shipments.", app_description_ar: "بوابة الجملة لتجار ثوت فاشون. تصفح الكتالوج وطلب بالجملة وتتبع الشحنات.",
@@ -315,8 +315,8 @@ export interface AppTemplate {
 }
 
 export const APP_TEMPLATES: AppTemplate[] = [
-  { id: "at01", name: "Fashion Store", name_ar: "متجر أزياء", description: "Full-featured fashion ecommerce app with lookbooks, size guides, and virtual try-on", description_ar: "تطبيق تجارة إلكترونية للأزياء مع كتالوجات ودليل مقاسات وتجربة افتراضية", icon: "👗", category: "ecommerce", features: ["product_catalog", "size_guide", "wishlist", "reviews", "push_notifications", "loyalty"], color: "#EC4899" },
-  { id: "at02", name: "Bridal Boutique", name_ar: "بوتيك العروس", description: "Luxury bridal app with appointment booking, portfolio, and consultation scheduling", description_ar: "تطبيق فاخر للعروس مع حجز المواعيد و المحفظة وجدولة الاستشارات", icon: "💍", category: "ecommerce", features: ["appointment_booking", "portfolio", "consultation", "push_notifications"], color: "#8B5CF6" },
-  { id: "at03", name: "Wholesale Portal", name_ar: "بوابة الجملة", description: "B2B wholesale app with bulk ordering, catalog, and account management", description_ar: "تطبيق جملة B2B مع الطلب بالجملة والكتالوج وإدارة الحسابات", icon: "📦", category: "b2b", features: ["bulk_ordering", "catalog", "account_management", "push_notifications"], color: "#059669" },
-  { id: "at04", name: "Multi-Brand Store", name_ar: "متجر متعدد العلامات", description: "Multi-brand fashion app with brand pages, collections, and cross-selling", description_ar: "تطبيق أزياء متعدد العلامات مع صفحات العلامات والمجموعات والبيع المتبادل", icon: "🏬", category: "ecommerce", features: ["multi_brand", "collections", "cross_selling", "push_notifications"], color: "#F59E0B" },
+  { id: "at01", name: "Fashion Store", name_ar: "متجر أزياء", description: "Full-featured fashion ecommerce app with lookbooks, size guides, and virtual try-on", description_ar: "تطبيق تجارة إلكترونية للأزياء مع كتالوجات ودليل مقاسات وتجربة افتراضية", icon: "👗", category: "ecommerce", features: ["product_catalog", "size_guide", "wishlist", "reviews", "push_notifications", "loyalty"], color: "#EFA3C6" },
+  { id: "at02", name: "Bridal Boutique", name_ar: "بوتيك العروس", description: "Luxury bridal app with appointment booking, portfolio, and consultation scheduling", description_ar: "تطبيق فاخر للعروس مع حجز المواعيد و المحفظة وجدولة الاستشارات", icon: "💍", category: "ecommerce", features: ["appointment_booking", "portfolio", "consultation", "push_notifications"], color: "#B6A0EA" },
+  { id: "at03", name: "Wholesale Portal", name_ar: "بوابة الجملة", description: "B2B wholesale app with bulk ordering, catalog, and account management", description_ar: "تطبيق جملة B2B مع الطلب بالجملة والكتالوج وإدارة الحسابات", icon: "📦", category: "b2b", features: ["bulk_ordering", "catalog", "account_management", "push_notifications"], color: "#5DAE8B" },
+  { id: "at04", name: "Multi-Brand Store", name_ar: "متجر متعدد العلامات", description: "Multi-brand fashion app with brand pages, collections, and cross-selling", description_ar: "تطبيق أزياء متعدد العلامات مع صفحات العلامات والمجموعات والبيع المتبادل", icon: "🏬", category: "ecommerce", features: ["multi_brand", "collections", "cross_selling", "push_notifications"], color: "#EFC274" },
 ];

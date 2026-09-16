@@ -22,10 +22,10 @@ const fmtEGP = (n: number) =>
 // ─── Aging Meta ───────────────────────────────────────────
 
 const AGING_BUCKETS = [
-  { key: "Current", en: "Current", ar: "جاري", color: "#10b981", bg: "bg-emerald-50 border-emerald-200", text: "text-emerald-700", bar: "from-emerald-400 to-emerald-500" },
-  { key: "1-30 days", en: "1–30 days", ar: "١–٣٠ يوم", color: "#f59e0b", bg: "bg-warning/10 border-warning/30", text: "text-warning", bar: "from-warning/20 to-warning/20" },
-  { key: "31-60 days", en: "31–60 days", ar: "٣١–٦٠ يوم", color: "#f97316", bg: "bg-orange-50 border-orange-200", text: "text-orange-700", bar: "from-orange-400 to-orange-500" },
-  { key: "61-90 days", en: "61–90 days", ar: "٦١–٩٠ يوم", color: "#ef4444", bg: "bg-red-50 border-red-200", text: "text-red-700", bar: "from-red-400 to-red-500" },
+  { key: "Current", en: "Current", ar: "جاري", color: "#6FC39E", bg: "bg-emerald-50 border-emerald-200", text: "text-emerald-700", bar: "from-emerald-400 to-emerald-500" },
+  { key: "1-30 days", en: "1–30 days", ar: "١–٣٠ يوم", color: "#EFC274", bg: "bg-warning/10 border-warning/30", text: "text-warning", bar: "from-warning/20 to-warning/20" },
+  { key: "31-60 days", en: "31–60 days", ar: "٣١–٦٠ يوم", color: "#F2AE82", bg: "bg-orange-50 border-orange-200", text: "text-orange-700", bar: "from-orange-400 to-orange-500" },
+  { key: "61-90 days", en: "61–90 days", ar: "٦١–٩٠ يوم", color: "#EE9E9E", bg: "bg-red-50 border-red-200", text: "text-red-700", bar: "from-red-400 to-red-500" },
 ];
 
 // ─── Status Meta (AR) ─────────────────────────────────────
@@ -157,17 +157,17 @@ export default function FinanceARAP() {
 
   // ── KPIs ──
   const arKpis = [
-    { label: ar ? "إجمالي المدينة" : "Total AR", value: fmtEGP(totalAR), icon: DollarSign, color: "#6366f1", bg: "bg-indigo-50" },
-    { label: ar ? "المتأخر" : "Overdue Amount", value: fmtEGP(overdueAR), icon: AlertTriangle, color: "#ef4444", bg: "bg-red-50" },
-    { label: ar ? "الحالي" : "Current Amount", value: fmtEGP(currentAR), icon: CheckCircle2, color: "#10b981", bg: "bg-emerald-50" },
-    { label: ar ? "متوسط أيام التحصيل" : "Avg Days to Collect", value: `${avgDaysCollect} ${ar ? "يوم" : "days"}`, icon: Clock, color: "#f59e0b", bg: "bg-warning/10" },
+    { label: ar ? "إجمالي المدينة" : "Total AR", value: fmtEGP(totalAR), icon: DollarSign, color: "#A3A9EE", bg: "bg-indigo-50" },
+    { label: ar ? "المتأخر" : "Overdue Amount", value: fmtEGP(overdueAR), icon: AlertTriangle, color: "#EE9E9E", bg: "bg-red-50" },
+    { label: ar ? "الحالي" : "Current Amount", value: fmtEGP(currentAR), icon: CheckCircle2, color: "#6FC39E", bg: "bg-emerald-50" },
+    { label: ar ? "متوسط أيام التحصيل" : "Avg Days to Collect", value: `${avgDaysCollect} ${ar ? "يوم" : "days"}`, icon: Clock, color: "#EFC274", bg: "bg-warning/10" },
   ];
 
   const apKpis = [
-    { label: ar ? "إجمالي الدائن" : "Total AP", value: fmtEGP(totalAP), icon: DollarSign, color: "#8b5cf6", bg: "bg-chart-4/10" },
-    { label: ar ? "مستحق هذا الشهر" : "Due This Month", value: fmtEGP(dueThisMonth), icon: Calendar, color: "#f59e0b", bg: "bg-warning/10" },
-    { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(overdueAP), icon: AlertTriangle, color: "#ef4444", bg: "bg-red-50" },
-    { label: ar ? "القادم" : "Upcoming", value: fmtEGP(upcomingAP), icon: TrendingUp, color: "#3b82f6", bg: "bg-blue-50" },
+    { label: ar ? "إجمالي الدائن" : "Total AP", value: fmtEGP(totalAP), icon: DollarSign, color: "#B6A0EA", bg: "bg-chart-4/10" },
+    { label: ar ? "مستحق هذا الشهر" : "Due This Month", value: fmtEGP(dueThisMonth), icon: Calendar, color: "#EFC274", bg: "bg-warning/10" },
+    { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(overdueAP), icon: AlertTriangle, color: "#EE9E9E", bg: "bg-red-50" },
+    { label: ar ? "القادم" : "Upcoming", value: fmtEGP(upcomingAP), icon: TrendingUp, color: "#8AB0EA", bg: "bg-blue-50" },
   ];
 
   const tabItems = [
@@ -551,7 +551,7 @@ export default function FinanceARAP() {
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-lg bg-chart-4/10 flex items-center justify-center shrink-0">
-                              <Building2 size={13} strokeWidth={1.75} className="text-chart-4" />
+                              <Building2 size={13} strokeWidth={1.75} className="text-violet-600" />
                             </div>
                             <div>
                               <p className="text-caption font-medium text-foreground truncate max-w-[160px]">

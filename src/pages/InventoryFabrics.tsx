@@ -201,7 +201,7 @@ export default function InventoryFabricsPage() {
             <div>
               <h1 className="text-heading font-semibold flex items-center gap-2.5" style={{ fontFamily: "var(--app-font-serif)" }}>
                 <div className="w-9 h-9 rounded-xl bg-chart-4/15 flex items-center justify-center">
-                  <Palette size={16} className="text-chart-4" />
+                  <Palette size={16} className="text-violet-600" />
                 </div>
                 {ar ? "الأقمشة" : "Fabrics"}
               </h1>
@@ -220,7 +220,7 @@ export default function InventoryFabricsPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: ar ? "إجمالي الأنواع" : "Total Types", value: stats.total, icon: Package, color: "bg-chart-4/15 text-chart-4" },
+            { label: ar ? "إجمالي الأنواع" : "Total Types", value: stats.total, icon: Package, color: "bg-chart-4/15 text-violet-600" },
             { label: ar ? "الكمية الإجمالية" : "Total Stock", value: `${stats.totalQty.toLocaleString()} m`, icon: Ruler, color: "bg-blue-100 text-blue-600" },
             { label: ar ? "كمية قليلة" : "Low Stock", value: stats.lowStock, icon: AlertTriangle, color: "bg-warning/15 text-warning" },
             { label: ar ? "القيمة الإجمالية" : "Total Value", value: stats.totalValue.toLocaleString(), icon: TrendingUp, color: "bg-emerald-100 text-emerald-700" },
@@ -296,13 +296,13 @@ export default function InventoryFabricsPage() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <button onClick={e => { e.stopPropagation(); setEditItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity"><Edit3 size={11} /></button>
-                      <button onClick={e => { e.stopPropagation(); setDeleteItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-rose-50 text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={11} /></button>
+                      <button onClick={e => { e.stopPropagation(); setDeleteItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-rose-50 text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={11} /></button>
                     </div>
                   </div>
 
                   {m.max_level ? (
                     <div className="mt-2 h-1.5 rounded-full bg-muted/60 overflow-hidden">
-                      <div className="h-full rounded-full transition-all" style={{ width: `${stockPct}%`, backgroundColor: status === "out_of_stock" ? "#ef4444" : status === "low_stock" ? "#f59e0b" : "#10b981" }} />
+                      <div className="h-full rounded-full transition-all" style={{ width: `${stockPct}%`, backgroundColor: status === "out_of_stock" ? "#EE9E9E" : status === "low_stock" ? "#EFC274" : "#6FC39E" }} />
                     </div>
                   ) : null}
                 </div>
@@ -399,7 +399,7 @@ function FabricModal({ initial, nextSku, ar, wid, onClose, onSaved }: {
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={15} /></button>
         </div>
         <form onSubmit={submit} className="p-6 grid grid-cols-2 gap-3">
-          <div className="col-span-2"><label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-400">*</span></label>
+          <div className="col-span-2"><label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-600">*</span></label>
             <input value={form.name} onChange={e => set("name", e.target.value)} autoFocus className={inputCls} placeholder={ar ? "مثال: قطن مصري" : "e.g. Egyptian Cotton"} /></div>
           <div><label className={labelCls}>SKU</label><input value={form.sku} onChange={e => set("sku", e.target.value)} className={inputCls + " font-mono"} /></div>
           <div><label className={labelCls}>{ar ? "الفئة" : "Category"}</label>

@@ -113,8 +113,8 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
                   <p className="text-micro text-emerald-600">{ar ? "صالح" : "Valid"}</p>
                 </div>
                 <div className="text-center px-3 py-3 rounded-xl bg-rose-50">
-                  <p className="text-title font-medium text-rose-500 tabular-nums">{result.failed}</p>
-                  <p className="text-micro text-rose-500">{ar ? "فشل" : "Failed"}</p>
+                  <p className="text-title font-medium text-rose-600 tabular-nums">{result.failed}</p>
+                  <p className="text-micro text-rose-600">{ar ? "فشل" : "Failed"}</p>
                 </div>
               </div>
 
@@ -164,7 +164,7 @@ export default function ImportExportDialog({ title, columns, templateFilename, a
 
           {step === "result" && result && (
             <div className="text-center py-6">
-              <CheckCircle2 size={32} className="mx-auto mb-3 text-emerald-500" />
+              <CheckCircle2 size={32} className="mx-auto mb-3 text-emerald-600" />
               <p className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تم الاستيراد بنجاح!" : "Import Complete!"}</p>
               <p className="text-caption text-muted-foreground mt-1">{result.success} {ar ? "صف تم استيراده" : "rows imported successfully"}</p>
             </div>

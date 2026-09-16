@@ -12,7 +12,7 @@ const RISK_TYPE_META: Record<RiskType, { icon: React.ElementType; labelEn: strin
   stalled:            { icon: Clock,         labelEn: "Stalled Project",      labelAr: "مشروع متوقف",    color: "text-warning",  bg: "bg-warning/10",  border: "border-warning/30" },
   missing_owner:      { icon: UserX,         labelEn: "Missing Owner",        labelAr: "بلا مالك",        color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-200/60" },
   delayed:            { icon: AlertTriangle,  labelEn: "Delayed Milestone",    labelAr: "إنجاز متأخر",    color: "text-rose-600",   bg: "bg-rose-50",   border: "border-rose-200/60" },
-  dependency_failure: { icon: Link2,          labelEn: "Dependency Failure",   labelAr: "فشل تبعية",       color: "text-chart-4", bg: "bg-chart-4/10", border: "border-chart-4/30" },
+  dependency_failure: { icon: Link2,          labelEn: "Dependency Failure",   labelAr: "فشل تبعية",       color: "text-violet-600", bg: "bg-chart-4/10", border: "border-chart-4/30" },
   overdue_invoice:    { icon: Landmark,       labelEn: "Overdue Invoice",      labelAr: "فاتورة متأخرة",  color: "text-rose-600",   bg: "bg-rose-50",   border: "border-rose-200/60" },
   at_risk_account:    { icon: Building2,      labelEn: "At-Risk Account",      labelAr: "حساب في خطر",    color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-200/60" },
 };
@@ -23,7 +23,7 @@ function SeverityRing({ score }: { score: number }) {
   const r = 26;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
-  const color = score >= 80 ? "#ef4444" : score >= 60 ? "#f59e0b" : "#94a3b8";
+  const color = score >= 80 ? "#EE9E9E" : score >= 60 ? "#EFC274" : "#94a3b8";
   return (
     <div className="relative shrink-0" style={{ width: 64, height: 64 }}>
       <svg width={64} height={64} className="-rotate-90">
@@ -105,7 +105,7 @@ export default function RiskRadar() {
 
   const r = 52; const circ = 2 * Math.PI * r;
   const offset = circ - (overallRiskScore / 100) * circ;
-  const ringColor = overallRiskScore >= 70 ? "#ef4444" : overallRiskScore >= 45 ? "#f59e0b" : "#10b981";
+  const ringColor = overallRiskScore >= 70 ? "#EE9E9E" : overallRiskScore >= 45 ? "#EFC274" : "#6FC39E";
 
   return (
     <div className="min-h-full">
@@ -114,7 +114,7 @@ export default function RiskRadar() {
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <AlertOctagon size={14} strokeWidth={1.75} className="text-rose-500" />
+            <AlertOctagon size={14} strokeWidth={1.75} className="text-rose-600" />
             <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "رادار المخاطر" : "Risk Radar"}</p>
           </div>
           <h1 className="text-display font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
@@ -186,7 +186,7 @@ export default function RiskRadar() {
       <div className="px-8 md:px-10 py-7 max-w-[1100px]">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center py-16">
-            <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-400 mb-3" />
+            <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-600 mb-3" />
             <p className="text-body-lg text-muted-foreground">{ar ? "لا مخاطر مكتشفة" : "No risks detected"}</p>
           </div>
         ) : (

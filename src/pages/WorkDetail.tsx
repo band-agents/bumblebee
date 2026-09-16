@@ -163,12 +163,12 @@ function getTimelineEvents(item: WorkItem): TimelineEvent[] {
 
 const TIMELINE_ICON_MAP: Record<TimelineEvent["kind"], { Icon: React.ElementType; color: string; bg: string }> = {
   created:          { Icon: Plus,             color: "text-brand-ink",        bg: "bg-primary/8" },
-  assigned:         { Icon: UserPlus,         color: "text-chart-4",     bg: "bg-chart-4/10" },
+  assigned:         { Icon: UserPlus,         color: "text-violet-600",     bg: "bg-chart-4/10" },
   status_changed:   { Icon: ArrowRightCircle, color: "text-warning",      bg: "bg-warning/10" },
-  comment:          { Icon: MessageSquare,    color: "text-blue-500",       bg: "bg-blue-50" },
+  comment:          { Icon: MessageSquare,    color: "text-blue-600",       bg: "bg-blue-50" },
   file_uploaded:    { Icon: Upload,           color: "text-cyan-600",       bg: "bg-cyan-50" },
-  completed:        { Icon: CheckCircle2,     color: "text-emerald-500",    bg: "bg-emerald-50" },
-  priority_changed: { Icon: AlertTriangle,    color: "text-rose-500",       bg: "bg-rose-50" },
+  completed:        { Icon: CheckCircle2,     color: "text-emerald-600",    bg: "bg-emerald-50" },
+  priority_changed: { Icon: AlertTriangle,    color: "text-rose-600",       bg: "bg-rose-50" },
 };
 
 // ─── Sample notes ─────────────────────────────────────────
@@ -275,10 +275,10 @@ function getSampleFiles(item: WorkItem): FileItem[] {
 }
 
 const FILE_ICON_MAP: Record<FileItem["kind"], { Icon: React.ElementType; color: string; bg: string; label: string }> = {
-  pdf: { Icon: FileText,      color: "text-rose-500",    bg: "bg-rose-50",    label: "PDF" },
-  doc: { Icon: FileText,      color: "text-blue-500",    bg: "bg-blue-50",    label: "DOC" },
+  pdf: { Icon: FileText,      color: "text-rose-600",    bg: "bg-rose-50",    label: "PDF" },
+  doc: { Icon: FileText,      color: "text-blue-600",    bg: "bg-blue-50",    label: "DOC" },
   xls: { Icon: Sheet,         color: "text-emerald-600", bg: "bg-emerald-50", label: "XLS" },
-  img: { Icon: Image,         color: "text-chart-4",  bg: "bg-chart-4/10",  label: "IMG" },
+  img: { Icon: Image,         color: "text-violet-600",  bg: "bg-chart-4/10",  label: "IMG" },
   zip: { Icon: FolderArchive, color: "text-warning",   bg: "bg-warning/10",   label: "ZIP" },
 };
 
@@ -334,7 +334,7 @@ function getSampleActivity(item: WorkItem): ActivityEvent[] {
 
 const ACTIVITY_ICON_MAP: Record<ActivityEvent["kind"], { Icon: React.ElementType; color: string; bg: string }> = {
   email:   { Icon: MessageSquare, color: "text-brand-ink",    bg: "bg-primary/8" },
-  call:    { Icon: Users,         color: "text-chart-4", bg: "bg-chart-4/10" },
+  call:    { Icon: Users,         color: "text-violet-600", bg: "bg-chart-4/10" },
   meeting: { Icon: Calendar,      color: "text-cyan-600",   bg: "bg-cyan-50" },
   update:  { Icon: ArrowRightCircle, color: "text-warning", bg: "bg-warning/10" },
   note:    { Icon: StickyNote,    color: "text-muted-foreground", bg: "bg-muted" },
@@ -367,7 +367,7 @@ function StatusStepper({ current, lang }: { current: WorkStatus; lang: "en" | "a
               <Icon
                 size={12}
                 strokeWidth={isActive ? 2 : 1.75}
-                className={isActive ? "text-brand-ink" : isPast ? "text-emerald-500" : "text-muted-foreground"}
+                className={isActive ? "text-brand-ink" : isPast ? "text-emerald-600" : "text-muted-foreground"}
               />
               <span className={`text-micro font-medium whitespace-nowrap ${isActive ? "text-brand-ink" : "text-muted-foreground"}`}>
                 {ar ? meta.ar : meta.en}
@@ -723,7 +723,7 @@ export default function WorkDetail() {
             {item.status !== "done" && (
               <button
                 onClick={markDone}
-                className="h-8 px-3.5 rounded-xl bg-emerald-500 text-white text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors"
+                className="h-8 px-3.5 rounded-xl bg-emerald-500 text-emerald-900 text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors"
               >
                 <CheckCircle2 size={13} strokeWidth={2} />
                 {ar ? "تم الإنجاز" : "Mark Done"}

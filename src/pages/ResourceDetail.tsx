@@ -107,7 +107,7 @@ export default function ResourceDetail() {
     { id: "f2", nameEn: "Warranty Certificate.pdf", nameAr: "شهادة الضمان.pdf", kind: "pdf" as const, sizeEn: "450 KB", sizeAr: "٤٥٠ ك.ب" },
     { id: "f3", nameEn: "User Manual.pdf", nameAr: "دليل المستخدم.pdf", kind: "pdf" as const, sizeEn: "5.2 MB", sizeAr: "٥.٢ م.ب" },
   ];
-  const FILE_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = { pdf: { Icon: FileText, color: "text-rose-500", bg: "bg-rose-50" }, xls: { Icon: Sheet, color: "text-emerald-600", bg: "bg-emerald-50" }, zip: { Icon: FolderArchive, color: "text-warning", bg: "bg-warning/10" } };
+  const FILE_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = { pdf: { Icon: FileText, color: "text-rose-600", bg: "bg-rose-50" }, xls: { Icon: Sheet, color: "text-emerald-600", bg: "bg-emerald-50" }, zip: { Icon: FolderArchive, color: "text-warning", bg: "bg-warning/10" } };
 
   const timeline = [
     { id: "tl1", kind: "purchase", titleEn: "Asset acquired", titleAr: "تم اقتناء الأصل", descEn: `${res.nameEn} purchased for ${fmt(res.value)}`, descAr: `تم شراء ${res.nameAr} بمبلغ ${fmt(res.value)}`, dateEn: res.purchaseDateEn, dateAr: res.purchaseDateAr },
@@ -118,9 +118,9 @@ export default function ResourceDetail() {
 
   const TL_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
     purchase: { Icon: DollarSign, color: "text-brand-ink", bg: "bg-primary/8" },
-    assigned: { Icon: User, color: "text-chart-4", bg: "bg-chart-4/10" },
+    assigned: { Icon: User, color: "text-violet-600", bg: "bg-chart-4/10" },
     maintenance: { Icon: Wrench, color: "text-warning", bg: "bg-warning/10" },
-    retired: { Icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-50" },
+    retired: { Icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50" },
   };
 
   const upcomingMaint = res.maintenance.filter((m) => m.status === "upcoming");
@@ -139,7 +139,7 @@ export default function ResourceDetail() {
     },
     {
       icon: overdueMaint.length > 0 ? AlertTriangle : Shield,
-      color: overdueMaint.length > 0 ? "text-rose-500" : "text-emerald-600",
+      color: overdueMaint.length > 0 ? "text-rose-600" : "text-emerald-600",
       bg: overdueMaint.length > 0 ? "bg-rose-50" : "bg-emerald-50",
       titleEn: "Maintenance Risk", titleAr: "خطر الصيانة",
       valueEn: overdueMaint.length > 0 ? `${overdueMaint.length} overdue maintenance item(s)` : upcomingMaint.length > 0 ? `${upcomingMaint.length} upcoming — on schedule` : "No maintenance due",
@@ -156,7 +156,7 @@ export default function ResourceDetail() {
       descAr: res.status === "retired" ? "فكر في تقييم قيمة الإنقاذ." : "الأصل قيد الخدمة.",
     },
     {
-      icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10",
+      icon: Zap, color: "text-violet-600", bg: "bg-chart-4/10",
       titleEn: "Recommended Action", titleAr: "الإجراء الموصى به",
       valueEn: overdueMaint.length > 0 ? "Schedule overdue maintenance" : res.utilization < 30 ? "Find new assignment" : res.status === "retired" ? "Process disposal" : "No action needed",
       valueAr: overdueMaint.length > 0 ? "جدول الصيانة المتأخرة" : res.utilization < 30 ? "ابحث عن تعيين جديد" : res.status === "retired" ? "معالجة التخلص" : "لا إجراء مطلوب",
@@ -314,7 +314,7 @@ export default function ResourceDetail() {
           <div className="space-y-6">
             {overdueMaint.length > 0 && (
               <Section title={ar ? "متأخرة" : "Overdue"}>
-                <div className="divide-y divide-border/25">{overdueMaint.map((m) => { const ms = MAINT_STATUS_META[m.status]; return (<div key={m.id} className="flex items-center gap-4 px-6 py-4"><div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center shrink-0"><AlertTriangle size={14} strokeWidth={1.75} className="text-rose-500" /></div><div className="flex-1"><p className="text-body font-medium text-foreground">{ar ? m.titleAr : m.titleEn}</p><p className="text-micro text-muted-foreground">{ar ? m.dateAr : m.dateEn}{m.costEn ? ` · ${ar ? m.costAr : m.costEn}` : ""}</p></div><div className={`w-2 h-2 rounded-full ${ms.dot}`} /></div>); })}</div>
+                <div className="divide-y divide-border/25">{overdueMaint.map((m) => { const ms = MAINT_STATUS_META[m.status]; return (<div key={m.id} className="flex items-center gap-4 px-6 py-4"><div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center shrink-0"><AlertTriangle size={14} strokeWidth={1.75} className="text-rose-600" /></div><div className="flex-1"><p className="text-body font-medium text-foreground">{ar ? m.titleAr : m.titleEn}</p><p className="text-micro text-muted-foreground">{ar ? m.dateAr : m.dateEn}{m.costEn ? ` · ${ar ? m.costAr : m.costEn}` : ""}</p></div><div className={`w-2 h-2 rounded-full ${ms.dot}`} /></div>); })}</div>
               </Section>
             )}
             {upcomingMaint.length > 0 && (
@@ -324,7 +324,7 @@ export default function ResourceDetail() {
             )}
             {completedMaint.length > 0 && (
               <Section title={ar ? "مكتملة" : "Completed"}>
-                <div className="divide-y divide-border/25">{completedMaint.map((m) => { const ms = MAINT_STATUS_META[m.status]; return (<div key={m.id} className="flex items-center gap-4 px-6 py-4"><div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0"><CheckCircle2 size={14} strokeWidth={1.75} className="text-emerald-500" /></div><div className="flex-1"><p className="text-body font-medium text-foreground">{ar ? m.titleAr : m.titleEn}</p><p className="text-micro text-muted-foreground">{ar ? m.dateAr : m.dateEn}{m.costEn ? ` · ${ar ? m.costAr : m.costEn}` : ""}</p></div><div className={`w-2 h-2 rounded-full ${ms.dot}`} /></div>); })}</div>
+                <div className="divide-y divide-border/25">{completedMaint.map((m) => { const ms = MAINT_STATUS_META[m.status]; return (<div key={m.id} className="flex items-center gap-4 px-6 py-4"><div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0"><CheckCircle2 size={14} strokeWidth={1.75} className="text-emerald-600" /></div><div className="flex-1"><p className="text-body font-medium text-foreground">{ar ? m.titleAr : m.titleEn}</p><p className="text-micro text-muted-foreground">{ar ? m.dateAr : m.dateEn}{m.costEn ? ` · ${ar ? m.costAr : m.costEn}` : ""}</p></div><div className={`w-2 h-2 rounded-full ${ms.dot}`} /></div>); })}</div>
               </Section>
             )}
             {res.maintenance.length === 0 && (<div className="border border-border/40 rounded-xl py-14 text-center bg-background"><p className="text-body text-muted-foreground/60">{ar ? "لا سجلات صيانة" : "No maintenance records"}</p></div>)}

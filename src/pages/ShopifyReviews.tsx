@@ -42,13 +42,13 @@ const DEFAULT_CONFIG: ReviewsConfig = {
   reminderOn: true, reminderDelayDays: 5,
   incentiveType: "points", incentivePoints: 200, incentiveDiscountPct: 10,
   photoBonusOn: true, photoBonusPoints: 150,
-  starColor: "#f59e0b", layout: "grid",
+  starColor: "#EFC274", layout: "grid",
   showPhotos: true, showVerified: true, showAvatars: true, showDates: true,
   autoPublishOn: true, autoPublishMinStars: 4,
   profanityFilter: true, richSnippets: true,
 };
 
-const STAR_SWATCHES = ["#f59e0b", "#eab308", "#059669", "#e11d48", "#7c3aed", "#111827"];
+const STAR_SWATCHES = ["#EFC274", "#EDD07A", "#5DAE8B", "#E99AAE", "#AA94E3", "#111827"];
 
 // ─── Demo data ───────────────────────────────────────────
 
@@ -106,7 +106,7 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
   );
 }
 
-function Stars({ n, size = 12, color = "#f59e0b" }: { n: number; size?: number; color?: string }) {
+function Stars({ n, size = 12, color = "#EFC274" }: { n: number; size?: number; color?: string }) {
   return (
     <span className="inline-flex gap-0.5">
       {[1, 2, 3, 4, 5].map(i => (
@@ -123,7 +123,7 @@ const numCls = `${inputCls} w-24 tabular-nums`;
 const STATUS_META: Record<ReviewStatus, { en: string; ar: string; cls: string }> = {
   pending:   { en: "Pending", ar: "بانتظار المراجعة", cls: "bg-warning/10 text-warning" },
   published: { en: "Published", ar: "منشور", cls: "bg-emerald-50 text-emerald-700" },
-  featured:  { en: "Featured", ar: "مميز", cls: "bg-chart-4/10 text-chart-4" },
+  featured:  { en: "Featured", ar: "مميز", cls: "bg-chart-4/10 text-violet-600" },
   rejected:  { en: "Rejected", ar: "مرفوض", cls: "bg-rose-50 text-rose-600" },
   spam:      { en: "Spam", ar: "سبام", cls: "bg-zinc-100 text-zinc-500" },
 };
@@ -356,7 +356,7 @@ export default function ShopifyReviewsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { icon: TrendingUp, val: "96", labelEn: "New this month", labelAr: "جديد هذا الشهر", cls: "text-emerald-600" },
-              { icon: Camera, val: "38%", labelEn: "With photos", labelAr: "بالصور", cls: "text-chart-4" },
+              { icon: Camera, val: "38%", labelEn: "With photos", labelAr: "بالصور", cls: "text-violet-600" },
               { icon: Reply, val: "87%", labelEn: "Response rate", labelAr: "معدل الرد", cls: "text-blue-600" },
               { icon: Mail, val: "41%", labelEn: "Request → review", labelAr: "طلب ← تقييم", cls: "text-warning" },
             ].map((k, i) => (
@@ -460,7 +460,7 @@ export default function ShopifyReviewsPage() {
                           )}
                           {(r.status === "published" || r.status === "featured") && (
                             <button onClick={() => setStatus(r.id, r.status === "featured" ? "published" : "featured", r.status === "featured" ? (ar ? "أُلغي التمييز" : "Unfeatured") : (ar ? "تم التمييز" : "Featured on storefront"))}
-                              className={`h-8 px-3 rounded-lg text-micro font-medium flex items-center gap-1 ${r.status === "featured" ? "bg-chart-4/15 text-chart-4" : "border border-border/60 text-muted-foreground hover:text-chart-4 hover:border-chart-4/30"}`}>
+                              className={`h-8 px-3 rounded-lg text-micro font-medium flex items-center gap-1 ${r.status === "featured" ? "bg-chart-4/15 text-violet-600" : "border border-border/60 text-muted-foreground hover:text-violet-600 hover:border-chart-4/30"}`}>
                               <Pin size={11} />{r.status === "featured" ? (ar ? "مميز" : "Featured") : (ar ? "تمييز" : "Feature")}
                             </button>
                           )}

@@ -36,12 +36,12 @@ const TEMPLATE_META: Record<string, {
 }> = {
   dress:          { icon: Shirt,     color: "#8C6FAE", gradient: "from-chart-4/20 to-chart-4/20", estimatedDays: "3–5 days", estimatedLabor: "2–4 workers", estimatedWaste: "5–8%" },
   suit:           { icon: Crown,     color: "#2D3139", gradient: "from-slate-600 to-zinc-800", estimatedDays: "5–8 days", estimatedLabor: "3–5 workers", estimatedWaste: "4–7%" },
-  tshirt:         { icon: Shirt,     color: "#10B981", gradient: "from-emerald-500 to-teal-600", estimatedDays: "1–2 days", estimatedLabor: "1–2 workers", estimatedWaste: "4–6%" },
-  trousers:       { icon: Scissors,  color: "#3B82F6", gradient: "from-blue-500 to-indigo-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "5–7%" },
-  outerwear:      { icon: Heart,     color: "#F97316", gradient: "from-orange-500 to-red-600", estimatedDays: "4–6 days", estimatedLabor: "2–3 workers", estimatedWaste: "5–8%" },
-  bridal:         { icon: Sparkles,  color: "#EC4899", gradient: "from-pink-500 to-rose-600", estimatedDays: "7–14 days", estimatedLabor: "3–5 workers", estimatedWaste: "6–10%" },
-  activewear:     { icon: Zap,       color: "#0EA5E9", gradient: "from-sky-500 to-blue-600", estimatedDays: "1–2 days", estimatedLabor: "1–2 workers", estimatedWaste: "4–6%" },
-  accessories:    { icon: Gem,       color: "#F59E0B", gradient: "from-warning/20 to-orange-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "3–5%" },
+  tshirt:         { icon: Shirt,     color: "#6FC39E", gradient: "from-emerald-500 to-teal-600", estimatedDays: "1–2 days", estimatedLabor: "1–2 workers", estimatedWaste: "4–6%" },
+  trousers:       { icon: Scissors,  color: "#8AB0EA", gradient: "from-blue-500 to-indigo-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "5–7%" },
+  outerwear:      { icon: Heart,     color: "#F2AE82", gradient: "from-orange-500 to-red-600", estimatedDays: "4–6 days", estimatedLabor: "2–3 workers", estimatedWaste: "5–8%" },
+  bridal:         { icon: Sparkles,  color: "#EFA3C6", gradient: "from-pink-500 to-rose-600", estimatedDays: "7–14 days", estimatedLabor: "3–5 workers", estimatedWaste: "6–10%" },
+  activewear:     { icon: Zap,       color: "#85C1E6", gradient: "from-sky-500 to-blue-600", estimatedDays: "1–2 days", estimatedLabor: "1–2 workers", estimatedWaste: "4–6%" },
+  accessories:    { icon: Gem,       color: "#EFC274", gradient: "from-warning/20 to-orange-600", estimatedDays: "2–3 days", estimatedLabor: "1–2 workers", estimatedWaste: "3–5%" },
   custom_garment: { icon: Wrench,    color: "#94A3B8", gradient: "from-slate-400 to-slate-600", estimatedDays: "Varies", estimatedLabor: "Varies", estimatedWaste: "Varies" },
 };
 

@@ -37,7 +37,7 @@ interface RewardItem {
 
 const REWARD_TYPE_META: Record<RewardType, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   discount:      { en: "Discount",      ar: "خصم",         icon: Percent,     color: "text-emerald-600",  bg: "bg-emerald-50" },
-  free_product:  { en: "Free Product",  ar: "منتج مجاني",  icon: Package,     color: "text-chart-4",   bg: "bg-chart-4/10" },
+  free_product:  { en: "Free Product",  ar: "منتج مجاني",  icon: Package,     color: "text-violet-600",   bg: "bg-chart-4/10" },
   free_shipping: { en: "Free Shipping", ar: "شحن مجاني",   icon: Truck,       color: "text-blue-600",     bg: "bg-blue-50" },
   experience:    { en: "Experience",    ar: "تجربة",       icon: Sparkles,    color: "text-warning",    bg: "bg-warning/10" },
   upgrade:       { en: "Tier Upgrade",  ar: "ترقية مستوى", icon: Crown,       color: "text-pink-600",     bg: "bg-pink-50" },
@@ -349,13 +349,13 @@ export default function LoyaltyRewardsPage() {
           <p className="text-micro text-muted-foreground">{ar ? "إجمالي المكافآت" : "Total Rewards"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <Star size={14} className="text-emerald-500 mb-2" />
+          <Star size={14} className="text-emerald-600 mb-2" />
           <p className="text-heading font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{activeRewards}</p>
           <p className="text-micro text-muted-foreground">{ar ? "نشطة" : "Active"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <Tag size={14} className="text-chart-4 mb-2" />
-          <p className="text-heading font-medium tabular-nums text-chart-4" style={{ fontFamily: "var(--app-font-serif)" }}>{totalRedeemed}</p>
+          <Tag size={14} className="text-violet-600 mb-2" />
+          <p className="text-heading font-medium tabular-nums text-violet-600" style={{ fontFamily: "var(--app-font-serif)" }}>{totalRedeemed}</p>
           <p className="text-micro text-muted-foreground">{ar ? "مرات الاستبدال" : "Times Redeemed"}</p>
         </div>
       </div>
@@ -419,12 +419,12 @@ export default function LoyaltyRewardsPage() {
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button onClick={() => handleToggle(rw.id)}
                     className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-white/60" title={isActive ? "Pause" : "Activate"}>
-                    {isActive ? <ToggleRight size={14} className="text-emerald-500" /> : <ToggleLeft size={14} className="text-muted-foreground" />}
+                    {isActive ? <ToggleRight size={14} className="text-emerald-600" /> : <ToggleLeft size={14} className="text-muted-foreground" />}
                   </button>
                   <button onClick={() => { setEditingReward(rw); setShowModal(true); }}
                     className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-white/60 text-muted-foreground"><Edit3 size={12} /></button>
                   <button onClick={() => handleDelete(rw.id)}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-rose-100 text-muted-foreground hover:text-rose-500"><Trash2 size={12} /></button>
+                    className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-rose-100 text-muted-foreground hover:text-rose-600"><Trash2 size={12} /></button>
                 </div>
               </div>
 

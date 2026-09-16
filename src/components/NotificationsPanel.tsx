@@ -39,10 +39,10 @@ const TYPE_ICONS: Record<string, React.ElementType> = {
 
 const TYPE_COLORS: Record<string, string> = {
   approval_needed: "text-warning bg-warning/10",
-  stock_low: "text-rose-500 bg-rose-50",
-  release_rejected: "text-rose-500 bg-rose-50",
-  release_approved: "text-emerald-500 bg-emerald-50",
-  payment_received: "text-emerald-500 bg-emerald-50",
+  stock_low: "text-rose-600 bg-rose-50",
+  release_rejected: "text-rose-600 bg-rose-50",
+  release_approved: "text-emerald-600 bg-emerald-50",
+  payment_received: "text-emerald-600 bg-emerald-50",
   default: "text-brand-ink bg-primary/10",
 };
 

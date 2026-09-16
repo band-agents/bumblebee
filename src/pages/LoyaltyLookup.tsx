@@ -177,8 +177,8 @@ function RedeemModal({ member, open, onClose, onConfirm, lang }: {
                 placeholder={ar ? "مثال: 5000" : "e.g., 5000"} min={500} max={member.currentPoints}
                 className={`w-full h-11 px-4 rounded-xl border bg-card text-body-lg text-foreground tabular-nums placeholder:text-muted-foreground focus:outline-none transition-colors ${tooLow || tooHigh ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {tooLow && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{ar ? "الحد الأدنى 500 نقطة" : "Minimum 500 points"}</p>}
-              {tooHigh && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{ar ? "يتجاوز الرصيد المتاح" : "Exceeds available balance"}</p>}
+              {tooLow && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{ar ? "الحد الأدنى 500 نقطة" : "Minimum 500 points"}</p>}
+              {tooHigh && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{ar ? "يتجاوز الرصيد المتاح" : "Exceeds available balance"}</p>}
             </div>
 
             {numPoints >= 500 && !tooHigh && (

@@ -27,7 +27,7 @@ const SEVERITY_META: Record<string, { en: string; ar: string; pill: string }> = 
 const STATUS_META: Record<string, { en: string; ar: string; pill: string }> = {
   filed: { en: "Filed", ar: "مُقدَّم", pill: "bg-blue-100 text-blue-600" },
   investigating: { en: "Investigating", ar: "قيد التحقيق", pill: "bg-warning/15 text-warning" },
-  mediation: { en: "Mediation", ar: "وساطة", pill: "bg-chart-4/15 text-chart-4" },
+  mediation: { en: "Mediation", ar: "وساطة", pill: "bg-chart-4/15 text-violet-600" },
   resolved: { en: "Resolved", ar: "تم الحل", pill: "bg-emerald-100 text-emerald-700" },
   escalated: { en: "Escalated", ar: "تم التصعيد", pill: "bg-red-100 text-red-700" },
   closed: { en: "Closed", ar: "مغلق", pill: "bg-zinc-100 text-zinc-500" },
@@ -50,11 +50,11 @@ const TYPE_META: Record<string, { en: string; ar: string }> = {
 };
 
 const DEPT_META: Record<string, { en: string; ar: string; color: string }> = {
-  sales: { en: "Sales", ar: "المبيعات", color: "#E07A5F" },
-  production: { en: "Production", ar: "الإنتاج", color: "#3B82F6" },
-  design: { en: "Design", ar: "التصميم", color: "#EC4899" },
-  warehouse: { en: "Warehouse", ar: "المخزن", color: "#F59E0B" },
-  admin: { en: "Admin", ar: "الإدارة", color: "#10B981" },
+  sales: { en: "Sales", ar: "المبيعات", color: "#EDA994" },
+  production: { en: "Production", ar: "الإنتاج", color: "#8AB0EA" },
+  design: { en: "Design", ar: "التصميم", color: "#EFA3C6" },
+  warehouse: { en: "Warehouse", ar: "المخزن", color: "#EFC274" },
+  admin: { en: "Admin", ar: "الإدارة", color: "#6FC39E" },
 };
 
 export default function HREmployeeRelations() {
@@ -119,7 +119,7 @@ export default function HREmployeeRelations() {
         {[
           { label: ar ? "شكاوى مفتوحة" : "Open Grievances", value: stats.openGrievances, icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50/80" },
           { label: ar ? "متوسط وقت الحل" : "Avg Resolution Time", value: `${stats.avgResolutionDays} ${ar ? "يوم" : "days"}`, icon: Clock, color: "text-warning", bg: "bg-warning/10" },
-          { label: ar ? "معاملة الفريق" : "Team Morale Score", value: `${stats.avgMorale}/5`, icon: Heart, color: "text-chart-4", bg: "bg-chart-4/10" },
+          { label: ar ? "معاملة الفريق" : "Team Morale Score", value: `${stats.avgMorale}/5`, icon: Heart, color: "text-violet-600", bg: "bg-chart-4/10" },
           { label: ar ? "نسبة استجابة الاستبيان" : "Pulse Survey Response Rate", value: `${stats.responseRate}%`, icon: BarChart3, color: "text-emerald-600", bg: "bg-emerald-50/80" },
         ].map((kpi, i) => (
           <motion.div key={i} variants={cardV} custom={i + 1} initial="hidden" animate="visible"
@@ -165,7 +165,7 @@ export default function HREmployeeRelations() {
       <motion.div variants={cardV} custom={6} initial="hidden" animate="visible">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-body font-semibold flex items-center gap-2">
-            <AlertTriangle size={14} className="text-rose-500" />
+            <AlertTriangle size={14} className="text-rose-600" />
             {ar ? "شكاوى الموظفين" : "Employee Grievances"}
             <span className="text-micro px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-600 font-medium">{filteredGrievances.length}</span>
           </h3>
@@ -207,7 +207,7 @@ export default function HREmployeeRelations() {
           })}
           {filteredGrievances.length === 0 && (
             <div className="col-span-2 text-center py-8">
-              <CheckCircle2 size={32} className="text-emerald-400 mx-auto mb-2" />
+              <CheckCircle2 size={32} className="text-emerald-600 mx-auto mb-2" />
               <p className="text-caption text-muted-foreground">{ar ? "لا توجد شكاوى مطابقة" : "No matching grievances"}</p>
             </div>
           )}
@@ -218,7 +218,7 @@ export default function HREmployeeRelations() {
       <motion.div variants={cardV} custom={12} initial="hidden" animate="visible">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-body font-semibold flex items-center gap-2">
-            <BarChart3 size={14} className="text-emerald-500" />
+            <BarChart3 size={14} className="text-emerald-600" />
             {ar ? "استبيانات النبض" : "Pulse Surveys"}
           </h3>
         </div>
@@ -271,7 +271,7 @@ export default function HREmployeeRelations() {
       <motion.div variants={cardV} custom={15} initial="hidden" animate="visible" className="p-5 rounded-xl border border-border/40 bg-background">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-body font-semibold flex items-center gap-2">
-            <Heart size={14} className="text-chart-4" />
+            <Heart size={14} className="text-violet-600" />
             {ar ? "معنويات الفريق حسب القسم" : "Team Morale by Department"}
           </h3>
           <span className="text-micro text-muted-foreground">{HR_TEAM_MORALE[0]?.month}</span>
@@ -281,7 +281,7 @@ export default function HREmployeeRelations() {
             const dept = DEPT_META[item.department];
             if (!dept) return null;
             const pct = (item.score / 5) * 100;
-            const barColor = item.score >= 4.0 ? "#10B981" : item.score >= 3.0 ? "#F59E0B" : "#EF4444";
+            const barColor = item.score >= 4.0 ? "#6FC39E" : item.score >= 3.0 ? "#EFC274" : "#EE9E9E";
             return (
               <div key={item.id} className="space-y-1.5">
                 <div className="flex items-center justify-between">
@@ -392,7 +392,7 @@ export default function HREmployeeRelations() {
                 </button>
               )}
               {selectedGrievance.status === "investigating" && (
-                <button className="h-8 px-3 rounded-lg bg-chart-4/15 text-chart-4 text-micro font-medium hover:bg-chart-4/20 transition-colors flex items-center gap-1">
+                <button className="h-8 px-3 rounded-lg bg-chart-4/15 text-violet-600 text-micro font-medium hover:bg-chart-4/20 transition-colors flex items-center gap-1">
                   <MessageSquare size={11} /> {ar ? "بدء الوساطة" : "Start Mediation"}
                 </button>
               )}

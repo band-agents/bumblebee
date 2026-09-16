@@ -80,7 +80,7 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     const COLORS: Record<PersonType, string> = {
-      customer:   "bg-chart-4/15 text-chart-4",
+      customer:   "bg-chart-4/15 text-violet-600",
       employee:   "bg-emerald-100 text-emerald-700",
       supplier:   "bg-warning/15 text-warning",
       contractor: "bg-blue-100 text-blue-700",
@@ -164,37 +164,37 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
             {/* Name */}
             <div>
               <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                {ar ? "الاسم" : "Full Name"} <span className="text-rose-400">*</span>
+                {ar ? "الاسم" : "Full Name"} <span className="text-rose-600">*</span>
               </label>
               <input ref={nameRef} type="text" value={form.name} onChange={(e) => field("name", e.target.value)}
                 placeholder={ar ? "مثال: عمر الراشدي" : "e.g. Omar Al-Rashidi"}
                 className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.name ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.name && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.name}</p>}
+              {errors.name && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.name}</p>}
             </div>
 
             {/* Company */}
             <div>
               <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                {ar ? "الشركة" : "Company"} <span className="text-rose-400">*</span>
+                {ar ? "الشركة" : "Company"} <span className="text-rose-600">*</span>
               </label>
               <input type="text" value={form.company} onChange={(e) => field("company", e.target.value)}
                 placeholder={ar ? "مثال: شركة الخليج" : "e.g. Gulf Traders LLC"}
                 className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.company ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.company && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.company}</p>}
+              {errors.company && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.company}</p>}
             </div>
 
             {/* Role */}
             <div>
               <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                {ar ? "المنصب" : "Role"} <span className="text-rose-400">*</span>
+                {ar ? "المنصب" : "Role"} <span className="text-rose-600">*</span>
               </label>
               <input type="text" value={form.role} onChange={(e) => field("role", e.target.value)}
                 placeholder={ar ? "مثال: مدير المشتريات" : "e.g. Procurement Manager"}
                 className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.role ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.role && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.role}</p>}
+              {errors.role && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.role}</p>}
             </div>
 
             {/* Email + Phone */}
@@ -204,7 +204,7 @@ function AddPersonModal({ open, onClose, onAdd, lang }: AddPersonModalProps) {
                 <input type="email" value={form.email} onChange={(e) => field("email", e.target.value)} placeholder="name@company.com"
                   className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.email ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
                 />
-                {errors.email && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.email}</p>}
+                {errors.email && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.email}</p>}
               </div>
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الهاتف" : "Phone"}</label>

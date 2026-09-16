@@ -63,14 +63,14 @@ const ALL_STAGES: Candidate["stage"][] = [
 
 const STAGE_META: Record<Candidate["stage"], { en: string; ar: string; color: string; bgHex: string; borderHex: string; textHex: string }> = {
   applied:       { en: "Applied",       ar: "تقدم",       color: "text-slate-600",    bgHex: "#f8fafc", borderHex: "#e2e8f0", textHex: "#475569" },
-  screening:     { en: "Screening",     ar: "مراجعة",     color: "text-chart-4",   bgHex: "#f5f3ff", borderHex: "#ddd6fe", textHex: "#7c3aed" },
+  screening:     { en: "Screening",     ar: "مراجعة",     color: "text-violet-600",   bgHex: "#f5f3ff", borderHex: "#ddd6fe", textHex: "#AA94E3" },
   phone_screen:  { en: "Phone Screen",  ar: "مقابلة هاتف", color: "text-sky-600",     bgHex: "#f0f9ff", borderHex: "#bae6fd", textHex: "#0284c7" },
-  interview_1:   { en: "Interview 1",   ar: "مقابلة ١",   color: "text-warning",    bgHex: "#fffbeb", borderHex: "#fde68a", textHex: "#d97706" },
+  interview_1:   { en: "Interview 1",   ar: "مقابلة ١",   color: "text-warning",    bgHex: "#fffbeb", borderHex: "#fde68a", textHex: "#E3B066" },
   interview_2:   { en: "Interview 2",   ar: "مقابلة ٢",   color: "text-orange-600",   bgHex: "#fff7ed", borderHex: "#fed7aa", textHex: "#ea580c" },
   evaluation:    { en: "Evaluation",    ar: "تقييم",      color: "text-cyan-600",     bgHex: "#ecfeff", borderHex: "#a5f3fc", textHex: "#0891b2" },
-  offer:         { en: "Offer",         ar: "عرض",        color: "text-emerald-600",  bgHex: "#ecfdf5", borderHex: "#a7f3d0", textHex: "#059669" },
+  offer:         { en: "Offer",         ar: "عرض",        color: "text-emerald-600",  bgHex: "#ecfdf5", borderHex: "#a7f3d0", textHex: "#5DAE8B" },
   hired:         { en: "Hired",         ar: "تم التعيين",  color: "text-green-700",   bgHex: "#f0fdf4", borderHex: "#86efac", textHex: "#15803d" },
-  rejected:      { en: "Rejected",      ar: "مرفوض",      color: "text-rose-600",     bgHex: "#fff1f2", borderHex: "#fecdd3", textHex: "#e11d48" },
+  rejected:      { en: "Rejected",      ar: "مرفوض",      color: "text-rose-600",     bgHex: "#fff1f2", borderHex: "#fecdd3", textHex: "#E99AAE" },
 };
 
 const STAGE_PIPE = ["applied", "screening", "phone_screen", "interview_1", "interview_2", "evaluation", "offer", "hired"] as const;
@@ -79,7 +79,7 @@ const STAGE_PIPE = ["applied", "screening", "phone_screen", "interview_1", "inte
 
 const SOURCE_META: Record<Candidate["source"], { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   linkedin: { en: "LinkedIn", ar: "لينكدإن", icon: Linkedin, color: "text-blue-600", bg: "bg-blue-50" },
-  website:  { en: "Website",  ar: "الموقع",  icon: Globe,    color: "text-chart-4", bg: "bg-chart-4/10" },
+  website:  { en: "Website",  ar: "الموقع",  icon: Globe,    color: "text-violet-600", bg: "bg-chart-4/10" },
   referral: { en: "Referral", ar: "إحالة",   icon: UserCheck, color: "text-emerald-600", bg: "bg-emerald-50" },
   agency:   { en: "Agency",   ar: "وكالة",   icon: Briefcase, color: "text-warning", bg: "bg-warning/10" },
   walk_in:  { en: "Walk-in",  ar: "حضور",    icon: Users,     color: "text-orange-600", bg: "bg-orange-50" },
@@ -90,7 +90,7 @@ const SOURCE_META: Record<Candidate["source"], { en: string; ar: string; icon: R
 
 const INTERVIEW_TYPE_META: Record<string, { en: string; ar: string; color: string }> = {
   phone_screen: { en: "Phone Screen", ar: "مقابلة هاتف", color: "bg-sky-100 text-sky-700" },
-  technical:    { en: "Technical",    ar: "تقنية",       color: "bg-chart-4/15 text-chart-4" },
+  technical:    { en: "Technical",    ar: "تقنية",       color: "bg-chart-4/15 text-violet-600" },
   hr:           { en: "HR",          ar: "موارد بشرية",  color: "bg-emerald-100 text-emerald-700" },
   manager:      { en: "Manager",     ar: "مدير",         color: "bg-warning/15 text-warning" },
   final:        { en: "Final",       ar: "نهائي",        color: "bg-rose-100 text-rose-700" },
@@ -211,7 +211,7 @@ export default function HRRecruitment() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {[
           { label: ar ? "فتحات مفتوحة" : "Open Positions", value: stats.openPositions, icon: Briefcase, color: "text-blue-600", bg: "bg-blue-50/80" },
-          { label: ar ? "إجمالي المرشحين" : "Total Candidates", value: stats.totalCandidates, icon: Users, color: "text-chart-4", bg: "bg-chart-4/10" },
+          { label: ar ? "إجمالي المرشحين" : "Total Candidates", value: stats.totalCandidates, icon: Users, color: "text-violet-600", bg: "bg-chart-4/10" },
           { label: ar ? "تم التعيين" : "Hired", value: stats.hiredCount, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50/80" },
           { label: ar ? "معدل التحويل" : "Conversion Rate", value: `${stats.conversionRate}%`, icon: TrendingUp, color: "text-warning", bg: "bg-warning/10" },
           { label: ar ? "متوسط ملء الوظيفة" : "Avg Time to Fill", value: "32d", icon: Timer, color: "text-cyan-600", bg: "bg-cyan-50/80" },
@@ -233,7 +233,7 @@ export default function HRRecruitment() {
         className="p-5 rounded-xl border border-border/40 bg-background">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-body font-semibold flex items-center gap-2">
-            <Briefcase size={14} className="text-blue-500" />
+            <Briefcase size={14} className="text-blue-600" />
             {ar ? "الوظائف المفتوحة" : "Job Openings"}
           </h3>
           <span className="text-micro text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
@@ -292,7 +292,7 @@ export default function HRRecruitment() {
       <motion.div variants={cardV} custom={6} initial="hidden" animate="visible">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-body font-semibold flex items-center gap-2">
-            <Users size={14} className="text-chart-4" />
+            <Users size={14} className="text-violet-600" />
             {ar ? "قناة المرشحين" : "Candidates Pipeline"}
           </h3>
           <div className="flex items-center gap-2">
@@ -450,7 +450,7 @@ export default function HRRecruitment() {
         className="p-5 rounded-xl border border-border/40 bg-background">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-body font-semibold flex items-center gap-2">
-            <Calendar size={14} className="text-cyan-500" />
+            <Calendar size={14} className="text-cyan-600" />
             {ar ? "جدولة المقابلات" : "Interview Schedule"}
           </h3>
         </div>
@@ -506,7 +506,7 @@ export default function HRRecruitment() {
         {completedInterviews.length > 0 && (
           <div>
             <p className="text-micro font-medium text-muted-foreground mb-3 flex items-center gap-1.5">
-              <CheckCircle2 size={11} className="text-emerald-500" />
+              <CheckCircle2 size={11} className="text-emerald-600" />
               {ar ? "المقابلات المكتملة" : "Completed Interviews"}
             </p>
             <div className="space-y-2">
@@ -710,10 +710,10 @@ export default function HRRecruitment() {
 
               {/* Modal Footer */}
               <div className="px-6 py-4 border-t border-border/40 flex gap-2 shrink-0">
-                <button className="flex-1 h-10 rounded-xl bg-emerald-500 text-white text-caption font-medium hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1.5">
+                <button className="flex-1 h-10 rounded-xl bg-emerald-500 text-emerald-900 text-caption font-medium hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1.5">
                   <CheckCircle2 size={13} /> {ar ? "تقدم" : "Move Forward"}
                 </button>
-                <button className="h-10 px-4 rounded-xl border border-rose-200 text-rose-500 text-caption font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5">
+                <button className="h-10 px-4 rounded-xl border border-rose-200 text-rose-600 text-caption font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5">
                   <XCircle size={13} /> {ar ? "رفض" : "Reject"}
                 </button>
                 <button className="h-10 px-4 rounded-xl border border-border text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center justify-center gap-1.5">

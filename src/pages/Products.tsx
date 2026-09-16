@@ -277,7 +277,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                 <div className="shrink-0 pl-3 border-l border-border/30 text-right">
                   <span className="text-micro text-muted-foreground">{ar ? "هامش" : "Margin"}</span>
                   <p className={`text-body font-semibold tabular-nums leading-tight ${
-                    (parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"
+                    (parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-600"
                   }`}>
                     {Math.round(((parseFloat(suggestedPrice) - costInfo.totalCost) / parseFloat(suggestedPrice)) * 100)}%
                   </p>
@@ -456,7 +456,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                           <input type="number" value={line.costPerUnit} onChange={e => updateBOM(i, { ...line, costPerUnit: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} />
                         </div>
                         <div className="col-span-1 flex justify-end">
-                          <button onClick={() => removeBOM(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-500 hover:bg-rose-50"><X size={11} /></button>
+                          <button onClick={() => removeBOM(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-600 hover:bg-rose-50"><X size={11} /></button>
                         </div>
                       </div>
                     ))}
@@ -495,7 +495,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                           <span className="text-micro text-muted-foreground/50 tabular-nums w-5">{i + 1}</span>
                           <input value={s.name} onChange={e => updateStage(i, { ...s, name: e.target.value })} className={smallInput + " flex-1"} placeholder={ar ? "اسم المرحلة" : "Stage name"} />
                           <input value={s.name_ar || ""} onChange={e => updateStage(i, { ...s, name_ar: e.target.value })} className={smallInput + " w-[140px]"} placeholder={ar ? "بالعربي" : "Arabic name"} />
-                          <button onClick={() => removeStage(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-500 hover:bg-rose-50"><Trash2 size={11} /></button>
+                          <button onClick={() => removeStage(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-600 hover:bg-rose-50"><Trash2 size={11} /></button>
                         </div>
                         <div className="grid grid-cols-4 gap-2">
                           <div>
@@ -687,7 +687,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
                   {parseFloat(suggestedPrice) > 0 && (
                     <div className="bg-muted/30 rounded-xl p-4">
                       <p className="text-micro text-muted-foreground mb-1">{ar ? "هامش الربح" : "Profit Margin"}</p>
-                      <p className={`text-heading font-medium tabular-nums ${(parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                      <p className={`text-heading font-medium tabular-nums ${(parseFloat(suggestedPrice) - costInfo.totalCost) >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
                         {costInfo.totalCost > 0 ? Math.round(((parseFloat(suggestedPrice) - costInfo.totalCost) / parseFloat(suggestedPrice)) * 100) : 0}%
                       </p>
                       <p className="text-micro text-muted-foreground mt-1">
@@ -741,7 +741,7 @@ function ProductWizard({ ar, currency, onClose, onAdd, initialTemplate }: {
             </>
           )}
 
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
 
         {/* Footer */}
@@ -835,7 +835,7 @@ function ProductCard({ product, ar, currency, onDuplicate, onDelete }: {
           </div>
         )}
         {m.suggested_price && m.suggested_price > 0 && cost > 0 && (
-          <span className={`text-micro font-medium tabular-nums ${(m.suggested_price - cost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+          <span className={`text-micro font-medium tabular-nums ${(m.suggested_price - cost) >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
             {Math.round(((m.suggested_price - cost) / m.suggested_price) * 100)}% {ar ? "ربح" : "margin"}
           </span>
         )}
@@ -857,7 +857,7 @@ function ProductCard({ product, ar, currency, onDuplicate, onDelete }: {
           </button>
           <button
             onClick={e => { e.stopPropagation(); onDelete(product); }}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-rose-600 hover:bg-rose-50 transition-colors"
             title={ar ? "حذف" : "Delete"}
           >
             <Trash2 size={12} />
@@ -1171,17 +1171,17 @@ export default function Products() {
               <p className="text-micro text-muted-foreground">{ar ? "إجمالي المنتجات" : "Total Products"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <CheckCircle2 size={14} className="text-emerald-500 mb-2" />
+              <CheckCircle2 size={14} className="text-emerald-600 mb-2" />
               <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{activeProducts.length}</p>
               <p className="text-micro text-muted-foreground">{ar ? "نشط" : "Active"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <AlertTriangle size={14} className={missingBOM.length > 0 ? "text-warning mb-2" : "text-emerald-500 mb-2"} />
+              <AlertTriangle size={14} className={missingBOM.length > 0 ? "text-warning mb-2" : "text-emerald-600 mb-2"} />
               <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{missingBOM.length}</p>
               <p className="text-micro text-muted-foreground">{ar ? "بدون مكونات" : "Missing BOM"}</p>
             </div>
             <div className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-              <Wrench size={14} className={missingStages.length > 0 ? "text-warning mb-2" : "text-emerald-500 mb-2"} />
+              <Wrench size={14} className={missingStages.length > 0 ? "text-warning mb-2" : "text-emerald-600 mb-2"} />
               <p className="text-heading font-medium tabular-nums mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>{missingStages.length}</p>
               <p className="text-micro text-muted-foreground">{ar ? "بدون مراحل" : "Missing Stages"}</p>
             </div>

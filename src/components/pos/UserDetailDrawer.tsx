@@ -274,7 +274,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                       {s.current ? (
                         <span className="text-micro px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">{ar ? "الحالية" : "Current"}</span>
                       ) : (
-                        <button className="text-micro text-rose-500 hover:underline flex items-center gap-1">
+                        <button className="text-micro text-rose-600 hover:underline flex items-center gap-1">
                           <LogOut size={10} /> {ar ? "إنهاء" : "Revoke"}
                         </button>
                       )}
@@ -286,7 +286,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                     </div>
                   </div>
                 ))}
-                <button className="w-full h-9 rounded-lg border border-rose-200 text-rose-500 text-micro font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5 mt-3">
+                <button className="w-full h-9 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium hover:bg-rose-50 transition-colors flex items-center justify-center gap-1.5 mt-3">
                   <LogOut size={12} /> {ar ? "إنهاء جميع الجلسات الأخرى" : "Revoke All Other Sessions"}
                 </button>
               </motion.div>
@@ -299,7 +299,7 @@ export function UserDetailDrawer({ member, onClose, onSave }: {
                 <div className="space-y-0">
                   {MOCK_ACTIVITY.map((entry, i) => {
                     const actionIcon = entry.action === "login" ? Key : entry.action === "view" ? Eye : entry.action === "edit" ? Edit3 : entry.action === "create" ? Star : entry.action === "delete" ? Trash2 : entry.action === "approve" ? ShieldCheck : entry.action === "export" ? Activity : Settings;
-                    const actionColor = entry.action === "delete" ? "text-rose-500" : entry.action === "approve" ? "text-emerald-500" : entry.action === "login" ? "text-blue-500" : "text-muted-foreground";
+                    const actionColor = entry.action === "delete" ? "text-rose-600" : entry.action === "approve" ? "text-emerald-600" : entry.action === "login" ? "text-blue-600" : "text-muted-foreground";
                     return (
                       <div key={entry.id} className="flex gap-3 relative">
                         <div className="flex flex-col items-center">

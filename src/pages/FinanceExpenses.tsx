@@ -14,7 +14,7 @@ import {
 const CATEGORY_META: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   rent:          { en: "Rent",          ar: "الإيجار",         color: "text-blue-600",   bg: "bg-blue-50 border-blue-200" },
   utilities:     { en: "Utilities",     ar: "المرافق",         color: "text-cyan-600",   bg: "bg-cyan-50 border-cyan-200" },
-  salaries:      { en: "Salaries",      ar: "الرواتب",         color: "text-chart-4", bg: "bg-chart-4/10 border-chart-4/30" },
+  salaries:      { en: "Salaries",      ar: "الرواتب",         color: "text-violet-600", bg: "bg-chart-4/10 border-chart-4/30" },
   marketing:     { en: "Marketing",     ar: "التسويق",         color: "text-warning",  bg: "bg-warning/10 border-warning/30" },
   supplies:      { en: "Supplies",      ar: "المستلزمات",      color: "text-emerald-600",bg: "bg-emerald-50 border-emerald-200" },
   travel:        { en: "Travel",        ar: "السفر",           color: "text-orange-600", bg: "bg-orange-50 border-orange-200" },
@@ -284,7 +284,7 @@ function ExpenseDrawer({ expense, onClose, lang }: {
         </div>
         <div className="px-6 py-5 space-y-5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${cat.color === "text-blue-600" ? "#3b82f6" : "#8b5cf6"}12` }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${cat.color === "text-blue-600" ? "#8AB0EA" : "#B6A0EA"}12` }}>
               <FileText size={18} className={cat.color} />
             </div>
             <div>
@@ -317,7 +317,7 @@ function ExpenseDrawer({ expense, onClose, lang }: {
             <div className="rounded-xl border border-border/40 p-4">
               <p className="text-micro text-muted-foreground tracking-wide uppercase mb-2">{ar ? "الموافقة" : "Approval"}</p>
               <div className="flex items-center gap-2">
-                <CheckCircle2 size={14} className="text-emerald-500" />
+                <CheckCircle2 size={14} className="text-emerald-600" />
                 <span className="text-body text-foreground">{ar ? `تمت الموافقة بواسطة ${expense.approved_by}` : `Approved by ${expense.approved_by}`}</span>
               </div>
               {expense.approved_at && <p className="text-micro text-muted-foreground mt-1">{expense.approved_at}</p>}
@@ -421,11 +421,11 @@ export default function FinanceExpenses() {
       <div className="px-6 lg:px-8 py-6 space-y-6">
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          <KpiCard icon={DollarSign} labelEn="Total Expenses" labelAr="إجمالي المصروفات" value={fmtEGP(totalExpenses)} color="#6366f1" />
-          <KpiCard icon={Clock} labelEn="Pending Approval" labelAr="قيد الموافقة" value={String(pendingCount)} sub={ar ? "مصروفات" : "expenses"} color="#f59e0b" />
-          <KpiCard icon={CheckCircle2} labelEn="Approved This Month" labelAr="معتمد هذا الشهر" value={fmtEGP(approvedMonth)} color="#3b82f6" />
-          <KpiCard icon={CreditCard} labelEn="Paid This Month" labelAr="مدفوع هذا الشهر" value={fmtEGP(paidMonth)} color="#10b981" />
-          <KpiCard icon={TrendingUp} labelEn="Budget Utilization" labelAr="نسبة استهلاك الميزانية" value={`${budgetUtil}%`} sub={`${fmtEGP(totalActual)} / ${fmtEGP(totalBudget)}`} color="#8b5cf6" />
+          <KpiCard icon={DollarSign} labelEn="Total Expenses" labelAr="إجمالي المصروفات" value={fmtEGP(totalExpenses)} color="#A3A9EE" />
+          <KpiCard icon={Clock} labelEn="Pending Approval" labelAr="قيد الموافقة" value={String(pendingCount)} sub={ar ? "مصروفات" : "expenses"} color="#EFC274" />
+          <KpiCard icon={CheckCircle2} labelEn="Approved This Month" labelAr="معتمد هذا الشهر" value={fmtEGP(approvedMonth)} color="#8AB0EA" />
+          <KpiCard icon={CreditCard} labelEn="Paid This Month" labelAr="مدفوع هذا الشهر" value={fmtEGP(paidMonth)} color="#6FC39E" />
+          <KpiCard icon={TrendingUp} labelEn="Budget Utilization" labelAr="نسبة استهلاك الميزانية" value={`${budgetUtil}%`} sub={`${fmtEGP(totalActual)} / ${fmtEGP(totalBudget)}`} color="#B6A0EA" />
         </div>
 
         {/* Search & Filters */}
@@ -626,7 +626,7 @@ export default function FinanceExpenses() {
                   const budgetStatusBg = budget.status === "critical" ? "bg-red-50 border-red-200" : budget.status === "over" ? "bg-warning/10 border-warning/30" : budget.status === "on_track" ? "bg-emerald-50 border-emerald-200" : "bg-blue-50 border-blue-200";
                   const budgetStatusEn = budget.status === "critical" ? "Critical" : budget.status === "over" ? "Over Budget" : budget.status === "on_track" ? "On Track" : "Under Budget";
                   const budgetStatusAr = budget.status === "critical" ? "حرج" : budget.status === "over" ? "تجاوز الميزانية" : budget.status === "on_track" ? "ضمن الميزانية" : "أقل من الميزانية";
-                  const progressColor = budget.utilization_pct >= 90 ? "#ef4444" : budget.utilization_pct >= 70 ? "#f59e0b" : "#10b981";
+                  const progressColor = budget.utilization_pct >= 90 ? "#EE9E9E" : budget.utilization_pct >= 70 ? "#EFC274" : "#6FC39E";
 
                   return (
                     <tr key={budget.id} className="border-b border-border/20 hover:bg-muted/30 transition-colors">

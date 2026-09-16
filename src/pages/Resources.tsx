@@ -252,8 +252,8 @@ function ResourcesPage() {
               { icon: Package,       value: String(totalAssets),  label: ar ? "إجمالي الأصول" : "Total Assets", color: "text-brand-ink" },
               { icon: CheckCircle2,  value: String(activeAssets), label: ar ? "أصول نشطة" : "Active",          color: "text-emerald-600" },
               { icon: DollarSign,    value: fmt(invValue),        label: ar ? "قيمة المخزون" : "Inventory Value",color: "text-warning" },
-              { icon: User,          value: String(assigned),     label: ar ? "موارد مُعيّنة" : "Assigned",     color: "text-chart-4" },
-              { icon: AlertTriangle, value: String(maintDue),     label: ar ? "صيانة مستحقة" : "Maint. Due",    color: "text-rose-500" },
+              { icon: User,          value: String(assigned),     label: ar ? "موارد مُعيّنة" : "Assigned",     color: "text-violet-600" },
+              { icon: AlertTriangle, value: String(maintDue),     label: ar ? "صيانة مستحقة" : "Maint. Due",    color: "text-rose-600" },
               { icon: Gauge,         value: `${avgUtil}%`,        label: ar ? "الاستخدام" : "Utilization",      color: "text-cyan-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">

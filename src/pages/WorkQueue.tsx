@@ -15,7 +15,7 @@ type FilterCat = "all" | "revenue" | "operations" | "relationships" | "risk";
 const CAT_STYLE: Record<string, { labelEn: string; labelAr: string; pill: string; dot: string }> = {
   revenue:       { labelEn: "Revenue",       labelAr: "إيرادات",  pill: "bg-warning/10 text-warning border border-warning/30",   dot: "bg-warning" },
   operations:    { labelEn: "Operations",    labelAr: "عمليات",   pill: "bg-blue-50 text-blue-700 border border-blue-200",       dot: "bg-blue-500" },
-  relationships: { labelEn: "Relationships", labelAr: "علاقات",   pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30", dot: "bg-chart-4" },
+  relationships: { labelEn: "Relationships", labelAr: "علاقات",   pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30", dot: "bg-chart-4" },
   risk:          { labelEn: "Risk",          labelAr: "مخاطر",    pill: "bg-rose-50 text-rose-700 border border-rose-200",       dot: "bg-rose-500" },
 };
 
@@ -208,7 +208,7 @@ export default function WorkQueue() {
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Target size={14} strokeWidth={1.75} className="text-orange-500" />
+            <Target size={14} strokeWidth={1.75} className="text-orange-600" />
             <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "قائمة الشغل المستقلة" : "Autonomous Work Queue"}</p>
           </div>
           <h1 className="text-display font-medium text-foreground leading-tight mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
@@ -267,7 +267,7 @@ export default function WorkQueue() {
         {tab === "queue" && (
           sorted.length === 0 ? (
             <div className="flex flex-col items-center py-16">
-              <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-400 mb-3" />
+              <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-600 mb-3" />
               <p className="text-body-lg text-muted-foreground">{ar ? "القائمة فارغة — كل شيء مكتمل!" : "Queue is clear — everything is on track!"}</p>
             </div>
           ) : (

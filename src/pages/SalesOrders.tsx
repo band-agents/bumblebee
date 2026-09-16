@@ -45,7 +45,7 @@ type Person = Database["public"]["Tables"]["people"]["Row"];
 const SO_STATUSES = [
   { value: "draft",       en: "Draft",         ar: "مسودة",         pill: "bg-slate-100 text-slate-600" },
   { value: "approved",    en: "Confirmed",      ar: "مؤكد",          pill: "bg-blue-100 text-blue-600" },
-  { value: "in_progress", en: "In Production",  ar: "في التصنيع",    pill: "bg-chart-4/15 text-chart-4" },
+  { value: "in_progress", en: "In Production",  ar: "في التصنيع",    pill: "bg-chart-4/15 text-violet-600" },
   { value: "review",      en: "Ready",          ar: "جاهز للتسليم",  pill: "bg-warning/15 text-warning" },
   { value: "sent",        en: "Delivered",      ar: "تم التسليم",    pill: "bg-emerald-100 text-emerald-700" },
   { value: "done",        en: "Closed",         ar: "مقفول",         pill: "bg-emerald-200 text-emerald-800" },
@@ -432,7 +432,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                           )}
                           {item.product_sku && <span className="text-micro font-mono text-muted-foreground">{item.product_sku}</span>}
                           <div className="flex-1" />
-                          <button onClick={() => removeItem(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-500 hover:bg-rose-50"><X size={11} /></button>
+                          <button onClick={() => removeItem(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-600 hover:bg-rose-50"><X size={11} /></button>
                         </div>
                         <div className="grid grid-cols-12 gap-2">
                           <div className="col-span-5">
@@ -563,7 +563,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                       <span className="font-medium tabular-nums">{fmt(subtotal)} {currency}</span>
                     </div>
                     {orderDiscAmt > 0 && (
-                      <div className="flex justify-between text-caption text-rose-500">
+                      <div className="flex justify-between text-caption text-rose-600">
                         <span>{ar ? "الخصم" : "Discount"}</span>
                         <span className="font-medium tabular-nums">− {fmt(Math.round(orderDiscAmt))} {currency}</span>
                       </div>
@@ -586,7 +586,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                         </div>
                         <div className="flex justify-between text-caption border-t border-border/30 pt-2">
                           <span className="font-medium">{ar ? "هامش الربح المتوقع" : "Est. Margin"}</span>
-                          <span className={`font-medium tabular-nums ${(totalAmount - estimatedCost) >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                          <span className={`font-medium tabular-nums ${(totalAmount - estimatedCost) >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
                             {totalAmount > 0 ? Math.round(((totalAmount - estimatedCost) / totalAmount) * 100) : 0}%
                           </span>
                         </div>
@@ -599,7 +599,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                     <p className="text-micro text-muted-foreground mb-1">{ar ? "مدة التصنيع المتوقعة" : "Est. Manufacturing Time"}</p>
                     <p className="text-heading font-medium tabular-nums">{estimatedDays || "—"} {estimatedDays ? (ar ? "يوم عمل" : "work days") : ""}</p>
                     {dueDate && estimatedDays > 0 && (
-                      <p className={`text-micro mt-1 ${estimatedDays > Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000) ? "text-rose-500" : "text-emerald-600"}`}>
+                      <p className={`text-micro mt-1 ${estimatedDays > Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000) ? "text-rose-600" : "text-emerald-600"}`}>
                         {estimatedDays > Math.ceil((new Date(dueDate).getTime() - Date.now()) / 86400000)
                           ? (ar ? "⚠ الوقت مش كافي للتسليم في الميعاد!" : "⚠ Not enough time for deadline!")
                           : (ar ? "✓ ممكن نلحق الميعاد" : "✓ Can meet deadline")}
@@ -624,7 +624,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                             <option value="bank">{ar ? "تحويل بنكي" : "Bank"}</option>
                             <option value="check">{ar ? "شيك" : "Check"}</option>
                           </select>
-                          <button onClick={() => removePayment(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-500"><X size={11} /></button>
+                          <button onClick={() => removePayment(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-600"><X size={11} /></button>
                         </div>
                       </div>
                     </div>
@@ -670,7 +670,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                   ].map(chk => (
                     <button key={chk.en} type="button" onClick={() => chk.set(!chk.val)}
                       className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-caption text-left transition-all ${chk.val ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-border/40 text-muted-foreground hover:bg-muted/30"}`}>
-                      <CheckCircle2 size={14} className={chk.val ? "text-emerald-500" : "text-muted-foreground/30"} />
+                      <CheckCircle2 size={14} className={chk.val ? "text-emerald-600" : "text-muted-foreground/30"} />
                       <span>{ar ? chk.ar : chk.en}</span>
                     </button>
                   ))}
@@ -694,7 +694,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
             </>
           )}
 
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
 
         {/* Footer */}
@@ -886,9 +886,9 @@ export default function SalesOrders() {
             {[
               { icon: FileText, value: totalOrders.toLocaleString("en"), label: ar ? "إجمالي الطلبات" : "Total Orders", color: "text-brand-ink" },
               { icon: CheckCircle2, value: confirmed, label: ar ? "مؤكد" : "Confirmed", color: "text-blue-600" },
-              { icon: Wrench, value: inProd, label: ar ? "في التصنيع" : "In Production", color: "text-chart-4" },
+              { icon: Wrench, value: inProd, label: ar ? "في التصنيع" : "In Production", color: "text-violet-600" },
               { icon: Truck, value: ready, label: ar ? "جاهز للتسليم" : "Ready", color: "text-warning" },
-              { icon: AlertCircle, value: overdue, label: ar ? "متأخر" : "Overdue", color: overdue > 0 ? "text-rose-500" : "text-emerald-600" },
+              { icon: AlertCircle, value: overdue, label: ar ? "متأخر" : "Overdue", color: overdue > 0 ? "text-rose-600" : "text-emerald-600" },
               { icon: DollarSign, value: fmt(totalValue), label: ar ? "القيمة الإجمالية" : "Total Value", color: "text-foreground" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
@@ -999,11 +999,11 @@ export default function SalesOrders() {
                   {/* Actions */}
                   <div className="flex items-center gap-2 pt-3 border-t border-border/30">
                     {o.status === "draft" && <button onClick={() => updateStatus(o.id, "approved")} className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تأكيد" : "Confirm"}</button>}
-                    {o.status === "approved" && <button onClick={() => updateStatus(o.id, "in_progress")} className="text-micro text-chart-4 font-medium hover:opacity-70 flex items-center gap-1"><Wrench size={11} /> {ar ? "ابدأ التصنيع" : "Start Production"}</button>}
+                    {o.status === "approved" && <button onClick={() => updateStatus(o.id, "in_progress")} className="text-micro text-violet-600 font-medium hover:opacity-70 flex items-center gap-1"><Wrench size={11} /> {ar ? "ابدأ التصنيع" : "Start Production"}</button>}
                     {o.status === "in_progress" && <button onClick={() => updateStatus(o.id, "review")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1"><Package size={11} /> {ar ? "جاهز للتسليم" : "Ready"}</button>}
                     {o.status === "review" && <button onClick={() => updateStatus(o.id, "sent")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><Truck size={11} /> {ar ? "تم التسليم" : "Delivered"}</button>}
                     {o.status === "sent" && <button onClick={() => updateStatus(o.id, "done")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "اقفل الطلب" : "Close"}</button>}
-                    <button onClick={() => setDeleteTarget(o)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors">
+                    <button onClick={() => setDeleteTarget(o)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
                       <Trash2 size={12} />
                     </button>
                   </div>

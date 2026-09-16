@@ -185,7 +185,7 @@ export default function InviteAccept() {
       <Card>
         <div className="text-center space-y-3">
           <div className="w-12 h-12 rounded-2xl bg-rose-50 mx-auto flex items-center justify-center">
-            <AlertCircle size={22} className="text-rose-500" />
+            <AlertCircle size={22} className="text-rose-600" />
           </div>
           <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? "الدعوة مش متاحة" : "Invitation unavailable"}
@@ -204,7 +204,7 @@ export default function InviteAccept() {
       <Card>
         <div className="text-center space-y-3 py-2">
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 mx-auto flex items-center justify-center">
-            <CheckCircle2 size={24} className="text-emerald-500" />
+            <CheckCircle2 size={24} className="text-emerald-600" />
           </div>
           <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
             {ar ? `أهلاً بيك في ${joined}` : `Welcome to ${joined}`}

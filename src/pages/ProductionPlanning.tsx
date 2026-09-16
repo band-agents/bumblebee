@@ -184,7 +184,7 @@ function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspaceId }:
           </div>
           <div><label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
             <textarea className={inputCls + " h-16 py-2 resize-none"} value={notes} onChange={e => setNotes(e.target.value)} /></div>
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
@@ -471,7 +471,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                       </div>
                     </div>
                     <div className="shrink-0 flex items-center gap-2">
-                      {log.status === "completed" && <CheckCircle2 size={16} className="text-emerald-500" />}
+                      {log.status === "completed" && <CheckCircle2 size={16} className="text-emerald-600" />}
                       {canStart && (
                         <button onClick={() => advanceStage(log.stage, "start")}
                           className="text-micro text-blue-600 font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-blue-200">
@@ -538,7 +538,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
                         <span className="text-micro tabular-nums">{item.qty}</span>
                         <div className="flex gap-1">
                           <button onClick={() => { setEditCut(item); setCutModal(true); }} className="p-1 rounded hover:bg-muted/50 text-muted-foreground"><Edit3 size={11} /></button>
-                          <button onClick={() => deleteCuttingItem(item.id)} className="p-1 rounded hover:bg-rose-50 text-rose-400"><Trash2 size={11} /></button>
+                          <button onClick={() => deleteCuttingItem(item.id)} className="p-1 rounded hover:bg-rose-50 text-rose-600"><Trash2 size={11} /></button>
                         </div>
                       </div>
                     ))}

@@ -180,8 +180,8 @@ export default function Operations() {
             {[
               { icon: Layers, value: open.length, label: ar ? "مفتوح" : "Open", color: "text-slate-600" },
               { icon: CircleDot, value: inProgress.length, label: ar ? "شغال عليها" : "In Progress", color: "text-blue-600" },
-              { icon: Timer, value: inReview.length, label: ar ? "مراجعة" : "In Review", color: "text-chart-4" },
-              { icon: AlertTriangle, value: overdue.length, label: ar ? "متأخرة" : "Overdue", color: overdue.length > 0 ? "text-rose-500" : "text-emerald-600" },
+              { icon: Timer, value: inReview.length, label: ar ? "مراجعة" : "In Review", color: "text-violet-600" },
+              { icon: AlertTriangle, value: overdue.length, label: ar ? "متأخرة" : "Overdue", color: overdue.length > 0 ? "text-rose-600" : "text-emerald-600" },
               { icon: CheckCircle2, value: completedWeek.length, label: ar ? "خلصت الأسبوع ده" : "Done This Week", color: "text-emerald-600" },
               { icon: Target, value: blocked.length, label: ar ? "متوقفة" : "Blocked", color: blocked.length > 0 ? "text-warning" : "text-slate-400" },
             ].map((m, i) => (
@@ -208,9 +208,9 @@ export default function Operations() {
             {overdue.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <AlertTriangle size={14} className="text-rose-500" />
+                  <AlertTriangle size={14} className="text-rose-600" />
                   <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-                    {ar ? "متأخرة" : "Overdue"} <span className="text-rose-500 ml-1">{overdue.length}</span>
+                    {ar ? "متأخرة" : "Overdue"} <span className="text-rose-600 ml-1">{overdue.length}</span>
                   </h2>
                 </div>
                 <div className="space-y-2">
@@ -243,9 +243,9 @@ export default function Operations() {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <CircleDot size={14} className="text-blue-500" />
+                    <CircleDot size={14} className="text-blue-600" />
                     <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-                      {ar ? "شغال عليها" : "In Progress"} <span className="text-blue-500 ml-1">{inProgress.length}</span>
+                      {ar ? "شغال عليها" : "In Progress"} <span className="text-blue-600 ml-1">{inProgress.length}</span>
                     </h2>
                   </div>
                   <button onClick={() => navigate("/work")} className="text-micro text-brand-ink hover:opacity-70 flex items-center gap-1">
@@ -264,9 +264,9 @@ export default function Operations() {
             {completedWeek.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <CheckCircle2 size={14} className="text-emerald-500" />
+                  <CheckCircle2 size={14} className="text-emerald-600" />
                   <h2 className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-                    {ar ? "خلصت الأسبوع ده" : "Completed This Week"} <span className="text-emerald-500 ml-1">{completedWeek.length}</span>
+                    {ar ? "خلصت الأسبوع ده" : "Completed This Week"} <span className="text-emerald-600 ml-1">{completedWeek.length}</span>
                   </h2>
                 </div>
                 <div className="space-y-2">
@@ -364,7 +364,7 @@ function WorkRow({ item, ar, highlight }: { item: WorkItem; ar: boolean; highlig
           {item.due_date && (
             <>
               <span className="text-border">·</span>
-              <span className={isOverdue(item) ? "text-rose-500 font-medium" : ""}>{item.due_date.slice(0, 10)}</span>
+              <span className={isOverdue(item) ? "text-rose-600 font-medium" : ""}>{item.due_date.slice(0, 10)}</span>
             </>
           )}
           {item.progress > 0 && (

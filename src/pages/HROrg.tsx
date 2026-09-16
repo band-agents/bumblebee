@@ -23,8 +23,8 @@ const cardV: Variants = {
 };
 
 const DEPT_COLORS: Record<string, string> = {
-  management: "#1E3A5F", sales: "#E07A5F", production: "#3B82F6",
-  design: "#EC4899", warehouse: "#F59E0B", delivery: "#F97316", admin: "#10B981",
+  management: "#1E3A5F", sales: "#EDA994", production: "#8AB0EA",
+  design: "#EFA3C6", warehouse: "#EFC274", delivery: "#F2AE82", admin: "#6FC39E",
 };
 
 export default function HROrg() {

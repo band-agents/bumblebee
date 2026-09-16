@@ -36,7 +36,7 @@ const STAGE_COLORS: Record<string, string> = {
   pattern: "bg-indigo-50 text-indigo-600",
   cutting: "bg-blue-50 text-blue-600",
   sewing: "bg-cyan-50 text-cyan-600",
-  finishing: "bg-chart-4/10 text-chart-4",
+  finishing: "bg-chart-4/10 text-violet-600",
   quality_control: "bg-orange-50 text-orange-600",
   packaging: "bg-teal-50 text-teal-600",
   ready_dispatch: "bg-emerald-50 text-emerald-600",
@@ -183,7 +183,7 @@ function DashboardView({ ar, onSelectOrder }: { ar: boolean; onSelectOrder: (id:
         <StatCard label={t(ar, "Delayed", "متأخرة")} value={stats.delayedOrders} icon={AlertTriangle} color={stats.delayedOrders > 0 ? "text-rose-600" : "text-zinc-400"} />
         <StatCard label={t(ar, "Completed", "مكتملة")} value={stats.completedOrders} icon={CheckCircle2} color="text-emerald-600" />
         <StatCard label={t(ar, "Waiting Materials", "انتظار مواد")} value={stats.waitingMaterials} icon={Package} color="text-warning" />
-        <StatCard label={t(ar, "Avg Rate", "متوسط المعدل")} value={`${stats.avgProductionRate}/hr`} icon={Zap} color="text-chart-4" />
+        <StatCard label={t(ar, "Avg Rate", "متوسط المعدل")} value={`${stats.avgProductionRate}/hr`} icon={Zap} color="text-violet-600" />
         <StatCard label={t(ar, "Avg Efficiency", "متوسط الكفاءة")} value={`${stats.avgEfficiency}%`} icon={TrendingUp} color={stats.avgEfficiency >= 85 ? "text-emerald-600" : "text-warning"} />
       </div>
 
@@ -652,7 +652,7 @@ function OrderDetail({ orderId, onBack, ar }: { orderId: string; onBack: () => v
                       <div className="flex items-center gap-3 text-micro text-muted-foreground">
                         {stage.completed_qty > 0 && <span>{fmt(stage.completed_qty)} {t(ar, "piece", "قطعة")}</span>}
                         {stage.actual_duration_hours != null && <span className="tabular-nums">{stage.actual_duration_hours}h</span>}
-                        {isCompleted && <CheckCircle2 size={12} className="text-emerald-500" />}
+                        {isCompleted && <CheckCircle2 size={12} className="text-emerald-600" />}
                         {isActive && <span className="text-blue-600 font-medium">{t(ar, "جاري", "Active")}</span>}
                       </div>
                     </div>
@@ -794,7 +794,7 @@ function OrderDetail({ orderId, onBack, ar }: { orderId: string; onBack: () => v
                 qc: "bg-orange-100 text-orange-600",
                 material: "bg-warning/15 text-warning",
                 comment: "bg-zinc-100 text-zinc-600",
-                file: "bg-chart-4/15 text-chart-4",
+                file: "bg-chart-4/15 text-violet-600",
                 delay: "bg-rose-100 text-rose-600",
                 completion: "bg-emerald-100 text-emerald-600",
                 status_change: "bg-zinc-100 text-zinc-600",
@@ -863,7 +863,7 @@ function AlertsView({ ar }: { ar: boolean }) {
         ))}
         {alerts.length === 0 && (
           <div className="py-12 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center mx-auto mb-3"><CheckCircle2 size={20} className="text-emerald-500" /></div>
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center mx-auto mb-3"><CheckCircle2 size={20} className="text-emerald-600" /></div>
             <p className="text-body font-medium">{t(ar, "كل شيء تمام!", "All clear!")}</p>
             <p className="text-micro text-muted-foreground">{t(ar, "لا توجد تنبيهات حالياً", "No alerts at the moment")}</p>
           </div>
@@ -1026,7 +1026,7 @@ export default function ProductionPage() {
               ${view === tab.id ? "bg-primary/10 text-brand-ink" : "text-muted-foreground hover:bg-muted/50"}`}>
             <tab.icon size={13} />{ar ? tab.ar : tab.en}
             {tab.id === "alerts" && getProductionAlerts().length > 0 && (
-              <span className="w-4 h-4 rounded-full bg-rose-500 text-white text-micro font-medium flex items-center justify-center">{getProductionAlerts().length}</span>
+              <span className="w-4 h-4 rounded-full bg-rose-500 text-rose-900 text-micro font-medium flex items-center justify-center">{getProductionAlerts().length}</span>
             )}
           </button>
         ))}

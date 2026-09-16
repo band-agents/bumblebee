@@ -219,7 +219,7 @@ function BlockRenderer({ block, isSelected, onClick, codeSettings }: {
         return (
           <div className="h-full p-2 space-y-1.5 text-micro">
             <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-medium">4,000</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Discount (10%)</span><span className="text-rose-500">-400</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Discount (10%)</span><span className="text-rose-600">-400</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Tax (14%)</span><span>504</span></div>
             <div className="border-t border-border/30 pt-1.5 flex justify-between font-semibold text-caption"><span>Grand Total</span><span className="text-brand-ink">4,104</span></div>
           </div>
@@ -678,7 +678,7 @@ export default function QuotationDesignerPage() {
                   <p className="text-caption font-medium">{tpl.name}</p>
                   <p className="text-micro text-muted-foreground">{tpl.blocks.length} blocks · {new Date(tpl.updatedAt).toLocaleDateString()}</p>
                 </button>
-                <button onClick={() => deleteTemplate(tpl.id)} className="w-6 h-6 rounded flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-500">
+                <button onClick={() => deleteTemplate(tpl.id)} className="w-6 h-6 rounded flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-600">
                   <Trash2 size={11} />
                 </button>
               </div>

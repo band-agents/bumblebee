@@ -14,7 +14,7 @@ type Register = Database["public"]["Tables"]["pos_registers"]["Row"];
 
 const BRANCH_TYPES = [
   { value: "factory", en: "Factory", ar: "مصنع", color: "bg-warning/15 text-warning" },
-  { value: "showroom", en: "Showroom", ar: "معرض", color: "bg-chart-4/15 text-chart-4" },
+  { value: "showroom", en: "Showroom", ar: "معرض", color: "bg-chart-4/15 text-violet-600" },
   { value: "warehouse", en: "Warehouse", ar: "مخزن", color: "bg-blue-100 text-blue-600" },
   { value: "retail", en: "Retail", ar: "تجزئة", color: "bg-emerald-100 text-emerald-700" },
   { value: "office", en: "Office", ar: "مكتب", color: "bg-slate-100 text-slate-600" },
@@ -93,7 +93,7 @@ function BranchModal({ onClose, onSaved, ar, initial }: {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelCls}>{ar ? "الاسم (EN)" : "Name"} <span className="text-rose-400">*</span></label>
+              <label className={labelCls}>{ar ? "الاسم (EN)" : "Name"} <span className="text-rose-600">*</span></label>
               <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required autoFocus className={inputCls} placeholder={ar ? "مثال: فرع المعادي" : "e.g. Maadi Branch"} />
             </div>
             <div>
@@ -134,7 +134,7 @@ function BranchModal({ onClose, onSaved, ar, initial }: {
             </label>
             <span className="text-caption text-foreground">{ar ? "نشط" : "Active"}</span>
           </div>
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1">{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1">{error}</p>}
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
             <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -205,7 +205,7 @@ function RegisterModal({ onClose, onSaved, ar, branchId, initial }: {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-400">*</span></label>
+              <label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-600">*</span></label>
               <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required autoFocus className={inputCls} placeholder={ar ? "كاشير 1" : "Register 1"} />
             </div>
             <div>
@@ -352,7 +352,7 @@ export default function BranchesPage() {
                         <span className={`text-micro px-1.5 py-0.5 rounded-full ${bt.color}`}>{lang === "ar" ? bt.ar : bt.en}</span>
                         <span className="text-micro text-muted-foreground/60">{regCount} {lang === "ar" ? "كاشير" : "registers"}</span>
                         {!branch.is_active && (
-                          <span className="text-micro text-rose-500">{lang === "ar" ? "غير نشط" : "Inactive"}</span>
+                          <span className="text-micro text-rose-600">{lang === "ar" ? "غير نشط" : "Inactive"}</span>
                         )}
                       </div>
                     </div>
@@ -412,7 +412,7 @@ export default function BranchesPage() {
                     setBranches((prev) => prev.filter((b) => b.id !== selectedBranch.id));
                     setSelectedBranch(null);
                   }}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center border border-border/60 hover:bg-rose-50 hover:text-rose-500 transition-colors"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center border border-border/60 hover:bg-rose-50 hover:text-rose-600 transition-colors"
                 >
                   <Trash2 size={13} />
                 </button>

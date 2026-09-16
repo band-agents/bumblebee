@@ -85,7 +85,7 @@ export function StatCard({ value, label, labelAr, icon: Icon, trend, color }: {
         )}
       </div>
       {trend !== undefined && (
-        <p className={`text-micro mt-2 font-medium ${trend >= 0 ? "text-emerald-600" : "text-rose-500"}`}>
+        <p className={`text-micro mt-2 font-medium ${trend >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
           {trend >= 0 ? "↑" : "↓"} {Math.abs(trend)}% {lang === "ar" ? "من الشهر الماضي" : "vs last month"}
         </p>
       )}

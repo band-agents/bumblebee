@@ -40,7 +40,7 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
               log.status === "success" ? "bg-emerald-50" : log.status === "failed" ? "bg-rose-50" : "bg-muted"
             }`}>
-              <Icon size={14} className={log.status === "success" ? "text-emerald-600" : log.status === "failed" ? "text-rose-500" : "text-muted-foreground"} />
+              <Icon size={14} className={log.status === "success" ? "text-emerald-600" : log.status === "failed" ? "text-rose-600" : "text-muted-foreground"} />
             </div>
             <div>
               <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? evt.ar : evt.en}</p>
@@ -70,7 +70,7 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
           {log.errorMessage && (
             <div className="bg-rose-50 border border-rose-200 rounded-xl p-4">
               <div className="flex items-center gap-1.5 mb-1">
-                <XCircle size={12} className="text-rose-500" />
+                <XCircle size={12} className="text-rose-600" />
                 <p className="text-micro font-medium text-rose-700">{ar ? "رسالة الخطأ" : "Error Message"}</p>
               </div>
               <p className="text-caption text-rose-600 font-mono">{log.errorMessage}</p>
@@ -100,7 +100,7 @@ function LogDetail({ log, ar, onClose }: { log: ShopifySyncLogDemo; ar: boolean;
             {log.pointsDelta !== undefined && (
               <div className="bg-background border border-border/40 rounded-lg p-3">
                 <p className="text-micro text-muted-foreground mb-0.5">{ar ? "النقاط" : "Points"}</p>
-                <p className={`text-caption font-medium tabular-nums ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                <p className={`text-caption font-medium tabular-nums ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-600"}`}>
                   {log.pointsDelta > 0 ? "+" : ""}{log.pointsDelta.toLocaleString()}
                 </p>
               </div>
@@ -187,7 +187,7 @@ export default function ShopifySyncLogsPage() {
         {[
           { icon: Activity, value: String(logs.length), label: ar ? "إجمالي الأحداث" : "Total Events", color: "text-foreground" },
           { icon: CheckCircle2, value: String(successCount), label: ar ? "ناجح" : "Successful", color: "text-emerald-600" },
-          { icon: XCircle, value: String(failedCount), label: ar ? "فشل" : "Failed", color: "text-rose-500" },
+          { icon: XCircle, value: String(failedCount), label: ar ? "فشل" : "Failed", color: "text-rose-600" },
           { icon: Star, value: totalPoints.toLocaleString(), label: ar ? "نقاط مكتسبة" : "Points Awarded", color: "text-brand-ink" },
         ].map((c, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
@@ -251,8 +251,8 @@ export default function ShopifySyncLogsPage() {
                     }`}>
                       <Icon size={14} className={
                         log.status === "success" ? "text-emerald-600" :
-                        log.status === "failed" ? "text-rose-500" :
-                        log.status === "skipped" ? "text-warning" : "text-blue-500"
+                        log.status === "failed" ? "text-rose-600" :
+                        log.status === "skipped" ? "text-warning" : "text-blue-600"
                       } />
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export default function ShopifySyncLogsPage() {
 
                   {/* Points delta */}
                   {log.pointsDelta !== undefined && (
-                    <span className={`text-caption font-medium tabular-nums shrink-0 ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-caption font-medium tabular-nums shrink-0 ${log.pointsDelta > 0 ? "text-emerald-600" : "text-rose-600"}`}>
                       {log.pointsDelta > 0 ? "+" : ""}{log.pointsDelta.toLocaleString()} {ar ? "نقطة" : "pts"}
                     </span>
                   )}

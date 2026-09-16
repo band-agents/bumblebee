@@ -29,20 +29,20 @@ export interface FlowStage {
 // ─── Stage icon & color mapping ───────────────────────────
 
 const STAGE_META: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
-  pattern:      { icon: Layers,         color: "#6366F1", bg: "bg-indigo-50" },
-  sewing:       { icon: Wrench,         color: "#06B6D4", bg: "bg-cyan-50" },
-  finishing:    { icon: Paintbrush,     color: "#F97316", bg: "bg-orange-50" },
-  cutting:      { icon: Scissors,       color: "#3B82F6", bg: "bg-blue-50" },
-  cnc:          { icon: Cpu,            color: "#6366F1", bg: "bg-indigo-50" },
-  edgebanding:  { icon: Layers,         color: "#06B6D4", bg: "bg-cyan-50" },
-  assembly:     { icon: Box,            color: "#F59E0B", bg: "bg-warning/10" },
-  painting:     { icon: Paintbrush,     color: "#F97316", bg: "bg-orange-50" },
-  drying:       { icon: Clock,          color: "#8B5CF6", bg: "bg-chart-4/10" },
-  qc:           { icon: ClipboardCheck, color: "#10B981", bg: "bg-emerald-50" },
-  packaging:    { icon: Package,        color: "#14B8A6", bg: "bg-teal-50" },
-  delivery:     { icon: Truck,          color: "#2563EB", bg: "bg-blue-50" },
-  installation: { icon: Wrench,         color: "#059669", bg: "bg-green-50" },
-  design:       { icon: Home,           color: "#EC4899", bg: "bg-pink-50" },
+  pattern:      { icon: Layers,         color: "#A3A9EE", bg: "bg-indigo-50" },
+  sewing:       { icon: Wrench,         color: "#84CCDA", bg: "bg-cyan-50" },
+  finishing:    { icon: Paintbrush,     color: "#F2AE82", bg: "bg-orange-50" },
+  cutting:      { icon: Scissors,       color: "#8AB0EA", bg: "bg-blue-50" },
+  cnc:          { icon: Cpu,            color: "#A3A9EE", bg: "bg-indigo-50" },
+  edgebanding:  { icon: Layers,         color: "#84CCDA", bg: "bg-cyan-50" },
+  assembly:     { icon: Box,            color: "#EFC274", bg: "bg-warning/10" },
+  painting:     { icon: Paintbrush,     color: "#F2AE82", bg: "bg-orange-50" },
+  drying:       { icon: Clock,          color: "#B6A0EA", bg: "bg-chart-4/10" },
+  qc:           { icon: ClipboardCheck, color: "#6FC39E", bg: "bg-emerald-50" },
+  packaging:    { icon: Package,        color: "#7CC9BF", bg: "bg-teal-50" },
+  delivery:     { icon: Truck,          color: "#7FA3E0", bg: "bg-blue-50" },
+  installation: { icon: Wrench,         color: "#5DAE8B", bg: "bg-green-50" },
+  design:       { icon: Home,           color: "#EFA3C6", bg: "bg-pink-50" },
 };
 
 const STATUS_STYLES: Record<FlowStage["status"], { ring: string; badge: string; badgeText: string; icon: React.ElementType }> = {
@@ -146,7 +146,7 @@ export default function ProductionFlowMap({ stages, ar = false, compact = false,
                     <div className="flex items-center gap-2">
                       <span className="text-caption font-semibold">{ar ? (stage.nameAr || stage.name) : stage.name}</span>
                       {stage.parallel && (
-                        <span className="text-micro px-1.5 py-0.5 rounded-full bg-chart-4/15 text-chart-4 font-medium">
+                        <span className="text-micro px-1.5 py-0.5 rounded-full bg-chart-4/15 text-violet-600 font-medium">
                           {ar ? "متوازي" : "Parallel"}
                         </span>
                       )}

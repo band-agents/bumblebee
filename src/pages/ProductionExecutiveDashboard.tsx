@@ -332,7 +332,7 @@ function StagePerformance({ orders, ar }: { orders: ProductionOrder[]; ar: boole
                   <div className="absolute inset-y-0 left-0 rounded-md transition-all duration-700"
                     style={{
                       width: `${stage.actual}%`,
-                      backgroundColor: stage.efficiency >= 90 ? "#10b981" : stage.efficiency >= 70 ? "#f59e0b" : "#ef4444",
+                      backgroundColor: stage.efficiency >= 90 ? "#6FC39E" : stage.efficiency >= 70 ? "#EFC274" : "#EE9E9E",
                       opacity: 0.6,
                     }} />
                   <div className="absolute inset-0 flex items-center px-2">
@@ -347,7 +347,7 @@ function StagePerformance({ orders, ar }: { orders: ProductionOrder[]; ar: boole
             <div className="flex items-center gap-3 shrink-0 text-micro text-muted-foreground">
               <span>{stage.count}x</span>
               {stage.rejections > 0 && (
-                <span className="text-rose-500 flex items-center gap-0.5"><AlertTriangle size={9} />{stage.rejections}</span>
+                <span className="text-rose-600 flex items-center gap-0.5"><AlertTriangle size={9} />{stage.rejections}</span>
               )}
             </div>
           </div>
@@ -484,7 +484,7 @@ function TeamProductivity({ orders, ar }: { orders: ProductionOrder[]; ar: boole
       <HorizontalBar items={teamStats.map(team => ({
         label: `${team.name} (${team.orders} ${t(ar, "orders", "أوامر")})`,
         value: team.completedQty,
-        color: team.avgEfficiency >= 85 ? "#10b981" : team.avgEfficiency >= 70 ? "#f59e0b" : "#ef4444",
+        color: team.avgEfficiency >= 85 ? "#6FC39E" : team.avgEfficiency >= 70 ? "#EFC274" : "#EE9E9E",
       }))} />
     </div>
   );
@@ -506,9 +506,9 @@ function CostAnalysis({ orders, ar }: { orders: ProductionOrder[]; ar: boolean }
   }, [orders]);
 
   const costSegments = [
-    { value: totals.material, color: "#3b82f6", label: t(ar, "Material", "المواد") },
-    { value: totals.labor, color: "#8b5cf6", label: t(ar, "Labor", "العمالة") },
-    { value: totals.waste, color: "#ef4444", label: t(ar, "Waste", "الهالك") },
+    { value: totals.material, color: "#8AB0EA", label: t(ar, "Material", "المواد") },
+    { value: totals.labor, color: "#B6A0EA", label: t(ar, "Labor", "العمالة") },
+    { value: totals.waste, color: "#EE9E9E", label: t(ar, "Waste", "الهالك") },
   ];
 
   return (
@@ -595,7 +595,7 @@ export default function ProductionExecutiveDashboard() {
           { label: t(ar, "Active orders", "أوامر نشطة"), value: stats.activeOrders, icon: Factory, color: "text-blue-600", bg: "bg-blue-50", trend: +2 },
           { label: t(ar, "Delayed", "متأخرة"), value: stats.delayedOrders, icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50", trend: -1 },
           { label: t(ar, "Completed", "مكتملة"), value: stats.completedOrders, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: +3 },
-          { label: t(ar, "Pieces / hour", "قطعة/ساعة"), value: stats.avgProductionRate, icon: Zap, color: "text-chart-4", bg: "bg-chart-4/10", trend: +5 },
+          { label: t(ar, "Pieces / hour", "قطعة/ساعة"), value: stats.avgProductionRate, icon: Zap, color: "text-violet-600", bg: "bg-chart-4/10", trend: +5 },
           { label: t(ar, "Efficiency", "كفاءة"), value: `${stats.avgEfficiency}%`, icon: TrendingUp, color: "text-cyan-600", bg: "bg-cyan-50", trend: +3 },
           { label: t(ar, "Material issues", "نواقص خامات"), value: stats.waitingMaterials, icon: Package, color: "text-warning", bg: "bg-warning/10", trend: 0 },
           { label: t(ar, "QC pending", "بانتظار الجودة"), value: stats.waitingQC, icon: ShieldCheck, color: "text-orange-600", bg: "bg-orange-50", trend: 0 },
@@ -622,7 +622,7 @@ export default function ProductionExecutiveDashboard() {
             <h3 className="text-body font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
               {t(ar, "Daily Production Output (7 days)", "الإنتاج اليومي (7 أيام)")}
             </h3>
-            <SparkLine data={dailyTrend} color="#3b82f6" />
+            <SparkLine data={dailyTrend} color="#8AB0EA" />
           </div>
           <BarChart
             data={dailyTrend.map((v, i) => ({

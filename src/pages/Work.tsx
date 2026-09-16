@@ -198,13 +198,13 @@ function AddWorkModal({ open, onClose, onAdd, lang }: AddWorkModalProps) {
 
             <div>
               <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                {ar ? "العنوان" : "Title"} <span className="text-rose-400">*</span>
+                {ar ? "العنوان" : "Title"} <span className="text-rose-600">*</span>
               </label>
               <input ref={titleRef} type="text" value={form.title} onChange={(e) => field("title", e.target.value)}
                 placeholder={ar ? "مثال: تجهيز طلب المكاتب" : "e.g. Prepare office desk order"}
                 className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.title ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
               />
-              {errors.title && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.title}</p>}
+              {errors.title && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.title}</p>}
             </div>
 
             <div>
@@ -218,13 +218,13 @@ function AddWorkModal({ open, onClose, onAdd, lang }: AddWorkModalProps) {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">
-                  {ar ? "المسؤول" : "Assignee"} <span className="text-rose-400">*</span>
+                  {ar ? "المسؤول" : "Assignee"} <span className="text-rose-600">*</span>
                 </label>
                 <input type="text" value={form.assignee} onChange={(e) => field("assignee", e.target.value)}
                   placeholder={ar ? "اسم الشخص أو الفريق" : "Person or team name"}
                   className={`w-full h-9 px-3 rounded-xl border bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none transition-colors ${errors.assignee ? "border-rose-400" : "border-border/80 focus:border-primary/40"}`}
                 />
-                {errors.assignee && <p className="text-micro text-rose-500 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.assignee}</p>}
+                {errors.assignee && <p className="text-micro text-rose-600 mt-1 flex items-center gap-1"><AlertCircle size={10} />{errors.assignee}</p>}
               </div>
               <div>
                 <label className="block text-micro font-medium text-muted-foreground mb-1.5">{ar ? "تاريخ الاستحقاق" : "Due Date"}</label>
@@ -529,7 +529,7 @@ function ListView({
                       )}
 
                       {item.status === "done" ? (
-                        <Check size={14} strokeWidth={2} className="text-emerald-500" />
+                        <Check size={14} strokeWidth={2} className="text-emerald-600" />
                       ) : item.progress > 0 ? (
                         <div className="flex items-center gap-1.5 min-w-[60px]">
                           <div className="flex-1 h-[3px] rounded-full bg-border/50 overflow-hidden">

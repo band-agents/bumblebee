@@ -206,7 +206,7 @@ function RulesTab({ ar }: { ar: boolean }) {
   const typeLabels: Record<string, { en: string; ar: string; pill: string }> = {
     spend: { en: "Spend", ar: "إنفاق", pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
     category_bonus: { en: "Category", ar: "فئة", pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-    first_purchase: { en: "First Purchase", ar: "أول شراء", pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+    first_purchase: { en: "First Purchase", ar: "أول شراء", pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
     birthday: { en: "Birthday", ar: "عيد ميلاد", pill: "bg-pink-50 text-pink-700 border border-pink-200" },
     campaign: { en: "Campaign", ar: "حملة", pill: "bg-warning/10 text-warning border border-warning/30" },
   };
@@ -216,7 +216,7 @@ function RulesTab({ ar }: { ar: boolean }) {
       <div className="flex items-center justify-between">
         <p className="text-caption text-muted-foreground">{rules.length} {ar ? "قاعدة" : "rules"}</p>
         <div className="flex items-center gap-4">
-          <a href="/loyalty/campaigns" className="text-micro text-chart-4 hover:underline flex items-center gap-1">
+          <a href="/loyalty/campaigns" className="text-micro text-violet-600 hover:underline flex items-center gap-1">
             {ar ? "الحملات" : "Campaigns"}<ArrowRight size={10} />
           </a>
           <a href="/loyalty/rules" className="text-micro text-brand-ink hover:underline flex items-center gap-1">

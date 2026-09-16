@@ -34,7 +34,7 @@ function formatEGP(n: number) {
 const PAYMENT_METHODS = [
   { id: "cash", icon: Banknote, labelEn: "Cash", labelAr: "نقداً", color: "text-emerald-600" },
   { id: "card", icon: CreditCard, labelEn: "Card", labelAr: "بطاقة", color: "text-blue-600" },
-  { id: "mobile_wallet", icon: Smartphone, labelEn: "Mobile", labelAr: "موبايل", color: "text-chart-4" },
+  { id: "mobile_wallet", icon: Smartphone, labelEn: "Mobile", labelAr: "موبايل", color: "text-violet-600" },
   { id: "split", icon: ArrowLeftRight, labelEn: "Split", labelAr: "مقسم", color: "text-warning" },
 ] as const;
 
@@ -671,7 +671,7 @@ export default function POS() {
               )}
             </div>
             {cart.length > 0 && (
-              <button onClick={() => { setCart([]); setDiscountPercent(0); }} className="text-micro text-muted-foreground hover:text-rose-500 transition-colors">
+              <button onClick={() => { setCart([]); setDiscountPercent(0); }} className="text-micro text-muted-foreground hover:text-rose-600 transition-colors">
                 {lang === "ar" ? "مسح الكل" : "Clear"}
               </button>
             )}
@@ -769,7 +769,7 @@ export default function POS() {
                     {item.discount_percent > 0 && (
                       <p className="text-micro text-muted-foreground line-through">{formatEGP(item.unit_price * item.quantity)}</p>
                     )}
-                    <button onClick={() => removeItem(idx)} className="mt-1 text-muted-foreground/40 hover:text-rose-500 transition-colors">
+                    <button onClick={() => removeItem(idx)} className="mt-1 text-muted-foreground/40 hover:text-rose-600 transition-colors">
                       <Trash2 size={12} />
                     </button>
                   </div>
@@ -828,7 +828,7 @@ export default function POS() {
               {cartTotals.discount > 0 && (
                 <div className="flex justify-between text-caption">
                   <span className="text-muted-foreground">{lang === "ar" ? "الخصم" : "Discount"} ({discountPercent}%)</span>
-                  <span className="text-rose-500">-{formatEGP(cartTotals.discount)}</span>
+                  <span className="text-rose-600">-{formatEGP(cartTotals.discount)}</span>
                 </div>
               )}
               <div className="flex justify-between text-caption">

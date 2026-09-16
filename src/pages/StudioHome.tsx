@@ -216,9 +216,9 @@ export default function StudioHome() {
         className="grid grid-cols-2 md:grid-cols-4 gap-3"
       >
         {[
-          { label: lang === "ar" ? "إجمالي الصفحات" : "Total Pages", value: totalPages, icon: FileText, color: "text-chart-4", bg: "bg-chart-4/10" },
-          { label: lang === "ar" ? "إجمالي المشاهدات" : "Total Views", value: totalViews.toLocaleString(), icon: Eye, color: "text-blue-500", bg: "bg-blue-500/10" },
-          { label: lang === "ar" ? "أعضاء نشطون" : "Active Members", value: activeMembers, icon: Users, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+          { label: lang === "ar" ? "إجمالي الصفحات" : "Total Pages", value: totalPages, icon: FileText, color: "text-violet-600", bg: "bg-chart-4/10" },
+          { label: lang === "ar" ? "إجمالي المشاهدات" : "Total Views", value: totalViews.toLocaleString(), icon: Eye, color: "text-blue-600", bg: "bg-blue-500/10" },
+          { label: lang === "ar" ? "أعضاء نشطون" : "Active Members", value: activeMembers, icon: Users, color: "text-emerald-600", bg: "bg-emerald-500/10" },
           { label: lang === "ar" ? "المساحة المستخدمة" : "Storage Used", value: storageUsed, icon: HardDrive, color: "text-warning", bg: "bg-warning/10" },
         ].map((stat, i) => (
           <motion.div
@@ -230,7 +230,7 @@ export default function StudioHome() {
               <div className={`w-9 h-9 rounded-xl ${stat.bg} flex items-center justify-center`}>
                 <stat.icon size={16} className={stat.color} />
               </div>
-              <TrendingUp size={12} className="text-emerald-500/50" />
+              <TrendingUp size={12} className="text-emerald-600/50" />
             </div>
             <p className="text-display font-bold tracking-tight">{stat.value}</p>
             <p className="text-micro text-muted-foreground/60 mt-1">{stat.label}</p>

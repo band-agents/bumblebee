@@ -98,7 +98,7 @@ export default function HRPayrollPage() {
           { label: ar ? "إجمالي المدفوع" : "Total Paid", value: formatEGP(stats.totalPaid), icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50/80" },
           { label: ar ? "معلق / مسودة" : "Pending/Draft", value: formatEGP(stats.totalPending), icon: Clock, color: "text-warning", bg: "bg-warning/10" },
           { label: ar ? "متوسط المرتب" : "Avg Salary", value: formatEGP(stats.avgSalary), icon: TrendingUp, color: "text-brand-ink", bg: "bg-primary/5" },
-          { label: ar ? "سجلات مدفوعة" : "Paid Records", value: stats.paidCount, icon: CheckCircle2, color: "text-chart-4", bg: "bg-chart-4/10" },
+          { label: ar ? "سجلات مدفوعة" : "Paid Records", value: stats.paidCount, icon: CheckCircle2, color: "text-violet-600", bg: "bg-chart-4/10" },
         ].map((kpi, i) => (
           <motion.div key={i} variants={cardV} custom={i + 1} initial="hidden" animate="visible"
             className={`${kpi.bg} rounded-xl p-4 border border-border/30`}>
@@ -167,7 +167,7 @@ export default function HRPayrollPage() {
                     <td className="px-4 py-3 text-caption text-muted-foreground">{record.period}</td>
                     <td className="px-4 py-3 text-caption text-right font-medium">{formatEGP(record.basic_salary)}</td>
                     <td className="px-4 py-3 text-caption text-right text-emerald-600">+{formatEGP(record.allowances + record.overtime_pay + record.bonus)}</td>
-                    <td className="px-4 py-3 text-caption text-right text-rose-500">-{formatEGP(record.deductions)}</td>
+                    <td className="px-4 py-3 text-caption text-right text-rose-600">-{formatEGP(record.deductions)}</td>
                     <td className="px-4 py-3 text-body text-right font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{formatEGP(record.net_salary)}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
@@ -221,7 +221,7 @@ export default function HRPayrollPage() {
                   { label: ar ? "البدلات" : "Allowances", value: selectedRecord.allowances, color: "text-emerald-600" },
                   { label: ar ? "الوقت الإضافي" : "Overtime", value: selectedRecord.overtime_pay, color: "text-emerald-600" },
                   { label: ar ? "المكافآت" : "Bonus", value: selectedRecord.bonus, color: "text-emerald-600" },
-                  { label: ar ? "الخصومات" : "Deductions", value: -selectedRecord.deductions, color: "text-rose-500" },
+                  { label: ar ? "الخصومات" : "Deductions", value: -selectedRecord.deductions, color: "text-rose-600" },
                 ].map((row, i) => (
                   <div key={i} className="flex items-center justify-between py-1.5 border-b border-border/20 last:border-0">
                     <span className="text-micro text-muted-foreground">{row.label}</span>

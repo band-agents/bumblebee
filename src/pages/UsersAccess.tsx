@@ -378,10 +378,10 @@ export default function UsersAccess() {
                 <h3 className="text-body font-semibold mb-3">{ar ? "آخر النشاطات" : "Recent Activity"}</h3>
                 <div className="space-y-2">
                   {[
-                    { user: "Ahmed Hassan", action: "logged in", time: "5 min ago", icon: Key, color: "text-blue-500" },
-                    { user: "Sara Ibrahim", action: "approved PO-012", time: "2 hours ago", icon: ShieldCheck, color: "text-emerald-500" },
+                    { user: "Ahmed Hassan", action: "logged in", time: "5 min ago", icon: Key, color: "text-blue-600" },
+                    { user: "Sara Ibrahim", action: "approved PO-012", time: "2 hours ago", icon: ShieldCheck, color: "text-emerald-600" },
                     { user: "Mohamed Ali", action: "updated production order", time: "3 hours ago", icon: Edit3, color: "text-warning" },
-                    { user: "Admin User", action: "changed permissions for Khalid", time: "Yesterday", icon: Shield, color: "text-chart-4" },
+                    { user: "Admin User", action: "changed permissions for Khalid", time: "Yesterday", icon: Shield, color: "text-violet-600" },
                   ].map((entry, i) => (
                     <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
                       <div className={`w-7 h-7 rounded-full bg-muted/50 flex items-center justify-center ${entry.color}`}>
@@ -654,7 +654,7 @@ export default function UsersAccess() {
                         <button className="h-7 px-2.5 rounded-lg border border-border/60 text-micro font-medium hover:bg-muted transition-colors flex items-center gap-1">
                           <RefreshCw size={10} /> {ar ? "إعادة" : "Resend"}
                         </button>
-                        <button className="h-7 px-2.5 rounded-lg border border-rose-200 text-rose-500 text-micro font-medium hover:bg-rose-50 transition-colors">
+                        <button className="h-7 px-2.5 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium hover:bg-rose-50 transition-colors">
                           {ar ? "إلغاء" : "Revoke"}
                         </button>
                       </div>
@@ -688,13 +688,13 @@ export default function UsersAccess() {
                       <p className="text-micro text-muted-foreground mb-3">{ar ? t.descriptionAr : t.description}</p>
                       <div className="flex items-center justify-between text-micro text-muted-foreground mb-2">
                         <span>{countPermissions(t.permissions)} {ar ? "صلاحية" : "perms"}</span>
-                        {dangerCount > 0 && <span className="text-rose-500 flex items-center gap-0.5"><AlertTriangle size={8} />{dangerCount}</span>}
+                        {dangerCount > 0 && <span className="text-rose-600 flex items-center gap-0.5"><AlertTriangle size={8} />{dangerCount}</span>}
                       </div>
                       <div className="h-1 rounded-full bg-muted/60 overflow-hidden">
                         <div className="h-full rounded-full bg-primary/50" style={{ width: `${(countPermissions(t.permissions) / 170) * 100}%` }} />
                       </div>
                       {t.risk === "high" && (
-                        <span className="text-micro text-rose-500 flex items-center gap-0.5 mt-2">
+                        <span className="text-micro text-rose-600 flex items-center gap-0.5 mt-2">
                           <ShieldAlert size={8} /> {ar ? "خطر عالي" : "High risk"}
                         </span>
                       )}
@@ -722,14 +722,14 @@ export default function UsersAccess() {
               </div>
               <div className="space-y-0">
                 {[
-                  { time: "Today, 2:15 PM", user: "Admin", action: "Changed role", target: "Ahmed Hassan", detail: "viewer → sales", icon: Shield, color: "text-chart-4" },
-                  { time: "Today, 11:30 AM", user: "Admin", action: "Added permission", target: "Sara Ibrahim", detail: "finance: approve", icon: Plus, color: "text-emerald-500" },
-                  { time: "Yesterday, 4:20 PM", user: "Admin", action: "Revoked session", target: "Khalid Mansour", detail: "iPhone Safari session terminated", icon: LogOut, color: "text-rose-500" },
-                  { time: "Yesterday, 9:00 AM", user: "Admin", action: "Created user", target: "Omar Salah", detail: "Role: delivery, Department: delivery", icon: UserPlus, color: "text-blue-500" },
+                  { time: "Today, 2:15 PM", user: "Admin", action: "Changed role", target: "Ahmed Hassan", detail: "viewer → sales", icon: Shield, color: "text-violet-600" },
+                  { time: "Today, 11:30 AM", user: "Admin", action: "Added permission", target: "Sara Ibrahim", detail: "finance: approve", icon: Plus, color: "text-emerald-600" },
+                  { time: "Yesterday, 4:20 PM", user: "Admin", action: "Revoked session", target: "Khalid Mansour", detail: "iPhone Safari session terminated", icon: LogOut, color: "text-rose-600" },
+                  { time: "Yesterday, 9:00 AM", user: "Admin", action: "Created user", target: "Omar Salah", detail: "Role: delivery, Department: delivery", icon: UserPlus, color: "text-blue-600" },
                   { time: "Jun 10, 3:45 PM", user: "Admin", action: "Disabled 2FA bypass", target: "Fatma Nour", detail: "Enforced 2FA requirement", icon: Fingerprint, color: "text-warning" },
-                  { time: "Jun 9, 10:15 AM", user: "Admin", action: "Changed department", target: "Youssef Karim", detail: "production → sales", icon: Building2, color: "text-cyan-500" },
+                  { time: "Jun 9, 10:15 AM", user: "Admin", action: "Changed department", target: "Youssef Karim", detail: "production → sales", icon: Building2, color: "text-cyan-600" },
                   { time: "Jun 8, 2:30 PM", user: "Admin", action: "Sent invitation", target: "newuser@bumblebee.app", detail: "Role: sales, Department: sales", icon: Send, color: "text-brand-ink" },
-                  { time: "Jun 7, 11:00 AM", user: "Admin", action: "Suspended user", target: "Youssef Karim", detail: "Account deactivated", icon: Ban, color: "text-rose-500" },
+                  { time: "Jun 7, 11:00 AM", user: "Admin", action: "Suspended user", target: "Youssef Karim", detail: "Account deactivated", icon: Ban, color: "text-rose-600" },
                 ].map((entry, i) => (
                   <div key={i} className="flex gap-3 relative py-3">
                     <div className="flex flex-col items-center">

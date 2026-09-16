@@ -136,7 +136,7 @@ const CAMPAIGNS: CampaignDemo[] = [
 const CAMPAIGN_TYPE_META: Record<string, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   campaign:       { en: "Campaign",       ar: "حملة",     icon: Megaphone, color: "text-warning",   bg: "bg-warning/10" },
   birthday:       { en: "Birthday",       ar: "عيد ميلاد", icon: Cake,      color: "text-pink-600",    bg: "bg-pink-50" },
-  first_purchase: { en: "First Purchase", ar: "أول شراء",  icon: Gift,      color: "text-chart-4",  bg: "bg-chart-4/10" },
+  first_purchase: { en: "First Purchase", ar: "أول شراء",  icon: Gift,      color: "text-violet-600",  bg: "bg-chart-4/10" },
 };
 
 // ─── Campaign Modal ──────────────────────────────────────
@@ -467,7 +467,7 @@ export default function LoyaltyCampaignsPage() {
                       </span>
                     )}
                     {cp.pointsAwarded && (
-                      <span className="text-micro font-medium px-2 py-1 rounded-lg bg-chart-4/10 text-chart-4 flex items-center gap-1">
+                      <span className="text-micro font-medium px-2 py-1 rounded-lg bg-chart-4/10 text-violet-600 flex items-center gap-1">
                         <Star size={9} />{cp.pointsAwarded.toLocaleString()} {ar ? "نقطة" : "pts"}
                       </span>
                     )}
@@ -504,7 +504,7 @@ export default function LoyaltyCampaignsPage() {
                   {cp.status !== "expired" && (
                     <button onClick={() => handleToggle(cp.id)}
                       className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted text-muted-foreground" title={isActive ? "Pause" : "Activate"}>
-                      {isActive ? <ToggleRight size={15} className="text-emerald-500" /> : <ToggleLeft size={15} />}
+                      {isActive ? <ToggleRight size={15} className="text-emerald-600" /> : <ToggleLeft size={15} />}
                     </button>
                   )}
                   <button onClick={() => { setEditingCampaign(cp); setShowModal(true); }}
@@ -512,7 +512,7 @@ export default function LoyaltyCampaignsPage() {
                     <Edit3 size={13} />
                   </button>
                   <button onClick={() => handleDelete(cp.id)}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-500">
+                    className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-rose-50 text-muted-foreground hover:text-rose-600">
                     <Trash2 size={13} />
                   </button>
                 </div>

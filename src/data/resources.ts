@@ -46,7 +46,7 @@ export const RESOURCE_TYPE_META: Record<ResourceType, { en: string; ar: string; 
   equipment: { en: "Equipment",  ar: "معدات",    pill: "bg-blue-50 text-blue-700 border border-blue-200" },
   inventory: { en: "Inventory",  ar: "مخزون",    pill: "bg-warning/10 text-warning border border-warning/30" },
   vehicle:   { en: "Vehicle",    ar: "مركبة",    pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
-  facility:  { en: "Facility",   ar: "منشأة",    pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  facility:  { en: "Facility",   ar: "منشأة",    pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   license:   { en: "License",    ar: "ترخيص",    pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   other:     { en: "Other",      ar: "أخرى",     pill: "bg-muted text-muted-foreground border border-border" },
 };

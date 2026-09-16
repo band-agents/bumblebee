@@ -7,10 +7,10 @@ import { AlertTriangle, AlertCircle, Info, CheckCircle2, X } from "lucide-react"
 import type { EngineWarning } from "../lib/furniture-engine";
 
 const TYPE_STYLES = {
-  error:   { icon: AlertCircle,   bg: "bg-rose-50 border-rose-200",    text: "text-rose-700",   iconColor: "text-rose-500" },
+  error:   { icon: AlertCircle,   bg: "bg-rose-50 border-rose-200",    text: "text-rose-700",   iconColor: "text-rose-600" },
   warning: { icon: AlertTriangle, bg: "bg-warning/10 border-warning/30",  text: "text-warning",  iconColor: "text-warning" },
-  info:    { icon: Info,          bg: "bg-blue-50 border-blue-200",     text: "text-blue-700",   iconColor: "text-blue-500" },
-  success: { icon: CheckCircle2,  bg: "bg-emerald-50 border-emerald-200", text: "text-emerald-700", iconColor: "text-emerald-500" },
+  info:    { icon: Info,          bg: "bg-blue-50 border-blue-200",     text: "text-blue-700",   iconColor: "text-blue-600" },
+  success: { icon: CheckCircle2,  bg: "bg-emerald-50 border-emerald-200", text: "text-emerald-700", iconColor: "text-emerald-600" },
 };
 
 interface AlertItem {

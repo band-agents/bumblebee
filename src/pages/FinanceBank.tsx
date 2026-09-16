@@ -42,10 +42,10 @@ const TYPE_META: Record<string, { en: string; ar: string; color: string }> = {
 
 const CATEGORY_META: Record<string, { en: string; ar: string; color: string }> = {
   customer_payment: { en: "Customer Payment", ar: "دفعة عميل", color: "text-emerald-600" },
-  supplier_payment: { en: "Supplier Payment", ar: "دفعة مورد", color: "text-rose-500" },
-  salary:           { en: "Salary",           ar: "رواتب",     color: "text-chart-4" },
+  supplier_payment: { en: "Supplier Payment", ar: "دفعة مورد", color: "text-rose-600" },
+  salary:           { en: "Salary",           ar: "رواتب",     color: "text-violet-600" },
   rent:             { en: "Rent",             ar: "إيجار",     color: "text-warning" },
-  utilities:        { en: "Utilities",        ar: "مرافق",     color: "text-orange-500" },
+  utilities:        { en: "Utilities",        ar: "مرافق",     color: "text-orange-600" },
   loan:             { en: "Loan",             ar: "قرض",       color: "text-sky-600" },
   transfer:         { en: "Transfer",         ar: "تحويل",     color: "text-indigo-600" },
   other:            { en: "Other",            ar: "أخرى",      color: "text-slate-600" },
@@ -160,7 +160,7 @@ export default function FinanceBank() {
 
   // ── Balance color ──
   const balanceColor = (balance: number) =>
-    balance >= 0 ? "text-emerald-600" : "text-rose-500";
+    balance >= 0 ? "text-emerald-600" : "text-rose-600";
 
   return (
     <div className="min-h-full">
@@ -192,7 +192,7 @@ export default function FinanceBank() {
                     <m.icon size={14} strokeWidth={1.75} className={m.color} />
                   </div>
                   {m.trend && (
-                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-600"}`}>
                       {m.trend}
                     </span>
                   )}
@@ -435,7 +435,7 @@ export default function FinanceBank() {
                       </td>
                       <td className="px-4 py-3.5 text-end tabular-nums whitespace-nowrap">
                         {tx.debit > 0 ? (
-                          <span className="text-rose-500 font-medium">
+                          <span className="text-rose-600 font-medium">
                             {fmtCurrency(tx.debit, selectedAccount?.currency ?? "EGP")}
                           </span>
                         ) : "—"}

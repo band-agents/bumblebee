@@ -96,7 +96,7 @@ export function HoldTransactions({ held, onRecall, onDiscard, onClose }: {
                     </button>
                     <button
                       onClick={() => onDiscard(h.id)}
-                      className="h-8 px-3 rounded-lg border border-rose-200 text-rose-500 text-micro font-medium flex items-center justify-center gap-1.5 hover:bg-rose-50 transition-colors"
+                      className="h-8 px-3 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium flex items-center justify-center gap-1.5 hover:bg-rose-50 transition-colors"
                     >
                       <Trash2 size={11} />
                     </button>

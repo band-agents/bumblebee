@@ -834,7 +834,7 @@ export default function DeliveryInstallation() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <button onClick={e => { e.stopPropagation(); setDeleteTarget({ id: item.id, num }); }} title={ar ? "حذف" : "Delete"}
-                      className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors">
+                      className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
                       <Trash2 size={12} />
                     </button>
                     <StIcon size={16} className={sts.pill.split(" ")[1]} />

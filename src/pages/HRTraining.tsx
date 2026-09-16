@@ -49,7 +49,7 @@ const cardV: Variants = {
 
 const COURSE_TYPE_META: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   orientation: { en: "Orientation", ar: "تأهيل", color: "text-blue-600", bg: "bg-blue-50" },
-  technical: { en: "Technical", ar: "تقني", color: "text-chart-4", bg: "bg-chart-4/10" },
+  technical: { en: "Technical", ar: "تقني", color: "text-violet-600", bg: "bg-chart-4/10" },
   leadership: { en: "Leadership", ar: "قيادة", color: "text-warning", bg: "bg-warning/10" },
   compliance: { en: "Compliance", ar: "امتثال", color: "text-rose-600", bg: "bg-rose-50" },
   soft_skills: { en: "Soft Skills", ar: "مهارات ناعمة", color: "text-teal-600", bg: "bg-teal-50" },
@@ -176,7 +176,7 @@ export default function HRTraining() {
       label: ar ? "إجمالي التسجيلات" : "Total Enrollments",
       value: totalEnrollments,
       icon: Users,
-      color: "text-chart-4",
+      color: "text-violet-600",
       bg: "bg-chart-4/10",
     },
     {
@@ -397,7 +397,7 @@ export default function HRTraining() {
           className="rounded-xl border border-border/40 bg-background overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
             <h3 className="text-body font-semibold flex items-center gap-2">
-              <GraduationCap size={14} className="text-chart-4" />
+              <GraduationCap size={14} className="text-violet-600" />
               {ar ? "تسجيلات الدورات" : "Course Enrollments"}
               <span className="text-micro text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
                 {filteredEnrollments.length}
@@ -638,7 +638,7 @@ export default function HRTraining() {
               {/* Enrolled Participants */}
               <div>
                 <h4 className="text-caption font-semibold mb-2 flex items-center gap-1.5">
-                  <Users size={13} className="text-chart-4" />
+                  <Users size={13} className="text-violet-600" />
                   {ar ? "المسجلون" : "Enrolled Participants"}
                 </h4>
                 {courseEnrollments.length > 0 ? (

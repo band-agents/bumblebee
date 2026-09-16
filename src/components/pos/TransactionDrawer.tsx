@@ -172,7 +172,7 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                       <p className="text-caption font-medium text-foreground truncate">{item.product_name}</p>
                       <p className="text-micro text-muted-foreground">
                         {item.quantity} × {formatEGP(item.unit_price)}
-                        {item.discount_percent > 0 && <span className="text-rose-500"> (-{item.discount_percent}%)</span>}
+                        {item.discount_percent > 0 && <span className="text-rose-600"> (-{item.discount_percent}%)</span>}
                       </p>
                     </div>
                     <span className="text-caption font-semibold text-foreground shrink-0">{formatEGP(item.total)}</span>
@@ -189,7 +189,7 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                 {selectedTxn.discount_amount > 0 && (
                   <div className="flex justify-between text-caption">
                     <span className="text-muted-foreground">{lang === "ar" ? "الخصم" : "Discount"}</span>
-                    <span className="text-rose-500">-{formatEGP(selectedTxn.discount_amount)}</span>
+                    <span className="text-rose-600">-{formatEGP(selectedTxn.discount_amount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-caption">
@@ -266,7 +266,7 @@ export function TransactionDrawer({ branchId, onClose }: { branchId: string; onC
                       </div>
                       <p className="text-micro text-muted-foreground">{txn.transaction_number} • {new Date(txn.created_at).toLocaleString()}</p>
                     </div>
-                    <span className={`text-body font-semibold shrink-0 ${txn.status === "voided" ? "text-rose-500 line-through" : "text-foreground"}`}>
+                    <span className={`text-body font-semibold shrink-0 ${txn.status === "voided" ? "text-rose-600 line-through" : "text-foreground"}`}>
                       {formatEGP(txn.total)}
                     </span>
                   </button>

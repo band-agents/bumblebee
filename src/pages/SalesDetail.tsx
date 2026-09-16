@@ -63,8 +63,8 @@ function StageStepper({ current, lang }: { current: DealStage; lang: "en" | "ar"
           <div key={stage} className="flex items-center">
             {i > 0 && <div className={`w-6 md:w-8 h-px ${isPast ? "bg-primary/40" : "bg-border/50"}`} />}
             <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${isActive ? "bg-primary/8 border border-primary/20" : ""} ${isPast ? "opacity-60" : !isActive ? "opacity-40" : ""}`}>
-              <Icon size={12} strokeWidth={isActive ? 2 : 1.75} className={isActive ? (stage === "lost" ? "text-rose-500" : stage === "won" ? "text-emerald-500" : "text-brand-ink") : isPast ? "text-emerald-500" : "text-muted-foreground"} />
-              <span className={`text-micro font-medium whitespace-nowrap ${isActive ? (stage === "lost" ? "text-rose-500" : stage === "won" ? "text-emerald-500" : "text-brand-ink") : "text-muted-foreground"}`}>
+              <Icon size={12} strokeWidth={isActive ? 2 : 1.75} className={isActive ? (stage === "lost" ? "text-rose-600" : stage === "won" ? "text-emerald-600" : "text-brand-ink") : isPast ? "text-emerald-600" : "text-muted-foreground"} />
+              <span className={`text-micro font-medium whitespace-nowrap ${isActive ? (stage === "lost" ? "text-rose-600" : stage === "won" ? "text-emerald-600" : "text-brand-ink") : "text-muted-foreground"}`}>
                 {ar ? meta.ar : meta.en}
               </span>
             </div>
@@ -122,12 +122,12 @@ function getDealTimeline(deal: Deal): TimelineEvent[] {
 
 const TL_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
   created:     { Icon: Plus,             color: "text-brand-ink",     bg: "bg-primary/8" },
-  assigned:    { Icon: UserPlus,         color: "text-chart-4",  bg: "bg-chart-4/10" },
+  assigned:    { Icon: UserPlus,         color: "text-violet-600",  bg: "bg-chart-4/10" },
   stage:       { Icon: ArrowRightCircle, color: "text-warning",   bg: "bg-warning/10" },
-  proposal:    { Icon: FileText,         color: "text-blue-500",    bg: "bg-blue-50" },
-  negotiation: { Icon: MessageSquare,    color: "text-chart-4",  bg: "bg-chart-4/10" },
-  won:         { Icon: Trophy,           color: "text-emerald-500", bg: "bg-emerald-50" },
-  lost:        { Icon: XCircle,          color: "text-rose-500",    bg: "bg-rose-50" },
+  proposal:    { Icon: FileText,         color: "text-blue-600",    bg: "bg-blue-50" },
+  negotiation: { Icon: MessageSquare,    color: "text-violet-600",  bg: "bg-chart-4/10" },
+  won:         { Icon: Trophy,           color: "text-emerald-600", bg: "bg-emerald-50" },
+  lost:        { Icon: XCircle,          color: "text-rose-600",    bg: "bg-rose-50" },
 };
 
 // ─── Notes ────────────────────────────────────────────────
@@ -154,7 +154,7 @@ function getSampleActivity(deal: Deal): { id: string; kind: string; titleEn: str
 const ACT_ICONS: Record<string, { Icon: React.ElementType; color: string; bg: string }> = {
   email:   { Icon: MessageSquare, color: "text-brand-ink",    bg: "bg-primary/8" },
   meeting: { Icon: Calendar,      color: "text-cyan-600",   bg: "bg-cyan-50" },
-  call:    { Icon: Users,         color: "text-chart-4", bg: "bg-chart-4/10" },
+  call:    { Icon: Users,         color: "text-violet-600", bg: "bg-chart-4/10" },
 };
 
 // ─── Add Note Modal ───────────────────────────────────────
@@ -347,7 +347,7 @@ export default function SalesDetail() {
 
             {deal.stage !== "won" && deal.stage !== "lost" && (
               <>
-                <button onClick={() => changeStage("won")} className="h-8 px-3.5 rounded-xl bg-emerald-500 text-white text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors">
+                <button onClick={() => changeStage("won")} className="h-8 px-3.5 rounded-xl bg-emerald-500 text-emerald-900 text-caption font-medium hover:bg-emerald-600 flex items-center gap-1.5 transition-colors">
                   <Trophy size={13} strokeWidth={2} />{ar ? "فاز" : "Mark Won"}
                 </button>
                 <button onClick={() => changeStage("lost")} className="h-8 px-3.5 rounded-xl border border-rose-300 text-rose-600 text-caption font-medium hover:bg-rose-50 flex items-center gap-1.5 transition-colors">
@@ -472,7 +472,7 @@ export default function SalesDetail() {
                 <div><p className="text-body font-medium text-foreground">{ar ? deal.ownerAr : deal.ownerEn}</p><p className="text-micro text-muted-foreground">{ar ? "مسؤول الصفقة" : "Deal Owner"}</p></div>
               </div>
               <div className="flex items-center gap-3.5 px-6 py-4 hover:bg-muted/15 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-chart-4/10 flex items-center justify-center text-micro font-semibold text-chart-4 shrink-0">{initials(ar ? deal.contactNameAr : deal.contactNameEn)}</div>
+                <div className="w-9 h-9 rounded-xl bg-chart-4/10 flex items-center justify-center text-micro font-semibold text-violet-600 shrink-0">{initials(ar ? deal.contactNameAr : deal.contactNameEn)}</div>
                 <div><p className="text-body font-medium text-foreground">{ar ? deal.contactNameAr : deal.contactNameEn}</p><p className="text-micro text-muted-foreground">{deal.contactRole || (ar ? "جهة الاتصال" : "Contact")}</p></div>
               </div>
             </div>

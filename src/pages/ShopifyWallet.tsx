@@ -54,7 +54,7 @@ const DEFAULT_CONFIG: WalletConfig = {
   birthdayOn: true, birthdayAmount: 100,
   referralOn: true, referralAdvocate: 100, referralFriend: 50,
   expiryOn: true, expiryMonths: 12, expiryReminderDays: 14,
-  position: "bottom-right", color: "#059669", radius: 16,
+  position: "bottom-right", color: "#5DAE8B", radius: 16,
   launcherStyle: "icon_balance", launcherIcon: "wallet",
   titleEn: "My Wallet", titleAr: "محفظتي",
   currency: "EGP", maxBalance: 10000,
@@ -62,7 +62,7 @@ const DEFAULT_CONFIG: WalletConfig = {
   notifyEmail: true, notifySms: false, notifyPush: true,
 };
 
-const SWATCHES = ["#059669", "#0ea5e9", "#7c3aed", "#e11d48", "#d97706", "#111827"];
+const SWATCHES = ["#5DAE8B", "#85C1E6", "#AA94E3", "#E99AAE", "#E3B066", "#111827"];
 
 function fmtMoney(n: number, cur: WalletConfig["currency"], ar: boolean): string {
   const v = n.toLocaleString(undefined, { maximumFractionDigits: 0 });
@@ -109,7 +109,7 @@ const TIER_PILL: Record<WalletCustomer["tier"], { en: string; ar: string; cls: s
   bronze: { en: "Bronze", ar: "برونزي", cls: "bg-orange-50 text-orange-700" },
   silver: { en: "Silver", ar: "فضي", cls: "bg-slate-100 text-slate-600" },
   gold:   { en: "Gold", ar: "ذهبي", cls: "bg-warning/10 text-warning" },
-  vip:    { en: "VIP", ar: "VIP", cls: "bg-chart-4/10 text-chart-4" },
+  vip:    { en: "VIP", ar: "VIP", cls: "bg-chart-4/10 text-violet-600" },
 };
 
 // ─── Small UI helpers ────────────────────────────────────
@@ -346,7 +346,7 @@ export default function ShopifyWalletPage() {
   const KIND_META: Record<TxKind, { icon: React.ElementType; cls: string }> = {
     earn: { icon: TrendingUp, cls: "bg-emerald-50 text-emerald-600" },
     spend: { icon: ShoppingBag, cls: "bg-blue-50 text-blue-600" },
-    refund: { icon: RefreshCw, cls: "bg-chart-4/10 text-chart-4" },
+    refund: { icon: RefreshCw, cls: "bg-chart-4/10 text-violet-600" },
     gift: { icon: Gift, cls: "bg-pink-50 text-pink-600" },
     expire: { icon: Clock, cls: "bg-muted text-muted-foreground" },
   };
@@ -414,7 +414,7 @@ export default function ShopifyWalletPage() {
             {[
               { icon: Coins, val: fmtMoney(totalBalance, cfg.currency, ar), labelEn: "Credit outstanding", labelAr: "رصيد قائم", cls: "text-emerald-600" },
               { icon: Users, val: customers.length.toLocaleString(), labelEn: "Active wallets", labelAr: "محفظة نشطة", cls: "text-blue-600" },
-              { icon: TrendingUp, val: fmtMoney(ISSUED[5], cfg.currency, ar), labelEn: "Issued this month", labelAr: "صادر هذا الشهر", cls: "text-chart-4" },
+              { icon: TrendingUp, val: fmtMoney(ISSUED[5], cfg.currency, ar), labelEn: "Issued this month", labelAr: "صادر هذا الشهر", cls: "text-violet-600" },
               { icon: TrendingDown, val: fmtMoney(SPENT[5], cfg.currency, ar), labelEn: "Spent this month", labelAr: "مستخدم هذا الشهر", cls: "text-warning" },
             ].map((k, i) => (
               <div key={i} className={`${cardCls} p-4`}>

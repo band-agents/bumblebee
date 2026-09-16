@@ -33,7 +33,7 @@ type WorkItem = Database["public"]["Tables"]["work_items"]["Row"];
 const COST_TYPES = [
   { value: "material",    en: "Material",     ar: "خامات",     color: "bg-blue-50 text-blue-600",    icon: Package },
   { value: "labor",       en: "Labor",        ar: "عمالة",     color: "bg-warning/10 text-warning",  icon: User },
-  { value: "overhead",    en: "Overhead",     ar: "مصاريف عامة", color: "bg-chart-4/10 text-chart-4", icon: Building2 },
+  { value: "overhead",    en: "Overhead",     ar: "مصاريف عامة", color: "bg-chart-4/10 text-violet-600", icon: Building2 },
   { value: "subcontract", en: "Subcontract",  ar: "مقاولة باطن", color: "bg-cyan-50 text-cyan-600",   icon: Hammer },
   { value: "transport",   en: "Transport",    ar: "نقل",       color: "bg-indigo-50 text-indigo-600", icon: Truck },
   { value: "other",       en: "Other",        ar: "أخرى",      color: "bg-zinc-100 text-zinc-600",   icon: Layers },
@@ -530,7 +530,7 @@ export default function AdvancedTools() {
                           <p className="text-body-lg font-semibold tabular-nums">{fmtMoney(c.total_cost)} <span className="text-micro text-muted-foreground">EGP</span></p>
                           <p className="text-micro text-muted-foreground">{c.quantity} × {fmtMoney(c.unit_cost)}</p>
                         </div>
-                        <button onClick={() => deleteCost(c.id)} className="text-rose-400 hover:opacity-70 p-1 shrink-0"><Trash2 size={12} /></button>
+                        <button onClick={() => deleteCost(c.id)} className="text-rose-600 hover:opacity-70 p-1 shrink-0"><Trash2 size={12} /></button>
                       </div>
                     );
                   })}
@@ -562,7 +562,7 @@ export default function AdvancedTools() {
                     {fmtMoney(grossProfit)}
                   </p>
                   <p className="text-micro text-muted-foreground flex items-center gap-0.5">
-                    {grossProfit >= 0 ? <ArrowUpRight size={9} className="text-emerald-500" /> : <ArrowDownRight size={9} className="text-rose-500" />}
+                    {grossProfit >= 0 ? <ArrowUpRight size={9} className="text-emerald-600" /> : <ArrowDownRight size={9} className="text-rose-600" />}
                     EGP
                   </p>
                 </div>
@@ -620,11 +620,11 @@ export default function AdvancedTools() {
                           </div>
                           <div className="text-right text-micro space-y-0.5">
                             <p className="text-emerald-600">{ar ? "إيراد:" : "Rev:"} {fmtMoney(rev)}</p>
-                            <p className="text-rose-500">{ar ? "تكلفة:" : "Cost:"} {fmtMoney(cost)}</p>
+                            <p className="text-rose-600">{ar ? "تكلفة:" : "Cost:"} {fmtMoney(cost)}</p>
                           </div>
                           <div className="text-right shrink-0 w-20">
                             <p className={`text-body-lg font-bold tabular-nums ${profit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{fmtMoney(profit)}</p>
-                            <p className={`text-micro ${margin >= 20 ? "text-emerald-500" : "text-warning"}`}>{margin}%</p>
+                            <p className={`text-micro ${margin >= 20 ? "text-emerald-600" : "text-warning"}`}>{margin}%</p>
                           </div>
                         </div>
                       );
@@ -671,7 +671,7 @@ export default function AdvancedTools() {
                           </div>
                           <div className="flex gap-1">
                             <button onClick={() => { setEditBranch(b); setBranchModal(true); }} className="p-1.5 rounded-lg hover:bg-muted/50 text-muted-foreground"><Edit3 size={12} /></button>
-                            <button onClick={() => deleteBranch(b.id)} className="p-1.5 rounded-lg hover:bg-muted/50 text-rose-400"><Trash2 size={12} /></button>
+                            <button onClick={() => deleteBranch(b.id)} className="p-1.5 rounded-lg hover:bg-muted/50 text-rose-600"><Trash2 size={12} /></button>
                           </div>
                         </div>
                         <div className="space-y-1 text-micro text-muted-foreground">

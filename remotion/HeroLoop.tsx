@@ -12,8 +12,8 @@ import {
 
 const PAPER = "#F7F4EC";
 const INK = "#2B2317";
-const HONEY = "#EFC63A";
-const HONEY_INK = "#8A6A12";
+const HONEY = "#F4D56E";
+const HONEY_INK = "#7A6224";
 
 type Scene = { img: string; kicker: string; title: string };
 
@@ -67,7 +67,7 @@ function SceneView({ scene }: { scene: Scene }) {
         opacity: captionIn, transform: `translateY(${interpolate(captionIn, [0, 1], [18, 0])}px)`,
         fontFamily: "Fredoka, 'Segoe UI', system-ui, sans-serif",
       }}>
-        <span style={{ fontSize: 22, fontWeight: 600, color: HONEY_INK, background: "#FBEFC4", padding: "6px 16px", borderRadius: 999 }}>
+        <span style={{ fontSize: 22, fontWeight: 600, color: HONEY_INK, background: "#FCF1CC", padding: "6px 16px", borderRadius: 999 }}>
           {scene.kicker}
         </span>
         <span style={{ fontSize: 50, fontWeight: 600, color: INK, letterSpacing: "-0.02em" }}>{scene.title}</span>
@@ -84,7 +84,7 @@ export function HeroLoop() {
   return (
     <AbsoluteFill style={{ background: PAPER }}>
       <AbsoluteFill style={{
-        background: `radial-gradient(60% 55% at 70% 65%, rgba(239,198,58,${glow}) 0%, rgba(239,198,58,0) 70%)`,
+        background: `radial-gradient(60% 55% at 70% 65%, rgba(244,213,110,${glow}) 0%, rgba(239,198,58,0) 70%)`,
       }} />
       {SCENES.map((scene, i) => (
         <Sequence key={scene.img} from={i * (SCENE_LEN - OVERLAP)} durationInFrames={SCENE_LEN}>

@@ -21,7 +21,7 @@ export interface RoleDef {
 
 export const ROLES: RoleDef[] = [
   { value: "owner", en: "Owner", ar: "مالك", color: "bg-warning/15 text-warning", modules: ["*"], canApprove: true, canCreate: true, canDelete: true },
-  { value: "admin", en: "Admin", ar: "مسؤول النظام", color: "bg-chart-4/15 text-chart-4", modules: ["*"], canApprove: true, canCreate: true, canDelete: true },
+  { value: "admin", en: "Admin", ar: "مسؤول النظام", color: "bg-chart-4/15 text-violet-600", modules: ["*"], canApprove: true, canCreate: true, canDelete: true },
   { value: "manager", en: "Manager", ar: "مدير", color: "bg-blue-100 text-blue-700", modules: ["*"], canApprove: true, canCreate: true, canDelete: false },
   { value: "finance", en: "Finance", ar: "الحسابات", color: "bg-emerald-100 text-emerald-700", modules: ["finance", "invoices", "payments", "expenses", "reports", "customers"], canApprove: true, canCreate: true, canDelete: false },
   { value: "sales", en: "Sales", ar: "المبيعات", color: "bg-cyan-100 text-cyan-700", modules: ["customers", "quotations", "orders", "products", "site-visits", "designs"], canApprove: false, canCreate: true, canDelete: false },

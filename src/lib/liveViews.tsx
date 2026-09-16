@@ -73,7 +73,7 @@ function Loading() {
 }
 
 function ErrorState({ msg }: { msg: string }) {
-  return <div className="flex items-center justify-center py-24 text-rose-500 text-body">{msg}</div>;
+  return <div className="flex items-center justify-center py-24 text-rose-600 text-body">{msg}</div>;
 }
 
 function NoResults({ ar }: { ar: boolean }) {
@@ -170,7 +170,7 @@ function AddPersonModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (p
     <ModalShell title={ar ? "ضيف شخص" : "Add Person"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "الاسم الكامل" : "Full Name"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "الاسم الكامل" : "Full Name"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required
             className={inputCls} placeholder={ar ? "مثال: سارة العمري" : "e.g. Sarah Al-Omari"} />
         </div>
@@ -191,7 +191,7 @@ function AddPersonModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (p
               className={inputCls} placeholder="+966 5x" />
           </div>
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -304,7 +304,7 @@ function AddOrgModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o: L
     <ModalShell title={ar ? "ضيف شركة" : "Add Organization"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "اسم الشركة" : "Organization Name"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "اسم الشركة" : "Organization Name"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required
             className={inputCls} placeholder={ar ? "مثال: شركة الخليج التجارية" : "e.g. Gulf Trading LLC"} />
         </div>
@@ -318,7 +318,7 @@ function AddOrgModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o: L
           <input type="url" value={form.website} onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
             className={inputCls} placeholder="https://company.com" />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -441,7 +441,7 @@ function AddDealModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (d: 
     <ModalShell title={ar ? "سجّل صفقة" : "Add Deal"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "عنوان الصفقة" : "Deal Title"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "عنوان الصفقة" : "Deal Title"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} required
             className={inputCls} placeholder={ar ? "مثال: عقد توريد أجهزة" : "e.g. Hardware Supply Contract"} />
         </div>
@@ -469,7 +469,7 @@ function AddDealModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (d: 
           <input type="text" value={form.contact} onChange={(e) => setForm((f) => ({ ...f, contact: e.target.value }))}
             className={inputCls} placeholder={ar ? "اختياري" : "Optional"} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -508,7 +508,7 @@ export function SalesLive({ workspaceId, lang }: { workspaceId: string; lang: "e
 
   const stagePill: Record<string, string> = {
     lead: "bg-slate-100 text-slate-600", qualified: "bg-blue-100 text-blue-600",
-    proposal: "bg-chart-4/15 text-chart-4", negotiation: "bg-warning/15 text-warning",
+    proposal: "bg-chart-4/15 text-violet-600", negotiation: "bg-warning/15 text-warning",
     won: "bg-emerald-100 text-emerald-700", lost: "bg-rose-100 text-rose-600",
   };
 
@@ -604,7 +604,7 @@ function AddInvoiceModal({ onClose, onAdd, ar, currency }: { onClose: () => void
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className={labelCls}>{ar ? "رقم الفاتورة" : "Invoice #"} <span className="text-rose-400">*</span></label>
+            <label className={labelCls}>{ar ? "رقم الفاتورة" : "Invoice #"} <span className="text-rose-600">*</span></label>
             <input type="text" value={form.number} onChange={(e) => setForm((f) => ({ ...f, number: e.target.value }))} required
               className={inputCls} placeholder="INV-001" />
           </div>
@@ -617,7 +617,7 @@ function AddInvoiceModal({ onClose, onAdd, ar, currency }: { onClose: () => void
           </div>
         </div>
         <div>
-          <label className={labelCls}>{ar ? "اسم العميل / المنظمة" : "Client / Organization"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "اسم العميل / المنظمة" : "Client / Organization"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.orgName} onChange={(e) => setForm((f) => ({ ...f, orgName: e.target.value }))} required
             className={inputCls} placeholder={ar ? "مثال: شركة الخليج" : "e.g. Gulf Trading LLC"} />
         </div>
@@ -626,7 +626,7 @@ function AddInvoiceModal({ onClose, onAdd, ar, currency }: { onClose: () => void
           <input type="number" value={form.amount} onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))} min="0"
             className={inputCls} placeholder="0" />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.number.trim() || !form.orgName.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -666,13 +666,13 @@ function AddExpenseModal({ onClose, onAdd, ar, currency }: { onClose: () => void
     <ModalShell title={ar ? "سجّل مصروف" : "Add Expense"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "الوصف" : "Description"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "الوصف" : "Description"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} required
             className={inputCls} placeholder={ar ? "مثال: إيجار المكتب" : "e.g. Office Rent"} />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className={labelCls}>{ar ? `المبلغ (${currency})` : `Amount (${currency})`} <span className="text-rose-400">*</span></label>
+            <label className={labelCls}>{ar ? `المبلغ (${currency})` : `Amount (${currency})`} <span className="text-rose-600">*</span></label>
             <input type="number" value={form.amount} onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))} min="0" required
               className={inputCls} placeholder="0" />
           </div>
@@ -686,7 +686,7 @@ function AddExpenseModal({ onClose, onAdd, ar, currency }: { onClose: () => void
           <label className={labelCls}>{ar ? "التاريخ" : "Date"}</label>
           <input type="date" value={form.date} onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.description.trim() || !form.amount} className={btnPrimary + " flex-1 h-10"}>
@@ -797,8 +797,8 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
               { icon: FileText, value: fmtVal(totalInvoiced), label: ar ? "إجمالي الفواتير" : "Total Invoiced", color: "text-brand-ink" },
               { icon: DollarSign, value: fmtVal(totalPaid), label: ar ? "المحصّل" : "Collected", color: "text-emerald-600" },
               { icon: CreditCard, value: fmtVal(outstanding), label: ar ? "المستحقات" : "Outstanding", color: "text-warning" },
-              { icon: Receipt, value: fmtVal(totalExpenses), label: ar ? "المصاريف" : "Expenses", color: "text-rose-500" },
-              { icon: Wallet, value: fmtVal(netPosition), label: ar ? "صافي الموقف" : "Net Position", color: netPosition >= 0 ? "text-emerald-600" : "text-rose-500" },
+              { icon: Receipt, value: fmtVal(totalExpenses), label: ar ? "المصاريف" : "Expenses", color: "text-rose-600" },
+              { icon: Wallet, value: fmtVal(netPosition), label: ar ? "صافي الموقف" : "Net Position", color: netPosition >= 0 ? "text-emerald-600" : "text-rose-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                 <m.icon size={14} strokeWidth={1.75} className={m.color + " mb-2"} />
@@ -904,7 +904,7 @@ export function FinanceLive({ workspaceId, lang }: { workspaceId: string; lang: 
                       {ar ? (e.description_ar ?? e.description_en) : e.description_en}
                     </p>
                   </div>
-                  <p className="text-body-lg font-semibold tabular-nums text-rose-500 shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmtVal(e.amount)}</p>
+                  <p className="text-body-lg font-semibold tabular-nums text-rose-600 shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>-{fmtVal(e.amount)}</p>
                 </div>
               ))}
             </div>
@@ -931,7 +931,7 @@ const WORK_STATUS_META: Record<string, { en: string; ar: string; pill: string }>
   planned:     { en: "Planned",     ar: "مخطط",         pill: "bg-indigo-100 text-indigo-600" },
   todo:        { en: "To Do",       ar: "للتنفيذ",      pill: "bg-slate-100 text-slate-600" },
   in_progress: { en: "In Progress", ar: "شغال عليها",   pill: "bg-blue-100 text-blue-600" },
-  review:      { en: "Review",      ar: "مراجعة",       pill: "bg-chart-4/15 text-chart-4" },
+  review:      { en: "Review",      ar: "مراجعة",       pill: "bg-chart-4/15 text-violet-600" },
   done:        { en: "Done",        ar: "خلصت",         pill: "bg-emerald-100 text-emerald-700" },
   blocked:     { en: "Blocked",     ar: "متوقفة",       pill: "bg-rose-100 text-rose-600" },
   cancelled:   { en: "Cancelled",   ar: "ملغية",        pill: "bg-muted text-muted-foreground" },
@@ -994,7 +994,7 @@ function AddWorkItemModal({ onClose, onAdd, ar, parentId }: { onClose: () => voi
     <ModalShell title={parentId ? (ar ? "أنشئ مهمة فرعية" : "Add Sub-task") : (ar ? "أنشئ عنصر شغل" : "Create Work Item")} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "العنوان" : "Title"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "العنوان" : "Title"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} required autoFocus
             className={inputCls} placeholder={ar ? "مثال: إعداد تقرير ربع السنة" : "e.g. Q3 Report Preparation"} />
         </div>
@@ -1034,7 +1034,7 @@ function AddWorkItemModal({ onClose, onAdd, ar, parentId }: { onClose: () => voi
           <label className={labelCls}>{ar ? "تاريخ الاستحقاق" : "Due Date"}</label>
           <input type="date" value={form.dueDate} onChange={(e) => setForm((f) => ({ ...f, dueDate: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -1246,7 +1246,7 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
                         {ar ? (t.title_ar ?? t.title_en) : t.title_en}
                       </p>
                       <div className="flex items-center gap-3 mt-1 text-micro text-muted-foreground">
-                        {t.due_date && <span className={isOverdue ? "text-rose-500 font-medium" : ""}>{t.due_date.slice(0, 10)}</span>}
+                        {t.due_date && <span className={isOverdue ? "text-rose-600 font-medium" : ""}>{t.due_date.slice(0, 10)}</span>}
                         {children.length > 0 && <span>{children.length} {ar ? "فرعية" : "sub-items"}</span>}
                       </div>
                     </div>
@@ -1298,7 +1298,7 @@ export function WorkLive({ workspaceId, lang }: { workspaceId: string; lang: "en
                             {ar ? (item.title_ar ?? item.title_en) : item.title_en}
                           </p>
                           <div className="flex items-center gap-2 text-micro text-muted-foreground">
-                            {item.due_date && <span className={isOd ? "text-rose-500 font-medium" : ""}>{item.due_date.slice(0, 10)}</span>}
+                            {item.due_date && <span className={isOd ? "text-rose-600 font-medium" : ""}>{item.due_date.slice(0, 10)}</span>}
                             {item.progress > 0 && <span>{item.progress}%</span>}
                           </div>
                         </div>
@@ -1354,7 +1354,7 @@ function AddResourceModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
     <ModalShell title={ar ? "ضيف مورد" : "Add Resource"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "اسم المورد" : "Resource Name"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "اسم المورد" : "Resource Name"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required
             className={inputCls} placeholder={ar ? "مثال: حفار كاتربيلر" : "e.g. Caterpillar Excavator"} />
         </div>
@@ -1372,7 +1372,7 @@ function AddResourceModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
               className={inputCls} placeholder={ar ? "اختياري" : "Optional"} />
           </div>
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className={btnSecondary + " flex-1"}>{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -1408,7 +1408,7 @@ export function ResourcesLive({ workspaceId, lang }: { workspaceId: string; lang
   }, [resources, search]);
 
   const typeColors: Record<string, string> = {
-    equipment: "bg-warning/15 text-warning", inventory: "bg-chart-4/15 text-chart-4",
+    equipment: "bg-warning/15 text-warning", inventory: "bg-chart-4/15 text-violet-600",
     vehicle: "bg-blue-100 text-blue-600", facility: "bg-emerald-100 text-emerald-700",
     license: "bg-cyan-100 text-cyan-700", other: "bg-slate-100 text-slate-600",
   };

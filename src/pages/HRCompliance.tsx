@@ -34,37 +34,37 @@ const cardV = {
 } satisfies Variants;
 
 const TYPE_META: Record<string, { en: string; ar: string; icon: typeof ShieldCheck; color: string; bg: string; border: string }> = {
-  contract: { en: "Contract", ar: "عقد", icon: FileText, color: "text-blue-400", bg: "bg-blue-500/15", border: "border-blue-500/30" },
-  document: { en: "Document", ar: "مستند", icon: FileText, color: "text-chart-4", bg: "bg-chart-4/15", border: "border-chart-4/30" },
+  contract: { en: "Contract", ar: "عقد", icon: FileText, color: "text-blue-600", bg: "bg-blue-500/15", border: "border-blue-500/30" },
+  document: { en: "Document", ar: "مستند", icon: FileText, color: "text-violet-600", bg: "bg-chart-4/15", border: "border-chart-4/30" },
   safety: { en: "Safety", ar: "سلامة", icon: HardHat, color: "text-warning", bg: "bg-warning/15", border: "border-warning/30" },
-  insurance: { en: "Insurance", ar: "تأمين", icon: ShieldCheck, color: "text-emerald-400", bg: "bg-emerald-500/15", border: "border-emerald-500/30" },
-  tax: { en: "Tax", ar: "ضرائب", icon: Landmark, color: "text-cyan-400", bg: "bg-cyan-500/15", border: "border-cyan-500/30" },
-  inspection: { en: "Inspection", ar: "تفتيش", icon: Eye, color: "text-rose-400", bg: "bg-rose-500/15", border: "border-rose-500/30" },
+  insurance: { en: "Insurance", ar: "تأمين", icon: ShieldCheck, color: "text-emerald-600", bg: "bg-emerald-500/15", border: "border-emerald-500/30" },
+  tax: { en: "Tax", ar: "ضرائب", icon: Landmark, color: "text-cyan-600", bg: "bg-cyan-500/15", border: "border-cyan-500/30" },
+  inspection: { en: "Inspection", ar: "تفتيش", icon: Eye, color: "text-rose-600", bg: "bg-rose-500/15", border: "border-rose-500/30" },
 };
 
 const STATUS_META: Record<string, { en: string; ar: string; cls: string; dot: string }> = {
-  compliant: { en: "Compliant", ar: "ممتثل", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30", dot: "bg-emerald-400" },
+  compliant: { en: "Compliant", ar: "ممتثل", cls: "bg-emerald-500/15 text-emerald-600 border-emerald-500/30", dot: "bg-emerald-400" },
   expiring: { en: "Expiring", ar: "ينتهي قريباً", cls: "bg-warning/15 text-warning border-warning/30", dot: "bg-warning" },
-  overdue: { en: "Overdue", ar: "متأخر", cls: "bg-red-500/15 text-red-400 border-red-500/30", dot: "bg-red-400" },
-  non_compliant: { en: "Non-Compliant", ar: "غير ممتثل", cls: "bg-red-500/15 text-red-400 border-red-500/30", dot: "bg-red-400" },
-  reported: { en: "Reported", ar: "تم الإبلاغ", cls: "bg-blue-500/15 text-blue-400 border-blue-500/30", dot: "bg-blue-400" },
+  overdue: { en: "Overdue", ar: "متأخر", cls: "bg-red-500/15 text-red-600 border-red-500/30", dot: "bg-red-400" },
+  non_compliant: { en: "Non-Compliant", ar: "غير ممتثل", cls: "bg-red-500/15 text-red-600 border-red-500/30", dot: "bg-red-400" },
+  reported: { en: "Reported", ar: "تم الإبلاغ", cls: "bg-blue-500/15 text-blue-600 border-blue-500/30", dot: "bg-blue-400" },
   investigating: { en: "Investigating", ar: "قيد التحقيق", cls: "bg-warning/15 text-warning border-warning/30", dot: "bg-warning" },
-  resolved: { en: "Resolved", ar: "تم الحل", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30", dot: "bg-emerald-400" },
+  resolved: { en: "Resolved", ar: "تم الحل", cls: "bg-emerald-500/15 text-emerald-600 border-emerald-500/30", dot: "bg-emerald-400" },
   closed: { en: "Closed", ar: "مغلق", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30", dot: "bg-gray-400" },
 };
 
 const PRIORITY_META: Record<string, { en: string; ar: string; cls: string }> = {
   low: { en: "Low", ar: "منخفض", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
-  medium: { en: "Medium", ar: "متوسط", cls: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
+  medium: { en: "Medium", ar: "متوسط", cls: "bg-blue-500/15 text-blue-600 border-blue-500/30" },
   high: { en: "High", ar: "عالي", cls: "bg-warning/15 text-warning border-warning/30" },
-  critical: { en: "Critical", ar: "حرج", cls: "bg-red-500/15 text-red-400 border-red-500/30" },
+  critical: { en: "Critical", ar: "حرج", cls: "bg-red-500/15 text-red-600 border-red-500/30" },
 };
 
 const SEVERITY_META: Record<string, { en: string; ar: string; cls: string }> = {
   minor: { en: "Minor", ar: "بسيط", cls: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
   moderate: { en: "Moderate", ar: "متوسط", cls: "bg-warning/15 text-warning border-warning/30" },
-  major: { en: "Major", ar: "كبير", cls: "bg-orange-500/15 text-orange-400 border-orange-500/30" },
-  critical: { en: "Critical", ar: "حرج", cls: "bg-red-500/15 text-red-400 border-red-500/30" },
+  major: { en: "Major", ar: "كبير", cls: "bg-orange-500/15 text-orange-600 border-orange-500/30" },
+  critical: { en: "Critical", ar: "حرج", cls: "bg-red-500/15 text-red-600 border-red-500/30" },
 };
 
 const INCIDENT_TYPE_META: Record<string, { en: string; ar: string; icon: typeof Activity }> = {
@@ -197,7 +197,7 @@ export default function HRCompliance() {
         <div className="max-w-[1440px] mx-auto px-6 md:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-chart-4/20 to-indigo-500/20 border border-chart-4/30 flex items-center justify-center">
-              <ShieldCheck size={18} className="text-chart-4" />
+              <ShieldCheck size={18} className="text-violet-600" />
             </div>
             <div>
               <h1 className="text-title font-semibold" style={serif}>
@@ -215,7 +215,7 @@ export default function HRCompliance() {
                 onClick={() => setTab(t)}
                 className={`px-3 py-1.5 rounded-xl text-micro font-medium transition-all ${
                   tab === t
-                    ? "bg-chart-4/20 text-chart-4 border border-chart-4/30"
+                    ? "bg-chart-4/20 text-violet-600 border border-chart-4/30"
                     : "text-white/40 hover:text-white/60 border border-transparent"
                 }`}
               >
@@ -240,7 +240,7 @@ export default function HRCompliance() {
               icon: BadgeCheck,
               gradient: "from-emerald-500/20 to-teal-500/20",
               border: "border-emerald-500/20",
-              iconColor: "text-emerald-400",
+              iconColor: "text-emerald-600",
             },
             {
               label: ar ? "عناصر تنتهي قريباً" : "Expiring Items",
@@ -256,7 +256,7 @@ export default function HRCompliance() {
               icon: AlertTriangle,
               gradient: "from-red-500/20 to-rose-500/20",
               border: "border-red-500/20",
-              iconColor: "text-red-400",
+              iconColor: "text-red-600",
             },
             {
               label: ar ? "حوادث السنة" : "Safety Incidents YTD",
@@ -264,7 +264,7 @@ export default function HRCompliance() {
               icon: ShieldAlert,
               gradient: "from-chart-4/20 to-indigo-500/20",
               border: "border-chart-4/30",
-              iconColor: "text-chart-4",
+              iconColor: "text-violet-600",
             },
             {
               label: ar ? "أيام منذ آخر حادث" : "Days Since Last Incident",
@@ -272,7 +272,7 @@ export default function HRCompliance() {
               icon: Activity,
               gradient: "from-cyan-500/20 to-blue-500/20",
               border: "border-cyan-500/20",
-              iconColor: "text-cyan-400",
+              iconColor: "text-cyan-600",
             },
           ].map((kpi, i) => (
             <motion.div
@@ -383,7 +383,7 @@ export default function HRCompliance() {
                           : ar ? `متأخر ${Math.abs(daysLeft)} يوم` : `${Math.abs(daysLeft)}d overdue`}
                       </span>
                     </div>
-                    <ArrowUpRight size={14} className="text-white/20 group-hover:text-chart-4 transition-colors" />
+                    <ArrowUpRight size={14} className="text-white/20 group-hover:text-violet-600 transition-colors" />
                   </div>
                   <div className="mt-2 pt-2 border-t border-white/5 text-micro text-white/25">
                     {ar ? "آخر فحص" : "Last checked"}: {fmtDate(item.last_checked, ar)}
@@ -473,7 +473,7 @@ export default function HRCompliance() {
             className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-6"
           >
             <div className="flex items-center gap-2 mb-6">
-              <BarChart3 size={16} className="text-chart-4" />
+              <BarChart3 size={16} className="text-violet-600" />
               <h2 className="text-body font-semibold text-white/80" style={serif}>
                 {ar ? "الامتثال حسب النوع" : "Compliance by Type"}
               </h2>
@@ -550,9 +550,9 @@ export default function HRCompliance() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-4 border-t border-white/5">
               {[
                 { label: ar ? "إجمالي العناصر" : "Total Items", value: HR_COMPLIANCE.length },
-                { label: ar ? "ممتثل" : "Compliant", value: HR_COMPLIANCE.filter((i) => i.status === "compliant").length, color: "text-emerald-400" },
+                { label: ar ? "ممتثل" : "Compliant", value: HR_COMPLIANCE.filter((i) => i.status === "compliant").length, color: "text-emerald-600" },
                 { label: ar ? "ينتهي قريباً" : "Expiring", value: HR_COMPLIANCE.filter((i) => i.status === "expiring").length, color: "text-warning" },
-                { label: ar ? "متأخر" : "Overdue", value: HR_COMPLIANCE.filter((i) => i.status === "overdue").length, color: "text-red-400" },
+                { label: ar ? "متأخر" : "Overdue", value: HR_COMPLIANCE.filter((i) => i.status === "overdue").length, color: "text-red-600" },
               ].map((s, i) => (
                 <div key={i} className="text-center">
                   <p className={`text-heading font-bold ${s.color || "text-white/80"}`} style={serif}>{s.value}</p>

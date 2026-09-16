@@ -98,7 +98,7 @@ function TopMembers({ members, lang, onNavigate }: {
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "أبرز الأعضاء" : "Top Members"}
         </h3>
-        <Crown size={14} strokeWidth={1.75} className="text-yellow-500" />
+        <Crown size={14} strokeWidth={1.75} className="text-yellow-600" />
       </div>
       <div className="divide-y divide-border/25">
         {top.map((m, i) => {
@@ -192,9 +192,9 @@ function QuickActions({ lang, onNavigate }: { lang: "en" | "ar"; onNavigate: (pa
     { icon: Users,       labelEn: "Staff Lookup",   labelAr: "بحث العملاء",   path: "/loyalty/lookup",       color: "text-brand-ink" },
     { icon: BarChart3,   labelEn: "Transactions",   labelAr: "المعاملات",       path: "/loyalty/transactions", color: "text-emerald-600" },
     { icon: Ticket,      labelEn: "Redemptions",     labelAr: "الاستبدال",       path: "/loyalty/redemptions",  color: "text-warning" },
-    { icon: Megaphone,   labelEn: "Campaigns",       labelAr: "الحملات",         path: "/loyalty/campaigns",    color: "text-chart-4" },
-    { icon: Star,        labelEn: "Rules",           labelAr: "قواعد النقاط",   path: "/loyalty/rules",        color: "text-rose-500" },
-    { icon: ShoppingBag, labelEn: "Shopify",         labelAr: "شوبيفاي",        path: "/shopify/integration",  color: "text-indigo-500" },
+    { icon: Megaphone,   labelEn: "Campaigns",       labelAr: "الحملات",         path: "/loyalty/campaigns",    color: "text-violet-600" },
+    { icon: Star,        labelEn: "Rules",           labelAr: "قواعد النقاط",   path: "/loyalty/rules",        color: "text-rose-600" },
+    { icon: ShoppingBag, labelEn: "Shopify",         labelAr: "شوبيفاي",        path: "/shopify/integration",  color: "text-indigo-600" },
   ];
 
   return (
@@ -246,7 +246,7 @@ export default function Loyalty() {
             <MetricCard icon={TrendingUp} label={ar ? "نقاط صادرة" : "Points Issued"} value={fmtPts(stats.totalIssued)} color="text-emerald-600" />
             <MetricCard icon={Gift} label={ar ? "نقاط مستبدلة" : "Points Redeemed"} value={fmtPts(stats.totalRedeemed)} sub={`${stats.redemptionRate}% ${ar ? "معدل الاستبدال" : "redemption rate"}`} color="text-brand-ink" />
             <MetricCard icon={Wallet} label={ar ? "نقاط معلّقة" : "Outstanding"} value={fmtPts(stats.outstanding)} color="text-warning" />
-            <MetricCard icon={ShoppingBag} label={ar ? "أونلاين" : "Online Tx"} value={String(stats.onlineTx)} color="text-chart-4" />
+            <MetricCard icon={ShoppingBag} label={ar ? "أونلاين" : "Online Tx"} value={String(stats.onlineTx)} color="text-violet-600" />
             <MetricCard icon={Store} label={ar ? "المتجر" : "Store Tx"} value={String(stats.storeTx)} color="text-cyan-600" />
           </div>
         </div>

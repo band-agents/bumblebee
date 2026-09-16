@@ -212,7 +212,7 @@ function CustomerLoyaltyTab({ orgName, ar, navigate }: { orgName: string; ar: bo
                           <p className="text-caption">{ar ? txMeta.ar : txMeta.en}{tx.orderId ? ` · ${tx.orderId}` : ""}</p>
                           <p className="text-micro text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</p>
                         </div>
-                        <span className={`text-caption font-medium tabular-nums ${isPositive ? "text-emerald-600" : "text-rose-500"}`}>
+                        <span className={`text-caption font-medium tabular-nums ${isPositive ? "text-emerald-600" : "text-rose-600"}`}>
                           {txMeta.sign}{fmtPts(Math.abs(tx.points))}
                         </span>
                       </div>
@@ -396,11 +396,11 @@ export default function Customer360() {
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
             {[
               { value: totalOrders, label: ar ? "إجمالي الطلبات" : "Total Orders", color: "text-brand-ink" },
-              { value: activeOrders, label: ar ? "طلبات نشطة" : "Active", color: "text-chart-4" },
+              { value: activeOrders, label: ar ? "طلبات نشطة" : "Active", color: "text-violet-600" },
               { value: fmt(totalRevenue), label: ar ? "الإيراد" : "Revenue", color: "text-foreground" },
-              { value: fmt(unpaid), label: ar ? "غير مدفوع" : "Unpaid", color: unpaid > 0 ? "text-rose-500" : "text-emerald-600" },
+              { value: fmt(unpaid), label: ar ? "غير مدفوع" : "Unpaid", color: unpaid > 0 ? "text-rose-600" : "text-emerald-600" },
               { value: openQuotations, label: ar ? "عروض مفتوحة" : "Open Quotes", color: "text-warning" },
-              { value: delayedOrders, label: ar ? "متأخر" : "Delayed", color: delayedOrders > 0 ? "text-rose-500" : "text-emerald-600" },
+              { value: delayedOrders, label: ar ? "متأخر" : "Delayed", color: delayedOrders > 0 ? "text-rose-600" : "text-emerald-600" },
             ].map((s, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-3 py-3">
                 <p className={`text-title font-medium tabular-nums mb-0.5 ${s.color}`} style={{ fontFamily: "var(--app-font-serif)" }}>{s.value}</p>
@@ -663,7 +663,7 @@ export default function Customer360() {
                 { value: totalOrders, label: ar ? "إجمالي الطلبات" : "Total Orders", icon: ClipboardCheck, color: "text-brand-ink" },
                 { value: fmt(totalRevenue), label: ar ? "إجمالي الإيراد" : "Total Revenue", icon: DollarSign, color: "text-foreground" },
                 { value: fmt(totalPaid), label: ar ? "المدفوع" : "Total Paid", icon: CheckCircle2, color: "text-emerald-600" },
-                { value: fmt(unpaid), label: ar ? "المتبقي" : "Outstanding", icon: AlertTriangle, color: unpaid > 0 ? "text-rose-500" : "text-emerald-600" },
+                { value: fmt(unpaid), label: ar ? "المتبقي" : "Outstanding", icon: AlertTriangle, color: unpaid > 0 ? "text-rose-600" : "text-emerald-600" },
               ].map((m, i) => (
                 <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
                   <m.icon size={14} className={`${m.color} mb-2`} />
@@ -692,7 +692,7 @@ export default function Customer360() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-caption">
                     <span className="text-muted-foreground">{ar ? "نسبة التحصيل" : "Collection Rate"}</span>
-                    <span className={`font-medium ${totalRevenue > 0 && (totalPaid / totalRevenue) < 0.5 ? "text-rose-500" : "text-emerald-600"}`}>
+                    <span className={`font-medium ${totalRevenue > 0 && (totalPaid / totalRevenue) < 0.5 ? "text-rose-600" : "text-emerald-600"}`}>
                       {totalRevenue > 0 ? Math.round((totalPaid / totalRevenue) * 100) : 0}%
                     </span>
                   </div>

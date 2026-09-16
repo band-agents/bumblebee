@@ -59,7 +59,7 @@ export default function DataManagement() {
     ]).then(([orgs, people, work, deals, invoices, expenses, payments, resources, activity]) => {
       setModules([
         { id: "organizations", labelEn: "Organizations", labelAr: "الشركات", icon: Building2, color: "text-emerald-600 bg-emerald-50", count: orgs.length, data: orgs, exportName: "organizations", importTemplate: IMPORT_TEMPLATES.find((t) => t.id === "organizations") },
-        { id: "people", labelEn: "People", labelAr: "الأشخاص", icon: Users, color: "text-chart-4 bg-chart-4/10", count: people.length, data: people, exportName: "people", importTemplate: IMPORT_TEMPLATES.find((t) => t.id === "people") },
+        { id: "people", labelEn: "People", labelAr: "الأشخاص", icon: Users, color: "text-violet-600 bg-chart-4/10", count: people.length, data: people, exportName: "people", importTemplate: IMPORT_TEMPLATES.find((t) => t.id === "people") },
         { id: "work_items", labelEn: "Work Items", labelAr: "المهام", icon: Briefcase, color: "text-blue-600 bg-blue-50", count: work.length, data: work, exportName: "work-items", importTemplate: IMPORT_TEMPLATES.find((t) => t.id === "work_items") },
         { id: "deals", labelEn: "Deals", labelAr: "الصفقات", icon: ShoppingBag, color: "text-warning bg-warning/10", count: deals.length, data: deals, exportName: "deals", importTemplate: IMPORT_TEMPLATES.find((t) => t.id === "deals") },
         { id: "invoices", labelEn: "Invoices", labelAr: "الفواتير", icon: FileText, color: "text-cyan-600 bg-cyan-50", count: invoices.length, data: invoices, exportName: "invoices", importTemplate: IMPORT_TEMPLATES.find((t) => t.id === "invoices") },

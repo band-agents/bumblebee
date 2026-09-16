@@ -34,9 +34,9 @@ interface NotificationTemplate {
 const TRIGGER_META: Record<NotificationTrigger, { en: string; ar: string; icon: React.ElementType; color: string; bg: string }> = {
   points_earned:   { en: "Points Earned",     ar: "نقاط مكتسبة",    icon: Star,          color: "text-emerald-600",  bg: "bg-emerald-50" },
   tier_upgrade:    { en: "Tier Upgrade",       ar: "ترقية مستوى",    icon: Crown,         color: "text-warning",    bg: "bg-warning/10" },
-  points_expiring: { en: "Points Expiring",    ar: "نقاط ستنتهي",    icon: AlertTriangle, color: "text-rose-500",     bg: "bg-rose-50" },
+  points_expiring: { en: "Points Expiring",    ar: "نقاط ستنتهي",    icon: AlertTriangle, color: "text-rose-600",     bg: "bg-rose-50" },
   birthday:        { en: "Birthday",           ar: "عيد ميلاد",      icon: Gift,          color: "text-pink-600",     bg: "bg-pink-50" },
-  redemption:      { en: "Redemption",         ar: "استبدال",        icon: Gift,          color: "text-chart-4",   bg: "bg-chart-4/10" },
+  redemption:      { en: "Redemption",         ar: "استبدال",        icon: Gift,          color: "text-violet-600",   bg: "bg-chart-4/10" },
   campaign_start:  { en: "Campaign Start",     ar: "بدء حملة",       icon: Calendar,      color: "text-blue-600",     bg: "bg-blue-50" },
   welcome:         { en: "Welcome",            ar: "ترحيب",          icon: MessageCircle, color: "text-brand-ink",      bg: "bg-primary/10" },
 };
@@ -262,7 +262,7 @@ export default function LoyaltyNotificationsPage() {
         <div className="border border-border/40 rounded-xl p-4 bg-background">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-              <Smartphone size={18} className="text-blue-500" />
+              <Smartphone size={18} className="text-blue-600" />
             </div>
             <div className="flex-1">
               <p className="text-body font-medium">SMS Gateway</p>
@@ -282,7 +282,7 @@ export default function LoyaltyNotificationsPage() {
           <p className="text-micro text-muted-foreground">{ar ? "قوالب مفعلة" : "Templates Active"}</p>
         </div>
         <div className="border border-border/40 rounded-xl p-4 bg-background">
-          <Send size={14} className="text-emerald-500 mb-2" />
+          <Send size={14} className="text-emerald-600 mb-2" />
           <p className="text-heading font-medium tabular-nums text-emerald-600" style={{ fontFamily: "var(--app-font-serif)" }}>{totalSent}</p>
           <p className="text-micro text-muted-foreground">{ar ? "إجمالي المرسل" : "Total Sent"}</p>
         </div>
@@ -349,7 +349,7 @@ export default function LoyaltyNotificationsPage() {
                   </button>
                   <button onClick={() => handleToggle(tpl.id)}
                     className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted">
-                    {tpl.enabled ? <ToggleRight size={16} className="text-emerald-500" /> : <ToggleLeft size={16} className="text-muted-foreground" />}
+                    {tpl.enabled ? <ToggleRight size={16} className="text-emerald-600" /> : <ToggleLeft size={16} className="text-muted-foreground" />}
                   </button>
                 </div>
               </div>
@@ -378,7 +378,7 @@ export default function LoyaltyNotificationsPage() {
           </div>
           <div>
             <p className="font-medium text-foreground mb-1 flex items-center gap-1.5">
-              <Smartphone size={11} className="text-blue-500" />SMS Gateway
+              <Smartphone size={11} className="text-blue-600" />SMS Gateway
             </p>
             <ol className="space-y-1 text-muted-foreground list-decimal list-inside">
               <li>{ar ? "اختر مزود SMS (Twilio، Vonage، أو محلي)" : "Choose SMS provider (Twilio, Vonage, or local)"}</li>

@@ -393,7 +393,7 @@ export default function Today() {
                 color="text-emerald-600 bg-emerald-50" ar={ar} onView={() => navigate("/organizations")}
                 onExport={() => exp(orgs, "organizations")} />
               <DataRow icon={Users} labelEn="People" labelAr="الأشخاص" count={people.length}
-                color="text-chart-4 bg-chart-4/10" ar={ar} onView={() => navigate("/people")}
+                color="text-violet-600 bg-chart-4/10" ar={ar} onView={() => navigate("/people")}
                 onExport={() => exp(people, "people")} />
               <DataRow icon={Briefcase} labelEn="Work Items" labelAr="المهام" count={workItems.length}
                 color="text-blue-600 bg-blue-50" ar={ar} onView={() => navigate("/work")}

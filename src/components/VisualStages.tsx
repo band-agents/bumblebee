@@ -18,7 +18,7 @@ const DEPT_ICONS: Record<string, { icon: React.ElementType; bg: string; color: s
   cutting:      { icon: Scissors,       bg: "bg-blue-50",     color: "text-blue-600" },
   cnc:          { icon: Cpu,            bg: "bg-indigo-50",   color: "text-indigo-600" },
   edgebanding:  { icon: Layers,         bg: "bg-cyan-50",     color: "text-cyan-600" },
-  drilling:     { icon: CircleDot,      bg: "bg-chart-4/10",   color: "text-chart-4" },
+  drilling:     { icon: CircleDot,      bg: "bg-chart-4/10",   color: "text-violet-600" },
   assembly:     { icon: Box,            bg: "bg-warning/10",    color: "text-warning" },
   finishing:    { icon: Paintbrush,     bg: "bg-orange-50",   color: "text-orange-600" },
   upholstery:   { icon: Armchair,       bg: "bg-rose-50",     color: "text-rose-600" },

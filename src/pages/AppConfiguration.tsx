@@ -38,9 +38,9 @@ const STATUS_META: Record<string, { en: string; ar: string; color: string; bg: s
   draft:        { en: "Draft",        ar: "مسودة",  color: "text-muted-foreground",  bg: "bg-muted/50" },
   configuring:  { en: "Configuring",  ar: "قيد الإعداد", color: "text-blue-600",   bg: "bg-blue-50" },
   building:     { en: "Building",     ar: "قيد البناء",  color: "text-warning",   bg: "bg-warning/10" },
-  review:       { en: "In Review",    ar: "قيد المراجعة", color: "text-chart-4", bg: "bg-chart-4/10" },
+  review:       { en: "In Review",    ar: "قيد المراجعة", color: "text-violet-600", bg: "bg-chart-4/10" },
   published:    { en: "Published",    ar: "منشور",   color: "text-emerald-600",  bg: "bg-emerald-50" },
-  rejected:     { en: "Rejected",     ar: "مرفوض",   color: "text-rose-500",     bg: "bg-rose-50" },
+  rejected:     { en: "Rejected",     ar: "مرفوض",   color: "text-rose-600",     bg: "bg-rose-50" },
   paused:       { en: "Paused",       ar: "متوقف",   color: "text-warning",    bg: "bg-warning/10" },
 };
 
@@ -49,7 +49,7 @@ const BUILD_STATUS_META: Record<string, { en: string; ar: string; color: string;
   building: { en: "Building",  ar: "قيد البناء",   color: "text-warning",       bg: "bg-warning/10" },
   testing:  { en: "Testing",   ar: "قيد الاختبار", color: "text-blue-600",        bg: "bg-blue-50" },
   ready:    { en: "Ready",     ar: "جاهز",        color: "text-emerald-600",     bg: "bg-emerald-50" },
-  failed:   { en: "Failed",    ar: "فشل",         color: "text-rose-500",        bg: "bg-rose-50" },
+  failed:   { en: "Failed",    ar: "فشل",         color: "text-rose-600",        bg: "bg-rose-50" },
 };
 
 const FEATURE_CATEGORIES = ["all", "core", "engagement", "commerce", "analytics", "integration"] as const;
@@ -141,7 +141,7 @@ function GeneralTab({ ar, app }: { ar: boolean; app: typeof MOBILE_APPS[0] }) {
         <div className="py-3.5 border-b border-border/25">
           <div className="flex items-center justify-between">
             <p className="text-body font-medium text-foreground">{ar ? "حالة الاتصال" : "Connection Status"}</p>
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-micro font-medium ${app.shopify_connected ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-500"}`}>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-micro font-medium ${app.shopify_connected ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"}`}>
               {app.shopify_connected ? <Wifi size={12} /> : <WifiOff size={12} />}
               {app.shopify_connected ? (ar ? "متصل" : "Connected") : (ar ? "غير متصل" : "Disconnected")}
             </span>
@@ -361,7 +361,7 @@ function DeepLinksTab({ ar }: { ar: boolean }) {
               <button className="flex items-center gap-1 px-2 py-1 rounded hover:bg-muted/40 text-brand-ink text-micro transition-colors">
                 <Search size={11} /> {ar ? "اختبار" : "Test"}
               </button>
-              <button onClick={() => removeLink(link.id)} className="p-1 rounded hover:bg-rose-50 text-muted-foreground/40 hover:text-rose-500 transition-colors">
+              <button onClick={() => removeLink(link.id)} className="p-1 rounded hover:bg-rose-50 text-muted-foreground/40 hover:text-rose-600 transition-colors">
                 <Trash2 size={13} />
               </button>
             </div>
@@ -551,7 +551,7 @@ function BuildTab({ ar, app }: { ar: boolean; app: typeof MOBILE_APPS[0] }) {
                         </button>
                       )}
                       {b.status === "failed" && b.error_log && (
-                        <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-50 text-rose-500 text-micro font-medium hover:bg-rose-100 transition-colors">
+                        <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-50 text-rose-600 text-micro font-medium hover:bg-rose-100 transition-colors">
                           <AlertCircle size={11} /> {ar ? "الخطأ" : "Error"}
                         </button>
                       )}

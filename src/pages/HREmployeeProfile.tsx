@@ -26,12 +26,12 @@ function formatEGP(n: number) {
 
 const DEPT_META: Record<string, { en: string; ar: string; color: string }> = {
   management: { en: "Management", ar: "الإدارة العليا", color: "#1E3A5F" },
-  sales: { en: "Sales", ar: "المبيعات", color: "#E07A5F" },
-  production: { en: "Production", ar: "الإنتاج", color: "#3B82F6" },
-  design: { en: "Design", ar: "التصميم", color: "#EC4899" },
-  warehouse: { en: "Warehouse", ar: "المخزن", color: "#F59E0B" },
-  delivery: { en: "Delivery", ar: "التوصيل", color: "#F97316" },
-  admin: { en: "Admin", ar: "الإدارة", color: "#10B981" },
+  sales: { en: "Sales", ar: "المبيعات", color: "#EDA994" },
+  production: { en: "Production", ar: "الإنتاج", color: "#8AB0EA" },
+  design: { en: "Design", ar: "التصميم", color: "#EFA3C6" },
+  warehouse: { en: "Warehouse", ar: "المخزن", color: "#EFC274" },
+  delivery: { en: "Delivery", ar: "التوصيل", color: "#F2AE82" },
+  admin: { en: "Admin", ar: "الإدارة", color: "#6FC39E" },
 };
 
 const STATUS_META: Record<string, { en: string; ar: string; pill: string }> = {
@@ -45,7 +45,7 @@ const STATUS_META: Record<string, { en: string; ar: string; pill: string }> = {
 const TIMELINE_ICONS: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
   joined: { icon: Users, color: "text-emerald-600", bg: "bg-emerald-100" },
   contract_signed: { icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },
-  salary_changed: { icon: DollarSign, color: "text-chart-4", bg: "bg-chart-4/15" },
+  salary_changed: { icon: DollarSign, color: "text-violet-600", bg: "bg-chart-4/15" },
   promoted: { icon: Star, color: "text-warning", bg: "bg-warning/15" },
   leave_taken: { icon: Coffee, color: "text-cyan-600", bg: "bg-cyan-100" },
   warning_issued: { icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-100" },
@@ -115,8 +115,8 @@ export default function HREmployeeProfile() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
-            <button className="h-8 px-3 rounded-lg bg-emerald-500 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-600 transition-colors"><Phone size={11} />{ar ? "اتصال" : "Call"}</button>
-            <button className="h-8 px-3 rounded-lg bg-blue-500 text-white text-micro font-medium flex items-center gap-1.5 hover:bg-blue-600 transition-colors"><Mail size={11} />{ar ? "بريد" : "Email"}</button>
+            <button className="h-8 px-3 rounded-lg bg-emerald-500 text-emerald-900 text-micro font-medium flex items-center gap-1.5 hover:bg-emerald-600 transition-colors"><Phone size={11} />{ar ? "اتصال" : "Call"}</button>
+            <button className="h-8 px-3 rounded-lg bg-blue-500 text-blue-900 text-micro font-medium flex items-center gap-1.5 hover:bg-blue-600 transition-colors"><Mail size={11} />{ar ? "بريد" : "Email"}</button>
           </div>
         </div>
 
@@ -280,7 +280,7 @@ export default function HREmployeeProfile() {
                         <div className="grid grid-cols-4 gap-2 text-micro">
                           <div><span className="text-muted-foreground">Basic</span><p className="font-medium">{formatEGP(p.basic_salary)}</p></div>
                           <div><span className="text-muted-foreground">Allowances</span><p className="font-medium text-emerald-600">+{formatEGP(p.allowances)}</p></div>
-                          <div><span className="text-muted-foreground">Deductions</span><p className="font-medium text-rose-500">-{formatEGP(p.deductions)}</p></div>
+                          <div><span className="text-muted-foreground">Deductions</span><p className="font-medium text-rose-600">-{formatEGP(p.deductions)}</p></div>
                           <div><span className="text-muted-foreground">Overtime</span><p className="font-medium text-warning">+{formatEGP(p.overtime_pay)}</p></div>
                         </div>
                       </div>
@@ -307,7 +307,7 @@ export default function HREmployeeProfile() {
                           <span className="text-micro text-muted-foreground ml-2">by {r.reviewer}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-heading font-bold" style={{ fontFamily: "var(--app-font-serif)", color: r.score >= 80 ? "#10B981" : r.score >= 60 ? "#F59E0B" : "#EF4444" }}>{r.score}</span>
+                          <span className="text-heading font-bold" style={{ fontFamily: "var(--app-font-serif)", color: r.score >= 80 ? "#6FC39E" : r.score >= 60 ? "#EFC274" : "#EE9E9E" }}>{r.score}</span>
                           <span className="text-micro text-muted-foreground">/100</span>
                         </div>
                       </div>
@@ -425,7 +425,7 @@ export default function HREmployeeProfile() {
                     <span className="text-micro font-medium">{employee.performance_score}/100</span>
                   </div>
                   <div className="h-1.5 rounded-full bg-muted/60 overflow-hidden">
-                    <div className="h-full rounded-full transition-all" style={{ width: `${employee.performance_score}%`, backgroundColor: employee.performance_score >= 80 ? "#10B981" : employee.performance_score >= 60 ? "#F59E0B" : "#EF4444" }} />
+                    <div className="h-full rounded-full transition-all" style={{ width: `${employee.performance_score}%`, backgroundColor: employee.performance_score >= 80 ? "#6FC39E" : employee.performance_score >= 60 ? "#EFC274" : "#EE9E9E" }} />
                   </div>
                 </div>
               )}

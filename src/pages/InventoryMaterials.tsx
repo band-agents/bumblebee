@@ -32,7 +32,7 @@ const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl
 const MATERIAL_CATEGORIES = [
   { value: "thread", en: "Thread & Yarn", ar: "خيوط", icon: Scissors, color: "bg-blue-100 text-blue-600" },
   { value: "buttons", en: "Buttons & Snaps", ar: "أزرار", icon: Tag, color: "bg-warning/15 text-warning" },
-  { value: "zippers", en: "Zippers", ar: "سحابات", icon: Box, color: "bg-chart-4/15 text-chart-4" },
+  { value: "zippers", en: "Zippers", ar: "سحابات", icon: Box, color: "bg-chart-4/15 text-violet-600" },
   { value: "lining", en: "Lining", ar: "بطانة", icon: Package, color: "bg-emerald-100 text-emerald-700" },
   { value: "elastic", en: "Elastic", ar: "مرونة", icon: Sparkles, color: "bg-rose-100 text-rose-600" },
   { value: "labels", en: "Labels & Tags", ar: "مُلصقات", icon: Tag, color: "bg-cyan-100 text-cyan-700" },
@@ -209,7 +209,7 @@ export default function InventoryMaterialsPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: ar ? "إجمالي" : "Total Items", value: stats.total, color: "bg-blue-100 text-blue-600" },
-            { label: ar ? "الفئات" : "Categories", value: stats.categories, color: "bg-chart-4/15 text-chart-4" },
+            { label: ar ? "الفئات" : "Categories", value: stats.categories, color: "bg-chart-4/15 text-violet-600" },
             { label: ar ? "كمية قليلة" : "Low Stock", value: stats.lowStock, color: "bg-warning/15 text-warning" },
             { label: ar ? "القيمة" : "Total Value", value: stats.totalValue.toLocaleString(), color: "bg-emerald-100 text-emerald-700" },
           ].map((s, i) => (
@@ -294,7 +294,7 @@ export default function InventoryMaterialsPage() {
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1 justify-end">
                           <button onClick={e => { e.stopPropagation(); setEditItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-muted"><Edit3 size={11} /></button>
-                          <button onClick={e => { e.stopPropagation(); setDeleteItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-rose-50 text-rose-500"><Trash2 size={11} /></button>
+                          <button onClick={e => { e.stopPropagation(); setDeleteItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-rose-50 text-rose-600"><Trash2 size={11} /></button>
                         </div>
                       </td>
                     </tr>
@@ -368,7 +368,7 @@ function MaterialModal({ initial, nextSku, ar, wid, onClose, onSaved }: {
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted"><X size={15} /></button>
         </div>
         <form onSubmit={submit} className="p-6 grid grid-cols-2 gap-3">
-          <div className="col-span-2"><label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-400">*</span></label>
+          <div className="col-span-2"><label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-600">*</span></label>
             <input value={form.name} onChange={e => set("name", e.target.value)} autoFocus className={inputCls} placeholder={ar ? "مثال: أزرار خشبية" : "e.g. Wooden Buttons"} /></div>
           <div><label className={labelCls}>SKU</label><input value={form.sku} onChange={e => set("sku", e.target.value)} className={inputCls + " font-mono"} /></div>
           <div><label className={labelCls}>{ar ? "الفئة" : "Category"}</label>

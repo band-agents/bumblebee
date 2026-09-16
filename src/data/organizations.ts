@@ -67,7 +67,7 @@ export interface Organization {
 
 export const ORG_TYPE_META: Record<OrgType, { en: string; ar: string; pill: string }> = {
   company:    { en: "Company",    ar: "شركة",    pill: "bg-primary/8 text-brand-ink border border-primary/20" },
-  subsidiary: { en: "Subsidiary", ar: "شركة تابعة", pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  subsidiary: { en: "Subsidiary", ar: "شركة تابعة", pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   jv:         { en: "Joint Venture", ar: "مشروع مشترك", pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
 };
 
@@ -81,7 +81,7 @@ export const ORG_RELATIONSHIP_META: Record<OrgRelationship, { en: string; ar: st
   customer: { en: "Customer", ar: "عميل",    pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   prospect: { en: "Prospect", ar: "محتمل",   pill: "bg-warning/10 text-warning border border-warning/30" },
   supplier: { en: "Supplier", ar: "مورد",    pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-  partner:  { en: "Partner",  ar: "شريك",    pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  partner:  { en: "Partner",  ar: "شريك",    pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
 };
 
 export const ORG_LIFECYCLE_META: Record<OrgLifecycle, { en: string; ar: string; dot: string }> = {
@@ -222,7 +222,7 @@ export const ORGANIZATIONS: Organization[] = [
     ownerEn: "Khalid Al-Mansouri", ownerAr: "خالد المنصوري",
     descEn: "Meridian Trading is a leading GCC distribution company specializing in office furniture, facilities equipment, and corporate interiors. Operating across the UAE and Saudi Arabia with a network of 40+ strategic suppliers.",
     descAr: "ميريديان للتجارة شركة توزيع رائدة في الخليج متخصصة في أثاث المكاتب ومعدات المرافق والتصميم الداخلي للشركات. تعمل عبر الإمارات والمملكة العربية السعودية بشبكة من أكثر من ٤٠ موردًا استراتيجيًا.",
-    avatarColor: "bg-chart-4/15 text-chart-4",
+    avatarColor: "bg-chart-4/15 text-violet-600",
     branches: [
       {
         id: "b03", nameEn: "Dubai HQ", nameAr: "المقر الرئيسي دبي",

@@ -47,7 +47,7 @@ function RowItem({ label, amount, indent }: { label: string; amount: number; ind
 }
 
 function TotalRow({ label, amount, positive }: { label: string; amount: number; positive?: boolean }) {
-  const color = positive === true ? "text-emerald-600" : positive === false ? "text-rose-500" : "text-foreground";
+  const color = positive === true ? "text-emerald-600" : positive === false ? "text-rose-600" : "text-foreground";
   return (
     <div className="flex items-center justify-between px-6 py-3.5 bg-muted/20 border-t border-border/30">
       <span className="text-body font-semibold text-foreground">{label}</span>
@@ -61,7 +61,7 @@ function CashFlowRow({ label, amount }: { label: string; amount: number }) {
   return (
     <div className="flex items-center justify-between px-6 py-3">
       <span className="text-body text-foreground">{label}</span>
-      <span className={`text-body font-mono tabular-nums ${isNegative ? "text-rose-500" : "text-emerald-600"}`}>
+      <span className={`text-body font-mono tabular-nums ${isNegative ? "text-rose-600" : "text-emerald-600"}`}>
         {isNegative ? `(${fmt(Math.abs(amount))})` : fmt(amount)}
       </span>
     </div>
@@ -71,8 +71,8 @@ function CashFlowRow({ label, amount }: { label: string; amount: number }) {
 const TAX_STATUS: Record<string, { en: string; ar: string; color: string; dot: string }> = {
   paid: { en: "Paid", ar: "مدفوع", color: "text-emerald-600", dot: "bg-emerald-500" },
   pending: { en: "Pending", ar: "قيد الانتظار", color: "text-warning", dot: "bg-warning" },
-  overdue: { en: "Overdue", ar: "متأخرة", color: "text-rose-500", dot: "bg-rose-500" },
-  filed: { en: "Filed", ar: "مُقدّمة", color: "text-blue-500", dot: "bg-blue-500" },
+  overdue: { en: "Overdue", ar: "متأخرة", color: "text-rose-600", dot: "bg-rose-500" },
+  filed: { en: "Filed", ar: "مُقدّمة", color: "text-blue-600", dot: "bg-blue-500" },
 };
 
 const TAX_TYPE: Record<string, { en: string; ar: string }> = {
@@ -163,7 +163,7 @@ export default function FinanceReports() {
             <div className="flex items-center gap-3 flex-wrap">
               {[
                 { label: ar ? "الإيرادات" : "Revenue", value: fmt(totalRevenue), icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-50" },
-                { label: ar ? "صافي الربح" : "Net Profit", value: fmt(netProfit), icon: DollarSign, color: netProfit >= 0 ? "text-emerald-600" : "text-rose-500", bg: netProfit >= 0 ? "bg-emerald-50" : "bg-rose-50" },
+                { label: ar ? "صافي الربح" : "Net Profit", value: fmt(netProfit), icon: DollarSign, color: netProfit >= 0 ? "text-emerald-600" : "text-rose-600", bg: netProfit >= 0 ? "bg-emerald-50" : "bg-rose-50" },
                 { label: ar ? "هامش الربح الصافي" : "Net Margin", value: `${netMargin}%`, icon: Calculator, color: "text-brand-ink", bg: "bg-primary/8" },
               ].map((kpi) => (
                 <div key={kpi.label} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-background border border-border/40">
@@ -253,14 +253,14 @@ export default function FinanceReports() {
               <div className={`px-6 py-5 flex items-center justify-between ${netProfit >= 0 ? "bg-emerald-50/50" : "bg-rose-50/50"}`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-xl ${netProfit >= 0 ? "bg-emerald-50" : "bg-rose-50"} flex items-center justify-center`}>
-                    <DollarSign size={16} strokeWidth={1.75} className={netProfit >= 0 ? "text-emerald-600" : "text-rose-500"} />
+                    <DollarSign size={16} strokeWidth={1.75} className={netProfit >= 0 ? "text-emerald-600" : "text-rose-600"} />
                   </div>
                   <div>
                     <p className="text-body-lg font-semibold text-foreground">{ar ? "صافي الربح" : "Net Profit"}</p>
                     <p className="text-micro text-muted-foreground/70">{ar ? `هامش صافي ${netMargin}%` : `Net margin ${netMargin}%`}</p>
                   </div>
                 </div>
-                <span className={`text-heading font-bold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netProfit)}</span>
+                <span className={`text-heading font-bold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netProfit)}</span>
               </div>
             </div>
 
@@ -279,7 +279,7 @@ export default function FinanceReports() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-caption text-muted-foreground">{ar ? "المصروفات" : "Expenses"}</span>
-                    <span className="text-caption font-mono tabular-nums text-rose-500">{fmt(totalCOGS + totalOpex)}</span>
+                    <span className="text-caption font-mono tabular-nums text-rose-600">{fmt(totalCOGS + totalOpex)}</span>
                   </div>
                   <div className="h-4 rounded-full bg-muted/40 overflow-hidden">
                     <div className="h-full rounded-full bg-rose-400 transition-all duration-700" style={{ width: `${Math.round(((totalCOGS + totalOpex) / totalRevenue) * 100)}%` }} />
@@ -293,11 +293,11 @@ export default function FinanceReports() {
                     </div>
                     <div>
                       <p className="text-micro text-muted-foreground/60 uppercase tracking-wide">{ar ? "صافي الربح" : "Net Profit"}</p>
-                      <p className={`text-body-lg font-semibold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{fmt(netProfit)}</p>
+                      <p className={`text-body-lg font-semibold tabular-nums ${netProfit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{fmt(netProfit)}</p>
                     </div>
                     <div>
                       <p className="text-micro text-muted-foreground/60 uppercase tracking-wide">{ar ? "هامش الربح" : "Margin"}</p>
-                      <p className={`text-body-lg font-semibold tabular-nums ${netMargin >= 0 ? "text-emerald-600" : "text-rose-500"}`}>{netMargin}%</p>
+                      <p className={`text-body-lg font-semibold tabular-nums ${netMargin >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{netMargin}%</p>
                     </div>
                   </div>
                 </div>
@@ -312,9 +312,9 @@ export default function FinanceReports() {
             {/* Summary cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { label: ar ? "الأنشطة التشغيلية" : "Operating", value: cfOperating, icon: ArrowUp, color: cfOperating >= 0 ? "text-emerald-600" : "text-rose-500", bg: cfOperating >= 0 ? "bg-emerald-50" : "bg-rose-50" },
-                { label: ar ? "الأنشطة الاستثمارية" : "Investing", value: cfInvesting, icon: ArrowDown, color: cfInvesting >= 0 ? "text-emerald-600" : "text-rose-500", bg: cfInvesting >= 0 ? "bg-emerald-50" : "bg-rose-50" },
-                { label: ar ? "الأنشطة التمويلية" : "Financing", value: cfFinancing, icon: DollarSign, color: cfFinancing >= 0 ? "text-emerald-600" : "text-rose-500", bg: cfFinancing >= 0 ? "bg-emerald-50" : "bg-rose-50" },
+                { label: ar ? "الأنشطة التشغيلية" : "Operating", value: cfOperating, icon: ArrowUp, color: cfOperating >= 0 ? "text-emerald-600" : "text-rose-600", bg: cfOperating >= 0 ? "bg-emerald-50" : "bg-rose-50" },
+                { label: ar ? "الأنشطة الاستثمارية" : "Investing", value: cfInvesting, icon: ArrowDown, color: cfInvesting >= 0 ? "text-emerald-600" : "text-rose-600", bg: cfInvesting >= 0 ? "bg-emerald-50" : "bg-rose-50" },
+                { label: ar ? "الأنشطة التمويلية" : "Financing", value: cfFinancing, icon: DollarSign, color: cfFinancing >= 0 ? "text-emerald-600" : "text-rose-600", bg: cfFinancing >= 0 ? "bg-emerald-50" : "bg-rose-50" },
               ].map((s) => (
                 <div key={s.label} className="border border-border/40 rounded-xl bg-background p-4 flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-xl ${s.bg} flex items-center justify-center`}><s.icon size={15} strokeWidth={1.75} className={s.color} /></div>
@@ -361,14 +361,14 @@ export default function FinanceReports() {
               <div className={`px-6 py-5 flex items-center justify-between ${netCashFlow >= 0 ? "bg-emerald-50/50" : "bg-rose-50/50"}`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-xl ${netCashFlow >= 0 ? "bg-emerald-50" : "bg-rose-50"} flex items-center justify-center`}>
-                    <DollarSign size={16} strokeWidth={1.75} className={netCashFlow >= 0 ? "text-emerald-600" : "text-rose-500"} />
+                    <DollarSign size={16} strokeWidth={1.75} className={netCashFlow >= 0 ? "text-emerald-600" : "text-rose-600"} />
                   </div>
                   <div>
                     <p className="text-body-lg font-semibold text-foreground">{ar ? "صافي التدفق النقدي" : "Net Cash Flow"}</p>
                     <p className="text-micro text-muted-foreground/70">{ar ? "للفترة" : "for the period"}</p>
                   </div>
                 </div>
-                <span className={`text-heading font-bold tabular-nums ${netCashFlow >= 0 ? "text-emerald-600" : "text-rose-500"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netCashFlow)}</span>
+                <span className={`text-heading font-bold tabular-nums ${netCashFlow >= 0 ? "text-emerald-600" : "text-rose-600"}`} style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.03em" }}>{fmt(netCashFlow)}</span>
               </div>
             </div>
           </div>
@@ -383,7 +383,7 @@ export default function FinanceReports() {
                 { label: ar ? "إجمالي الضريبة" : "Total Tax", value: fmt(FIN_TAX_RECORDS.reduce((s, r) => s + r.amount, 0)), icon: Receipt, color: "text-brand-ink", bg: "bg-primary/8" },
                 { label: ar ? "مدفوع" : "Paid", value: FIN_TAX_RECORDS.filter((r) => r.status === "paid").length.toString(), icon: Shield, color: "text-emerald-600", bg: "bg-emerald-50" },
                 { label: ar ? "قيد الانتظار" : "Pending", value: FIN_TAX_RECORDS.filter((r) => r.status === "pending").length.toString(), icon: FileText, color: "text-warning", bg: "bg-warning/10" },
-                { label: ar ? "متأخرة" : "Overdue", value: FIN_TAX_RECORDS.filter((r) => r.status === "overdue").length.toString(), icon: TrendingDown, color: "text-rose-500", bg: "bg-rose-50" },
+                { label: ar ? "متأخرة" : "Overdue", value: FIN_TAX_RECORDS.filter((r) => r.status === "overdue").length.toString(), icon: TrendingDown, color: "text-rose-600", bg: "bg-rose-50" },
               ].map((s) => (
                 <div key={s.label} className="border border-border/40 rounded-xl bg-background p-4 flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg ${s.bg} flex items-center justify-center`}><s.icon size={14} strokeWidth={1.75} className={s.color} /></div>

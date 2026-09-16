@@ -64,7 +64,7 @@ function MetricCard({ icon: Icon, label, value, sub, color, trend }: {
           <p className="text-micro text-muted-foreground tracking-wide">{label}</p>
         </div>
         {trend !== undefined && (
-          <span className={`text-micro font-semibold flex items-center gap-0.5 px-1.5 py-0.5 rounded-full ${trend >= 0 ? "text-emerald-600 bg-emerald-500/10" : "text-rose-500 bg-rose-500/10"}`}>
+          <span className={`text-micro font-semibold flex items-center gap-0.5 px-1.5 py-0.5 rounded-full ${trend >= 0 ? "text-emerald-600 bg-emerald-500/10" : "text-rose-600 bg-rose-500/10"}`}>
             {trend >= 0 ? <ArrowUp size={8} /> : <ArrowDown size={8} />}
             {Math.abs(trend)}%
           </span>
@@ -162,12 +162,12 @@ function DeviceDonut({ data, ar }: { data: { ios: number; android: number }; ar:
   const androidPct = 100 - iosPct;
 
   const iosDeg = (iosPct / 100) * 360;
-  const gradient = `conic-gradient(#3B82F6 0deg ${iosDeg}deg, #10B981 ${iosDeg}deg 360deg)`;
+  const gradient = `conic-gradient(#8AB0EA 0deg ${iosDeg}deg, #6FC39E ${iosDeg}deg 360deg)`;
 
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-5">
-        <MonitorSmartphone size={14} strokeWidth={1.75} className="text-blue-500" />
+        <MonitorSmartphone size={14} strokeWidth={1.75} className="text-blue-600" />
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "توزيع الأجهزة" : "Device Breakdown"}
         </h3>
@@ -216,7 +216,7 @@ function GeoBreakdown({ data, ar }: { data: AppAnalyticsType["geo_breakdown"]; a
   return (
     <div className="bg-background border border-border/40 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-5">
-        <Globe size={14} strokeWidth={1.75} className="text-emerald-500" />
+        <Globe size={14} strokeWidth={1.75} className="text-emerald-600" />
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "التوزيع الجغرافي" : "Geographic Breakdown"}
         </h3>
@@ -258,7 +258,7 @@ function TopScreensTable({ data, ar }: { data: AppAnalyticsType["top_screens"]; 
   return (
     <div className="bg-background border border-border/40 rounded-xl overflow-hidden">
       <div className="px-5 py-4 border-b border-border/30 flex items-center gap-2">
-        <Eye size={14} strokeWidth={1.75} className="text-chart-4" />
+        <Eye size={14} strokeWidth={1.75} className="text-violet-600" />
         <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
           {ar ? "أكثر الشاشات مشاهدة" : "Top Screens"}
         </h3>
@@ -343,13 +343,13 @@ function RevenueCard({ data, ar, period }: { data: AppAnalyticsType; ar: boolean
         </div>
         <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
           <span className="text-caption text-muted-foreground">{ar ? "معدل التحويل" : "Conversion Rate"}</span>
-          <span className="text-title font-medium text-emerald-500 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <span className="text-title font-medium text-emerald-600 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
             {conversionRate}%
           </span>
         </div>
         <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
           <span className="text-caption text-muted-foreground">{ar ? "معدل فتح الإشعارات" : "Push Open Rate"}</span>
-          <span className="text-title font-medium text-blue-500 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
+          <span className="text-title font-medium text-blue-600 tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>
             {pushOpenRate}%
           </span>
         </div>
@@ -445,14 +445,14 @@ export default function AppAnalytics() {
           icon={Users}
           label={ar ? "المستخدمون النشطون" : "Active Users"}
           value={formatNumber(stats.activeUsers)}
-          color="text-emerald-500"
+          color="text-emerald-600"
           trend={8}
         />
         <MetricCard
           icon={Eye}
           label={ar ? "الجلسات" : "Sessions"}
           value={formatNumber(stats.sessions)}
-          color="text-blue-500"
+          color="text-blue-600"
           trend={15}
         />
         <MetricCard
@@ -467,21 +467,21 @@ export default function AppAnalytics() {
           label={ar ? "الإيرادات" : "Revenue"}
           value={`${formatCurrency(stats.revenue)}`}
           sub="EGP"
-          color="text-chart-4"
+          color="text-violet-600"
           trend={22}
         />
         <MetricCard
           icon={TrendingUp}
           label={ar ? "معدل التحويل" : "Conversion Rate"}
           value={`${stats.conversionRate}%`}
-          color="text-emerald-500"
+          color="text-emerald-600"
           trend={5}
         />
         <MetricCard
           icon={Smartphone}
           label={ar ? "معدل فتح الإشعارات" : "Push Open Rate"}
           value={`${stats.pushOpenRate}%`}
-          color="text-pink-500"
+          color="text-pink-600"
           trend={-2}
         />
       </div>

@@ -115,7 +115,7 @@ function DepNodeCard({ node, ar }: { node: DependencyNode; ar: boolean }) {
     backlog: "bg-stone-100 text-stone-600",
     planned: "bg-primary/8 text-brand-ink",
     in_progress: "bg-warning/15 text-warning",
-    review: "bg-chart-4/15 text-chart-4",
+    review: "bg-chart-4/15 text-violet-600",
     done: "bg-emerald-100 text-emerald-700",
   };
 
@@ -223,7 +223,7 @@ export default function ForecastEngine() {
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <TrendingUp size={14} strokeWidth={1.75} className="text-blue-500" />
+            <TrendingUp size={14} strokeWidth={1.75} className="text-blue-600" />
             <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "محرك التوقعات" : "Forecast Engine"}</p>
           </div>
           <h1 className="text-display font-medium text-foreground leading-tight mb-5" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
@@ -232,9 +232,9 @@ export default function ForecastEngine() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { labelEn: "Avg Confidence", labelAr: "متوسط الثقة", value: `${avgConfidence}%`, color: avgConfidence >= 60 ? "text-emerald-600" : "text-warning" },
-              { labelEn: "At Risk", labelAr: "في خطر", value: trendCounts.at_risk, color: "text-rose-500" },
+              { labelEn: "At Risk", labelAr: "في خطر", value: trendCounts.at_risk, color: "text-rose-600" },
               { labelEn: "Delayed", labelAr: "متأخر", value: trendCounts.delayed, color: "text-warning" },
-              { labelEn: "Critical Dependencies", labelAr: "تبعيات حرجة", value: criticalDeps, color: "text-chart-4" },
+              { labelEn: "Critical Dependencies", labelAr: "تبعيات حرجة", value: criticalDeps, color: "text-violet-600" },
             ].map((m) => (
               <div key={m.labelEn} className="bg-background border border-border/40 rounded-xl px-4 py-3">
                 <p className="text-micro text-muted-foreground mb-1.5">{ar ? m.labelAr : m.labelEn}</p>
@@ -283,7 +283,7 @@ export default function ForecastEngine() {
         {tab === "forecasts" && (
           filtered.length === 0 ? (
             <div className="flex flex-col items-center py-16">
-              <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-400 mb-3" />
+              <CheckCircle2 size={28} strokeWidth={1.5} className="text-emerald-600 mb-3" />
               <p className="text-body-lg text-muted-foreground">{ar ? "جميع المشاريع مكتملة" : "All projects completed"}</p>
             </div>
           ) : (

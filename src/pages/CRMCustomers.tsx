@@ -14,7 +14,7 @@ function formatEGP(n: number) {
 }
 
 const VIP_COLORS: Record<string, string> = {
-  platinum: "bg-chart-4/15 text-chart-4",
+  platinum: "bg-chart-4/15 text-violet-600",
   gold: "bg-warning/15 text-warning",
   silver: "bg-slate-100 text-slate-600",
   none: "bg-muted text-muted-foreground",

@@ -20,7 +20,7 @@ const TYPE_BG: Record<EntityType, string> = {
   work:         "bg-warning/10 text-warning",
   deal:         "bg-emerald-50 text-emerald-700",
   person:       "bg-blue-50 text-blue-700",
-  organization: "bg-chart-4/10 text-chart-4",
+  organization: "bg-chart-4/10 text-violet-600",
   invoice:      "bg-rose-50 text-rose-700",
   resource:     "bg-cyan-50 text-cyan-700",
 };

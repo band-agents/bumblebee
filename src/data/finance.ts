@@ -75,7 +75,7 @@ export const PAYMENT_METHOD_META: Record<PaymentMethod, { en: string; ar: string
 
 export const EXPENSE_CATEGORY_META: Record<ExpenseCategory, { en: string; ar: string; pill: string }> = {
   operations: { en: "Operations", ar: "العمليات",  pill: "bg-blue-50 text-blue-700 border border-blue-200" },
-  payroll:    { en: "Payroll",    ar: "الرواتب",   pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30" },
+  payroll:    { en: "Payroll",    ar: "الرواتب",   pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30" },
   marketing:  { en: "Marketing",  ar: "التسويق",   pill: "bg-warning/10 text-warning border border-warning/30" },
   software:   { en: "Software",   ar: "البرمجيات", pill: "bg-cyan-50 text-cyan-700 border border-cyan-200" },
   travel:     { en: "Travel",     ar: "السفر",     pill: "bg-emerald-50 text-emerald-700 border border-emerald-200" },

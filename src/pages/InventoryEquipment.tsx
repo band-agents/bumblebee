@@ -40,7 +40,7 @@ const btnSecondary = "inline-flex items-center justify-center gap-1.5 rounded-xl
 const ASSET_TYPES = [
   { value: "equipment", en: "Equipment", ar: "معدات",  icon: Wrench,    color: "bg-blue-100 text-blue-600" },
   { value: "vehicle",   en: "Vehicle",   ar: "مركبة",  icon: Car,       color: "bg-cyan-100 text-cyan-600" },
-  { value: "facility",  en: "Facility",  ar: "منشأة",  icon: Building2,  color: "bg-chart-4/15 text-chart-4" },
+  { value: "facility",  en: "Facility",  ar: "منشأة",  icon: Building2,  color: "bg-chart-4/15 text-violet-600" },
   { value: "license",   en: "License",   ar: "ترخيص",  icon: Key,        color: "bg-emerald-100 text-emerald-700" },
   { value: "other",     en: "Other",     ar: "أخرى",   icon: Box,        color: "bg-slate-100 text-slate-600" },
 ] as const;
@@ -242,7 +242,7 @@ function AssetModal({ initial, nextTag, ar, currency, onClose, onSaved }: {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
-              <label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-400">*</span></label>
+              <label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-600">*</span></label>
               <input value={form.name} onChange={e => set({ name: e.target.value })} autoFocus className={inputCls} placeholder={ar ? "مثال: ماكينة قص ليزر" : "e.g. Laser Cutter"} />
             </div>
             <div>
@@ -562,7 +562,7 @@ export default function InventoryEquipmentPage() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <button onClick={e => { e.stopPropagation(); setEditItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity"><Edit3 size={11} /></button>
-                      <button onClick={e => { e.stopPropagation(); setDeleteItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-rose-50 text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={11} /></button>
+                      <button onClick={e => { e.stopPropagation(); setDeleteItem(r); }} className="w-6 h-6 rounded-md flex items-center justify-center hover:bg-rose-50 text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={11} /></button>
                     </div>
                   </div>
                 </div>

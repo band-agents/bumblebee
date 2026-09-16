@@ -278,7 +278,7 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
             </>
           )}
 
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
@@ -612,19 +612,19 @@ function VisitDetail({ visit, onBack, ar, workspaceId, orders, onRefresh }: {
                                 </div>
                                 <div className="flex items-center gap-1 shrink-0">
                                   {m.approval_status === "draft" && (
-                                    <button onClick={() => updateMeasurementApproval(m.id, "submitted")} title={ar ? "إرسال" : "Submit"} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500"><Send size={12} /></button>
+                                    <button onClick={() => updateMeasurementApproval(m.id, "submitted")} title={ar ? "إرسال" : "Submit"} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600"><Send size={12} /></button>
                                   )}
                                   {m.approval_status === "submitted" && (
                                     <>
-                                      <button onClick={() => updateMeasurementApproval(m.id, "approved")} title={ar ? "اعتماد" : "Approve"} className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-500"><Check size={12} /></button>
+                                      <button onClick={() => updateMeasurementApproval(m.id, "approved")} title={ar ? "اعتماد" : "Approve"} className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600"><Check size={12} /></button>
                                       <button onClick={() => updateMeasurementApproval(m.id, "needs_revision")} title={ar ? "تعديل" : "Revision"} className="p-1.5 rounded-lg hover:bg-warning/10 text-warning"><RotateCcw size={12} /></button>
                                     </>
                                   )}
                                   {m.approval_status === "needs_revision" && (
-                                    <button onClick={() => updateMeasurementApproval(m.id, "submitted")} title={ar ? "إعادة إرسال" : "Resubmit"} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500"><Send size={12} /></button>
+                                    <button onClick={() => updateMeasurementApproval(m.id, "submitted")} title={ar ? "إعادة إرسال" : "Resubmit"} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600"><Send size={12} /></button>
                                   )}
                                   <button onClick={() => { setEditMeas(m); setMeasModal(true); }} className="p-1.5 rounded-lg hover:bg-muted/50 text-muted-foreground"><Edit3 size={12} /></button>
-                                  <button onClick={() => deleteMeasurement(m.id)} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400"><Trash2 size={12} /></button>
+                                  <button onClick={() => deleteMeasurement(m.id)} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600"><Trash2 size={12} /></button>
                                 </div>
                               </div>
                             );
@@ -845,7 +845,7 @@ export default function SiteVisits() {
           { label: ar ? "مجدولة" : "Scheduled", value: scheduled, color: "text-blue-600 bg-blue-50" },
           { label: ar ? "جارية" : "In Progress", value: inProgress, color: "text-warning bg-warning/10" },
           { label: ar ? "مكتملة" : "Completed", value: completed, color: "text-emerald-600 bg-emerald-50" },
-          { label: ar ? "هذا الأسبوع" : "This Week", value: thisWeek, color: "text-chart-4 bg-chart-4/10" },
+          { label: ar ? "هذا الأسبوع" : "This Week", value: thisWeek, color: "text-violet-600 bg-chart-4/10" },
         ].map((s, i) => (
           <div key={i} className="border border-border/40 rounded-xl p-4 bg-background">
             <p className="text-micro text-muted-foreground mb-1">{s.label}</p>

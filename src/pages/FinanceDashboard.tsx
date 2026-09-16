@@ -81,20 +81,20 @@ const METHOD_LABELS: Record<string, { en: string; ar: string }> = {
 };
 
 const EXPENSE_CAT_COLORS: Record<string, string> = {
-  salaries: "#3b82f6",
-  rent: "#8b5cf6",
-  supplies: "#f59e0b",
-  marketing: "#ec4899",
-  utilities: "#06b6d4",
-  technology: "#10b981",
-  insurance: "#6366f1",
-  maintenance: "#f97316",
-  travel: "#14b8a6",
+  salaries: "#8AB0EA",
+  rent: "#B6A0EA",
+  supplies: "#EFC274",
+  marketing: "#EFA3C6",
+  utilities: "#84CCDA",
+  technology: "#6FC39E",
+  insurance: "#A3A9EE",
+  maintenance: "#F2AE82",
+  travel: "#7CC9BF",
   professional: "#64748b",
   other: "#94a3b8",
 };
 
-const REVENUE_CAT_COLORS = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ec4899"];
+const REVENUE_CAT_COLORS = ["#6FC39E", "#8AB0EA", "#EFC274", "#B6A0EA", "#EFA3C6"];
 
 /* ─── Donut Chart (SVG) ────────────────────────────────────── */
 
@@ -171,7 +171,7 @@ export default function FinanceDashboard() {
       label: ar ? "صافي الربح" : "Net Profit",
       value: formatEGP(FIN_METRICS.net_profit),
       icon: Wallet,
-      color: "text-chart-4",
+      color: "text-violet-600",
       bg: "bg-chart-4/10",
       border: "border-chart-4/30",
       change: `${FIN_METRICS.net_margin}%`,
@@ -296,7 +296,7 @@ export default function FinanceDashboard() {
           {[
             { label: ar ? "فاتورة جديدة" : "New Invoice", icon: FileText, path: "/finance", color: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100" },
             { label: ar ? "تسجيل دفعة" : "Record Payment", icon: CreditCard, path: "/finance", color: "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100" },
-            { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-chart-4/10 text-chart-4 border-chart-4/30 hover:bg-chart-4/15" },
+            { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-chart-4/10 text-violet-600 border-chart-4/30 hover:bg-chart-4/15" },
           ].map((btn) => (
             <button
               key={btn.label}
@@ -386,7 +386,7 @@ export default function FinanceDashboard() {
             >
               <div className="flex items-center justify-between mb-5">
                 <h3 className="text-body font-semibold flex items-center gap-2">
-                  <BarChart3 size={14} className="text-blue-500" />
+                  <BarChart3 size={14} className="text-blue-600" />
                   {ar ? "الإيرادات مقابل المصروفات" : "Revenue vs Expenses"}
                 </h3>
                 <span className="text-micro text-muted-foreground">2026</span>
@@ -446,7 +446,7 @@ export default function FinanceDashboard() {
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
               <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
-                <PieChartIcon size={14} className="text-emerald-500" />
+                <PieChartIcon size={14} className="text-emerald-600" />
                 {ar ? "الإيرادات حسب الفئة" : "Revenue by Category"}
               </h3>
 
@@ -489,7 +489,7 @@ export default function FinanceDashboard() {
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
               <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
-                <Receipt size={14} className="text-rose-500" />
+                <Receipt size={14} className="text-rose-600" />
                 {ar ? "المصروفات حسب الفئة" : "Expense by Category"}
               </h3>
               <div className="space-y-3">
@@ -563,10 +563,10 @@ export default function FinanceDashboard() {
               {/* Aging bar visualization */}
               <div className="space-y-2">
                 {[
-                  { label: ar ? "Current" : "Current", value: agingBuckets.current, color: "#10b981" },
-                  { label: "1-30d", value: agingBuckets["1-30"], color: "#f59e0b" },
-                  { label: "31-60d", value: agingBuckets["31-60"], color: "#f97316" },
-                  { label: "61-90d", value: agingBuckets["61-90"], color: "#ef4444" },
+                  { label: ar ? "Current" : "Current", value: agingBuckets.current, color: "#6FC39E" },
+                  { label: "1-30d", value: agingBuckets["1-30"], color: "#EFC274" },
+                  { label: "31-60d", value: agingBuckets["31-60"], color: "#F2AE82" },
+                  { label: "61-90d", value: agingBuckets["61-90"], color: "#EE9E9E" },
                 ].map((b, i) => (
                   <div key={b.label} className="flex items-center gap-3">
                     <span className="text-micro text-muted-foreground w-12 shrink-0">{b.label}</span>
@@ -619,7 +619,7 @@ export default function FinanceDashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-body font-semibold flex items-center gap-2">
-                <FileText size={14} className="text-blue-500" />
+                <FileText size={14} className="text-blue-600" />
                 {ar ? "الفواتير الأخيرة" : "Recent Invoices"}
               </h3>
               <button
@@ -763,7 +763,7 @@ export default function FinanceDashboard() {
               className="p-5 rounded-2xl border border-border/40 bg-background shadow-sm"
             >
               <h3 className="text-body font-semibold flex items-center gap-2 mb-4">
-                <Zap size={14} className="text-chart-4" />
+                <Zap size={14} className="text-violet-600" />
                 {ar ? "إجراءات سريعة" : "Quick Actions"}
               </h3>
               <div className="grid grid-cols-2 gap-2">
@@ -771,7 +771,7 @@ export default function FinanceDashboard() {
                   { label: ar ? "إنشاء فاتورة" : "Create Invoice", icon: FileText, path: "/finance", color: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100" },
                   { label: ar ? "تسجيل دفعة" : "Record Payment", icon: CreditCard, path: "/finance", color: "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100" },
                   { label: ar ? "إضافة مصروف" : "Add Expense", icon: Receipt, path: "/finance", color: "bg-warning/10 text-warning border-warning/30 hover:bg-warning/15" },
-                  { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-chart-4/10 text-chart-4 border-chart-4/30 hover:bg-chart-4/15" },
+                  { label: ar ? "عرض التقارير" : "View Reports", icon: BarChart3, path: "/reports", color: "bg-chart-4/10 text-violet-600 border-chart-4/30 hover:bg-chart-4/15" },
                   { label: ar ? "تسوية بنكية" : "Bank Reconciliation", icon: Landmark, path: "/finance", color: "bg-teal-50 text-teal-600 border-teal-100 hover:bg-teal-100" },
                 ].map((action) => (
                   <button
@@ -803,7 +803,7 @@ export default function FinanceDashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-body font-semibold flex items-center gap-2">
-                <FileText size={14} className="text-blue-500" />
+                <FileText size={14} className="text-blue-600" />
                 {ar ? "جميع الفواتير" : "All Invoices"}
               </h3>
               <div className="flex items-center gap-2">
@@ -908,7 +908,7 @@ export default function FinanceDashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-body font-semibold flex items-center gap-2">
-                <CreditCard size={14} className="text-emerald-500" />
+                <CreditCard size={14} className="text-emerald-600" />
                 {ar ? "جميع المدفوعات" : "All Payments"}
               </h3>
               <span className="text-micro text-muted-foreground">
@@ -1004,7 +1004,7 @@ export default function FinanceDashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-body font-semibold flex items-center gap-2">
-                <Receipt size={14} className="text-rose-500" />
+                <Receipt size={14} className="text-rose-600" />
                 {ar ? "جميع المصروفات" : "All Expenses"}
               </h3>
               <span className="text-micro text-muted-foreground">
@@ -1078,7 +1078,7 @@ export default function FinanceDashboard() {
                         </td>
                         <td className="py-2.5 pr-4">
                           {exp.recurring ? (
-                            <CheckCircle2 size={12} className="text-emerald-500" />
+                            <CheckCircle2 size={12} className="text-emerald-600" />
                           ) : (
                             <XCircle size={12} className="text-muted-foreground/30" />
                           )}

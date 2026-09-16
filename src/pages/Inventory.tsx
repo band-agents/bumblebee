@@ -116,13 +116,13 @@ function getMaintMeta(w: WorkItem): MaintMeta {
 // ─── Constants ───────────────────────────────────────────
 
 const RESOURCE_CATEGORIES: { value: string; en: string; ar: string; icon: React.ElementType; color: string; hex: string }[] = [
-  { value: "inventory", en: "Inventory", ar: "مخزون", icon: Box, color: "bg-chart-4/15 text-chart-4", hex: "#8b5cf6" },
-  { value: "equipment", en: "Equipment", ar: "معدات", icon: Monitor, color: "bg-warning/15 text-warning", hex: "#d97706" },
-  { value: "vehicle", en: "Vehicle", ar: "مركبة", icon: Car, color: "bg-blue-100 text-blue-600", hex: "#3b82f6" },
+  { value: "inventory", en: "Inventory", ar: "مخزون", icon: Box, color: "bg-chart-4/15 text-violet-600", hex: "#B6A0EA" },
+  { value: "equipment", en: "Equipment", ar: "معدات", icon: Monitor, color: "bg-warning/15 text-warning", hex: "#E3B066" },
+  { value: "vehicle", en: "Vehicle", ar: "مركبة", icon: Car, color: "bg-blue-100 text-blue-600", hex: "#8AB0EA" },
   { value: "tool", en: "Tool", ar: "أداة", icon: Hammer, color: "bg-orange-100 text-orange-600", hex: "#ea580c" },
-  { value: "furniture", en: "Furniture", ar: "أثاث", icon: Armchair, color: "bg-emerald-100 text-emerald-700", hex: "#059669" },
+  { value: "furniture", en: "Furniture", ar: "أثاث", icon: Armchair, color: "bg-emerald-100 text-emerald-700", hex: "#5DAE8B" },
   { value: "license", en: "Software License", ar: "رخصة برمجية", icon: Key, color: "bg-cyan-100 text-cyan-700", hex: "#0891b2" },
-  { value: "facility", en: "Facility", ar: "منشأة", icon: Building2, color: "bg-rose-100 text-rose-600", hex: "#e11d48" },
+  { value: "facility", en: "Facility", ar: "منشأة", icon: Building2, color: "bg-rose-100 text-rose-600", hex: "#E99AAE" },
   { value: "other", en: "Other", ar: "أخرى", icon: Package, color: "bg-slate-100 text-slate-600", hex: "#64748b" },
 ];
 
@@ -169,7 +169,7 @@ const UOMS = [
 ];
 
 const ABC_STYLES: Record<string, string> = {
-  A: "bg-chart-4/15 text-chart-4",
+  A: "bg-chart-4/15 text-violet-600",
   B: "bg-blue-100 text-blue-600",
   C: "bg-slate-100 text-slate-500",
 };
@@ -436,7 +436,7 @@ function ItemModal({ onClose, onSaved, ar, currency, mode, initial }: {
     <ModalShell wide title={initial ? editTitle : addTitle} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "الاسم" : "Name"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required autoFocus className={inputCls} placeholder={isInv ? (ar ? "مثال: خشب MDF 18مم" : "e.g. MDF Board 18mm") : (ar ? "مثال: منشار CNC" : "e.g. CNC Router")} />
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -555,7 +555,7 @@ function ItemModal({ onClose, onSaved, ar, currency, mode, initial }: {
             <input type="file" accept="image/*" className="hidden" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
           </label>
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -631,7 +631,7 @@ function AddMovementModal({ onClose, onAdd, onResourceUpdate, ar, resources }: {
     <ModalShell title={ar ? "حركة مخزون" : "Stock Movement"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "الصنف" : "Item"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "الصنف" : "Item"} <span className="text-rose-600">*</span></label>
           <select value={form.resource} onChange={(e) => setForm((f) => ({ ...f, resource: e.target.value }))} className={selectCls} required>
             <option value="">{ar ? "اختار..." : "Select..."}</option>
             {resources.map((r) => <option key={r.id} value={r.id}>{r.name_en}</option>)}
@@ -639,13 +639,13 @@ function AddMovementModal({ onClose, onAdd, onResourceUpdate, ar, resources }: {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className={labelCls}>{ar ? "نوع الحركة" : "Movement Type"} <span className="text-rose-400">*</span></label>
+            <label className={labelCls}>{ar ? "نوع الحركة" : "Movement Type"} <span className="text-rose-600">*</span></label>
             <select value={form.moveType} onChange={(e) => setForm((f) => ({ ...f, moveType: e.target.value }))} className={selectCls}>
               {MOVE_TYPES.map((m) => <option key={m.value} value={m.value}>{ar ? m.ar : m.en}</option>)}
             </select>
           </div>
           <div>
-            <label className={labelCls}>{isAdj ? (ar ? "الكمية الجديدة" : "New Quantity") : (ar ? "الكمية" : "Quantity")} <span className="text-rose-400">*</span></label>
+            <label className={labelCls}>{isAdj ? (ar ? "الكمية الجديدة" : "New Quantity") : (ar ? "الكمية" : "Quantity")} <span className="text-rose-600">*</span></label>
             <input type="number" value={form.quantity} onChange={(e) => setForm((f) => ({ ...f, quantity: e.target.value }))} min={isAdj ? "0" : "1"} required className={inputCls} />
           </div>
         </div>
@@ -665,7 +665,7 @@ function AddMovementModal({ onClose, onAdd, onResourceUpdate, ar, resources }: {
           <label className={labelCls}>{ar ? "السبب" : "Reason"}</label>
           <input type="text" value={form.reason} onChange={(e) => setForm((f) => ({ ...f, reason: e.target.value }))} className={inputCls} placeholder={ar ? "اختياري" : "Optional"} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.resource || !form.quantity} className={btnPrimary + " flex-1 h-10"}>
@@ -716,7 +716,7 @@ function AddMaintenanceModal({ onClose, onAdd, ar, resources, currency }: { onCl
     <ModalShell title={ar ? "سجّل صيانة" : "Schedule Maintenance"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "الأصل / المعدة" : "Asset"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "الأصل / المعدة" : "Asset"} <span className="text-rose-600">*</span></label>
           <select value={form.resource} onChange={(e) => setForm((f) => ({ ...f, resource: e.target.value }))} className={selectCls} required>
             <option value="">{ar ? "اختار..." : "Select..."}</option>
             {resources.filter((r) => !isInventoryItem(r)).map((r) => <option key={r.id} value={r.id}>{r.name_en}</option>)}
@@ -751,7 +751,7 @@ function AddMaintenanceModal({ onClose, onAdd, ar, resources, currency }: { onCl
           <label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
           <input type="text" value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.resource} className={btnPrimary + " flex-1 h-10"}>
@@ -1005,7 +1005,7 @@ function DetailDrawer({ resource, ar, currency, movements, maintenance, abc, onC
                     <FileText size={13} className="text-muted-foreground shrink-0" />
                     <a href={f.url} target="_blank" rel="noreferrer" className="flex-1 min-w-0 text-caption font-medium truncate hover:underline">{f.name}</a>
                     <span className="text-micro text-muted-foreground shrink-0">{fmtBytes(f.size)}</span>
-                    <button onClick={() => saveMeta({ files: files.filter((_, j) => j !== i) })} className="p-1 rounded-md hover:bg-rose-50 text-rose-400 transition-colors shrink-0"><X size={11} /></button>
+                    <button onClick={() => saveMeta({ files: files.filter((_, j) => j !== i) })} className="p-1 rounded-md hover:bg-rose-50 text-rose-600 transition-colors shrink-0"><X size={11} /></button>
                   </div>
                 ))}
               </div>
@@ -1183,7 +1183,7 @@ export default function Inventory() {
     invItems
       .map((r) => { const m = getMeta(r); return { r, v: (m.quantity || 0) * (m.unit_cost || 0) }; })
       .sort((a, b) => b.v - a.v).slice(0, 5)
-      .map((x) => ({ label: x.r.name_en, value: x.v, color: "#8b5cf6", sub: getMeta(x.r).sku })),
+      .map((x) => ({ label: x.r.name_en, value: x.v, color: "#B6A0EA", sub: getMeta(x.r).sku })),
   [invItems]);
 
   const flowMonths = useMemo(() => {
@@ -1219,7 +1219,7 @@ export default function Inventory() {
       const target = Math.max(m.max_level || 0, (m.reorder_level || 0) * 2);
       const suggested = Math.max(target - (m.quantity || 0), m.reorder_level || 1);
       out.push({
-        icon: AlertTriangle, tone: (m.quantity ?? 0) === 0 ? "text-rose-500 bg-rose-50/60 border-rose-200/40" : "text-warning bg-warning/10 border-warning/30",
+        icon: AlertTriangle, tone: (m.quantity ?? 0) === 0 ? "text-rose-600 bg-rose-50/60 border-rose-200/40" : "text-warning bg-warning/10 border-warning/30",
         title: ar ? `اطلب ${r.name_en}` : `Reorder ${r.name_en}`,
         desc: ar ? `الكمية ${m.quantity ?? 0} — الكمية المقترحة للطلب: ${suggested}${m.vendor_name ? ` من ${m.vendor_name}` : ""}` : `On hand ${m.quantity ?? 0} — suggested order qty: ${suggested}${m.vendor_name ? ` from ${m.vendor_name}` : ""}`,
       });
@@ -1260,7 +1260,7 @@ export default function Inventory() {
     for (const w of overdue.slice(0, 3)) {
       const mm = getMaintMeta(w);
       out.push({
-        icon: Wrench, tone: "text-rose-500 bg-rose-50/60 border-rose-200/40",
+        icon: Wrench, tone: "text-rose-600 bg-rose-50/60 border-rose-200/40",
         title: ar ? `صيانة متأخرة: ${mm.resource_name || w.title_en}` : `Overdue maintenance: ${mm.resource_name || w.title_en}`,
         desc: ar ? `كانت مجدولة ${w.due_date?.slice(0, 10)}` : `Was scheduled for ${w.due_date?.slice(0, 10)}`,
       });
@@ -1397,7 +1397,7 @@ export default function Inventory() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
             {[
-              { icon: Box, value: invItems.length, label: ar ? "أصناف المخزون" : "Inventory Items", color: "text-chart-4" },
+              { icon: Box, value: invItems.length, label: ar ? "أصناف المخزون" : "Inventory Items", color: "text-violet-600" },
               { icon: DollarSign, value: fmtVal(totalStockValue), label: ar ? "قيمة المخزون" : "Stock Value", color: "text-brand-ink" },
               { icon: AlertTriangle, value: lowStock.length, label: ar ? "كمية قليلة" : "Low Stock", color: lowStock.length > 0 ? "text-warning" : "text-slate-400" },
               { icon: Package, value: assets.length, label: ar ? "الأصول" : "Assets", color: "text-blue-600" },
@@ -1487,7 +1487,7 @@ export default function Inventory() {
                   {(["A", "B", "C"] as const).map((k) => {
                     const total = abcSummary.A.v + abcSummary.B.v + abcSummary.C.v;
                     const pct = total > 0 ? (abcSummary[k].v / total) * 100 : 0;
-                    const colors = { A: "#8b5cf6", B: "#3b82f6", C: "#94a3b8" };
+                    const colors = { A: "#B6A0EA", B: "#8AB0EA", C: "#94a3b8" };
                     return <div key={k} style={{ width: `${pct}%`, backgroundColor: colors[k] }} className="h-full transition-all duration-700" />;
                   })}
                 </div>
@@ -1508,7 +1508,7 @@ export default function Inventory() {
                 <div className="space-y-2">
                   {inMaintenance.length === 0 ? (
                     <div className="p-3.5 rounded-xl border border-emerald-200/40 bg-emerald-50/20 text-center">
-                      <CheckCircle2 size={16} className="mx-auto text-emerald-500 mb-1.5" />
+                      <CheckCircle2 size={16} className="mx-auto text-emerald-600 mb-1.5" />
                       <p className="text-micro text-emerald-700">{ar ? "مفيش صيانة جارية" : "No open maintenance"}</p>
                     </div>
                   ) : inMaintenance.slice(0, 4).map((w) => {
@@ -1531,7 +1531,7 @@ export default function Inventory() {
               <ChartCard title={ar ? "رؤى ذكية" : "Smart Insights"} sub={ar ? "اقتراحات إعادة طلب وتنبيهات" : "Reorder suggestions, dead stock & warnings"}>
                 {insights.length === 0 ? (
                   <div className="flex items-center gap-2.5 p-4 rounded-xl border border-emerald-200/40 bg-emerald-50/20">
-                    <Sparkles size={14} className="text-emerald-500" />
+                    <Sparkles size={14} className="text-emerald-600" />
                     <p className="text-caption text-emerald-700">{ar ? "كل حاجة تمام — مفيش تنبيهات دلوقتي" : "All clear — nothing needs your attention right now"}</p>
                   </div>
                 ) : (
@@ -1554,7 +1554,7 @@ export default function Inventory() {
               <ChartCard title={ar ? "خطة إعادة الطلب" : "Reorder Planner"} sub={reorderPlan.length === 0 ? (ar ? "كل الأصناف فوق حد الطلب" : "All items above reorder level") : `${ar ? "ميزانية الشراء المقترحة" : "Suggested purchase budget"} ${fmtVal(reorderBudget)}`}>
                 {reorderPlan.length === 0 ? (
                   <div className="p-3.5 rounded-xl border border-emerald-200/40 bg-emerald-50/20 text-center">
-                    <CheckCircle2 size={16} className="mx-auto text-emerald-500 mb-1.5" />
+                    <CheckCircle2 size={16} className="mx-auto text-emerald-600 mb-1.5" />
                     <p className="text-micro text-emerald-700">{ar ? "مفيش طلبات شراء مطلوبة" : "Nothing to reorder right now"}</p>
                   </div>
                 ) : (
@@ -1668,7 +1668,7 @@ export default function Inventory() {
                           <p className="text-body font-medium tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(value)}</p>
                           {m.unit_cost ? <p className="text-micro text-muted-foreground tabular-nums">@{fmtVal(m.unit_cost)}</p> : null}
                         </div>
-                        <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
+                        <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
                           <Trash2 size={12} />
                         </button>
                         <ChevronRight size={13} className="text-muted-foreground/40 shrink-0 rtl:rotate-180" />
@@ -1709,7 +1709,7 @@ export default function Inventory() {
                                 )}
                               </div>
                             </div>
-                            <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
+                            <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
                               <Trash2 size={12} />
                             </button>
                           </div>

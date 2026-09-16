@@ -49,14 +49,14 @@ const DEFAULT_CONFIG: WishlistConfig = {
   channelEmail: true, channelPush: true, channelWhatsapp: false,
   maxAlertsPerWeek: 3,
   btnStyle: "icon", btnPos: "image-corner", anim: "pop",
-  color: "#e11d48", layout: "grid",
+  color: "#E99AAE", layout: "grid",
   labelEn: "Add to wishlist", labelAr: "أضف للأمنيات",
   showCount: true,
   guestWishlist: true, mergeOnLogin: true,
   multiList: true, shareLinks: true,
 };
 
-const SWATCHES = ["#e11d48", "#db2777", "#7c3aed", "#0ea5e9", "#059669", "#111827"];
+const SWATCHES = ["#E99AAE", "#db2777", "#AA94E3", "#85C1E6", "#5DAE8B", "#111827"];
 
 // ─── Demo data ───────────────────────────────────────────
 
@@ -303,7 +303,7 @@ export default function ShopifyWishlistPage() {
               { icon: Heart, val: totalSaves.toLocaleString(), labelEn: "Items wishlisted", labelAr: "منتج محفوظ", cls: "text-rose-600" },
               { icon: Users, val: "1,027", labelEn: "Wishlisters", labelAr: "عميل لديه قائمة", cls: "text-blue-600" },
               { icon: ShoppingCart, val: "18.4%", labelEn: "Wishlist → cart", labelAr: "من القائمة للسلة", cls: "text-emerald-600" },
-              { icon: Bell, val: "642", labelEn: "Alerts sent / mo", labelAr: "تنبيه شهريًا", cls: "text-chart-4" },
+              { icon: Bell, val: "642", labelEn: "Alerts sent / mo", labelAr: "تنبيه شهريًا", cls: "text-violet-600" },
             ].map((k, i) => (
               <div key={i} className={`${cardCls} p-4`}>
                 <k.icon size={14} className={`${k.cls} mb-2`} />
@@ -346,7 +346,7 @@ export default function ShopifyWishlistPage() {
 
           {/* Insight strip */}
           <div className="flex items-start gap-3 px-4 py-3.5 rounded-xl border border-rose-100 bg-rose-50/40">
-            <Sparkles size={14} className="text-rose-500 mt-0.5 shrink-0" />
+            <Sparkles size={14} className="text-rose-600 mt-0.5 shrink-0" />
             <p className="text-caption text-foreground/80 leading-relaxed">
               {ar
                 ? "«وشاح حرير — النيل» نفد من المخزون وعليه 198 حفظ. أعد التخزين وسيرسل التطبيق تنبيهات «عاد للتوفر» تلقائيًا — طلبات شبه مضمونة."

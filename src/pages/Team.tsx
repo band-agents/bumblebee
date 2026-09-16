@@ -138,7 +138,7 @@ function AddEmployeeModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className={labelCls}>{ar ? "الاسم الكامل" : "Full Name"} <span className="text-rose-400">*</span></label>
+            <label className={labelCls}>{ar ? "الاسم الكامل" : "Full Name"} <span className="text-rose-600">*</span></label>
             <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required autoFocus className={inputCls} placeholder={ar ? "مثال: أحمد محمود" : "e.g. Ahmed Mahmoud"} />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -176,7 +176,7 @@ function AddEmployeeModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
               </select>
             </div>
           </div>
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
             <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -281,7 +281,7 @@ function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
         {status === "sent" ? (
           <div className="p-6 flex flex-col items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
-              <CheckCircle2 size={24} className="text-emerald-500" />
+              <CheckCircle2 size={24} className="text-emerald-600" />
             </div>
             <div className="text-center">
               <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
@@ -314,7 +314,7 @@ function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <div>
-              <label className={labelCls}>{ar ? "البريد الإلكتروني" : "Email"} <span className="text-rose-400">*</span></label>
+              <label className={labelCls}>{ar ? "البريد الإلكتروني" : "Email"} <span className="text-rose-600">*</span></label>
               <input type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} required autoFocus className={inputCls} placeholder="colleague@company.com" />
             </div>
             <div>
@@ -524,7 +524,7 @@ export default function Team() {
               { icon: Users, value: teamMembers.length, label: ar ? "إجمالي الفريق" : "Team Size", color: "text-brand-ink" },
               { icon: CheckCircle2, value: activeCount, label: ar ? "نشط" : "Active", color: "text-emerald-600" },
               { icon: Clock, value: onLeaveCount, label: ar ? "إجازة" : "On Leave", color: "text-warning" },
-              { icon: Building2, value: uniqueDepts, label: ar ? "أقسام" : "Departments", color: "text-chart-4" },
+              { icon: Building2, value: uniqueDepts, label: ar ? "أقسام" : "Departments", color: "text-violet-600" },
               { icon: Briefcase, value: activeWork.length, label: ar ? "شغل مفتوح" : "Open Work", color: "text-blue-600" },
             ].map((m, i) => (
               <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
@@ -629,8 +629,8 @@ export default function Team() {
                       <span className="text-caption font-medium tabular-nums">{activeWork.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-caption text-rose-500">{ar ? "متأخرة" : "Overdue"}</span>
-                      <span className="text-caption font-medium tabular-nums text-rose-500">{overdueWork.length}</span>
+                      <span className="text-caption text-rose-600">{ar ? "متأخرة" : "Overdue"}</span>
+                      <span className="text-caption font-medium tabular-nums text-rose-600">{overdueWork.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-caption text-emerald-600">{ar ? "خلصت الأسبوع ده" : "Done this week"}</span>

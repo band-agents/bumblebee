@@ -220,16 +220,16 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
                   }`}>
                     <div className="shrink-0 mt-0.5">
                       {row.status === "valid" ? (
-                        <CheckCircle2 size={14} className="text-emerald-500" />
+                        <CheckCircle2 size={14} className="text-emerald-600" />
                       ) : (
-                        <AlertCircle size={14} className="text-rose-500" />
+                        <AlertCircle size={14} className="text-rose-600" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-foreground font-medium truncate">
                         {row.data[template.requiredHeaders[0]] || `Row ${i + 1}`}
                       </p>
-                      {row.error && <p className="text-rose-500 text-micro mt-0.5">{row.error}</p>}
+                      {row.error && <p className="text-rose-600 text-micro mt-0.5">{row.error}</p>}
                     </div>
                     <span className="text-muted-foreground/50 tabular-nums shrink-0">#{i + 1}</span>
                   </div>
@@ -255,7 +255,7 @@ export function CsvImport({ open, onClose, template, adapter, ar, onComplete }: 
           {step === "done" && (
             <div className="flex flex-col items-center justify-center py-12 gap-4">
               <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center">
-                <CheckCircle2 size={28} className="text-emerald-500" />
+                <CheckCircle2 size={28} className="text-emerald-600" />
               </div>
               <div className="text-center">
                 <p className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>

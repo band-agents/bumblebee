@@ -1074,7 +1074,7 @@ export function buildOrgGraph(): { nodes: OrgGraphNode[]; edges: OrgGraphEdge[] 
       label: org.nameEn.length > 16 ? org.nameEn.slice(0, 14) + "…" : org.nameEn,
       labelAr: org.nameAr.length > 16 ? org.nameAr.slice(0, 14) + "…" : org.nameAr,
       type: "org",
-      color: "#0ea5e9",
+      color: "#85C1E6",
       bgColor: "#e0f2fe",
       size: 14,
       x: Math.round(CX + Math.cos(angle) * r),
@@ -1093,7 +1093,7 @@ export function buildOrgGraph(): { nodes: OrgGraphNode[]; edges: OrgGraphEdge[] 
       label: person.name.split(" ")[0],
       labelAr: person.nameAr.split(" ")[0],
       type: "person",
-      color: "#a855f7",
+      color: "#C3A2EC",
       bgColor: "#f3e8ff",
       size: 10,
       x: Math.round(CX + Math.cos(angle) * r),
@@ -1112,7 +1112,7 @@ export function buildOrgGraph(): { nodes: OrgGraphNode[]; edges: OrgGraphEdge[] 
       label: deal.titleEn.split("—")[0].trim().slice(0, 14) + "…",
       labelAr: deal.titleAr.split("—")[0].trim().slice(0, 14) + "…",
       type: "deal",
-      color: "#f59e0b",
+      color: "#EFC274",
       bgColor: "#fef3c7",
       size: 9,
       x: Math.round(CX + Math.cos(angle) * r),
@@ -1131,7 +1131,7 @@ export function buildOrgGraph(): { nodes: OrgGraphNode[]; edges: OrgGraphEdge[] 
       label: w.titleEn.split("—")[0].trim().slice(0, 14) + "…",
       labelAr: w.titleAr.split("—")[0].trim().slice(0, 14) + "…",
       type: "work",
-      color: "#22c55e",
+      color: "#7CCB9A",
       bgColor: "#dcfce7",
       size: 8,
       x: Math.round(CX + Math.cos(angle) * r),
@@ -1154,7 +1154,7 @@ export function buildOrgGraph(): { nodes: OrgGraphNode[]; edges: OrgGraphEdge[] 
         source: srcId,
         target: tgtId,
         label: r.kind.replace("_", " "),
-        strokeColor: r.kind === "assigned_to" ? "#a855f7" : r.kind === "belongs_to" ? "#0ea5e9" : r.kind === "references" ? "#f59e0b" : "#94a3b8",
+        strokeColor: r.kind === "assigned_to" ? "#C3A2EC" : r.kind === "belongs_to" ? "#85C1E6" : r.kind === "references" ? "#EFC274" : "#94a3b8",
       });
     }
   });
@@ -1206,7 +1206,7 @@ export function getExecutiveOutcomes(): ExecutiveOutcome[] {
       score: health.salesScore,
       contextEn: `${negotiating.length} deals in negotiation. ${fmt(collected)} collected.`,
       contextAr: `${negotiating.length} صفقات في التفاوض. ${fmt(collected)} محصّل.`,
-      color: "#f59e0b",
+      color: "#EFC274",
     },
     {
       id: "eo-ops",
@@ -1218,7 +1218,7 @@ export function getExecutiveOutcomes(): ExecutiveOutcome[] {
       score: health.workScore,
       contextEn: `${work.filter((w) => w.status === "in_progress").length} items in flight. ${work.filter((w) => w.status === "done").length} done.`,
       contextAr: `${work.filter((w) => w.status === "in_progress").length} عناصر جارية. ${work.filter((w) => w.status === "done").length} مكتملة.`,
-      color: "#3b82f6",
+      color: "#8AB0EA",
     },
     {
       id: "eo-finance",
@@ -1230,7 +1230,7 @@ export function getExecutiveOutcomes(): ExecutiveOutcome[] {
       score: health.financeScore,
       contextEn: `${invoices.filter((i) => i.status === "overdue").length} overdue. ${invoices.filter((i) => i.status === "sent").length} pending.`,
       contextAr: `${invoices.filter((i) => i.status === "overdue").length} متأخرة. ${invoices.filter((i) => i.status === "sent").length} معلقة.`,
-      color: "#10b981",
+      color: "#6FC39E",
     },
     {
       id: "eo-assets",
@@ -1242,7 +1242,7 @@ export function getExecutiveOutcomes(): ExecutiveOutcome[] {
       score: health.resourceScore,
       contextEn: `${resources.filter((r) => r.status === "active").length} active assets. ${resources.filter((r) => r.maintenance.some((m) => m.status === "overdue")).length} overdue maintenance.`,
       contextAr: `${resources.filter((r) => r.status === "active").length} أصول نشطة. ${resources.filter((r) => r.maintenance.some((m) => m.status === "overdue")).length} صيانة متأخرة.`,
-      color: "#8b5cf6",
+      color: "#B6A0EA",
     },
     {
       id: "eo-network",
@@ -1254,7 +1254,7 @@ export function getExecutiveOutcomes(): ExecutiveOutcome[] {
       score: Math.round(activeContacts / Math.max(people.length, 1) * 100),
       contextEn: `${loadOrganizations().filter((o) => o.healthScore >= 70).length} healthy orgs. ${people.filter((p) => p.status === "inactive").length} dormant contacts.`,
       contextAr: `${loadOrganizations().filter((o) => o.healthScore >= 70).length} منظمات صحية. ${people.filter((p) => p.status === "inactive").length} جهات اتصال خاملة.`,
-      color: "#06b6d4",
+      color: "#84CCDA",
     },
     {
       id: "eo-health",
@@ -1266,7 +1266,7 @@ export function getExecutiveOutcomes(): ExecutiveOutcome[] {
       score: health.score,
       contextEn: `${health.level.replace("_", " ")} status. All dimensions measured.`,
       contextAr: `مستوى ${health.level === "excellent" ? "ممتاز" : health.level === "healthy" ? "صحي" : health.level === "attention" ? "يحتاج اهتماماً" : "في خطر"}. جميع الأبعاد مقاسة.`,
-      color: "#f43f5e",
+      color: "#EEA2B3",
     },
   ];
 }

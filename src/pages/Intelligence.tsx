@@ -44,7 +44,7 @@ function HealthRing({ score, size = 120 }: { score: number; size?: number }) {
   const r = (size - 12) / 2;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
-  const color = score >= 80 ? "#10b981" : score >= 60 ? "hsl(var(--primary))" : score >= 40 ? "#f59e0b" : "#ef4444";
+  const color = score >= 80 ? "#6FC39E" : score >= 60 ? "hsl(var(--primary))" : score >= 40 ? "#EFC274" : "#EE9E9E";
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
@@ -187,9 +187,9 @@ export default function Intelligence() {
             <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label: ar ? "المبيعات" : "Sales", score: health.salesScore, icon: ShoppingBag, color: "text-warning" },
-                { label: ar ? "العمل" : "Work", score: health.workScore, icon: Briefcase, color: "text-blue-500" },
+                { label: ar ? "العمل" : "Work", score: health.workScore, icon: Briefcase, color: "text-blue-600" },
                 { label: ar ? "المالية" : "Finance", score: health.financeScore, icon: Landmark, color: "text-emerald-600" },
-                { label: ar ? "الموارد" : "Resources", score: health.resourceScore, icon: Package, color: "text-chart-4" },
+                { label: ar ? "الموارد" : "Resources", score: health.resourceScore, icon: Package, color: "text-violet-600" },
               ].map((s, i) => (
                 <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
                   <div className="flex items-center gap-2 mb-2">
@@ -210,8 +210,8 @@ export default function Intelligence() {
             {[
               { icon: TrendingUp, value: fmt(metrics.revenueForecast, "EGP"), label: ar ? "توقع الإيرادات" : "Revenue Forecast", color: "text-emerald-600" },
               { icon: Target,     value: String(metrics.openOpportunities), label: ar ? "فرص مفتوحة" : "Open Opps",          color: "text-warning" },
-              { icon: AlertTriangle, value: `${metrics.workRiskScore}%`, label: ar ? "مخاطر العمل" : "Work Risk",         color: "text-rose-500" },
-              { icon: Gauge,      value: `${metrics.resourceUtilization}%`, label: ar ? "استخدام الموارد" : "Res. Utilization", color: "text-chart-4" },
+              { icon: AlertTriangle, value: `${metrics.workRiskScore}%`, label: ar ? "مخاطر العمل" : "Work Risk",         color: "text-rose-600" },
+              { icon: Gauge,      value: `${metrics.resourceUtilization}%`, label: ar ? "استخدام الموارد" : "Res. Utilization", color: "text-violet-600" },
               { icon: DollarSign, value: `${metrics.cashHealth}%`, label: ar ? "صحة النقد" : "Cash Health",        color: "text-cyan-600" },
               { icon: Heart,      value: String(metrics.businessHealth), label: ar ? "صحة الأعمال" : "Health Score",       color: "text-brand-ink" },
             ].map((m, i) => (
@@ -231,7 +231,7 @@ export default function Intelligence() {
       <div className="px-8 md:px-10 py-8 max-w-[1100px]">
 
         {/* Recommended Actions */}
-        <SectionHeader icon={Zap} titleEn="Recommended Actions" titleAr="إجراءات موصى بها" ar={ar} color="text-chart-4" />
+        <SectionHeader icon={Zap} titleEn="Recommended Actions" titleAr="إجراءات موصى بها" ar={ar} color="text-violet-600" />
         <div className="border border-border/40 rounded-xl bg-background overflow-hidden divide-y divide-border/25 mb-4">
           {actions.slice(0, 8).map((action) => {
             const ps = PRIORITY_STYLE[action.priority];
@@ -245,7 +245,7 @@ export default function Intelligence() {
                   else if (action.module === "resources" && action.entityId) navigate(`/resources/${action.entityId}`);
                 }}>
                 <div className="w-8 h-8 rounded-lg bg-chart-4/10 flex items-center justify-center shrink-0">
-                  <ModIcon size={14} strokeWidth={1.75} className="text-chart-4" />
+                  <ModIcon size={14} strokeWidth={1.75} className="text-violet-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-body font-medium text-foreground truncate group-hover:text-brand-ink transition-colors">{ar ? action.titleAr : action.titleEn}</h4>
@@ -268,7 +268,7 @@ export default function Intelligence() {
         </div>
 
         {/* Work Intelligence */}
-        <SectionHeader icon={Briefcase} titleEn="Work Intelligence" titleAr="ذكاء العمل" ar={ar} color="text-blue-500" />
+        <SectionHeader icon={Briefcase} titleEn="Work Intelligence" titleAr="ذكاء العمل" ar={ar} color="text-blue-600" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           {workInsights.map((c) => <InsightCardView key={c.id} card={c} lang={lang} />)}
         </div>
@@ -280,7 +280,7 @@ export default function Intelligence() {
         </div>
 
         {/* Resource Intelligence */}
-        <SectionHeader icon={Package} titleEn="Resource Intelligence" titleAr="ذكاء الموارد" ar={ar} color="text-chart-4" />
+        <SectionHeader icon={Package} titleEn="Resource Intelligence" titleAr="ذكاء الموارد" ar={ar} color="text-violet-600" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           {resourceInsights.map((c) => <InsightCardView key={c.id} card={c} lang={lang} />)}
         </div>
@@ -292,7 +292,7 @@ export default function Intelligence() {
         </div>
 
         {/* People Intelligence */}
-        <SectionHeader icon={Users} titleEn="People Intelligence" titleAr="ذكاء الأشخاص" ar={ar} color="text-rose-500" />
+        <SectionHeader icon={Users} titleEn="People Intelligence" titleAr="ذكاء الأشخاص" ar={ar} color="text-rose-600" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {peopleInsights.map((c) => <InsightCardView key={c.id} card={c} lang={lang} />)}
         </div>

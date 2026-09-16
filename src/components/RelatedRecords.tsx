@@ -18,7 +18,7 @@ const TYPE_NODE_COLORS: Record<EntityType, string> = {
   work:         "bg-warning/15 text-warning",
   deal:         "bg-emerald-100 text-emerald-700",
   person:       "bg-blue-100 text-blue-700",
-  organization: "bg-chart-4/15 text-chart-4",
+  organization: "bg-chart-4/15 text-violet-600",
   invoice:      "bg-rose-100 text-rose-700",
   resource:     "bg-cyan-100 text-cyan-700",
 };

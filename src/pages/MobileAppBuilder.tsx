@@ -64,37 +64,37 @@ const platformIcon: Record<string, string> = { ios: "🍎", android: "🤖", bot
 
 const statusMeta: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   draft: { en: "Draft", ar: "مسودة", color: "text-muted-foreground", bg: "bg-muted/40" },
-  configuring: { en: "Configuring", ar: "إعداد", color: "text-blue-500", bg: "bg-blue-500/10" },
+  configuring: { en: "Configuring", ar: "إعداد", color: "text-blue-600", bg: "bg-blue-500/10" },
   building: { en: "Building", ar: "جارٍ البناء", color: "text-warning", bg: "bg-warning/10" },
-  review: { en: "In Review", ar: "قيد المراجعة", color: "text-chart-4", bg: "bg-chart-4/10" },
-  published: { en: "Published", ar: "منشور", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  rejected: { en: "Rejected", ar: "مرفوض", color: "text-red-500", bg: "bg-red-500/10" },
-  paused: { en: "Paused", ar: "متوقف", color: "text-orange-500", bg: "bg-orange-500/10" },
+  review: { en: "In Review", ar: "قيد المراجعة", color: "text-violet-600", bg: "bg-chart-4/10" },
+  published: { en: "Published", ar: "منشور", color: "text-emerald-600", bg: "bg-emerald-500/10" },
+  rejected: { en: "Rejected", ar: "مرفوض", color: "text-red-600", bg: "bg-red-500/10" },
+  paused: { en: "Paused", ar: "متوقف", color: "text-orange-600", bg: "bg-orange-500/10" },
 };
 
 const buildStatusMeta: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   pending: { en: "Pending", ar: "قيد الانتظار", color: "text-muted-foreground", bg: "bg-muted/40" },
-  building: { en: "Building", ar: "جارٍ البناء", color: "text-blue-500", bg: "bg-blue-500/10" },
+  building: { en: "Building", ar: "جارٍ البناء", color: "text-blue-600", bg: "bg-blue-500/10" },
   testing: { en: "Testing", ar: "جارٍ الاختبار", color: "text-warning", bg: "bg-warning/10" },
-  ready: { en: "Ready", ar: "جاهز", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  failed: { en: "Failed", ar: "فشل", color: "text-red-500", bg: "bg-red-500/10" },
+  ready: { en: "Ready", ar: "جاهز", color: "text-emerald-600", bg: "bg-emerald-500/10" },
+  failed: { en: "Failed", ar: "فشل", color: "text-red-600", bg: "bg-red-500/10" },
 };
 
 const notifTypeMeta: Record<string, { en: string; ar: string; color: string; bg: string; icon: string }> = {
-  promo: { en: "Promo", ar: "عرض", color: "text-chart-4", bg: "bg-chart-4/10", icon: "🎯" },
-  order: { en: "Order", ar: "طلب", color: "text-blue-500", bg: "bg-blue-500/10", icon: "📦" },
-  abandoned_cart: { en: "Cart Recovery", ar: "استرداد السلة", color: "text-orange-500", bg: "bg-orange-500/10", icon: "🛒" },
-  back_in_stock: { en: "Back in Stock", ar: "عاد للمخزون", color: "text-emerald-500", bg: "bg-emerald-500/10", icon: "🔔" },
+  promo: { en: "Promo", ar: "عرض", color: "text-violet-600", bg: "bg-chart-4/10", icon: "🎯" },
+  order: { en: "Order", ar: "طلب", color: "text-blue-600", bg: "bg-blue-500/10", icon: "📦" },
+  abandoned_cart: { en: "Cart Recovery", ar: "استرداد السلة", color: "text-orange-600", bg: "bg-orange-500/10", icon: "🛒" },
+  back_in_stock: { en: "Back in Stock", ar: "عاد للمخزون", color: "text-emerald-600", bg: "bg-emerald-500/10", icon: "🔔" },
   price_drop: { en: "Price Drop", ar: "انخفاض السعر", color: "text-warning", bg: "bg-warning/10", icon: "💰" },
-  loyalty: { en: "Loyalty", ar: "ولاء", color: "text-pink-500", bg: "bg-pink-500/10", icon: "🎁" },
+  loyalty: { en: "Loyalty", ar: "ولاء", color: "text-pink-600", bg: "bg-pink-500/10", icon: "🎁" },
   custom: { en: "Custom", ar: "مخصص", color: "text-gray-500", bg: "bg-gray-500/10", icon: "✏️" },
 };
 
 const notifStatusMeta: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   draft: { en: "Draft", ar: "مسودة", color: "text-muted-foreground", bg: "bg-muted/40" },
-  scheduled: { en: "Scheduled", ar: "مجدول", color: "text-blue-500", bg: "bg-blue-500/10" },
-  sent: { en: "Sent", ar: "مرسل", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  failed: { en: "Failed", ar: "فشل", color: "text-red-500", bg: "bg-red-500/10" },
+  scheduled: { en: "Scheduled", ar: "مجدول", color: "text-blue-600", bg: "bg-blue-500/10" },
+  sent: { en: "Sent", ar: "مرسل", color: "text-emerald-600", bg: "bg-emerald-500/10" },
+  failed: { en: "Failed", ar: "فشل", color: "text-red-600", bg: "bg-red-500/10" },
 };
 
 const featureCategories = ["all", "core", "engagement", "commerce", "analytics", "integration"] as const;
@@ -418,13 +418,13 @@ export default function MobileAppBuilder() {
           icon={Users}
           label={ar ? "المستخدمون النشطون" : "Active Users"}
           value={formatNumber(stats.activeUsers)}
-          color="text-emerald-500"
+          color="text-emerald-600"
         />
         <MetricCard
           icon={TrendingUp}
           label={ar ? "المستخدمون اليوميون" : "Daily Active Users"}
           value={formatNumber(stats.dau)}
-          color="text-blue-500"
+          color="text-blue-600"
         />
         <MetricCard
           icon={Bell}
@@ -437,7 +437,7 @@ export default function MobileAppBuilder() {
           label={ar ? "الإيرادات عبر التطبيق" : "Revenue via App"}
           value={formatNumber(stats.revenue)}
           sub={ar ? "ج.م" : "EGP"}
-          color="text-chart-4"
+          color="text-violet-600"
         />
       </div>
 
@@ -517,7 +517,7 @@ export default function MobileAppBuilder() {
       <div className="bg-background border border-border/40 rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-border/30 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Hammer size={14} strokeWidth={1.75} className="text-blue-500" />
+            <Hammer size={14} strokeWidth={1.75} className="text-blue-600" />
             <h3 className="text-body font-medium text-foreground" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.01em" }}>
               {ar ? "سجل البناء" : "Build History"}
             </h3>
@@ -555,21 +555,21 @@ export default function MobileAppBuilder() {
             icon={Link2}
             label="Configure Deep Links"
             labelAr={ar ? "إعداد الروابط العميقة" : "Configure Deep Links"}
-            color="bg-emerald-500/10 text-emerald-500"
+            color="bg-emerald-500/10 text-emerald-600"
             onClick={() => navigate("/mobile-apps/config/app01")}
           />
           <QuickActionBtn
             icon={Store}
             label="Manage App Store"
             labelAr={ar ? "إدارة متجر التطبيقات" : "Manage App Store Listing"}
-            color="bg-blue-500/10 text-blue-500"
+            color="bg-blue-500/10 text-blue-600"
             onClick={() => navigate("/mobile-apps/config/app01")}
           />
           <QuickActionBtn
             icon={BarChart3}
             label="View Analytics"
             labelAr={ar ? "عرض التحليلات" : "View Analytics"}
-            color="bg-chart-4/10 text-chart-4"
+            color="bg-chart-4/10 text-violet-600"
             onClick={() => navigate("/mobile-apps/analytics")}
           />
           <QuickActionBtn

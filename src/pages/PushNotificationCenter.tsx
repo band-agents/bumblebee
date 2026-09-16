@@ -37,20 +37,20 @@ function timeAgo(dateStr: string | null, ar: boolean): string {
 }
 
 const typeMeta: Record<string, { en: string; ar: string; color: string; bg: string; icon: string }> = {
-  promo: { en: "Promo", ar: "عرض", color: "text-chart-4", bg: "bg-chart-4/10", icon: "🎯" },
-  order: { en: "Order", ar: "طلب", color: "text-blue-500", bg: "bg-blue-500/10", icon: "📦" },
-  abandoned_cart: { en: "Cart Recovery", ar: "استرداد السلة", color: "text-orange-500", bg: "bg-orange-500/10", icon: "🛒" },
-  back_in_stock: { en: "Back in Stock", ar: "عاد للمخزون", color: "text-emerald-500", bg: "bg-emerald-500/10", icon: "🔔" },
+  promo: { en: "Promo", ar: "عرض", color: "text-violet-600", bg: "bg-chart-4/10", icon: "🎯" },
+  order: { en: "Order", ar: "طلب", color: "text-blue-600", bg: "bg-blue-500/10", icon: "📦" },
+  abandoned_cart: { en: "Cart Recovery", ar: "استرداد السلة", color: "text-orange-600", bg: "bg-orange-500/10", icon: "🛒" },
+  back_in_stock: { en: "Back in Stock", ar: "عاد للمخزون", color: "text-emerald-600", bg: "bg-emerald-500/10", icon: "🔔" },
   price_drop: { en: "Price Drop", ar: "انخفاض السعر", color: "text-warning", bg: "bg-warning/10", icon: "💰" },
-  loyalty: { en: "Loyalty", ar: "ولاء", color: "text-pink-500", bg: "bg-pink-500/10", icon: "🎁" },
+  loyalty: { en: "Loyalty", ar: "ولاء", color: "text-pink-600", bg: "bg-pink-500/10", icon: "🎁" },
   custom: { en: "Custom", ar: "مخصص", color: "text-gray-500", bg: "bg-gray-500/10", icon: "✏️" },
 };
 
 const statusMeta: Record<string, { en: string; ar: string; color: string; bg: string }> = {
   draft: { en: "Draft", ar: "مسودة", color: "text-muted-foreground", bg: "bg-muted/40" },
-  scheduled: { en: "Scheduled", ar: "مجدول", color: "text-blue-500", bg: "bg-blue-500/10" },
-  sent: { en: "Sent", ar: "مرسل", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  failed: { en: "Failed", ar: "فشل", color: "text-red-500", bg: "bg-red-500/10" },
+  scheduled: { en: "Scheduled", ar: "مجدول", color: "text-blue-600", bg: "bg-blue-500/10" },
+  sent: { en: "Sent", ar: "مرسل", color: "text-emerald-600", bg: "bg-emerald-500/10" },
+  failed: { en: "Failed", ar: "فشل", color: "text-red-600", bg: "bg-red-500/10" },
 };
 
 const audienceLabels: Record<string, { en: string; ar: string }> = {
@@ -137,12 +137,12 @@ function NotificationCard({ notif, ar, index }: { notif: PushNotification; ar: b
         <div className="flex items-center gap-1.5">
           <MousePointerClick size={10} className="text-muted-foreground" />
           <span className="text-micro text-muted-foreground">{ar ? "فتح" : "Opened"}</span>
-          <span className="text-micro font-medium text-emerald-500 tabular-nums">{openRate}%</span>
+          <span className="text-micro font-medium text-emerald-600 tabular-nums">{openRate}%</span>
         </div>
         <div className="flex items-center gap-1.5">
           <MousePointerClick size={10} className="text-muted-foreground" />
           <span className="text-micro text-muted-foreground">{ar ? "نقر" : "Clicked"}</span>
-          <span className="text-micro font-medium text-blue-500 tabular-nums">{clickRate}%</span>
+          <span className="text-micro font-medium text-blue-600 tabular-nums">{clickRate}%</span>
         </div>
         <div className="ml-auto flex items-center gap-1.5">
           <Users size={10} className="text-muted-foreground" />
@@ -227,10 +227,10 @@ export default function PushNotificationCenter() {
       {/* ─── Stats ───────────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <MetricCard icon={Bell} label={ar ? "إجمالي الإشعارات" : "Total Notifications"} value={String(stats.total)} color="text-brand-ink" />
-        <MetricCard icon={Send} label={ar ? "مرسل" : "Sent"} value={formatNumber(stats.totalSent)} color="text-emerald-500" />
-        <MetricCard icon={Eye} label={ar ? "وصل" : "Delivered"} value={formatNumber(stats.totalDelivered)} color="text-blue-500" />
+        <MetricCard icon={Send} label={ar ? "مرسل" : "Sent"} value={formatNumber(stats.totalSent)} color="text-emerald-600" />
+        <MetricCard icon={Eye} label={ar ? "وصل" : "Delivered"} value={formatNumber(stats.totalDelivered)} color="text-blue-600" />
         <MetricCard icon={MousePointerClick} label={ar ? "تم الفتح" : "Opened"} value={formatNumber(stats.totalOpened)} color="text-warning" />
-        <MetricCard icon={TrendingUp} label={ar ? "معدل الفتح" : "Avg Open Rate"} value={`${stats.avgOpenRate}%`} color="text-chart-4" />
+        <MetricCard icon={TrendingUp} label={ar ? "معدل الفتح" : "Avg Open Rate"} value={`${stats.avgOpenRate}%`} color="text-violet-600" />
       </div>
 
       {/* ─── Filters ─────────────────────────────────────── */}

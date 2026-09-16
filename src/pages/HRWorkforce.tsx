@@ -214,7 +214,7 @@ function EmployeeModal({ onClose, onSaved, editEmp, ar, wid }: {
           </div>
           <div><label className={labelCls}>{ar ? "العنوان" : "Address"}</label>
             <input className={inputCls} value={address} onChange={e => setAddress(e.target.value)} /></div>
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
@@ -401,7 +401,7 @@ function EmployeeDetail({ emp, onBack, ar, wid, onRefresh }: {
                       </button>
                     ))}
                   </div>
-                  <button onClick={() => removeSkill(s.skill)} className="text-rose-400 hover:opacity-70 p-1"><X size={12} /></button>
+                  <button onClick={() => removeSkill(s.skill)} className="text-rose-600 hover:opacity-70 p-1"><X size={12} /></button>
                 </div>
               );
             })}

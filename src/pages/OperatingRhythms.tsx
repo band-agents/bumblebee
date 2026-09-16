@@ -37,7 +37,7 @@ function ScoreRing({ score, size = 88 }: { score: number; size?: number }) {
   const r = (size - 10) / 2;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
-  const color = score >= 70 ? "#10b981" : score >= 50 ? "hsl(var(--primary))" : score >= 35 ? "#f59e0b" : "#ef4444";
+  const color = score >= 70 ? "#6FC39E" : score >= 50 ? "hsl(var(--primary))" : score >= 35 ? "#EFC274" : "#EE9E9E";
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
@@ -188,7 +188,7 @@ export default function OperatingRhythms() {
         style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
         <div className="max-w-[1100px]">
           <div className="flex items-center gap-2.5 mb-2">
-            <Activity size={14} strokeWidth={1.75} className="text-chart-4" />
+            <Activity size={14} strokeWidth={1.75} className="text-violet-600" />
             <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase">{ar ? "إيقاعات التشغيل" : "Operating Rhythms"}</p>
           </div>
           <h1 className="text-display font-medium text-foreground leading-tight mb-1" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>

@@ -380,7 +380,7 @@ function BlockActions({
       </button>
       <button
         onClick={onDelete}
-        className="p-1.5 rounded-lg hover:bg-rose-50 text-muted-foreground/50 hover:text-rose-500 transition-colors"
+        className="p-1.5 rounded-lg hover:bg-rose-50 text-muted-foreground/50 hover:text-rose-600 transition-colors"
         title={ar ? "حذف" : "Delete"}
       >
         <Trash2 size={13} />

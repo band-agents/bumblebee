@@ -177,7 +177,7 @@ function GenerateCodeModal({ ar, members, onClose, onGenerate }: {
                   )}
 
                   {numPoints > (selectedMember?.currentPoints || 0) && (
-                    <p className="text-micro text-rose-500 flex items-center gap-1">
+                    <p className="text-micro text-rose-600 flex items-center gap-1">
                       <AlertTriangle size={11} />{ar ? "رصيد غير كافي" : "Insufficient balance"}
                     </p>
                   )}
@@ -188,7 +188,7 @@ function GenerateCodeModal({ ar, members, onClose, onGenerate }: {
             /* Generated code display */
             <div className="text-center py-4">
               <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 size={28} className="text-emerald-500" />
+                <CheckCircle2 size={28} className="text-emerald-600" />
               </div>
               <p className="text-body-lg font-medium mb-1" style={{ fontFamily: "var(--app-font-serif)" }}>
                 {ar ? "تم إنشاء كود الخصم" : "Discount Code Generated"}
@@ -203,7 +203,7 @@ function GenerateCodeModal({ ar, members, onClose, onGenerate }: {
                   <code className="text-heading font-bold font-mono tracking-wider text-foreground">{generatedCode}</code>
                   <button onClick={handleCopy}
                     className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
-                    {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                    {copied ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
                   </button>
                 </div>
                 <p className="text-caption text-brand-ink font-medium mt-2">{fmtCurrency(discount)} {ar ? "خصم" : "off"}</p>
@@ -356,7 +356,7 @@ export default function LoyaltyRedemptionsPage() {
             <div key={rd.id} className="flex items-center gap-4 px-5 py-4 hover:bg-muted/10 transition-colors">
               {/* Channel icon */}
               <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${rd.channel === "online" ? "bg-chart-4/10" : "bg-warning/10"}`}>
-                {rd.channel === "online" ? <ShoppingBag size={15} className="text-chart-4" /> : <Store size={15} className="text-warning" />}
+                {rd.channel === "online" ? <ShoppingBag size={15} className="text-violet-600" /> : <Store size={15} className="text-warning" />}
               </div>
 
               {/* Info */}

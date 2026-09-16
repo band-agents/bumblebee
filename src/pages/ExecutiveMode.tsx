@@ -10,8 +10,8 @@ type ExecTab = "overview" | "graph";
 // ─── Trend icon ───────────────────────────────────────────
 
 function TrendIcon({ trend }: { trend: "up" | "stable" | "down" }) {
-  if (trend === "up") return <TrendingUp size={14} strokeWidth={2} className="text-emerald-500" />;
-  if (trend === "down") return <TrendingDown size={14} strokeWidth={2} className="text-rose-500" />;
+  if (trend === "up") return <TrendingUp size={14} strokeWidth={2} className="text-emerald-600" />;
+  if (trend === "down") return <TrendingDown size={14} strokeWidth={2} className="text-rose-600" />;
   return <Minus size={14} strokeWidth={2} className="text-muted-foreground/40" />;
 }
 
@@ -56,10 +56,10 @@ function OrgGraphView({ ar }: { ar: boolean }) {
       {/* Legend */}
       <div className="flex items-center gap-5 flex-wrap">
         {[
-          { type: "org",    color: "#0ea5e9", labelEn: "Organization", labelAr: "منظمة" },
-          { type: "person", color: "#a855f7", labelEn: "Person",       labelAr: "شخص" },
-          { type: "deal",   color: "#f59e0b", labelEn: "Deal",         labelAr: "صفقة" },
-          { type: "work",   color: "#22c55e", labelEn: "Work",         labelAr: "عمل" },
+          { type: "org",    color: "#85C1E6", labelEn: "Organization", labelAr: "منظمة" },
+          { type: "person", color: "#C3A2EC", labelEn: "Person",       labelAr: "شخص" },
+          { type: "deal",   color: "#EFC274", labelEn: "Deal",         labelAr: "صفقة" },
+          { type: "work",   color: "#7CCB9A", labelEn: "Work",         labelAr: "عمل" },
         ].map((l) => (
           <div key={l.type} className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: l.color }} />
@@ -244,7 +244,7 @@ function OverviewPanel({ ar }: { ar: boolean }) {
           <div className="space-y-2">
             {briefing.keyRisks.map((r, i) => (
               <div key={i} className="flex items-start gap-2 text-micro text-foreground/70 border border-rose-200/40 bg-rose-50/20 rounded-lg px-3 py-2.5">
-                <span className="text-rose-400 shrink-0 mt-0.5">▸</span>
+                <span className="text-rose-600 shrink-0 mt-0.5">▸</span>
                 <span>{ar ? r.ar : r.en}</span>
               </div>
             ))}
@@ -255,7 +255,7 @@ function OverviewPanel({ ar }: { ar: boolean }) {
           <div className="space-y-2">
             {briefing.opportunities.map((o, i) => (
               <div key={i} className="flex items-start gap-2 text-micro text-foreground/70 border border-emerald-200/40 bg-emerald-50/20 rounded-lg px-3 py-2.5">
-                <span className="text-emerald-500 shrink-0 mt-0.5">▸</span>
+                <span className="text-emerald-600 shrink-0 mt-0.5">▸</span>
                 <span>{ar ? o.ar : o.en}</span>
               </div>
             ))}

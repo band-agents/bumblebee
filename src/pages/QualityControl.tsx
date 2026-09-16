@@ -164,7 +164,7 @@ function InspectionModal({ onClose, onSaved, prodOrders, ar, workspaceId }: {
             <input className={inputCls} value={customerName} onChange={e => setCustomerName(e.target.value)} /></div>
           <div><label className={labelCls}>{ar ? "المفتش" : "Inspector"}</label>
             <input className={inputCls} value={inspectorName} onChange={e => setInspectorName(e.target.value)} /></div>
-          {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+          {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
@@ -477,7 +477,7 @@ function InspectionDetail({ insp, onBack, ar, workspaceId, prodOrders, onRefresh
                               </>
                             )}
                             <button onClick={() => { setEditDef(d); setDefModal(true); }} className="text-micro text-muted-foreground px-2 py-1 rounded border border-border/60 hover:opacity-70">{ar ? "تعديل" : "Edit"}</button>
-                            <button onClick={() => deleteDefect(d.id)} className="text-micro text-rose-400 px-2 py-1 rounded hover:opacity-70">{ar ? "حذف" : "Delete"}</button>
+                            <button onClick={() => deleteDefect(d.id)} className="text-micro text-rose-600 px-2 py-1 rounded hover:opacity-70">{ar ? "حذف" : "Delete"}</button>
                           </div>
                         </div>
                       </div>

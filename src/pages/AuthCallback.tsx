@@ -142,7 +142,7 @@ export default function AuthCallback() {
       <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "var(--color-bg, #F7F6F3)" }}>
         <div className="w-full max-w-[380px] text-center">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-rose-50 border border-rose-200 mb-5">
-            <AlertCircle size={22} className="text-rose-500" />
+            <AlertCircle size={22} className="text-rose-600" />
           </div>
           <h2 className="text-title font-semibold text-foreground mb-2" style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
             Sign-in Issue

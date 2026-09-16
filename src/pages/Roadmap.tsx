@@ -20,7 +20,7 @@ const PHASES: Phase[] = [
     titleEn: "CRM", titleAr: "إدارة العملاء",
     descEn: "Customer database, contacts, organizations, relationship tracking, health scoring, and activity timelines.",
     descAr: "قاعدة بيانات العملاء، جهات الاتصال، الشركات، تتبع العلاقات، ومؤشرات الصحة.",
-    icon: Users, color: "text-chart-4 bg-chart-4/10", status: "live",
+    icon: Users, color: "text-violet-600 bg-chart-4/10", status: "live",
   },
   {
     titleEn: "Sales & Deals", titleAr: "المبيعات والصفقات",
@@ -86,7 +86,7 @@ const PHASES: Phase[] = [
     titleEn: "Reports & Analytics", titleAr: "التقارير والتحليلات",
     descEn: "Executive overview, sales pipeline, finance summary, operations metrics, HR capacity, purchasing spend, and inventory reports.",
     descAr: "نظرة تنفيذية، تقارير المبيعات والحسابات والعمليات والفريق والمشتريات والمخزون.",
-    icon: BarChart3, color: "text-chart-4 bg-chart-4/10", status: "live",
+    icon: BarChart3, color: "text-violet-600 bg-chart-4/10", status: "live",
   },
   {
     titleEn: "Executive Intelligence", titleAr: "الذكاء التنفيذي",

@@ -20,7 +20,7 @@ const fmtEGP = (n: number) =>
 const STATUS_META: Record<string, { en: string; ar: string; pill: string; dot: string }> = {
   draft:     { en: "Draft",     ar: "مسودة",   pill: "bg-slate-100 text-slate-600",  dot: "bg-slate-400" },
   sent:      { en: "Sent",      ar: "مُرسلة",  pill: "bg-blue-100 text-blue-600",    dot: "bg-blue-500" },
-  viewed:    { en: "Viewed",    ar: "تمت المشاهدة", pill: "bg-blue-100 text-blue-500", dot: "bg-blue-400" },
+  viewed:    { en: "Viewed",    ar: "تمت المشاهدة", pill: "bg-blue-100 text-blue-600", dot: "bg-blue-400" },
   partial:   { en: "Partial",   ar: "مدفوعة جزئياً", pill: "bg-warning/15 text-warning", dot: "bg-warning" },
   paid:      { en: "Paid",      ar: "مدفوعة",  pill: "bg-emerald-100 text-emerald-600", dot: "bg-emerald-500" },
   overdue:   { en: "Overdue",   ar: "متأخرة",  pill: "bg-rose-100 text-rose-600",    dot: "bg-rose-500" },
@@ -165,7 +165,7 @@ function InvoiceDetailModal({
                 {invoice.discount > 0 && (
                   <div className="flex justify-between text-caption">
                     <span className="text-muted-foreground">{ar ? "الخصم" : "Discount"}</span>
-                    <span className="text-rose-500 tabular-nums">-{fmtEGP(invoice.discount)}</span>
+                    <span className="text-rose-600 tabular-nums">-{fmtEGP(invoice.discount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-caption">
@@ -184,8 +184,8 @@ function InvoiceDetailModal({
                 )}
                 {invoice.balance > 0 && (
                   <div className="flex justify-between text-caption">
-                    <span className="text-rose-500">{ar ? "المتبقي" : "Balance"}</span>
-                    <span className="text-rose-500 tabular-nums font-medium">{fmtEGP(invoice.balance)}</span>
+                    <span className="text-rose-600">{ar ? "المتبقي" : "Balance"}</span>
+                    <span className="text-rose-600 tabular-nums font-medium">{fmtEGP(invoice.balance)}</span>
                   </div>
                 )}
               </div>
@@ -322,7 +322,7 @@ function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void 
                     className={inputCls + " w-[100px] text-right"} />
                   {items.length > 1 && (
                     <button onClick={() => removeItem(idx)}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-rose-50 text-rose-500 transition-colors shrink-0">
+                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
                       <Trash2 size={13} />
                     </button>
                   )}
@@ -354,7 +354,7 @@ function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void 
             {(Number(discount) || 0) > 0 && (
               <div className="flex justify-between text-caption">
                 <span className="text-muted-foreground">{ar ? "الخصم" : "Discount"}</span>
-                <span className="text-rose-500 tabular-nums">-{fmtEGP(Number(discount))}</span>
+                <span className="text-rose-600 tabular-nums">-{fmtEGP(Number(discount))}</span>
               </div>
             )}
             <div className="flex justify-between text-caption">
@@ -453,8 +453,8 @@ export default function FinanceInvoices() {
     { label: ar ? "إجمالي الفواتير" : "Total Invoiced", value: fmtEGP(totalInvoiced), icon: FileText, color: "text-brand-ink", bg: "bg-primary/8" },
     { label: ar ? "المحصل" : "Total Collected", value: fmtEGP(totalCollected), icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: "+8%", up: true },
     { label: ar ? "المعلق" : "Outstanding", value: fmtEGP(totalOutstanding), icon: Clock, color: "text-warning", bg: "bg-warning/10" },
-    { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(totalOverdue), icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-50" },
-    { label: ar ? "نسبة التحصيل" : "Collection Rate", value: `${collectionRate}%`, icon: TrendingUp, color: "text-chart-4", bg: "bg-chart-4/10" },
+    { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(totalOverdue), icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50" },
+    { label: ar ? "نسبة التحصيل" : "Collection Rate", value: `${collectionRate}%`, icon: TrendingUp, color: "text-violet-600", bg: "bg-chart-4/10" },
   ];
 
   return (
@@ -493,7 +493,7 @@ export default function FinanceInvoices() {
                     <m.icon size={14} strokeWidth={1.75} className={m.color} />
                   </div>
                   {m.trend && (
-                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-500"}`}>
+                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-600"}`}>
                       {m.trend}
                     </span>
                   )}

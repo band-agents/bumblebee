@@ -111,7 +111,7 @@ export const STATUS_META: Record<Status, { en: string; ar: string; dot: string; 
 };
 
 export const TYPE_META: Record<PersonType, { en: string; ar: string; pill: string; subtle: string }> = {
-  customer:   { en: "Customer",   ar: "عميل",    pill: "bg-chart-4/10 text-chart-4 border border-chart-4/30",   subtle: "text-chart-4" },
+  customer:   { en: "Customer",   ar: "عميل",    pill: "bg-chart-4/10 text-violet-600 border border-chart-4/30",   subtle: "text-violet-600" },
   employee:   { en: "Employee",   ar: "موظف",    pill: "bg-emerald-50 text-emerald-700 border border-emerald-200", subtle: "text-emerald-600" },
   supplier:   { en: "Supplier",   ar: "مورد",    pill: "bg-warning/10 text-warning border border-warning/30",       subtle: "text-warning" },
   contractor: { en: "Contractor", ar: "متعاقد",  pill: "bg-blue-50 text-blue-700 border border-blue-200",         subtle: "text-blue-600" },
@@ -169,7 +169,7 @@ export const PEOPLE: Person[] = [
     bioAr: "يقود عمر المشتريات في ميريديان للتجارة منذ عام ٢٠١٨، ويشرف على محفظة تضم أكثر من ٤٠ مورداً نشطاً في منطقة الخليج. يُعرف بنهجه المنهجي في اختيار الموردين وتركيزه على قيمة العلاقة طويلة الأمد.",
     lastContactEn: "Today",
     lastContactAr: "اليوم",
-    avatarColor: "bg-chart-4/15 text-chart-4",
+    avatarColor: "bg-chart-4/15 text-violet-600",
     metrics: {
       totalValue: "$284,500",
       totalValueAr: "٢٨٤٥٠٠ دولار",
@@ -363,7 +363,7 @@ export const PEOPLE: Person[] = [
     roles: [{ type: "employee", sinceEn: "Apr 2023", sinceAr: "أبريل ٢٠٢٣", descEn: "Responsible for new business development and key account management.", descAr: "مسؤولة عن تطوير الأعمال الجديدة وإدارة الحسابات الرئيسية." }],
     phone: "+971 52 990 1122", email: "rana@bumblebee.io",
     city: "Dubai", cityAr: "دبي", country: "UAE", countryAr: "الإمارات",
-    lastContactEn: "Yesterday", lastContactAr: "أمس", avatarColor: "bg-chart-4/15 text-chart-4",
+    lastContactEn: "Yesterday", lastContactAr: "أمس", avatarColor: "bg-chart-4/15 text-violet-600",
     metrics: { totalValue: "—", totalValueAr: "—", transactionCount: 0, sinceEn: "Apr 2023", sinceAr: "أبريل ٢٠٢٣", openItems: 0 },
     activity: [], notes: [], files: [], related: [],
   },
@@ -433,7 +433,7 @@ export const PEOPLE: Person[] = [
     roles: [{ type: "contractor", sinceEn: "Mar 2024", sinceAr: "مارس ٢٠٢٤", descEn: "Lead product designer. Working on the Bumblebee interface and design system.", descAr: "مصممة منتج رائدة. تعمل على واجهة بامبلبي ونظام التصميم." }],
     phone: "+46 70 123 4567", email: "mia.j@designmail.se",
     city: "Stockholm", cityAr: "ستوكهولم", country: "Sweden", countryAr: "السويد",
-    lastContactEn: "3 days ago", lastContactAr: "منذ ٣ أيام", avatarColor: "bg-chart-4/15 text-chart-4",
+    lastContactEn: "3 days ago", lastContactAr: "منذ ٣ أيام", avatarColor: "bg-chart-4/15 text-violet-600",
     metrics: { totalValue: "$62,000", totalValueAr: "٦٢٠٠٠ دولار", transactionCount: 8, sinceEn: "Mar 2024", sinceAr: "مارس ٢٠٢٤", openItems: 1 },
     activity: [], notes: [], files: [], related: [],
   },

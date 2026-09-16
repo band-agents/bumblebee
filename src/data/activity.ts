@@ -67,7 +67,7 @@ export const KIND_LABELS: Record<ActivityKind, { en: string; ar: string }> = {
 };
 
 export const MODULE_META: Record<ActivityModule, { en: string; ar: string; dot: string; subtle: string }> = {
-  people:        { en: "People",        ar: "الأشخاص",   dot: "bg-chart-4",  subtle: "text-chart-4" },
+  people:        { en: "People",        ar: "الأشخاص",   dot: "bg-chart-4",  subtle: "text-violet-600" },
   finance:       { en: "Finance",       ar: "المالية",   dot: "bg-emerald-500", subtle: "text-emerald-700" },
   sales:         { en: "Sales",         ar: "المبيعات",  dot: "bg-warning",   subtle: "text-warning" },
   operations:    { en: "Operations",    ar: "العمليات",  dot: "bg-orange-400",  subtle: "text-orange-600" },
@@ -81,7 +81,7 @@ export const MODULE_META: Record<ActivityModule, { en: string; ar: string; dot: 
 const A = {
   nour:   { authorEn: "Nour Al-Haddad",  authorAr: "نور الحداد",  authorColor: "bg-emerald-100 text-emerald-700" },
   tariq:  { authorEn: "Tariq Nassar",    authorAr: "طارق نصار",   authorColor: "bg-cyan-100 text-cyan-700" },
-  rana:   { authorEn: "Rana Khalil",     authorAr: "رنا خليل",    authorColor: "bg-chart-4/15 text-chart-4" },
+  rana:   { authorEn: "Rana Khalil",     authorAr: "رنا خليل",    authorColor: "bg-chart-4/15 text-violet-600" },
   hassan: { authorEn: "Hassan Younis",   authorAr: "حسن يونس",    authorColor: "bg-warning/15 text-warning" },
   system: { authorEn: "System",          authorAr: "النظام",      authorColor: "bg-muted text-muted-foreground" },
 };

@@ -64,7 +64,7 @@ const PR_STATUSES: { value: string; en: string; ar: string; pill: string }[] = [
   { value: "submitted", en: "Submitted", ar: "تم التقديم",      pill: "bg-blue-100 text-blue-600" },
   { value: "approved",  en: "Approved",  ar: "تمت الموافقة",    pill: "bg-emerald-100 text-emerald-700" },
   { value: "rejected",  en: "Rejected",  ar: "مرفوض",           pill: "bg-rose-100 text-rose-600" },
-  { value: "ordered",   en: "Ordered",   ar: "تم الطلب",        pill: "bg-chart-4/15 text-chart-4" },
+  { value: "ordered",   en: "Ordered",   ar: "تم الطلب",        pill: "bg-chart-4/15 text-violet-600" },
   { value: "cancelled", en: "Cancelled", ar: "ملغي",            pill: "bg-muted text-muted-foreground" },
 ];
 
@@ -140,7 +140,7 @@ function AddVendorModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o
     <ModalShell title={ar ? "ضيف مورد" : "Add Vendor"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "اسم المورد" : "Vendor Name"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "اسم المورد" : "Vendor Name"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required autoFocus className={inputCls} placeholder={ar ? "مثال: شركة التوريدات العامة" : "e.g. General Supplies Co."} />
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -178,7 +178,7 @@ function AddVendorModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o
           <label className={labelCls}>{ar ? "ملاحظات" : "Notes"}</label>
           <textarea value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} className={inputCls + " h-16 py-2.5 resize-none"} placeholder={ar ? "اختياري" : "Optional"} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.name.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -231,7 +231,7 @@ function AddPRModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
     <ModalShell title={ar ? "طلب شراء جديد" : "New Purchase Request"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div>
-          <label className={labelCls}>{ar ? "عنوان الطلب" : "Request Title"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "عنوان الطلب" : "Request Title"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} required autoFocus className={inputCls} placeholder={ar ? "مثال: شراء أجهزة كمبيوتر" : "e.g. Purchase laptops for team"} />
         </div>
         <div>
@@ -261,7 +261,7 @@ function AddPRModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
             <input type="date" value={form.neededBy} onChange={(e) => setForm((f) => ({ ...f, neededBy: e.target.value }))} className={inputCls} />
           </div>
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -318,7 +318,7 @@ function AddPOModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className={labelCls}>{ar ? "رقم أمر الشراء" : "PO Number"} <span className="text-rose-400">*</span></label>
+            <label className={labelCls}>{ar ? "رقم أمر الشراء" : "PO Number"} <span className="text-rose-600">*</span></label>
             <input type="text" value={form.poNumber} onChange={(e) => setForm((f) => ({ ...f, poNumber: e.target.value }))} required className={inputCls} placeholder="PO-001" />
           </div>
           <div>
@@ -327,7 +327,7 @@ function AddPOModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
           </div>
         </div>
         <div>
-          <label className={labelCls}>{ar ? "وصف الأمر" : "Description"} <span className="text-rose-400">*</span></label>
+          <label className={labelCls}>{ar ? "وصف الأمر" : "Description"} <span className="text-rose-600">*</span></label>
           <input type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} required className={inputCls} placeholder={ar ? "مثال: توريد مواد بناء" : "e.g. Building materials delivery"} />
         </div>
         <div>
@@ -341,7 +341,7 @@ function AddPOModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => 
           <label className={labelCls}>{ar ? "تاريخ التسليم المتوقع" : "Expected Delivery"}</label>
           <input type="date" value={form.deliveryDate} onChange={(e) => setForm((f) => ({ ...f, deliveryDate: e.target.value }))} className={inputCls} />
         </div>
-        {error && <p className="text-caption text-rose-500 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
+        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
         <div className="flex gap-3 pt-1">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
           <button type="submit" disabled={loading || !form.poNumber.trim() || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
@@ -464,7 +464,7 @@ export default function Purchasing() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { icon: Building2, value: vendors.length, label: ar ? "الموردين" : "Vendors", color: "text-chart-4" },
+              { icon: Building2, value: vendors.length, label: ar ? "الموردين" : "Vendors", color: "text-violet-600" },
               { icon: ClipboardList, value: openPRs.length, label: ar ? "طلبات مفتوحة" : "Open PRs", color: "text-blue-600" },
               { icon: Clock, value: pendingApproval.length, label: ar ? "مستني موافقة" : "Pending Approval", color: "text-warning" },
               { icon: CheckCircle2, value: approvedPRs.length, label: ar ? "تمت الموافقة" : "Approved", color: "text-emerald-600" },
@@ -549,7 +549,7 @@ export default function Purchasing() {
                           <button onClick={() => updateStatus(pr.id, "approved")} className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors" title={ar ? "موافقة" : "Approve"}>
                             <CheckCircle2 size={15} />
                           </button>
-                          <button onClick={() => updateStatus(pr.id, "rejected")} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-100 transition-colors" title={ar ? "رفض" : "Reject"}>
+                          <button onClick={() => updateStatus(pr.id, "rejected")} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center hover:bg-rose-100 transition-colors" title={ar ? "رفض" : "Reject"}>
                             <XCircle size={15} />
                           </button>
                         </div>
@@ -613,7 +613,7 @@ export default function Purchasing() {
                   return (
                     <div key={v.id} className="bg-background border border-border/40 rounded-xl p-5 hover:shadow-sm hover:border-border/70 transition-all">
                       <div className="flex items-start gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-chart-4/15 text-chart-4 flex items-center justify-center text-micro font-semibold shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-chart-4/15 text-violet-600 flex items-center justify-center text-micro font-semibold shrink-0">
                           {v.name_en.split(" ").slice(0,2).map((w) => w[0]).join("").toUpperCase()}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -622,7 +622,7 @@ export default function Purchasing() {
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-1.5">
-                        {meta.vendor_category && <span className="text-micro px-2 py-0.5 rounded-full bg-chart-4/10 text-chart-4 font-medium">{meta.vendor_category}</span>}
+                        {meta.vendor_category && <span className="text-micro px-2 py-0.5 rounded-full bg-chart-4/10 text-violet-600 font-medium">{meta.vendor_category}</span>}
                         {meta.payment_terms && <span className="text-micro px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{meta.payment_terms}</span>}
                         {meta.country && <span className="text-micro text-muted-foreground">{[meta.city, meta.country].filter(Boolean).join(", ")}</span>}
                       </div>
@@ -664,13 +664,13 @@ export default function Purchasing() {
                       {pr.status === "submitted" && (
                         <div className="flex gap-1.5 shrink-0">
                           <button onClick={() => updateStatus(pr.id, "approved")} className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors"><CheckCircle2 size={14} /></button>
-                          <button onClick={() => updateStatus(pr.id, "rejected")} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-100 transition-colors"><XCircle size={14} /></button>
+                          <button onClick={() => updateStatus(pr.id, "rejected")} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center hover:bg-rose-100 transition-colors"><XCircle size={14} /></button>
                         </div>
                       )}
                       {pr.status === "draft" && (
                         <button onClick={() => updateStatus(pr.id, "submitted")} className="text-micro text-brand-ink font-medium hover:opacity-70">{ar ? "قدّم" : "Submit"}</button>
                       )}
-                      <button onClick={() => setDeleteTarget(pr)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
+                      <button onClick={() => setDeleteTarget(pr)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
                         <Trash2 size={12} />
                       </button>
                     </div>
@@ -720,7 +720,7 @@ export default function Purchasing() {
                       {po.status === "sent" && (
                         <button onClick={() => updateStatus(po.id, "received")} className="text-micro text-emerald-600 font-medium hover:opacity-70">{ar ? "تم الاستلام" : "Received"}</button>
                       )}
-                      <button onClick={() => setDeleteTarget(po)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-400 transition-colors shrink-0">
+                      <button onClick={() => setDeleteTarget(po)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
                         <Trash2 size={12} />
                       </button>
                     </div>
