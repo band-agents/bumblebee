@@ -142,7 +142,7 @@ export default function Landing() {
               </a>
             </div>
             <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-caption text-muted-foreground">
-              {["Google sign-in", "Logins you create for your team", "English / العربية"].map((t) => (
+              {["Logins created by your admin", "Access set per person", "English / العربية"].map((t) => (
                 <li key={t} className="flex items-center gap-1.5"><Check size={14} className="text-brand-ink" /> {t}</li>
               ))}
             </ul>
@@ -242,11 +242,10 @@ export default function Landing() {
       <section id="access" className="bg-sidebar border-y border-border">
         <div className="max-w-[1200px] mx-auto px-5 py-20 sm:py-24 grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <h2 className="text-[clamp(2rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em]">Easy to get in. Only what each person needs.</h2>
+            <h2 className="text-[clamp(2rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em]">Only people you add. Only what each needs.</h2>
             <div className="mt-8 space-y-5">
               {[
-                { icon: Globe, t: "Continue with Google", d: "One click for anyone with a Google account. No new password to remember." },
-                { icon: KeyRound, t: "Logins you hand out", d: "Create a username and password for a colleague in Users & Access, choose their level, copy the details and send them." },
+                { icon: KeyRound, t: "Logins you hand out", d: "No public sign-up. Your admin creates a username and password for each colleague, chooses their level, and sends them the details." },
                 { icon: ShieldCheck, t: "Access levels that hold", d: "Each person only sees the modules their role allows — hidden in the menu and blocked if they paste a link. Suspend anyone in one click." },
               ].map(({ icon: Icon, t, d }) => (
                 <div key={t} className="flex gap-4">

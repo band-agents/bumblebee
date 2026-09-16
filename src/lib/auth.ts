@@ -1,6 +1,15 @@
 import { supabase, isDemoMode } from "./supabase";
 import type { User, Session, AuthError } from "@supabase/supabase-js";
 
+/**
+ * Authentication is username + password only.
+ *
+ * Accounts are created by a workspace owner/admin in Users & Access
+ * (supabase/staff-accounts.sql → create_staff_account). There is no self
+ * sign-up, no OAuth and no email-based reset: public sign-ups are disabled on
+ * the Supabase project and admins reset passwords from inside the app.
+ */
+
 // ─── Demo user used when Supabase is not configured ───────
 
 export const DEMO_USER: User = {
@@ -30,70 +39,30 @@ export interface AuthResult {
   error: AuthError | null;
 }
 
+const INVALID = (): AuthError =>
+  ({ name: "AuthApiError", message: "Invalid login credentials", status: 400 }) as AuthError;
+
 // ─── Auth functions ────────────────────────────────────────
 
-export async function signUp(email: string, password: string, fullName?: string): Promise<AuthResult> {
-  if (isDemoMode || !supabase) {
-    console.warn("[Bumblebee] Demo mode — sign up is a no-op");
-    return { user: DEMO_USER, session: DEMO_SESSION, error: null };
-  }
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { full_name: fullName ?? "" } },
-  });
-  return { user: data.user, session: data.session, error };
-}
-
 /**
- * Sign in with an email or a username. Staff accounts created from
- * Users & Access may have only a username; the database maps it to the
- * account's login email (supabase/staff-accounts.sql → email_for_username).
+ * Sign in with a username. The database maps it to the account's private login
+ * address (email_for_username); an unknown username gets the same answer as a
+ * wrong password, so the page never reveals which usernames exist.
  */
-export async function signIn(identifier: string, password: string): Promise<AuthResult> {
+export async function signIn(username: string, password: string): Promise<AuthResult> {
   if (isDemoMode || !supabase) {
     console.warn("[Bumblebee] Demo mode — sign in is a no-op");
     return { user: DEMO_USER, session: DEMO_SESSION, error: null };
   }
-  let email = identifier.trim();
-  if (!email.includes("@")) {
-    const { data: resolved } = await supabase.rpc("email_for_username" as never, { p_username: email } as never);
-    if (!resolved) {
-      // Same message as a wrong password — never reveal which usernames exist.
-      return { user: null, session: null, error: { name: "AuthApiError", message: "Invalid login credentials", status: 400 } as AuthError };
-    }
-    email = resolved as unknown as string;
-  }
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const name = username.trim().toLowerCase();
+  if (!name || !password) return { user: null, session: null, error: INVALID() };
+
+  const { data: email, error: lookupError } = await supabase.rpc("email_for_username" as never, { p_username: name } as never);
+  if (lookupError) return { user: null, session: null, error: { name: "AuthApiError", message: lookupError.message, status: 500 } as AuthError };
+  if (!email) return { user: null, session: null, error: INVALID() };
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email: email as unknown as string, password });
   return { user: data.user, session: data.session, error };
-}
-
-export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
-  if (isDemoMode || !supabase) {
-    console.warn("[Bumblebee] Demo mode — OAuth is a no-op");
-    return { error: null };
-  }
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
-    },
-  });
-  return { error };
-}
-
-export async function signInWithApple(): Promise<{ error: AuthError | null }> {
-  if (isDemoMode || !supabase) {
-    console.warn("[Bumblebee] Demo mode — OAuth is a no-op");
-    return { error: null };
-  }
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "apple",
-    options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
-    },
-  });
-  return { error };
 }
 
 export async function signOut(): Promise<{ error: AuthError | null }> {
@@ -116,14 +85,7 @@ export async function getSession(): Promise<Session | null> {
   return data.session;
 }
 
-export async function resetPasswordForEmail(email: string): Promise<{ error: AuthError | null }> {
-  if (isDemoMode || !supabase) return { error: null };
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/reset-password`,
-  });
-  return { error };
-}
-
+/** A signed-in user changing their own password. */
 export async function updatePassword(newPassword: string): Promise<{ error: AuthError | null }> {
   if (isDemoMode || !supabase) return { error: null };
   const { error } = await supabase.auth.updateUser({ password: newPassword });

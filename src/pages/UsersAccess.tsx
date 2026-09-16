@@ -8,8 +8,7 @@ import {
   MODULES, PERMISSION_LABELS, ROLE_TEMPLATES, type PermissionMap, type PermissionAction,
   hasPermission, countPermissions, countDangerousPermissions, getTemplateById,
 } from "../lib/permissions";
-import { UserDetailDrawer } from "../components/pos/UserDetailDrawer";
-import { InviteUserModal } from "../components/pos/InviteUserModal";
+import { MemberDrawer } from "../components/MemberDrawer";
 import {
   Users, Plus, X, Shield, Clock, CheckCircle2, AlertCircle, Loader2,
   Check, UserPlus, Building2, Eye, Edit3, Trash2, AlertTriangle,
@@ -65,7 +64,7 @@ interface PendingInvite {
   status: "pending" | "accepted" | "expired";
 }
 
-type Tab = "dashboard" | "members" | "invites" | "roles" | "audit";
+type Tab = "dashboard" | "members" | "roles";
 
 const DEMO_MEMBERS: Member[] = [
   { id: "1", user_id: "u1", role: "owner", department: "management", display_name: "Admin User", status: "active", email: "admin@bumblebee.app", phone: "+20-100-000-0001", joined_at: "2024-01-01", last_active: "Just now", login_count: 342, two_factor: true, branch_access: ["br-01", "br-02"] },
@@ -108,13 +107,11 @@ export default function UsersAccess() {
 
   // Drawers
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  const [showInviteModal, setShowInviteModal] = useState(false);
 
   // Create user form — a login the admin makes and shares (supabase/staff-accounts.sql)
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [createForm, setCreateForm] = useState({
-    name: "", loginType: "username" as "username" | "email", username: "", email: "",
-    department: "", role: "viewer", password: "",
+    name: "", username: "", department: "", role: "viewer", password: "",
   });
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -131,10 +128,8 @@ export default function UsersAccess() {
       setLoading(false);
       return;
     }
-    const [{ data: rows, error }, { data: inv }] = await Promise.all([
+    const [{ data: rows, error }] = await Promise.all([
       sb.rpc("list_workspace_members" as never, { p_workspace_id: workspace.id } as never),
-      sb.from("workspace_invitations").select("id, email, display_name, role, department, created_at, status")
-        .eq("workspace_id", workspace.id).order("created_at", { ascending: false }),
     ]);
     if (error) console.error("[Bumblebee] list_workspace_members failed:", error);
     type Row = { id: string; user_id: string; role: string; department: string | null; display_name: string | null; status: string | null;
@@ -148,9 +143,6 @@ export default function UsersAccess() {
       joined_at: r.joined_at?.slice(0, 10),
       last_active: r.last_sign_in_at ? new Date(r.last_sign_in_at).toLocaleString() : (ar ? "لم يسجل الدخول بعد" : "Never signed in"),
     })));
-    setInvites(((inv as { id: string; email: string; display_name: string | null; role: string; department: string | null; created_at: string; status: string }[]) ?? [])
-      .map((i) => ({ id: i.id, email: i.email, name: i.display_name ?? "", role: i.role, department: i.department ?? "",
-        sent_at: new Date(i.created_at).toLocaleDateString(), status: (i.status as PendingInvite["status"]) ?? "pending" })));
     setLoading(false);
   }, [workspace, ar]);
 
@@ -201,7 +193,7 @@ export default function UsersAccess() {
   }, [members]);
 
   const handleCreateUser = useCallback(async () => {
-    const login = createForm.loginType === "username" ? createForm.username.trim().toLowerCase() : createForm.email.trim().toLowerCase();
+    const login = createForm.username.trim().toLowerCase();
     if (!createForm.name.trim() || !login || createForm.password.length < 8) return;
     setCreating(true);
     setCreateError(null);
@@ -211,7 +203,7 @@ export default function UsersAccess() {
       // Demo: show the flow end to end without a database.
       setMembers(prev => [{
         id: `m-${Date.now()}`, user_id: `u-${Date.now()}`, role: createForm.role, department: createForm.department,
-        display_name: createForm.name, status: "active", email: createForm.loginType === "email" ? login : `@${login}`,
+        display_name: createForm.name, status: "active", email: `@${login}`,
         joined_at: new Date().toISOString().slice(0, 10), last_active: ar ? "لم يسجل الدخول بعد" : "Never signed in",
       }, ...prev]);
     } else {
@@ -220,8 +212,8 @@ export default function UsersAccess() {
         p_full_name: createForm.name.trim(),
         p_password: createForm.password,
         p_role: createForm.role,
-        p_username: createForm.loginType === "username" ? login : null,
-        p_email: createForm.loginType === "email" ? login : null,
+        p_username: login,
+        p_email: null,
         p_department: createForm.department || null,
       } as never);
       if (error) {
@@ -235,14 +227,21 @@ export default function UsersAccess() {
     setCreatedLogin({ name: createForm.name.trim(), login, password: createForm.password, url: `${window.location.origin}/auth` });
     setCreating(false);
     setShowCreateForm(false);
-    setCreateForm({ name: "", loginType: "username", username: "", email: "", department: "", role: "viewer", password: "" });
+    setCreateForm({ name: "", username: "", department: "", role: "viewer", password: "" });
   }, [createForm, ar, workspace, loadMembers]);
 
-  const handleUpdateMember = useCallback((updated: Member) => {
-    setMembers(prev => prev.map(m => m.id === updated.id ? updated : m));
+  const handleMemberChanged = useCallback(async (message: string, local?: Partial<Member>) => {
+    showToast(message);
+    if (isDemoMode) {
+      if (local && selectedMember) {
+        setMembers(prev => prev.map(m => m.id === selectedMember.id ? { ...m, ...local } : m));
+        setSelectedMember(prev => prev ? { ...prev, ...local } : prev);
+      }
+      return;
+    }
+    await loadMembers();
     setSelectedMember(null);
-    showToast(ar ? "تم التحديث ✓" : "Updated ✓");
-  }, [ar]);
+  }, [selectedMember, loadMembers]);
 
   if (loading) {
     return (
@@ -272,15 +271,12 @@ export default function UsersAccess() {
               {ar ? "إدارة المستخدمين والصلاحيات" : "Users & Access Control"}
             </h1>
             <p className="text-caption text-muted-foreground mt-0.5">
-              {ar ? "إدارة الفريق وصلاحيات الوصول والأمان" : "Manage team, permissions, and security"}
+              {ar ? "أنشئ حسابات الدخول وحدد صلاحية كل شخص" : "Create logins and decide what each person can open"}
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setShowInviteModal(true)} className={btnPrimary}>
-              <Send size={13} /> {ar ? "دعوة مستخدم" : "Invite User"}
-            </button>
-            <button onClick={() => setShowCreateForm(!showCreateForm)} className={btnSecondary}>
-              <UserPlus size={12} /> {ar ? "إنشاء مباشر" : "Create Directly"}
+            <button onClick={() => { setTab("members"); setShowCreateForm(true); }} className={btnPrimary}>
+              <UserPlus size={13} /> {ar ? "إنشاء حساب" : "Create login"}
             </button>
           </div>
         </div>
@@ -303,16 +299,6 @@ export default function UsersAccess() {
               <span className="text-micro text-muted-foreground">{ar ? "غير نشط" : "inactive"}</span>
             </div>
           )}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
-            <Fingerprint size={12} className="text-brand-ink" />
-            <span className="text-micro font-medium text-brand-ink">{stats.with2fa}</span>
-            <span className="text-micro text-brand-ink/70">2FA</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-warning/10 border border-warning/30">
-            <Send size={12} className="text-warning" />
-            <span className="text-micro font-medium text-warning">{invites.filter(i => i.status === "pending").length}</span>
-            <span className="text-micro text-warning">{ar ? "بانتظار" : "pending"}</span>
-          </div>
         </div>
 
         {/* Tabs */}
@@ -320,9 +306,7 @@ export default function UsersAccess() {
           {([
             { id: "dashboard" as Tab, en: "Overview", ar: "نظرة عامة", icon: BarChart3 },
             { id: "members" as Tab, en: "Members", ar: "الأعضاء", icon: Users },
-            { id: "invites" as Tab, en: "Invitations", ar: "الدعوات", icon: Send },
             { id: "roles" as Tab, en: "Roles", ar: "الأدوار", icon: Shield },
-            { id: "audit" as Tab, en: "Audit Log", ar: "سجل المراجعة", icon: History },
           ]).map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} className={`px-3.5 py-2 rounded-lg text-micro font-medium flex items-center gap-1.5 transition-all ${
               tab === t.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted/50"
@@ -372,29 +356,6 @@ export default function UsersAccess() {
                   ))}
                 </div>
               </div>
-
-              {/* Recent Activity */}
-              <div>
-                <h3 className="text-body font-semibold mb-3">{ar ? "آخر النشاطات" : "Recent Activity"}</h3>
-                <div className="space-y-2">
-                  {[
-                    { user: "Ahmed Hassan", action: "logged in", time: "5 min ago", icon: Key, color: "text-blue-600" },
-                    { user: "Sara Ibrahim", action: "approved PO-012", time: "2 hours ago", icon: ShieldCheck, color: "text-emerald-600" },
-                    { user: "Mohamed Ali", action: "updated production order", time: "3 hours ago", icon: Edit3, color: "text-warning" },
-                    { user: "Admin User", action: "changed permissions for Khalid", time: "Yesterday", icon: Shield, color: "text-violet-600" },
-                  ].map((entry, i) => (
-                    <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
-                      <div className={`w-7 h-7 rounded-full bg-muted/50 flex items-center justify-center ${entry.color}`}>
-                        <entry.icon size={12} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-micro"><span className="font-medium">{entry.user}</span> <span className="text-muted-foreground">{entry.action}</span></p>
-                      </div>
-                      <span className="text-micro text-muted-foreground shrink-0">{entry.time}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </motion.div>
           )}
 
@@ -417,7 +378,7 @@ export default function UsersAccess() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-caption">
                     {[
                       { k: ar ? "الرابط" : "Sign-in page", v: createdLogin.url },
-                      { k: ar ? "اسم المستخدم / الإيميل" : "Username / email", v: createdLogin.login },
+                      { k: ar ? "اسم المستخدم" : "Username", v: createdLogin.login },
                       { k: ar ? "كلمة المرور" : "Password", v: createdLogin.password },
                     ].map(({ k, v }) => (
                       <div key={k} className="rounded-lg bg-card border border-border px-3 py-2 min-w-0">
@@ -429,7 +390,7 @@ export default function UsersAccess() {
                   <button
                     onClick={() => {
                       navigator.clipboard?.writeText(
-                        `${BRAND_SHARE_HEADER}\n${createdLogin.url}\n${ar ? "المستخدم" : "Login"}: ${createdLogin.login}\n${ar ? "كلمة المرور" : "Password"}: ${createdLogin.password}`,
+                        `${BRAND_SHARE_HEADER}\n${createdLogin.url}\n${ar ? "اسم المستخدم" : "Username"}: ${createdLogin.login}\n${ar ? "كلمة المرور" : "Password"}: ${createdLogin.password}`,
                       );
                       showToast(ar ? "تم النسخ ✓" : "Copied ✓");
                     }}
@@ -449,19 +410,10 @@ export default function UsersAccess() {
                         <div>
                           <h3 className="text-body font-semibold">{ar ? "إنشاء حساب لزميل" : "Create a login for a colleague"}</h3>
                           <p className="text-micro text-muted-foreground">
-                            {ar ? "اختر اسم مستخدم وكلمة مرور وصلاحية، ثم شارك البيانات معه." : "Pick a username or email, a password and an access level, then share them."}
+                            {ar ? "اختر اسم مستخدم وكلمة مرور وصلاحية، ثم شارك البيانات معه." : "Pick a username, a password and an access level, then send them the details."}
                           </p>
                         </div>
                         <button onClick={() => setShowCreateForm(false)}><X size={14} className="text-muted-foreground" /></button>
-                      </div>
-
-                      <div className="flex p-1 rounded-lg bg-muted/60 w-fit">
-                        {(["username", "email"] as const).map(t => (
-                          <button key={t} onClick={() => setCreateForm(p => ({ ...p, loginType: t }))}
-                            className={`px-3 py-1 rounded-md text-micro font-medium transition-colors ${createForm.loginType === t ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"}`}>
-                            {t === "username" ? (ar ? "اسم مستخدم" : "Username") : (ar ? "إيميل" : "Email")}
-                          </button>
-                        ))}
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -469,19 +421,13 @@ export default function UsersAccess() {
                           <label className={labelCls}>{ar ? "الاسم" : "Name"} *</label>
                           <input value={createForm.name} onChange={e => setCreateForm(p => ({ ...p, name: e.target.value }))} className={inputCls} placeholder={ar ? "الاسم الكامل" : "Full name"} />
                         </div>
-                        {createForm.loginType === "username" ? (
-                          <div>
+                        <div>
                             <label className={labelCls}>{ar ? "اسم المستخدم" : "Username"} *</label>
                             <input value={createForm.username} autoCapitalize="none" spellCheck={false}
                               onChange={e => setCreateForm(p => ({ ...p, username: e.target.value.replace(/\s/g, "").toLowerCase() }))}
                               className={inputCls} placeholder="sara.cutting" />
+                            <p className="text-micro text-muted-foreground mt-1">{ar ? "3–32 حرف: حروف إنجليزية صغيرة، أرقام، . _ -" : "3–32 characters: lowercase letters, numbers, . _ -"}</p>
                           </div>
-                        ) : (
-                          <div>
-                            <label className={labelCls}>{ar ? "الإيميل" : "Email"} *</label>
-                            <input type="email" value={createForm.email} onChange={e => setCreateForm(p => ({ ...p, email: e.target.value }))} className={inputCls} placeholder="sara@cubsgoplaces.com" />
-                          </div>
-                        )}
                         <div>
                           <label className={labelCls}>{ar ? "كلمة المرور" : "Password"} * <span className="text-muted-foreground/70">({ar ? "8 أحرف على الأقل" : "8+ characters"})</span></label>
                           <div className="relative">
@@ -512,7 +458,7 @@ export default function UsersAccess() {
                       )}
                       <div className="flex justify-end">
                         <button onClick={handleCreateUser}
-                          disabled={creating || !createForm.name.trim() || createForm.password.length < 8 || !(createForm.loginType === "username" ? createForm.username.trim() : createForm.email.includes("@"))}
+                          disabled={creating || !createForm.name.trim() || createForm.password.length < 8 || !/^[a-z0-9][a-z0-9._-]{2,31}$/.test(createForm.username.trim())}
                           className={btnPrimary + " px-5"}>
                           {creating ? <Loader2 size={12} className="animate-spin" /> : <UserPlus size={12} />}
                           {ar ? "إنشاء الحساب" : "Create login"}
@@ -527,7 +473,7 @@ export default function UsersAccess() {
               <div className="flex items-center gap-2 mb-4">
                 <div className="relative flex-1 max-w-sm">
                   <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-                  <input value={searchQ} onChange={e => setSearchQ(e.target.value)} className={inputCls + " pl-9 h-9"} placeholder={ar ? "بحث بالاسم، الإيميل، الهاتف..." : "Search name, email, phone..."} />
+                  <input value={searchQ} onChange={e => setSearchQ(e.target.value)} className={inputCls + " pl-9 h-9"} placeholder={ar ? "بحث بالاسم أو اسم المستخدم..." : "Search name or username..."} />
                 </div>
                 <select value={roleFilter} onChange={e => setRoleFilter(e.target.value)} className="h-9 px-2 rounded-lg border border-border bg-background text-micro appearance-none cursor-pointer">
                   <option value="all">{ar ? "كل الأدوار" : "All Roles"}</option>
@@ -572,17 +518,16 @@ export default function UsersAccess() {
                             <span className="text-body font-medium">{m.display_name}</span>
                             <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${tmpl.color}`}>{ar ? tmpl.ar : tmpl.en}</span>
                             <div className={`w-2 h-2 rounded-full ${m.status === "active" ? "bg-emerald-500" : "bg-muted"}`} />
-                            {m.two_factor && <Fingerprint size={10} className="text-brand-ink" />}
                           </div>
                           <div className="flex items-center gap-3 text-micro text-muted-foreground">
-                            {m.email && <span className="flex items-center gap-1"><Mail size={9} />{m.email}</span>}
+                            {m.email && <span className="flex items-center gap-1 font-mono">{m.email}</span>}
                             {dept && <span className="flex items-center gap-1"><Building2 size={9} />{ar ? dept.ar : dept.en}</span>}
                             {m.last_active && <span className="flex items-center gap-1"><Clock size={9} />{m.last_active}</span>}
                           </div>
                         </div>
                         <div className="text-right shrink-0">
                           <p className="text-micro font-medium">{perms} {ar ? "صلاحية" : "perms"}</p>
-                          <p className="text-micro text-muted-foreground">{m.login_count || 0} {ar ? "دخول" : "logins"}</p>
+                          <p className="text-micro text-muted-foreground">{m.status === "suspended" ? (ar ? "موقوف" : "Suspended") : (ar ? "نشط" : "Active")}</p>
                         </div>
                         <ChevronRight size={14} className="text-muted-foreground/30 group-hover:text-muted-foreground transition-colors shrink-0" />
                       </div>
@@ -621,56 +566,6 @@ export default function UsersAccess() {
             </motion.div>
           )}
 
-          {/* ═══ INVITES ═══ */}
-          {tab === "invites" && (
-            <motion.div key="invites" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-body font-semibold">{ar ? "الدعوات المعلقة" : "Pending Invitations"}</h3>
-                <button onClick={() => setShowInviteModal(true)} className={btnPrimary + " text-micro px-3 py-1.5"}>
-                  <Send size={11} /> {ar ? "دعوة جديدة" : "New Invite"}
-                </button>
-              </div>
-              <div className="space-y-2">
-                {invites.map(inv => {
-                  const tmpl = ROLE_TEMPLATES.find(t => t.id === inv.role);
-                  const statusColor = inv.status === "pending" ? "bg-warning/15 text-warning" : inv.status === "accepted" ? "bg-emerald-100 text-emerald-700" : "bg-muted text-muted-foreground";
-                  return (
-                    <div key={inv.id} className="flex items-center gap-4 p-3.5 rounded-xl border border-border/40">
-                      <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-body font-semibold text-muted-foreground">
-                        <Mail size={16} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-body font-medium">{inv.name || inv.email}</span>
-                          <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${statusColor}`}>{inv.status}</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-micro text-muted-foreground">
-                          <span>{inv.email}</span>
-                          {tmpl && <span className="flex items-center gap-1"><Shield size={9} />{ar ? tmpl.ar : tmpl.en}</span>}
-                          <span className="flex items-center gap-1"><Clock size={9} />{inv.sent_at}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <button className="h-7 px-2.5 rounded-lg border border-border/60 text-micro font-medium hover:bg-muted transition-colors flex items-center gap-1">
-                          <RefreshCw size={10} /> {ar ? "إعادة" : "Resend"}
-                        </button>
-                        <button className="h-7 px-2.5 rounded-lg border border-rose-200 text-rose-600 text-micro font-medium hover:bg-rose-50 transition-colors">
-                          {ar ? "إلغاء" : "Revoke"}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-                {invites.length === 0 && (
-                  <div className="text-center py-12">
-                    <Send size={24} className="mx-auto text-muted-foreground/20 mb-2" />
-                    <p className="text-caption text-muted-foreground">{ar ? "لا توجد دعوات معلقة" : "No pending invitations"}</p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-
           {/* ═══ ROLES ═══ */}
           {tab === "roles" && (
             <motion.div key="roles" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
@@ -702,53 +597,6 @@ export default function UsersAccess() {
                   );
                 })}
               </div>
-
-              {/* Custom Role */}
-              <div className="mt-5 p-4 rounded-xl border border-dashed border-border/60 text-center">
-                <p className="text-micro text-muted-foreground mb-2">{ar ? "أو أنشئ دور مخصص" : "Or create a custom role"}</p>
-                <button className={btnPrimary + " text-micro px-4 py-1.5"}>
-                  <Plus size={11} /> {ar ? "دور مخصص" : "Custom Role"}
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* ═══ AUDIT LOG ═══ */}
-          {tab === "audit" && (
-            <motion.div key="audit" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-body font-semibold">{ar ? "سجل مراجعة الصلاحيات" : "Permission Audit Log"}</h3>
-                <button className={btnSecondary}><Download size={11} /> {ar ? "تصدير" : "Export"}</button>
-              </div>
-              <div className="space-y-0">
-                {[
-                  { time: "Today, 2:15 PM", user: "Admin", action: "Changed role", target: "Ahmed Hassan", detail: "viewer → sales", icon: Shield, color: "text-violet-600" },
-                  { time: "Today, 11:30 AM", user: "Admin", action: "Added permission", target: "Sara Ibrahim", detail: "finance: approve", icon: Plus, color: "text-emerald-600" },
-                  { time: "Yesterday, 4:20 PM", user: "Admin", action: "Revoked session", target: "Khalid Mansour", detail: "iPhone Safari session terminated", icon: LogOut, color: "text-rose-600" },
-                  { time: "Yesterday, 9:00 AM", user: "Admin", action: "Created user", target: "Omar Salah", detail: "Role: delivery, Department: delivery", icon: UserPlus, color: "text-blue-600" },
-                  { time: "Jun 10, 3:45 PM", user: "Admin", action: "Disabled 2FA bypass", target: "Fatma Nour", detail: "Enforced 2FA requirement", icon: Fingerprint, color: "text-warning" },
-                  { time: "Jun 9, 10:15 AM", user: "Admin", action: "Changed department", target: "Youssef Karim", detail: "production → sales", icon: Building2, color: "text-cyan-600" },
-                  { time: "Jun 8, 2:30 PM", user: "Admin", action: "Sent invitation", target: "newuser@bumblebee.app", detail: "Role: sales, Department: sales", icon: Send, color: "text-brand-ink" },
-                  { time: "Jun 7, 11:00 AM", user: "Admin", action: "Suspended user", target: "Youssef Karim", detail: "Account deactivated", icon: Ban, color: "text-rose-600" },
-                ].map((entry, i) => (
-                  <div key={i} className="flex gap-3 relative py-3">
-                    <div className="flex flex-col items-center">
-                      <div className={`w-7 h-7 rounded-full bg-muted/50 flex items-center justify-center ${entry.color}`}>
-                        <entry.icon size={12} />
-                      </div>
-                      {i < 7 && <div className="w-px flex-1 bg-border/40 my-1" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-micro font-medium">{entry.action} <span className="text-brand-ink">{entry.target}</span></span>
-                        <span className="text-micro text-muted-foreground">{entry.time}</span>
-                      </div>
-                      <p className="text-micro text-muted-foreground">{entry.detail}</p>
-                      <p className="text-micro text-muted-foreground/60 mt-0.5">{ar ? "بواسطة" : "by"} {entry.user}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -756,16 +604,10 @@ export default function UsersAccess() {
 
       {/* Drawers */}
       {selectedMember && (
-        <UserDetailDrawer
+        <MemberDrawer
           member={selectedMember}
           onClose={() => setSelectedMember(null)}
-          onSave={handleUpdateMember}
-        />
-      )}
-      {showInviteModal && (
-        <InviteUserModal
-          onClose={() => setShowInviteModal(false)}
-          onInvited={() => { showToast(ar ? "تم إرسال الدعوات ✓" : "Invitations sent ✓"); }}
+          onChanged={handleMemberChanged}
         />
       )}
     </div>

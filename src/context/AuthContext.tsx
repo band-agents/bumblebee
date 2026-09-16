@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef, ty
 import type { User, Session } from "@supabase/supabase-js";
 import {
   DEMO_USER, DEMO_SESSION,
-  signIn, signUp, signOut as authSignOut,
+  signIn, signOut as authSignOut,
   onAuthStateChange,
 } from "../lib/auth";
 import { isDemoMode, getSupabaseClient } from "../lib/supabase";
@@ -43,8 +43,7 @@ export interface AuthContextValue {
   workspaceLoading: boolean;
   isDemo: boolean;
   isAuthenticated: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: string | null }>;
+  signIn: (username: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshWorkspace: () => Promise<void>;
 }
@@ -167,12 +166,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null };
   }, [fetchWorkspace]);
 
-  const handleSignUp = useCallback(async (email: string, password: string, fullName?: string) => {
-    const result = await signUp(email, password, fullName);
-    if (result.error) return { error: result.error.message };
-    return { error: null };
-  }, []);
-
   const handleSignOut = useCallback(async () => {
     await authSignOut();
     if (isDemoMode) {
@@ -197,7 +190,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isDemo: isDemoMode,
       isAuthenticated: !!user,
       signIn: handleSignIn,
-      signUp: handleSignUp,
       signOut: handleSignOut,
       refreshWorkspace,
     }}>

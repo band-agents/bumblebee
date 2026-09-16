@@ -12,7 +12,6 @@ import { useCommandBar } from "../context/CommandBarContext";
 import { HistoryNav, SmartBreadcrumb, RecentsMenu, PinsMenu } from "./HeaderTools";
 import { useLocation, Link } from "wouter";
 import { useAuth } from "../context/AuthContext";
-import { AuthModal } from "./auth/AuthModal";
 import { NotificationsPanel, useUnreadCount } from "./NotificationsPanel";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -66,7 +65,6 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   const { openBar } = useCommandBar();
   const [location] = useLocation();
   const { user, isAuthenticated, signOut, workspace } = useAuth();
-  const [authOpen, setAuthOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -103,7 +101,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   }, [signOut]);
 
   const userName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
-  const userEmail = user?.email || "user@bumblebee.app";
+  const userEmail = user?.user_metadata?.username ? `@${user.user_metadata.username}` : (user?.email || "");
   const userInitials = userName.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase();
 
   return (
@@ -305,15 +303,14 @@ export function Topbar({ onMenuClick }: TopbarProps) {
             </AnimatePresence>
           </div>
         ) : (
-          <button onClick={() => setAuthOpen(true)}
+          <Link href="/auth"
             className="h-7 px-3 rounded-lg text-micro font-medium bg-foreground text-background hover:opacity-90 transition-opacity flex items-center gap-1.5">
             <LogIn size={12} strokeWidth={2} />
             {ar ? "دخول" : "Sign in"}
-          </button>
+          </Link>
         )}
       </div>
 
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
     </header>
   );
 }

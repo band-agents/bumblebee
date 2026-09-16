@@ -190,162 +190,6 @@ function AddEmployeeModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: 
   );
 }
 
-// ─── Invite Modal ────────────────────────────────────────
-
-function InviteModal({ onClose, ar }: { onClose: () => void; ar: boolean }) {
-  const { workspace, user } = useAuth();
-  const [form, setForm] = useState({ email: "", role: "member" });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [inviteLink, setInviteLink] = useState("");
-  const [emailState, setEmailState] = useState<"sent" | "link_only" | "demo">("link_only");
-  const [error, setError] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const email = form.email.trim().toLowerCase();
-    if (!email) return;
-    setStatus("sending");
-    setError(null);
-
-    if (isDemoMode) {
-      // Demo has no accounts — show the flow with a sample link.
-      setTimeout(() => {
-        setInviteLink(`${window.location.origin}/invite/demo-token`);
-        setEmailState("demo");
-        setStatus("sent");
-      }, 600);
-      return;
-    }
-
-    const sb = getSupabaseClient();
-    if (!sb || !workspace?.id) { setStatus("idle"); return; }
-
-    // 1) Create the invitation row (RLS: owner/admin only). The DB
-    //    generates the secure token and the 7-day expiry.
-    const { data, error: insErr } = await sb
-      .from("workspace_invitations")
-      .insert({
-        workspace_id: workspace.id,
-        email,
-        role: form.role,
-        invited_by: user?.id,
-      } as never)
-      .select("id, token")
-      .single<{ id: string; token: string }>();
-
-    if (insErr || !data) {
-      setStatus("idle");
-      setError(
-        insErr?.message?.includes("row-level security")
-          ? (ar ? "بس المالك أو المسؤول يقدر يبعت دعوات." : "Only the owner or an admin can send invitations.")
-          : (insErr?.message ?? (ar ? "حصل خطأ. جرب تاني." : "Something went wrong. Try again.")),
-      );
-      return;
-    }
-
-    const link = `${window.location.origin}/invite/${data.token}`;
-    setInviteLink(link);
-
-    // 2) Try email delivery — the link works either way.
-    try {
-      const { data: res, error: fnErr } = await sb.functions.invoke("send-invite", {
-        body: { invitation_id: data.id },
-      });
-      const sent = !fnErr && (res as { sent?: boolean } | null)?.sent === true;
-      setEmailState(sent ? "sent" : "link_only");
-    } catch {
-      setEmailState("link_only");
-    }
-    setStatus("sent");
-  }
-
-  async function copyLink() {
-    try {
-      await navigator.clipboard.writeText(inviteLink);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch { /* clipboard denied — user can select the text manually */ }
-  }
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[3px]" onClick={onClose} />
-      <div className="relative bg-background border border-border/60 rounded-2xl shadow-xl w-full max-w-[420px] overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-5 border-b border-border/40">
-          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-            {ar ? "ابعت دعوة" : "Invite Team Member"}
-          </h2>
-          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><X size={14} /></button>
-        </div>
-        {status === "sent" ? (
-          <div className="p-6 flex flex-col items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
-              <CheckCircle2 size={24} className="text-emerald-600" />
-            </div>
-            <div className="text-center">
-              <p className="text-body-lg font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>
-                {emailState === "sent"
-                  ? (ar ? "الدعوة اتبعتت" : "Invitation Sent")
-                  : (ar ? "الدعوة جاهزة" : "Invitation Ready")}
-              </p>
-              <p className="text-caption text-muted-foreground mt-1">
-                {emailState === "sent"
-                  ? (ar ? `بعتنا إيميل لـ ${form.email}. تقدر كمان تبعتله اللينك بنفسك.` : `We emailed ${form.email}. You can also share the link directly.`)
-                  : emailState === "demo"
-                    ? (ar ? "دي نسخة تجريبية — في النسخة الحقيقية بيتبعت إيميل حقيقي." : "This is demo mode — in live mode a real email is sent.")
-                    : (ar ? "الإيميل مش متفعّل لسه — ابعت اللينك ده بنفسك (واتساب مثلاً)." : "Email isn't configured yet — share this link yourself (WhatsApp works great).")}
-              </p>
-            </div>
-            <div className="w-full flex items-center gap-2 bg-muted/40 border border-border/50 rounded-xl p-2 pl-3">
-              <span className="flex-1 text-micro text-muted-foreground truncate font-mono" dir="ltr">{inviteLink}</span>
-              <button onClick={copyLink} className="shrink-0 h-8 px-3 rounded-lg bg-foreground text-background text-micro font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity">
-                {copied ? <CheckCircle2 size={12} /> : <Copy size={12} />}
-                {copied ? (ar ? "اتنسخ" : "Copied") : (ar ? "انسخ" : "Copy")}
-              </button>
-            </div>
-            <p className="text-micro text-muted-foreground/70 text-center">
-              {ar ? "اللينك صالح ٧ أيام وبيشتغل لمرة واحدة." : "The link is valid for 7 days and works once."}
-            </p>
-            <button onClick={onClose} className={btnPrimary + " h-10 w-full"}>
-              {ar ? "تم" : "Done"}
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <div>
-              <label className={labelCls}>{ar ? "البريد الإلكتروني" : "Email"} <span className="text-rose-600">*</span></label>
-              <input type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} required autoFocus className={inputCls} placeholder="colleague@company.com" />
-            </div>
-            <div>
-              <label className={labelCls}>{ar ? "الصلاحية" : "Role"}</label>
-              <select value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))} className={selectCls}>
-                {INVITE_ROLES.map((r) => <option key={r.value} value={r.value}>{ar ? r.ar : r.en}</option>)}
-              </select>
-            </div>
-            {error && (
-              <div className="flex items-start gap-2 bg-rose-50 border border-rose-200 rounded-xl p-3 text-micro text-rose-600">
-                <AlertCircle size={13} className="shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
-            <div className="bg-muted/30 rounded-xl p-3 text-micro text-muted-foreground">
-              {ar ? "هيوصلهم إيميل فيه لينك الانضمام — وتقدر كمان تنسخ اللينك وتبعته بنفسك." : "They'll receive an email with a join link — you can also copy the link and send it yourself."}
-            </div>
-            <div className="flex gap-3 pt-1">
-              <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-              <button type="submit" disabled={status === "sending"} className={btnPrimary + " flex-1 h-10"}>
-                {status === "sending" && <Loader2 size={12} className="animate-spin" />}
-                <Mail size={14} /> {ar ? "ابعت دعوة" : "Send Invite"}
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-    </div>
-  );
-}
-
 // ─── Employee Card ───────────────────────────────────────
 
 function EmployeeCard({ person, ar }: { person: Person; ar: boolean }) {
@@ -411,7 +255,6 @@ export default function Team() {
   const [people, setPeople] = useState<Person[]>([]);
   const [workItems, setWorkItems] = useState<WorkItem[]>([]);
   const [addModal, setAddModal] = useState(false);
-  const [inviteModal, setInviteModal] = useState(false);
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"team" | "all">("team");
 
@@ -509,9 +352,6 @@ export default function Team() {
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
-              <button onClick={() => setInviteModal(true)} className="flex items-center gap-2 h-9 px-4 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
-                <Mail size={14} /> {ar ? "ابعت دعوة" : "Invite"}
-              </button>
               <button onClick={() => setAddModal(true)} className={btnPrimary + " h-9"}>
                 <Plus size={14} /> {ar ? "ضيف موظف" : "Add Employee"}
               </button>
@@ -566,16 +406,13 @@ export default function Team() {
               </p>
               <p className="text-body text-muted-foreground leading-relaxed">
                 {ar
-                  ? "ضيف أول موظف أو ابعت دعوة لحد من فريقك. ممكن كمان تستورد بيانات الموظفين من ملف CSV."
-                  : "Add your first employee or invite a team member. You can also import employee data from a CSV file."}
+                  ? "ضيف أول موظف أو استورد بيانات الموظفين من ملف CSV. حسابات الدخول تتعمل من صفحة المستخدمين."
+                  : "Add your first employee, or import employee data from a CSV file. Logins are created in Users & Access."}
               </p>
             </div>
             <div className="flex gap-3">
               <button onClick={() => setAddModal(true)} className={btnPrimary + " h-10"}>
                 <Plus size={14} /> {ar ? "ضيف موظف" : "Add Employee"}
-              </button>
-              <button onClick={() => setInviteModal(true)} className="flex items-center gap-2 h-10 px-5 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">
-                <Mail size={14} /> {ar ? "ابعت دعوة" : "Invite"}
               </button>
             </div>
           </div>
@@ -664,7 +501,6 @@ export default function Team() {
       </div>
 
       {addModal && <AddEmployeeModal ar={ar} onClose={() => setAddModal(false)} onAdd={(p) => setPeople((prev) => [p, ...prev])} />}
-      {inviteModal && <InviteModal ar={ar} onClose={() => setInviteModal(false)} />}
     </div>
   );
 }

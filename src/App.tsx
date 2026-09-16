@@ -19,7 +19,6 @@ import Onboarding from "./pages/Onboarding";
 import AuthPage from "./pages/AuthPage";
 import Landing from "./pages/Landing";
 import WorkspaceSetup from "./pages/WorkspaceSetup";
-import InviteAccept from "./pages/InviteAccept";
 const ExecutiveDashboard = lazy(() => import("./pages/ExecutiveDashboard"));
 const Today = lazy(() => import("./pages/Today"));
 const People = lazy(() => import("./pages/People"));
@@ -100,8 +99,7 @@ const LoyaltyAnalyticsPage = lazy(() => import("./pages/LoyaltyAnalytics"));
 const LoyaltyRewardsPage = lazy(() => import("./pages/LoyaltyRewards"));
 const LoyaltyMergePage = lazy(() => import("./pages/LoyaltyMerge"));
 const LoyaltyNotificationsPage = lazy(() => import("./pages/LoyaltyNotifications"));
-import AuthCallback from "./pages/AuthCallback";
-import ResetPassword from "./pages/ResetPassword";
+import NoWorkspace from "./pages/NoWorkspace";
 import { RequireAccess } from "./components/RequireAccess";
 const AdminSettingsPage = lazy(() => import("./pages/AdminSettings"));
 const CodeSettingsPage = lazy(() => import("./pages/CodeSettings"));
@@ -399,11 +397,6 @@ function Router() {
     return <AppRoutes />;
   }
 
-  // ── Invitation links: public, before all auth guards ──────
-  // The page handles logged-out (inline sign in/up) and logged-in
-  // (accept button) states itself; demo mode shows a notice.
-  if (path.startsWith("/invite/")) return <InviteAccept />;
-
   // ── Demo mode ──
   if (isDemoMode) {
     if (!onboardingData?.completed) {
@@ -416,20 +409,6 @@ function Router() {
     return <AppRoutes />;
   }
 
-  // ── OAuth callback: always render before auth guards ────────
-  // This prevents the black/blank page issue where the auth callback
-  // URL is intercepted by the auth guards before Supabase can
-  // process the code/token from the redirect.
-  if (path.startsWith("/auth/callback")) {
-    return <AuthCallback />;
-  }
-
-  // ── Password reset: the recovery link signs the visitor in, so this has to
-  // render before the authenticated app would swallow it ──────────────
-  if (path === "/reset-password") {
-    return <ResetPassword />;
-  }
-
   // ── Production mode: require Supabase authentication ──────
   if (loading) return <LoadingScreen />;
   if (!isAuthenticated) {
@@ -438,7 +417,9 @@ function Router() {
     return <AuthPage />;
   }
   if (workspaceLoading) return <LoadingScreen />;
-  if (!workspace) return <WorkspaceSetup />;
+  // Accounts are created inside a workspace by its admin, so a user with no
+  // workspace has had their membership removed — there is nothing to set up.
+  if (!workspace) return <NoWorkspace />;
 
   return <AppRoutes />;
 }
