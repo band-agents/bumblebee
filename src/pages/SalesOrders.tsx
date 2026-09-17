@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo, useDeferredValue, useCallback } from "rea
 import { useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
+import { useCan } from "../lib/useCan";
 import { isDemoMode } from "../lib/supabase";
 import { getDataSource } from "../lib/data-source";
 import { nextDocumentNumber, createInvoiceFromSalesOrder, openPrint, DocumentError, type Invoice } from "../lib/documents";
@@ -793,6 +794,7 @@ function InvoiceFromOrderModal({ ar, currency, order, total, invoiced, workspace
 export default function SalesOrders() {
   const { lang } = useLanguage();
   const { workspace } = useAuth();
+  const can = useCan();
   const ar = lang === "ar";
   const settings = workspace?.settings as Record<string, unknown> | undefined;
   const currency = (settings?.currency as string) || "EGP";
@@ -1036,7 +1038,7 @@ export default function SalesOrders() {
               const paidTotal = bill?.paid ?? 0;
               const invoicedTotal = bill?.invoiced ?? 0;
               const remaining = itemsTotal - paidTotal;
-              const canInvoice = !["draft", "cancelled"].includes(o.status) && invoicedTotal < itemsTotal - 0.005;
+              const canInvoice = can("finance", "create") && !["draft", "cancelled"].includes(o.status) && invoicedTotal < itemsTotal - 0.005;
               const isOd = o.due_date && !["done", "cancelled", "sent"].includes(o.status) && new Date(o.due_date) < new Date(new Date().toDateString());
               const readyCount = [m.customer_confirmed, m.measurements_done, m.design_approved, m.materials_available, m.deposit_received].filter(Boolean).length;
               const linkedProducts = (m.items || []).filter(i => i.product_id).length;

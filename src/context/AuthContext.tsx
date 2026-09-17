@@ -7,6 +7,10 @@ import {
 } from "../lib/auth";
 import { isDemoMode, getSupabaseClient } from "../lib/supabase";
 
+/** Set when an admin's suspension or removal signs this device out; the sign-in page explains it. */
+export const SIGNOUT_REASON_KEY = "bumblebee_signout_reason";
+const ACCESS_CHECK_MS = 8000;
+
 // ─── Workspace shape ───────────────────────────────────────
 
 export interface Workspace {
@@ -59,6 +63,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(!isDemoMode);
   const [workspaceLoading, setWorkspaceLoading] = useState(false);
 
+  /** An admin suspended or removed this login: end the session on this device and say why on the sign-in page. */
+  const forceSignOut = useCallback(async (reason: "suspended" | "removed") => {
+    try { sessionStorage.setItem(SIGNOUT_REASON_KEY, reason); } catch { /* storage blocked */ }
+    const sb = getSupabaseClient();
+    // The server already revoked every session; clear this device's copy.
+    try { await sb?.auth.signOut({ scope: "local" }); } catch { /* already gone */ }
+    setUser(null);
+    setSession(null);
+    setWorkspace(null);
+    window.location.replace("/auth");
+  }, []);
+
   const fetchWorkspace = useCallback(async (userId: string) => {
     if (isDemoMode) return;
     const sb = getSupabaseClient();
@@ -90,6 +106,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       } else {
         if (error) console.error("[Bumblebee] Workspace fetch failed:", error);
+        // No readable membership: find out whether they were suspended or removed.
+        const { data: access } = await sb.rpc("my_access" as never, {} as never);
+        const status = (access as { status?: string } | null)?.status;
+        if (status === "suspended" || status === "removed") {
+          await forceSignOut(status);
+          return;
+        }
         setWorkspace(null);
       }
     } catch (e) {
@@ -152,6 +175,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
   }, [fetchWorkspace]);
+
+  // ── Live access check ──
+  // Every few seconds (and whenever the tab comes back into view) ask the
+  // database whether this login is still allowed in. Suspended or removed →
+  // signed out on this device at once. Changed role or module access → the
+  // sidebar and pages update without a reload.
+  const workspaceId = workspace?.id;
+  useEffect(() => {
+    if (isDemoMode || !workspaceId) return;
+    const sb = getSupabaseClient();
+    if (!sb) return;
+    let stopped = false;
+
+    const check = async () => {
+      if (stopped || document.visibilityState === "hidden") return;
+      const { data, error } = await sb.rpc("my_access" as never, { p_workspace_id: workspaceId } as never);
+      if (stopped) return;
+      if (error) {
+        // A revoked session shows up as an auth error once the token is refused.
+        const { error: userErr } = await sb.auth.getUser();
+        if (userErr && !stopped) await forceSignOut("suspended");
+        return;
+      }
+      const a = data as { status?: string; role?: string; permissions?: Record<string, string[]> } | null;
+      if (!a) return;
+      if (a.status === "suspended" || a.status === "removed") {
+        await forceSignOut(a.status);
+        return;
+      }
+      setWorkspace((prev) => {
+        if (!prev) return prev;
+        const perms = a.permissions ?? {};
+        if (prev.role === a.role && JSON.stringify(prev.permissions ?? {}) === JSON.stringify(perms) && prev.status === a.status) return prev;
+        return { ...prev, role: (a.role ?? prev.role) as Workspace["role"], permissions: perms, status: a.status };
+      });
+    };
+
+    const timer = window.setInterval(check, ACCESS_CHECK_MS);
+    const onVisible = () => { if (document.visibilityState === "visible") void check(); };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+    return () => {
+      stopped = true;
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
+    };
+  }, [workspaceId, forceSignOut]);
 
   const refreshWorkspace = useCallback(async () => {
     if (user) await fetchWorkspace(user.id);

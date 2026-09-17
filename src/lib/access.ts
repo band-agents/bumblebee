@@ -1,19 +1,20 @@
 /**
  * Access — what the signed-in user may open.
  *
- * A member's access is their role template (lib/permissions ROLE_TEMPLATES)
- * with any per-user overrides from workspace_members.permissions laid on top.
- * The sidebar hides what a user cannot view, and <RequireAccess> blocks the
- * route itself, so a shared link cannot reach a page the sidebar hid.
+ * A member's access is EITHER their custom module list (workspace_members.
+ * permissions, set in Users & Access → Custom access) OR, when that is empty,
+ * their role template (lib/permissions ROLE_TEMPLATES). Custom access
+ * replaces the template completely — a module that isn't listed isn't open.
  *
- * This is the interface layer. The database enforces the same boundary for
- * account management (supabase/staff-accounts.sql); module data is still
- * workspace-scoped by RLS, not role-scoped.
+ * The sidebar hides what a user cannot view, <RequireAccess> blocks the route
+ * itself, and the database applies the same module list to the data
+ * (supabase/access-control-v2.sql), so a pasted link or a direct API call
+ * can't reach it either.
  */
 
-import { getTemplateById, type PermissionAction, type PermissionMap } from "./permissions";
+import { ALWAYS_OPEN_PATHS, getTemplateById, type PermissionAction, type PermissionMap } from "./permissions";
 
-/** Which permission module guards a route. Longest prefix wins; unlisted paths are open to every member. */
+/** Which permission module guards a route. Longest prefix wins. */
 const PATH_MODULES: [prefix: string, module: string][] = [
   ["/print/quotation", "quotations"],
   ["/print/sales_order", "orders"],
@@ -21,17 +22,18 @@ const PATH_MODULES: [prefix: string, module: string][] = [
   ["/print/receipt", "finance"],
   ["/print/purchase_request", "purchasing"],
   ["/print/purchase_order", "purchasing"],
-  ["/print/goods_receipt", "inventory"],
+  ["/print/goods_receipt", "purchasing"],
   ["/print/production_order", "production"],
   ["/print/delivery_note", "delivery"],
-  ["/print/pos_sale", "orders"],
+  ["/print/pos_sale", "pos"],
   ["/crm", "customers"],
   ["/organizations", "customers"],
+  ["/sales", "customers"],
+  ["/loyalty", "customers"],
   ["/people", "contacts"],
-  ["/sales", "orders"],
   ["/quotations", "quotations"],
   ["/orders", "orders"],
-  ["/pos", "orders"],
+  ["/pos", "pos"],
   ["/products", "products"],
   ["/designs", "products"],
   ["/site-visits", "products"],
@@ -41,15 +43,14 @@ const PATH_MODULES: [prefix: string, module: string][] = [
   ["/queue", "production"],
   ["/quality", "quality"],
   ["/inventory", "inventory"],
+  ["/resources", "inventory"],
   ["/purchasing", "purchasing"],
   ["/delivery", "delivery"],
   ["/finance", "finance"],
-  ["/loyalty", "customers"],
-  ["/hr", "users"],
+  ["/hr", "hr"],
   ["/team", "users"],
   ["/users", "users"],
   ["/analytics", "analytics"],
-  ["/reports", "reports"],
   ["/forecast", "analytics"],
   ["/risk", "analytics"],
   ["/intelligence", "analytics"],
@@ -57,27 +58,43 @@ const PATH_MODULES: [prefix: string, module: string][] = [
   ["/memory", "analytics"],
   ["/rhythms", "analytics"],
   ["/exec", "analytics"],
+  ["/reports", "reports"],
+  ["/roadmap", "settings"],
+  ["/knowledge", "settings"],
   ["/shopify", "settings"],
   ["/mobile-apps", "settings"],
   ["/branches", "settings"],
   ["/tools", "settings"],
   ["/data", "settings"],
-  ["/settings", "settings"],
+  ["/settings/codes", "settings"],
   ["/studio", "settings"],
 ].sort((a, b) => b[0].length - a[0].length) as [string, string][];
 
 export function moduleForPath(path: string): string | null {
-  const hit = PATH_MODULES.find(([prefix]) => path === prefix || path.startsWith(prefix + "/"));
+  const clean = path.split(/[?#]/)[0];
+  const hit = PATH_MODULES.find(([prefix]) => clean === prefix || clean.startsWith(prefix + "/"));
   return hit ? hit[1] : null;
 }
 
-/** Template permissions, with any non-empty per-user module overrides replacing that module's list. */
+/** True when the member has a custom module list (not just their role template). */
+export function hasCustomAccess(overrides?: Record<string, string[]> | null): boolean {
+  return !!overrides && Object.values(overrides).some((a) => Array.isArray(a) && a.length > 0);
+}
+
+/**
+ * The member's permissions: the custom list when there is one (exactly as
+ * saved — nothing inherited), otherwise the role template. An unknown role
+ * gets nothing rather than something.
+ */
 export function effectivePermissions(role: string | undefined, overrides?: Record<string, string[]> | null): PermissionMap {
-  const base = { ...(getTemplateById(role ?? "viewer")?.permissions ?? getTemplateById("viewer")!.permissions) };
-  for (const [module, actions] of Object.entries(overrides ?? {})) {
-    if (Array.isArray(actions)) base[module] = actions as PermissionAction[];
+  if (hasCustomAccess(overrides)) {
+    const map: PermissionMap = {};
+    for (const [module, actions] of Object.entries(overrides!)) {
+      if (Array.isArray(actions) && actions.length) map[module] = actions as PermissionAction[];
+    }
+    return map;
   }
-  return base;
+  return { ...(getTemplateById(role ?? "")?.permissions ?? {}) };
 }
 
 export function isFullAccess(role: string | undefined): boolean {
@@ -88,9 +105,12 @@ export function can(perms: PermissionMap, module: string, action: PermissionActi
   return (perms[module] ?? []).includes(action);
 }
 
-/** Can this member open this path? Owners and admins can open everything. */
+/** Can this member open this path? Owners and admins can open everything; home pages are open to all. */
 export function canOpenPath(role: string | undefined, perms: PermissionMap, path: string): boolean {
   if (isFullAccess(role)) return true;
-  const module = moduleForPath(path);
-  return module === null || can(perms, module, "view");
+  const clean = path.split(/[?#]/)[0];
+  if (ALWAYS_OPEN_PATHS.includes(clean)) return true;
+  const module = moduleForPath(clean);
+  // Pages that no module guards are only for owners and admins.
+  return module !== null && can(perms, module, "view");
 }

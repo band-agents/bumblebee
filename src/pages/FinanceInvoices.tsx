@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
+import { useCan } from "../lib/useCan";
 import { getDataSource } from "../lib/data-source";
 import {
   PAYMENT_METHODS, recordInvoicePayment, voidInvoice, voidReceipt, openPrint,
@@ -45,7 +46,9 @@ export default function FinanceInvoices() {
   const ar = lang === "ar";
   const { workspace } = useAuth();
   const wid = workspace?.id || "demo";
-  const canVoid = ["owner", "admin", "finance", "manager"].includes(workspace?.role ?? "owner");
+  const can = useCan();
+  const canVoid = can("finance", "work") && ["owner", "admin", "finance", "manager"].includes(workspace?.role ?? "owner");
+  const canCollect = can("finance", "create");
 
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -205,7 +208,7 @@ export default function FinanceInvoices() {
                       {live && <p className={`text-micro tabular-nums ${bal > 0 ? "text-rose-600" : "text-emerald-600"}`}>{bal > 0 ? `${fmt(bal)} ${ar ? "متبقي" : "due"}` : (ar ? "مسددة" : "settled")}</p>}
                     </div>
                     <div className="flex items-center gap-1.5">
-                      {live && bal > 0 && (
+                      {live && bal > 0 && canCollect && (
                         <button onClick={() => setPayFor(inv)} className={btnPrimary + " h-8 text-caption px-3"}><Plus size={12} /> {ar ? "تسجيل دفعة" : "Record payment"}</button>
                       )}
                       <button onClick={() => openPrint("invoice", inv.id)} className="h-8 px-3 rounded-xl border border-border/60 text-caption inline-flex items-center gap-1.5 hover:bg-muted/50"><Printer size={12} /> {ar ? "طباعة" : "Print"}</button>

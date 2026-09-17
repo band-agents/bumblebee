@@ -68,6 +68,12 @@ function isArabic(): boolean {
   return typeof document !== "undefined" && document.documentElement.dir === "rtl";
 }
 
+/** The database refused the write because of the member's module access (or the row isn't theirs to change). */
+export function isAccessDenied(e: unknown): boolean {
+  const msg = e instanceof Error ? e.message : String(e ?? "");
+  return /row-level security|permission denied|access doesn't include|42501|PGRST116|coerce the result to a single JSON object/i.test(msg);
+}
+
 /** User-facing toast for a data failure. Safe to call from anywhere. */
 export function toastDataError(e: DataError) {
   const ar = isArabic();
@@ -80,6 +86,15 @@ export function toastDataError(e: DataError) {
     return;
   }
   const label = OP_LABEL[e.op] ?? OP_LABEL.update;
+  if (isAccessDenied(e)) {
+    toast.error(ar ? label.ar : label.en, {
+      description: ar
+        ? "صلاحيتك في هذا القسم لا تسمح بهذا التعديل. اطلب من المسؤول صلاحية «عمل»."
+        : "Your access to this module doesn't allow this change. Ask an admin for Work access.",
+      duration: 7000,
+    });
+    return;
+  }
   toast.error(ar ? label.ar : label.en, {
     description: ar
       ? "حدث خطأ في الاتصال. حاول مرة أخرى — لم يتم حفظ شيء بصمت."

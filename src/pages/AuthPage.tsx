@@ -12,6 +12,7 @@
 
 import { useState } from "react";
 import { signIn } from "../lib/auth";
+import { SIGNOUT_REASON_KEY } from "../context/AuthContext";
 import { isDemoMode } from "../lib/supabase";
 import { BRAND, CLIENT } from "../lib/brand";
 import { Logo } from "../components/Logo";
@@ -23,6 +24,7 @@ function friendlyError(raw: string): string {
   if (m.includes("invalid login credentials")) return "That username and password don't match. Check both and try again.";
   if (m.includes("rate limit") || m.includes("too many")) return "Too many attempts. Wait a minute, then try again.";
   if (m.includes("failed to fetch") || m.includes("network")) return "Can't reach the server. Check your connection and try again.";
+  if (m.includes("banned")) return "This login is suspended or was removed. Ask your admin.";
   return raw;
 }
 
@@ -36,6 +38,13 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [signedOutReason] = useState<string | null>(() => {
+    try {
+      const r = sessionStorage.getItem(SIGNOUT_REASON_KEY);
+      sessionStorage.removeItem(SIGNOUT_REASON_KEY);
+      return r;
+    } catch { return null; }
+  });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -97,6 +106,14 @@ export default function AuthPage() {
         <div className="w-full max-w-[400px]">
           <h1 className="text-[2rem] leading-tight mb-1.5">Welcome back</h1>
           <p className="text-body text-muted-foreground mb-7">Sign in to {CLIENT.name} on {BRAND.name}.</p>
+
+          {signedOutReason && (
+            <p role="status" className="mb-5 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-caption text-amber-900 dark:bg-amber-500/10 dark:text-amber-100">
+              {signedOutReason === "removed"
+                ? "You were signed out because an admin removed your login. Ask them if you still need access."
+                : "You were signed out because an admin suspended your login. Ask them to re-activate it."}
+            </p>
+          )}
 
           {isDemoMode && (
             <p className="mb-5 rounded-xl bg-brand-wash border border-border px-4 py-3 text-caption text-foreground/80">

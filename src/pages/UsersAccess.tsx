@@ -9,6 +9,8 @@ import {
   hasPermission, countPermissions, countDangerousPermissions, getTemplateById,
 } from "../lib/permissions";
 import { MemberDrawer } from "../components/MemberDrawer";
+import { AccessPicker, openModules } from "../components/AccessPicker";
+import { effectivePermissions, hasCustomAccess, isFullAccess } from "../lib/access";
 import {
   Users, Plus, X, Shield, Clock, CheckCircle2, AlertCircle, Loader2,
   Check, UserPlus, Building2, Eye, Edit3, Trash2, AlertTriangle,
@@ -113,6 +115,8 @@ export default function UsersAccess() {
   const [createForm, setCreateForm] = useState({
     name: "", username: "", department: "", role: "viewer", password: "",
   });
+  // Exact modules for the new login; null = use the role's modules.
+  const [createAccess, setCreateAccess] = useState<PermissionMap | null>(null);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   /** Shown once after creation so the admin can copy and share the login. */
@@ -195,6 +199,10 @@ export default function UsersAccess() {
   const handleCreateUser = useCallback(async () => {
     const login = createForm.username.trim().toLowerCase();
     if (!createForm.name.trim() || !login || createForm.password.length < 8) return;
+    if (createAccess && !isFullAccess(createForm.role) && openModules(createAccess).length === 0) {
+      setCreateError(ar ? "اختر قسماً واحداً على الأقل." : "Open at least one module for this login.");
+      return;
+    }
     setCreating(true);
     setCreateError(null);
 
@@ -204,6 +212,7 @@ export default function UsersAccess() {
       setMembers(prev => [{
         id: `m-${Date.now()}`, user_id: `u-${Date.now()}`, role: createForm.role, department: createForm.department,
         display_name: createForm.name, status: "active", email: `@${login}`,
+        permissions: createAccess && !isFullAccess(createForm.role) ? createAccess : undefined,
         joined_at: new Date().toISOString().slice(0, 10), last_active: ar ? "لم يسجل الدخول بعد" : "Never signed in",
       }, ...prev]);
     } else {
@@ -215,6 +224,7 @@ export default function UsersAccess() {
         p_username: login,
         p_email: null,
         p_department: createForm.department || null,
+        p_permissions: createAccess && !isFullAccess(createForm.role) ? createAccess : {},
       } as never);
       if (error) {
         setCreating(false);
@@ -228,11 +238,17 @@ export default function UsersAccess() {
     setCreating(false);
     setShowCreateForm(false);
     setCreateForm({ name: "", username: "", department: "", role: "viewer", password: "" });
-  }, [createForm, ar, workspace, loadMembers]);
+    setCreateAccess(null);
+  }, [createForm, createAccess, ar, workspace, loadMembers]);
 
-  const handleMemberChanged = useCallback(async (message: string, local?: Partial<Member>) => {
+  const handleMemberChanged = useCallback(async (message: string, local?: Partial<Member>, removed?: boolean) => {
     showToast(message);
     if (isDemoMode) {
+      if (removed && selectedMember) {
+        setMembers(prev => prev.filter(m => m.id !== selectedMember.id));
+        setSelectedMember(null);
+        return;
+      }
       if (local && selectedMember) {
         setMembers(prev => prev.map(m => m.id === selectedMember.id ? { ...m, ...local } : m));
         setSelectedMember(prev => prev ? { ...prev, ...local } : prev);
@@ -453,6 +469,27 @@ export default function UsersAccess() {
                           </select>
                         </div>
                       </div>
+                      {!isFullAccess(createForm.role) && (
+                        <div className="rounded-xl border border-border bg-background p-3 space-y-3">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                              <p className="text-caption font-semibold">{ar ? "ماذا يفتح هذا الحساب" : "What this login can open"}</p>
+                              <p className="text-micro text-muted-foreground">
+                                {createAccess
+                                  ? (ar ? "الأقسام المحددة فقط — لا شيء غيرها." : "Only the modules you pick below — nothing else.")
+                                  : (ar ? `أقسام دور ${getTemplateById(createForm.role)?.ar ?? ""}: ` : `The ${getTemplateById(createForm.role)?.en ?? ""} role's modules: `) +
+                                    openModules(effectivePermissions(createForm.role, null)).map(k => { const m = MODULES.find(x => x.key === k); return m ? (ar ? m.ar : m.en) : k; }).join(", ")}
+                              </p>
+                            </div>
+                            <button type="button"
+                              onClick={() => setCreateAccess(createAccess ? null : effectivePermissions(createForm.role, null))}
+                              className="h-8 px-3 rounded-lg border border-border text-micro font-semibold hover:bg-brand-wash">
+                              {createAccess ? (ar ? "استخدم أقسام الدور" : "Use the role's modules") : (ar ? "اختيار الأقسام بنفسي" : "Pick modules myself")}
+                            </button>
+                          </div>
+                          {createAccess && <AccessPicker value={createAccess} onChange={setCreateAccess} ar={ar} />}
+                        </div>
+                      )}
                       {createError && (
                         <p className="text-micro text-destructive bg-destructive/5 border border-destructive/20 rounded-lg px-3 py-2">{createError}</p>
                       )}
@@ -507,7 +544,8 @@ export default function UsersAccess() {
                   {filteredMembers.map(m => {
                     const tmpl = ROLE_TEMPLATES.find(t => t.id === m.role) || ROLE_TEMPLATES[ROLE_TEMPLATES.length - 1];
                     const dept = DEPARTMENTS.find(d => d.value === m.department);
-                    const perms = m.permissions ? countPermissions(m.permissions) : countPermissions(tmpl.permissions);
+                    const openCount = isFullAccess(m.role) ? MODULES.length : openModules(effectivePermissions(m.role, m.permissions)).length;
+                    const custom = !isFullAccess(m.role) && hasCustomAccess(m.permissions);
                     return (
                       <div key={m.id} className="flex items-center gap-4 p-3.5 rounded-xl border border-border/40 hover:shadow-sm hover:border-border/60 transition-all cursor-pointer group" onClick={() => setSelectedMember(m)}>
                         <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center text-body font-semibold text-brand-ink shrink-0">
@@ -526,7 +564,10 @@ export default function UsersAccess() {
                           </div>
                         </div>
                         <div className="text-right shrink-0">
-                          <p className="text-micro font-medium">{perms} {ar ? "صلاحية" : "perms"}</p>
+                          <p className="text-micro font-medium">
+                            {custom && <span className="me-1.5 px-1.5 py-0.5 rounded-md bg-violet-100 text-violet-700">{ar ? "مخصص" : "Custom"}</span>}
+                            {isFullAccess(m.role) ? (ar ? "كل الأقسام" : "All modules") : `${openCount} ${ar ? "قسم" : openCount === 1 ? "module" : "modules"}`}
+                          </p>
                           <p className="text-micro text-muted-foreground">{m.status === "suspended" ? (ar ? "موقوف" : "Suspended") : (ar ? "نشط" : "Active")}</p>
                         </div>
                         <ChevronRight size={14} className="text-muted-foreground/30 group-hover:text-muted-foreground transition-colors shrink-0" />

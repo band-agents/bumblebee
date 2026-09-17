@@ -33,6 +33,7 @@ const ORDER = [
   "supabase/fix-workspaces-select-rls.sql",
   "supabase/enable-crm-rls.sql",
   "supabase/fix-grants.sql",
+  "supabase/access-control-v2.sql",
 ];
 
 // `drop trigger if exists x on some_table` still errors when some_table itself
