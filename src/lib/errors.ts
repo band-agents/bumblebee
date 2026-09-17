@@ -89,8 +89,8 @@ export function toastDataError(e: DataError) {
   if (isAccessDenied(e)) {
     toast.error(ar ? label.ar : label.en, {
       description: ar
-        ? "صلاحيتك في هذا القسم لا تسمح بهذا التعديل. اطلب من المسؤول صلاحية «عمل»."
-        : "Your access to this module doesn't allow this change. Ask an admin for Work access.",
+        ? "صلاحيتك في هذا القسم لا تسمح بهذا التعديل. اطلب من المسؤول صلاحية «تعديل» أو «كامل»."
+        : "Your access to this module doesn't allow this change. Ask an admin for Edit or Full access.",
       duration: 7000,
     });
     return;

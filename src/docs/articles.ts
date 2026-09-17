@@ -1,4 +1,32 @@
-import type { Article, Category } from "./types";
+import type { Article, Block, Category } from "./types";
+import { MODULES, ROLE_GROUPS, ROLE_TEMPLATES, type PermissionAction } from "../lib/permissions";
+
+// ─── Role tables, built from the live role list so they never drift ──
+function level(moduleKey: string, actions: PermissionAction[] | undefined): "off" | "view" | "edit" | "full" {
+  if (!actions?.includes("view")) return "off";
+  const all = MODULES.find((m) => m.key === moduleKey)?.permissions ?? [];
+  if (all.every((a) => actions.includes(a))) return "full";
+  if (actions.some((a) => ["create", "edit", "assign", "import"].includes(a))) return "edit";
+  return "view";
+}
+const extras = (actions: PermissionAction[] | undefined) =>
+  (actions?.some((a) => a === "approve" || a === "release") ? " (+ approve)" : "") + (actions?.includes("delete") ? " (+ delete)" : "");
+function roleBlocks(): Block[] {
+  return ROLE_GROUPS.flatMap((g): Block[] => {
+    const roles = ROLE_TEMPLATES.filter((t) => t.group === g.id);
+    if (!roles.length) return [];
+    const list = (t: (typeof ROLE_TEMPLATES)[number], lv: string) =>
+      MODULES.filter((m) => level(m.key, t.permissions[m.key]) === lv).map((m) => lv === "full" ? m.en : m.en + extras(t.permissions[m.key])).join(", ") || "—";
+    return [
+      { t: "p", text: `**${g.en}**` },
+      { t: "table", head: ["Role", "For", "Full", "Edit", "View"], rows: roles.map((t) =>
+        t.id === "owner" || t.id === "admin"
+          ? [t.en, t.description, "Every module", "—", "—"]
+          : [t.en, t.description, list(t, "full"), list(t, "edit"), list(t, "view")]) },
+    ];
+  });
+}
+
 
 export const CATEGORIES: Category[] = [
   { id: "start", title: "Getting started", blurb: "Sign in, find your way around, switch language.", icon: "Compass" },
@@ -1191,8 +1219,8 @@ export const ARTICLES: Article[] = [
             "Enter the **Full name**.",
             "Enter a **Username**: 3–32 characters, lowercase letters, numbers, dot, dash or underscore, starting with a letter or number (for example `sara.ahmed`).",
             "Type a **Password** of at least 8 characters, or choose **Generate** for a strong one.",
-            "Pick the **Access level** (role) and department. The box below lists the modules that role opens.",
-            "To choose the modules yourself, choose **Pick modules myself** and set each module to **Off**, **View** or **Work** (see below).",
+            "Pick the **Access level** — one of the ready-made roles, grouped by department (see [Roles](/docs/roles)) — and the department. The box below lists the modules that role opens.",
+            "To choose the modules yourself, choose **Pick modules myself** and set each module to **Off**, **View**, **Edit** or **Full** (see below).",
             "Choose **Create login**, then **Copy login details** and send them privately.",
           ] },
           { t: "note", tone: "warn", text: "The password is shown **once**. If it's lost, reset it — nobody can read it later, not even the owner." },
@@ -1205,15 +1233,16 @@ export const ARTICLES: Article[] = [
           { t: "steps", items: [
             "Click the member to open their panel.",
             "Under **What they can open**, choose **Pick modules myself**.",
-            "For each module choose **Off** (hidden), **View** (can open and read) or **Work** (can also add, edit and approve there). **All off** clears the list.",
+            "For each module choose **Off**, **View**, **Edit** or **Full**. **All off** clears the list.",
             "Choose **Save access**. It takes effect on their screen within seconds — no need for them to sign out.",
           ] },
           { t: "table", head: ["Level", "In the sidebar", "What they can do"], rows: [
             ["Off", "Not shown", "Nothing. A pasted link says the page isn't part of their access, and the database returns none of that module's data."],
-            ["View", "Shown", "Open and read, export lists. Saving anything is refused."],
-            ["Work", "Shown", "Everything in that module: add, edit, approve, print."],
+            ["View", "Shown", "Open, read, print and export. Saving anything is refused."],
+            ["Edit", "Shown", "Also add new records and correct existing ones. No deleting, approving or releasing."],
+            ["Full", "Shown", "Everything the module allows, including delete, approve and release."],
           ] },
-          { t: "p", text: "Custom access **replaces** the role completely — only the modules you set to View or Work open, nothing is added from the role. Choose **Use the role's modules** to go back to the role's list." },
+          { t: "p", text: "Custom access **replaces** the role completely — only the modules you set to View, Edit or Full open, nothing is added from the role. Choose **Use the role's modules** to go back to the role's list." },
           { t: "note", tone: "info", text: "Everyone keeps the home dashboard, Today, the activity feed and their own Settings (profile and password). Home numbers only count data from modules they can open. Owners and admins always open everything." },
         ],
       },
@@ -1268,27 +1297,47 @@ export const ARTICLES: Article[] = [
     slug: "roles",
     category: "people",
     title: "Roles and what each can open",
-    summary: "Ready-made module lists for each job. A role opens only the modules listed here.",
+    summary: `${ROLE_TEMPLATES.length} ready-made roles, one per job. Each opens only the modules listed here.`,
     status: "live",
     sections: [
       {
-        id: "templates",
-        heading: "Role templates",
+        id: "how",
+        heading: "How roles work",
         blocks: [
-          { t: "table", head: ["Role", "Opens (Work)", "Opens (View only)"], rows: [
-            ["Owner", "Everything", "—"],
-            ["Admin", "Everything except managing the owner", "—"],
-            ["Sales", "Customers & CRM, Contacts, Quotations (incl. approve), Sales Orders, Point of Sale", "Products & Designs"],
-            ["Finance", "Finance, approvals on Sales Orders, Quotations and Purchasing", "Point of Sale, Customers, Reports, Analytics"],
-            ["Production Manager", "Products & Designs, Materials list, Production, Stages, Quality, Purchasing (create), Delivery (assign)", "Inventory, Sales Orders, Reports"],
-            ["Warehouse", "Inventory, Purchasing (incl. receiving goods)", "Products & Designs"],
-            ["Purchasing", "Purchasing, Contacts", "Inventory"],
-            ["Quality Control", "Quality Control", "Production, Stages"],
-            ["Delivery", "Delivery", "Production"],
-            ["Viewer", "—", "Every module"],
+          { t: "steps", items: [
+            "When you create a login, pick the role that matches the job. The list is grouped by department.",
+            "The person sees only that role's modules, at the level shown below. Everything else is hidden, and the database doesn't return its data.",
+            "Need a different mix for one person? Open their panel and choose **Pick modules myself** — see [Users and access](/docs/users-and-access#modules).",
+            "People → Users & Access → **Roles** shows every role with its modules, how many people use it, and **Create a login with this role**.",
           ] },
-          { t: "p", text: "Modules not listed for a role don't appear in that person's sidebar, and the database doesn't return their data. To give one person a different mix, use **Pick modules myself** on their panel — see [Users and access](/docs/users-and-access#modules)." },
-          { t: "note", tone: "info", text: "Issuing invoices and recording payments needs **Finance** access. Voiding them is limited to owner, admin, manager and finance roles." },
+          { t: "table", head: ["Level", "Means"], rows: [
+            ["Full", "Everything in the module, including delete, approve and release."],
+            ["Edit", "Add new records and correct existing ones. No deleting or approving."],
+            ["View", "Open, read, print and export only."],
+          ] },
+          { t: "note", tone: "info", text: "A few roles are narrower than Edit. The **Cashier** can add sales but not change them; the **Storekeeper** can add and correct stock but can't delete or approve; the **Driver** can only update their deliveries. Issuing invoices and recording payments needs Finance **Edit**; voiding them needs Finance approval (**Finance Manager**, **General Manager**, owner, admin)." },
+        ],
+      },
+      {
+        id: "templates",
+        heading: "Every role",
+        blocks: roleBlocks(),
+      },
+      {
+        id: "choosing",
+        heading: "Which role for whom",
+        blocks: [
+          { t: "table", head: ["Person", "Role"], rows: [
+            ["Factory or business manager who needs to see everything and approve", "General Manager"],
+            ["Accountant from outside who reviews the books", "Viewer / Auditor"],
+            ["Person who types stock in and out at the warehouse", "Storekeeper (data entry)"],
+            ["Person at the gate who checks deliveries against purchase orders", "Receiving Clerk"],
+            ["One person who runs production and buys the fabric and trims for it", "Production & Purchasing Lead"],
+            ["Shop staff at the till", "Cashier"],
+            ["Branch manager", "Store Manager"],
+            ["Whoever handles the website orders", "E-commerce Manager"],
+            ["Temporary helper entering customers, products and stock", "Data Entry Clerk"],
+          ] },
         ],
       },
     ],

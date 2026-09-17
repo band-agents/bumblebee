@@ -47,7 +47,7 @@ export default function FinanceInvoices() {
   const { workspace } = useAuth();
   const wid = workspace?.id || "demo";
   const can = useCan();
-  const canVoid = can("finance", "work") && ["owner", "admin", "finance", "manager"].includes(workspace?.role ?? "owner");
+  const canVoid = can("finance", "approve");
   const canCollect = can("finance", "create");
 
   const [invoices, setInvoices] = useState<Invoice[]>([]);

@@ -5,10 +5,12 @@ import { useAuth } from "../context/AuthContext";
 import { isDemoMode, getSupabaseClient } from "../lib/supabase";
 import { DEPARTMENTS } from "../lib/access-control";
 import {
-  MODULES, PERMISSION_LABELS, ROLE_TEMPLATES, type PermissionMap, type PermissionAction,
+  MODULES, PERMISSION_LABELS, ROLE_TEMPLATES, ROLE_GROUPS, type PermissionMap, type PermissionAction,
   hasPermission, countPermissions, countDangerousPermissions, getTemplateById,
 } from "../lib/permissions";
 import { MemberDrawer } from "../components/MemberDrawer";
+import { RoleSelect } from "../components/RoleSelect";
+import { accessLabel, levelOf } from "../components/AccessPicker";
 import { AccessPicker, openModules } from "../components/AccessPicker";
 import { effectivePermissions, hasCustomAccess, isFullAccess } from "../lib/access";
 import {
@@ -457,9 +459,8 @@ export default function UsersAccess() {
                         </div>
                         <div>
                           <label className={labelCls}>{ar ? "الصلاحية" : "Access level"}</label>
-                          <select value={createForm.role} onChange={e => setCreateForm(p => ({ ...p, role: e.target.value }))} className={inputCls + " appearance-none cursor-pointer"}>
-                            {ROLE_TEMPLATES.filter(t => t.id !== "owner").map(t => <option key={t.id} value={t.id}>{ar ? t.ar : t.en} — {ar ? t.descriptionAr : t.description}</option>)}
-                          </select>
+                          <RoleSelect value={createForm.role} onChange={r => { setCreateForm(p => ({ ...p, role: r })); setCreateAccess(null); }} ar={ar}
+                            allowAdmin={workspace?.role === "owner"} className={inputCls + " appearance-none cursor-pointer"} />
                         </div>
                         <div>
                           <label className={labelCls}>{ar ? "القسم" : "Department"}</label>
@@ -609,35 +610,60 @@ export default function UsersAccess() {
 
           {/* ═══ ROLES ═══ */}
           {tab === "roles" && (
-            <motion.div key="roles" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <h3 className="text-body font-semibold mb-3">{ar ? "قوالب الأدوار" : "Role Templates"}</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {ROLE_TEMPLATES.map(t => {
-                  const count = members.filter(m => m.role === t.id).length;
-                  const dangerCount = countDangerousPermissions(t.permissions);
-                  return (
-                    <div key={t.id} className="p-4 rounded-xl border border-border/40 hover:shadow-sm transition-shadow">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className={`text-micro px-2 py-0.5 rounded-full font-semibold ${t.color}`}>{ar ? t.ar : t.en}</span>
-                        <span className="text-title font-bold" style={{ fontFamily: "var(--app-font-serif)" }}>{count}</span>
-                      </div>
-                      <p className="text-micro text-muted-foreground mb-3">{ar ? t.descriptionAr : t.description}</p>
-                      <div className="flex items-center justify-between text-micro text-muted-foreground mb-2">
-                        <span>{countPermissions(t.permissions)} {ar ? "صلاحية" : "perms"}</span>
-                        {dangerCount > 0 && <span className="text-rose-600 flex items-center gap-0.5"><AlertTriangle size={8} />{dangerCount}</span>}
-                      </div>
-                      <div className="h-1 rounded-full bg-muted/60 overflow-hidden">
-                        <div className="h-full rounded-full bg-primary/50" style={{ width: `${(countPermissions(t.permissions) / 170) * 100}%` }} />
-                      </div>
-                      {t.risk === "high" && (
-                        <span className="text-micro text-rose-600 flex items-center gap-0.5 mt-2">
-                          <ShieldAlert size={8} /> {ar ? "خطر عالي" : "High risk"}
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
+            <motion.div key="roles" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-8">
+              <div>
+                <h3 className="text-body font-semibold">{ar ? "قوالب الأدوار الجاهزة" : "Ready-made roles"}</h3>
+                <p className="text-micro text-muted-foreground mt-0.5">
+                  {ar
+                    ? `${ROLE_TEMPLATES.length} دور جاهز. كل دور يفتح الأقسام الظاهرة فقط. اختر دوراً عند إنشاء الحساب، ويمكنك تعديل الأقسام لأي شخص بعدها.`
+                    : `${ROLE_TEMPLATES.length} ready-made roles. Each opens only the modules shown. Pick one when you create a login — you can still adjust any person's modules afterwards.`}
+                </p>
               </div>
+              {ROLE_GROUPS.map(g => {
+                const roles = ROLE_TEMPLATES.filter(t => t.group === g.id);
+                if (!roles.length) return null;
+                return (
+                  <section key={g.id}>
+                    <h4 className="text-caption font-semibold uppercase tracking-wider text-muted-foreground mb-3">{ar ? g.ar : g.en}</h4>
+                    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                      {roles.map(t => {
+                        const count = members.filter(m => m.role === t.id).length;
+                        const full = t.id === "owner" || t.id === "admin";
+                        const mods = MODULES.map(m => ({ m, lvl: levelOf(m.key, t.permissions[m.key] as PermissionAction[] | undefined), label: accessLabel(m.key, t.permissions[m.key] as PermissionAction[] | undefined, ar) })).filter(x => x.lvl !== "off");
+                        return (
+                          <div key={t.id} className="p-4 rounded-xl border border-border/50 bg-card flex flex-col">
+                            <div className="flex items-start justify-between gap-2 mb-1.5">
+                              <span className={`text-micro px-2 py-0.5 rounded-full font-semibold ${t.color}`}>{ar ? t.ar : t.en}</span>
+                              <span className="text-micro text-muted-foreground whitespace-nowrap">{count} {ar ? "مستخدم" : count === 1 ? "user" : "users"}</span>
+                            </div>
+                            <p className="text-micro text-muted-foreground mb-3">{ar ? t.descriptionAr : t.description}</p>
+                            {full ? (
+                              <p className="text-micro font-medium mb-3">{ar ? "كل الأقسام — كامل" : "Every module — Full"}</p>
+                            ) : (
+                              <div className="flex flex-wrap gap-1 mb-3">
+                                {mods.map(({ m, lvl, label }) => {
+                                  return (
+                                    <span key={m.key} className={`text-[10.5px] leading-none px-1.5 py-1 rounded-md border ${lvl === "view" ? "border-border text-muted-foreground" : lvl === "edit" ? "border-primary/60 bg-primary/15 text-foreground" : "border-primary bg-primary/50 text-foreground"}`}>
+                                      {ar ? m.ar : m.en} · {label}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            )}
+                            {t.id !== "owner" && (t.id !== "admin" || workspace?.role === "owner") && (
+                              <button
+                                onClick={() => { setTab("members"); setCreateForm(p => ({ ...p, role: t.id })); setCreateAccess(null); setShowCreateForm(true); }}
+                                className="mt-auto self-start h-8 px-3 rounded-lg border border-border text-micro font-semibold hover:bg-brand-wash inline-flex items-center gap-1.5">
+                                <UserPlus size={12} /> {ar ? "إنشاء حساب بهذا الدور" : "Create a login with this role"}
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                );
+              })}
             </motion.div>
           )}
         </AnimatePresence>

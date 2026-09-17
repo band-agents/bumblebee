@@ -17,10 +17,11 @@ import { X, Loader2, KeyRound, ShieldCheck, UserX, UserCheck, Copy, Check, Trash
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { getSupabaseClient, isDemoMode } from "../lib/supabase";
-import { ROLE_TEMPLATES, type PermissionMap } from "../lib/permissions";
+import { type PermissionMap } from "../lib/permissions";
 import { effectivePermissions, hasCustomAccess, isFullAccess } from "../lib/access";
 import { DEPARTMENTS } from "../lib/access-control";
 import { AccessPicker, openModules } from "./AccessPicker";
+import { RoleSelect } from "./RoleSelect";
 
 export interface DrawerMember {
   id: string;
@@ -186,11 +187,9 @@ export function MemberDrawer({ member, onClose, onChanged }: {
 
             <div>
               <label className="text-micro text-muted-foreground font-medium mb-1 block">{ar ? "الدور" : "Role"}</label>
-              <select value={role} disabled={!canManage} onChange={(e) => setRole(e.target.value)} className={inputCls + " appearance-none cursor-pointer disabled:opacity-60"}>
-                {ROLE_TEMPLATES.filter((t) => t.id !== "owner" || isOwner)
-                  .filter((t) => callerIsOwner || !["owner", "admin"].includes(t.id) || t.id === member.role)
-                  .map((t) => <option key={t.id} value={t.id}>{ar ? t.ar : t.en} — {ar ? t.descriptionAr : t.description}</option>)}
-              </select>
+              <RoleSelect value={role} onChange={(r) => { setRole(r); setCustom(false); }} ar={ar} disabled={!canManage}
+                allowOwner={isOwner} allowAdmin={callerIsOwner}
+                className={inputCls + " appearance-none cursor-pointer disabled:opacity-60"} />
             </div>
 
             {roleIsFull ? (
