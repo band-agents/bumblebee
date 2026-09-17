@@ -21,7 +21,8 @@ import { type PermissionMap } from "../lib/permissions";
 import { effectivePermissions, hasCustomAccess, isFullAccess } from "../lib/access";
 import { DEPARTMENTS } from "../lib/access-control";
 import { AccessPicker, openModules } from "./AccessPicker";
-import { RoleSelect } from "./RoleSelect";
+import { RolesMultiSelect } from "./RolesMultiSelect";
+import { friendlyAccessError } from "../lib/errors";
 
 export interface DrawerMember {
   id: string;
@@ -34,6 +35,7 @@ export interface DrawerMember {
   last_active?: string;
   joined_at?: string;
   permissions?: PermissionMap;
+  extra_roles?: string[];
 }
 
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
@@ -60,10 +62,13 @@ export function MemberDrawer({ member, onClose, onChanged }: {
   const ar = lang === "ar";
   const { workspace, user } = useAuth();
 
-  const [role, setRole] = useState(member.role);
+  const startRoles = [member.role, ...(member.extra_roles ?? [])];
+  const [roles, setRoles] = useState<string[]>(startRoles);
+  const role = roles[0];
+  const extraRoles = roles.slice(1);
   const startCustom = hasCustomAccess(member.permissions);
   const [custom, setCustom] = useState(startCustom);
-  const [access, setAccess] = useState<PermissionMap>(() => effectivePermissions(member.role, member.permissions));
+  const [access, setAccess] = useState<PermissionMap>(() => effectivePermissions(member.role, member.permissions, member.extra_roles));
   const [newPassword, setNewPassword] = useState("");
   const [shownPassword, setShownPassword] = useState<string | null>(null);
   const [busy, setBusy] = useState<"access" | "status" | "password" | "remove" | null>(null);
@@ -80,10 +85,10 @@ export function MemberDrawer({ member, onClose, onChanged }: {
   const username = member.email?.startsWith("@") ? member.email.slice(1) : member.email;
   const roleIsFull = isFullAccess(role);
 
-  const templateAccess = useMemo(() => effectivePermissions(role, null), [role]);
+  const templateAccess = useMemo(() => effectivePermissions(role, null, extraRoles), [roles.join("|")]); // eslint-disable-line react-hooks/exhaustive-deps
   const shownAccess = custom ? access : templateAccess;
-  const originalAccess = useMemo(() => effectivePermissions(member.role, member.permissions), [member.role, member.permissions]);
-  const accessDirty = role !== member.role || custom !== startCustom || (custom && !sameMap(access, originalAccess));
+  const originalAccess = useMemo(() => effectivePermissions(member.role, member.permissions, member.extra_roles), [member.role, member.permissions, member.extra_roles]);
+  const accessDirty = roles.join("|") !== startRoles.join("|") || custom !== startCustom || (custom && !sameMap(access, originalAccess));
 
   async function rpc(fn: string, args: Record<string, unknown>) {
     const sb = getSupabaseClient();
@@ -100,10 +105,10 @@ export function MemberDrawer({ member, onClose, onChanged }: {
     setBusy("access"); setError(null);
     // An empty map means "use the role template".
     const permissions = custom && !roleIsFull ? access : {};
-    const err = await rpc("update_workspace_member", { p_role: role, p_permissions: permissions });
+    const err = await rpc("update_workspace_member", { p_role: role, p_permissions: permissions, p_extra_roles: roleIsFull ? [] : extraRoles });
     setBusy(null);
-    if (err) { setError(err.message); return; }
-    onChanged(ar ? "تم حفظ الصلاحيات ✓ — تتحدث عنده خلال ثوانٍ" : "Access saved ✓ — it updates on their screen within seconds", { role, permissions });
+    if (err) { setError(friendlyAccessError(err.message, ar)); return; }
+    onChanged(ar ? "تم حفظ الصلاحيات ✓ — تتحدث عنده خلال ثوانٍ" : "Access saved ✓ — it updates on their screen within seconds", { role, permissions, extra_roles: roleIsFull ? [] : extraRoles });
   }
 
   async function toggleStatus() {
@@ -111,7 +116,7 @@ export function MemberDrawer({ member, onClose, onChanged }: {
     setBusy("status"); setError(null);
     const err = await rpc("update_workspace_member", { p_status: next });
     setBusy(null);
-    if (err) { setError(err.message); return; }
+    if (err) { setError(friendlyAccessError(err.message, ar)); return; }
     onChanged(next === "suspended"
       ? (ar ? "تم إيقاف الحساب وتسجيل خروجه من كل الأجهزة" : "Login suspended and signed out of every device")
       : (ar ? "تم تفعيل الحساب ✓" : "Login re-activated ✓"), { status: next });
@@ -131,7 +136,7 @@ export function MemberDrawer({ member, onClose, onChanged }: {
     setBusy("remove"); setError(null);
     const err = await rpc("remove_workspace_member", {});
     setBusy(null);
-    if (err) { setError(err.message); setConfirmRemove(false); return; }
+    if (err) { setError(friendlyAccessError(err.message, ar)); setConfirmRemove(false); return; }
     onChanged(ar ? "تم حذف الحساب وتسجيل خروجه" : "Login removed and signed out", undefined, true);
   }
 
@@ -186,10 +191,9 @@ export function MemberDrawer({ member, onClose, onChanged }: {
             <h3 className="text-body font-semibold flex items-center gap-2"><ShieldCheck size={15} className="text-brand-ink" />{ar ? "ماذا يفتح" : "What they can open"}</h3>
 
             <div>
-              <label className="text-micro text-muted-foreground font-medium mb-1 block">{ar ? "الدور" : "Role"}</label>
-              <RoleSelect value={role} onChange={(r) => { setRole(r); setCustom(false); }} ar={ar} disabled={!canManage}
-                allowOwner={isOwner} allowAdmin={callerIsOwner}
-                className={inputCls + " appearance-none cursor-pointer disabled:opacity-60"} />
+              <label className="text-micro text-muted-foreground font-medium mb-1 block">{ar ? "الأدوار" : "Roles"}</label>
+              <RolesMultiSelect value={roles} onChange={(r) => { setRoles(r); setCustom(false); }} ar={ar} disabled={!canManage}
+                allowOwner={isOwner} allowAdmin={callerIsOwner} />
             </div>
 
             {roleIsFull ? (
@@ -201,7 +205,7 @@ export function MemberDrawer({ member, onClose, onChanged }: {
                 <div className="flex rounded-xl border border-border overflow-hidden text-caption font-medium">
                   <button type="button" disabled={!canManage} onClick={() => setCustom(false)}
                     className={`flex-1 h-9 ${!custom ? "bg-foreground text-background" : "bg-background text-muted-foreground hover:bg-muted"}`}>
-                    {ar ? "حسب الدور" : "Use the role's modules"}
+                    {ar ? "حسب الأدوار" : roles.length > 1 ? "Use the roles' modules" : "Use the role's modules"}
                   </button>
                   <button type="button" disabled={!canManage} onClick={() => { if (!custom) setAccess(templateAccess); setCustom(true); }}
                     className={`flex-1 h-9 inline-flex items-center justify-center gap-1.5 ${custom ? "bg-foreground text-background" : "bg-background text-muted-foreground hover:bg-muted"}`}>

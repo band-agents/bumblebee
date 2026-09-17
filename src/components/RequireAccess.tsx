@@ -19,8 +19,8 @@ export function RequireAccess({ children }: { children: React.ReactNode }) {
   const ar = lang === "ar";
 
   const perms = useMemo(
-    () => effectivePermissions(workspace?.role, workspace?.permissions),
-    [workspace?.role, workspace?.permissions],
+    () => effectivePermissions(workspace?.role, workspace?.permissions, workspace?.extra_roles),
+    [workspace?.role, workspace?.permissions, workspace?.extra_roles],
   );
 
   // Demo mode has one all-powerful sample user; nothing to enforce.

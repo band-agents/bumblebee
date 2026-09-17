@@ -48,6 +48,9 @@ const roleList = `-- BEGIN ROLE LIST
 alter table workspace_members drop constraint if exists workspace_members_role_check;
 alter table workspace_members add constraint workspace_members_role_check
   check (role in (${[...new Set(roleIds)].map((r) => `'${r}'`).join(", ")}));
+alter table workspace_members drop constraint if exists workspace_members_extra_roles_check;
+alter table workspace_members add constraint workspace_members_extra_roles_check
+  check (extra_roles <@ array[${listed.map((t) => `'${t.id}'`).join(", ")}]::text[]);
 -- END ROLE LIST`;
 
 const swap = (text, begin, end, replacement) => {

@@ -74,6 +74,23 @@ export function isAccessDenied(e: unknown): boolean {
   return /row-level security|permission denied|access doesn't include|42501|PGRST116|coerce the result to a single JSON object/i.test(msg);
 }
 
+/**
+ * Messages from the access functions, in plain words. When the live database
+ * hasn't had the latest access update (supabase/access-control-v2.sql), say
+ * exactly that instead of showing a constraint or "function not found" error.
+ */
+export function friendlyAccessError(raw: string, ar = false): string {
+  const m = raw.toLowerCase();
+  const outdated = m.includes("workspace_members_role_check") || m.includes("extra_roles")
+    || m.includes("could not find the function") || m.includes("remove_workspace_member") || m.includes("schema cache");
+  if (outdated) {
+    return ar
+      ? "قاعدة البيانات تحتاج آخر تحديث للصلاحيات. شغّل ملف 4-access-control.sql في محرر SQL في Supabase ثم حاول مرة أخرى."
+      : "The database needs the latest access update. Run 4-access-control.sql in the Supabase SQL editor, then try again.";
+  }
+  return raw;
+}
+
 /** User-facing toast for a data failure. Safe to call from anywhere. */
 export function toastDataError(e: DataError) {
   const ar = isArabic();

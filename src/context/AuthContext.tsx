@@ -23,6 +23,8 @@ export interface Workspace {
     | "warehouse" | "purchasing" | "qc" | "delivery" | "viewer";
   /** Per-user overrides on top of the role template. Empty = use the template. */
   permissions?: Record<string, string[]>;
+  /** Roles held besides `role`; access combines them all. */
+  extra_roles?: string[];
   /** "active" or "suspended". A suspended member is signed out of the workspace. */
   status?: string;
   settings?: Record<string, unknown>;
@@ -83,12 +85,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data, error } = await sb
         .from("workspace_members")
-        .select("role, permissions, status, workspaces(*)")
+        .select("*, workspaces(*)")
         .eq("user_id", userId)
         .order("joined_at", { ascending: true })
         .limit(1)
         .maybeSingle() as unknown as {
-          data: { role: string; permissions: Record<string, string[]> | null; status: string | null; workspaces: Record<string, unknown> } | null;
+          data: { role: string; permissions: Record<string, string[]> | null; status: string | null; extra_roles?: string[] | null; workspaces: Record<string, unknown> } | null;
           error: unknown;
         };
 
@@ -101,6 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           plan: ws.plan as string,
           role: data.role as Workspace["role"],
           permissions: data.permissions ?? {},
+          extra_roles: data.extra_roles ?? [],
           status: data.status ?? "active",
           settings: (ws.settings as Record<string, unknown>) ?? {},
         });
@@ -198,7 +201,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (userErr && !stopped) await forceSignOut("suspended");
         return;
       }
-      const a = data as { status?: string; role?: string; permissions?: Record<string, string[]> } | null;
+      const a = data as { status?: string; role?: string; permissions?: Record<string, string[]>; extra_roles?: string[] } | null;
       if (!a) return;
       if (a.status === "suspended" || a.status === "removed") {
         await forceSignOut(a.status);
@@ -207,8 +210,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setWorkspace((prev) => {
         if (!prev) return prev;
         const perms = a.permissions ?? {};
-        if (prev.role === a.role && JSON.stringify(prev.permissions ?? {}) === JSON.stringify(perms) && prev.status === a.status) return prev;
-        return { ...prev, role: (a.role ?? prev.role) as Workspace["role"], permissions: perms, status: a.status };
+        const extra = a.extra_roles ?? prev.extra_roles ?? [];
+        if (prev.role === a.role && JSON.stringify(prev.permissions ?? {}) === JSON.stringify(perms)
+          && JSON.stringify(prev.extra_roles ?? []) === JSON.stringify(extra) && prev.status === a.status) return prev;
+        return { ...prev, role: (a.role ?? prev.role) as Workspace["role"], permissions: perms, extra_roles: extra, status: a.status };
       });
     };
 

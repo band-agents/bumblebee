@@ -86,7 +86,11 @@ export function hasCustomAccess(overrides?: Record<string, string[]> | null): bo
  * saved — nothing inherited), otherwise the role template. An unknown role
  * gets nothing rather than something.
  */
-export function effectivePermissions(role: string | undefined, overrides?: Record<string, string[]> | null): PermissionMap {
+export function effectivePermissions(
+  role: string | undefined,
+  overrides?: Record<string, string[]> | null,
+  extraRoles?: string[] | null,
+): PermissionMap {
   if (hasCustomAccess(overrides)) {
     const map: PermissionMap = {};
     for (const [module, actions] of Object.entries(overrides!)) {
@@ -94,7 +98,14 @@ export function effectivePermissions(role: string | undefined, overrides?: Recor
     }
     return map;
   }
-  return { ...(getTemplateById(role ?? "")?.permissions ?? {}) };
+  // Every role they hold, combined: a module's actions are the union across roles.
+  const map: PermissionMap = {};
+  for (const id of [role ?? "", ...(extraRoles ?? [])]) {
+    for (const [module, actions] of Object.entries(getTemplateById(id)?.permissions ?? {})) {
+      map[module] = [...new Set([...(map[module] ?? []), ...actions])];
+    }
+  }
+  return map;
 }
 
 export function isFullAccess(role: string | undefined): boolean {

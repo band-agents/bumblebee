@@ -63,11 +63,19 @@ on conflict (role) do update set permissions = excluded.permissions;
 delete from access_role_templates where role not in ('general_manager', 'viewer', 'sales_manager', 'sales', 'store_manager', 'cashier', 'ecommerce', 'customer_service', 'production_manager', 'production_purchasing', 'production_planner', 'line_supervisor', 'cutting_master', 'designer', 'quality_manager', 'qc', 'warehouse', 'storekeeper', 'receiving_clerk', 'purchasing_manager', 'purchasing', 'import_coordinator', 'delivery', 'driver', 'finance', 'accountant', 'hr_manager', 'hr_officer', 'data_entry');
 -- END ROLE TEMPLATES
 
+-- ─── 1a. A member can hold more than one role ─────────────
+-- role = their main role; extra_roles = any further roles. Access is the
+-- combination of all of them (unless custom modules are set).
+alter table workspace_members add column if not exists extra_roles text[] not null default '{}';
+
 -- ─── 1b. Every role template is an allowed role ───────────
 -- BEGIN ROLE LIST
 alter table workspace_members drop constraint if exists workspace_members_role_check;
 alter table workspace_members add constraint workspace_members_role_check
   check (role in ('owner', 'admin', 'manager', 'member', 'general_manager', 'viewer', 'sales_manager', 'sales', 'store_manager', 'cashier', 'ecommerce', 'customer_service', 'production_manager', 'production_purchasing', 'production_planner', 'line_supervisor', 'cutting_master', 'designer', 'quality_manager', 'qc', 'warehouse', 'storekeeper', 'receiving_clerk', 'purchasing_manager', 'purchasing', 'import_coordinator', 'delivery', 'driver', 'finance', 'accountant', 'hr_manager', 'hr_officer', 'data_entry'));
+alter table workspace_members drop constraint if exists workspace_members_extra_roles_check;
+alter table workspace_members add constraint workspace_members_extra_roles_check
+  check (extra_roles <@ array['general_manager', 'viewer', 'sales_manager', 'sales', 'store_manager', 'cashier', 'ecommerce', 'customer_service', 'production_manager', 'production_purchasing', 'production_planner', 'line_supervisor', 'cutting_master', 'designer', 'quality_manager', 'qc', 'warehouse', 'storekeeper', 'receiving_clerk', 'purchasing_manager', 'purchasing', 'import_coordinator', 'delivery', 'driver', 'finance', 'accountant', 'hr_manager', 'hr_officer', 'data_entry']::text[]);
 -- END ROLE LIST
 
 -- ─── 2. Membership helpers are status-aware ───────────────
@@ -107,13 +115,14 @@ set search_path = public
 as $$
 declare
   v_role  text;
+  v_extra text[];
   v_perms jsonb;
   m       text;
 begin
   if auth.uid() is null then
     return false;
   end if;
-  select wm.role, wm.permissions into v_role, v_perms
+  select wm.role, wm.extra_roles, wm.permissions into v_role, v_extra, v_perms
     from workspace_members wm
    where wm.workspace_id = ws_id and wm.user_id = auth.uid()
      and coalesce(wm.status, 'active') = 'active';
@@ -126,7 +135,14 @@ begin
   -- Custom access replaces the template when it lists any module.
   if v_perms is null or jsonb_typeof(v_perms) <> 'object'
      or not exists (select 1 from jsonb_each(v_perms) e where jsonb_typeof(e.value) = 'array' and jsonb_array_length(e.value) > 0) then
-    select rt.permissions into v_perms from access_role_templates rt where rt.role = v_role;
+    -- Every role they hold, combined: a module's actions are the union across roles.
+    select jsonb_object_agg(k, acts) into v_perms
+      from (select e.key as k, jsonb_agg(distinct a) as acts
+              from access_role_templates rt
+              cross join lateral jsonb_each(rt.permissions) e
+              cross join lateral jsonb_array_elements_text(e.value) a
+             where rt.role = any (array[v_role] || coalesce(v_extra, '{}'))
+             group by e.key) s;
   end if;
   if v_perms is null then
     return false;
@@ -382,9 +398,10 @@ revoke all on function _revoke_sessions(uuid) from public, anon, authenticated;
 
 -- ─── 7. Change role / status / access (owner, admin) ──────
 
+drop function if exists update_workspace_member(uuid, uuid, text, text, text, jsonb);
 create or replace function update_workspace_member(
   p_workspace_id uuid, p_user_id uuid, p_role text default null, p_status text default null,
-  p_department text default null, p_permissions jsonb default null
+  p_department text default null, p_permissions jsonb default null, p_extra_roles text[] default null
 )
 returns void
 language plpgsql security definer
@@ -400,7 +417,7 @@ begin
   if coalesce(v_caller_role, '') not in ('owner', 'admin') or v_target_role is null then
     raise exception 'Not allowed' using errcode = '42501';
   end if;
-  if p_user_id = auth.uid() and (p_status is not null or p_role is not null or p_permissions is not null) then
+  if p_user_id = auth.uid() and (p_status is not null or p_role is not null or p_permissions is not null or p_extra_roles is not null) then
     raise exception 'You can''t change your own access' using errcode = '42501';
   end if;
   if v_target_role = 'owner' then
@@ -421,6 +438,10 @@ begin
     status      = coalesce(p_status, status),
     department  = coalesce(p_department, department),
     permissions = coalesce(p_permissions, permissions),
+    -- Owners and admins already open everything; extra roles only matter for everyone else.
+    extra_roles = case when coalesce(p_role, role) in ('owner', 'admin') then '{}'
+                       when p_extra_roles is null then extra_roles
+                       else array(select distinct r from unnest(p_extra_roles) r where r <> coalesce(p_role, role)) end,
     updated_at  = now()
   where workspace_id = p_workspace_id and user_id = p_user_id;
 
@@ -436,7 +457,7 @@ begin
 end;
 $$;
 
-grant execute on function update_workspace_member(uuid, uuid, text, text, text, jsonb) to authenticated;
+grant execute on function update_workspace_member(uuid, uuid, text, text, text, jsonb, text[]) to authenticated;
 
 -- ─── 8. Remove a login for good ───────────────────────────
 
@@ -501,7 +522,7 @@ set search_path = public
 as $$
   select coalesce(
     (select jsonb_build_object('workspace_id', workspace_id, 'status', coalesce(status, 'active'),
-                               'role', role, 'permissions', coalesce(permissions, '{}'::jsonb))
+                               'role', role, 'extra_roles', coalesce(extra_roles, '{}'), 'permissions', coalesce(permissions, '{}'::jsonb))
        from workspace_members
       where user_id = auth.uid() and (p_workspace_id is null or workspace_id = p_workspace_id)
       order by joined_at
@@ -550,3 +571,32 @@ revoke all on function void_invoice(uuid, text) from public, anon;
 revoke all on function void_payment(uuid, text) from public, anon;
 grant execute on function void_invoice(uuid, text) to authenticated;
 grant execute on function void_payment(uuid, text) to authenticated;
+
+-- ─── 11. Members list with extra roles ────────────────────
+
+drop function if exists list_workspace_members(uuid);
+create or replace function list_workspace_members(p_workspace_id uuid)
+returns table (
+  id uuid, user_id uuid, role text, department text, display_name text, status text,
+  permissions jsonb, joined_at timestamptz, email text, username text, avatar_url text,
+  last_sign_in_at timestamptz, provider text, extra_roles text[]
+)
+language sql security definer stable
+set search_path = public
+as $$
+  select m.id, m.user_id, m.role, m.department, coalesce(m.display_name, p.full_name), m.status,
+         m.permissions, m.joined_at,
+         case when u.email like '%.staff.bumblebee' then null else u.email end,
+         p.username, p.avatar_url, u.last_sign_in_at,
+         coalesce(u.raw_app_meta_data->>'provider', 'email'),
+         coalesce(m.extra_roles, '{}')
+    from workspace_members m
+    join profiles p on p.id = m.user_id
+    join auth.users u on u.id = m.user_id
+   where m.workspace_id = p_workspace_id
+     and exists (select 1 from workspace_members me
+                  where me.workspace_id = p_workspace_id and me.user_id = auth.uid())
+   order by m.joined_at;
+$$;
+
+grant execute on function list_workspace_members(uuid) to authenticated;

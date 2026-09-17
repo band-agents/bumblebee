@@ -13,7 +13,7 @@ export function useCan() {
   return useCallback((module: string, action: PermissionAction | "work" = "view") => {
     if (isDemo || !workspace) return true;
     if (isFullAccess(workspace.role)) return true;
-    const actions = effectivePermissions(workspace.role, workspace.permissions)[module] ?? [];
+    const actions = effectivePermissions(workspace.role, workspace.permissions, workspace.extra_roles)[module] ?? [];
     return action === "work" ? actions.some((a) => a !== "view" && a !== "export") : actions.includes(action);
   }, [isDemo, workspace]);
 }

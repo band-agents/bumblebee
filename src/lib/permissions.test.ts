@@ -35,6 +35,16 @@ describe("access", () => {
     expect(canOpenPath("sales", perms, "/hr/employees")).toBe(false);
   });
 
+  it("several roles combine their modules", () => {
+    const perms = effectivePermissions("storekeeper", null, ["cashier"]);
+    expect(canOpenPath("storekeeper", perms, "/inventory")).toBe(true);
+    expect(canOpenPath("storekeeper", perms, "/pos")).toBe(true);
+    expect(canOpenPath("storekeeper", perms, "/finance/invoices")).toBe(false);
+    expect([...perms.pos].sort()).toEqual(["create", "view"]);
+    // custom modules still win over roles
+    expect(Object.keys(effectivePermissions("storekeeper", { hr: ["view"] }, ["cashier"]))).toEqual(["hr"]);
+  });
+
   it("empty custom access falls back to the template", () => {
     expect(hasCustomAccess({})).toBe(false);
     expect(hasCustomAccess({ orders: [] })).toBe(false);

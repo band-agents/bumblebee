@@ -1219,7 +1219,7 @@ export const ARTICLES: Article[] = [
             "Enter the **Full name**.",
             "Enter a **Username**: 3–32 characters, lowercase letters, numbers, dot, dash or underscore, starting with a letter or number (for example `sara.ahmed`).",
             "Type a **Password** of at least 8 characters, or choose **Generate** for a strong one.",
-            "Pick the **Access level** — one of the ready-made roles, grouped by department (see [Roles](/docs/roles)) — and the department. The box below lists the modules that role opens.",
+            "Pick one or more **Roles** — ready-made jobs grouped by department (see [Roles](/docs/roles)) — and the department. Someone who does two jobs gets both roles; their modules are combined. The first role is their main one. The box below lists the modules they'll open.",
             "To choose the modules yourself, choose **Pick modules myself** and set each module to **Off**, **View**, **Edit** or **Full** (see below).",
             "Choose **Create login**, then **Copy login details** and send them privately.",
           ] },

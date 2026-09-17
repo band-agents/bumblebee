@@ -300,7 +300,7 @@ export function ShellNav({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; s
   // disappears from the rail entirely rather than showing an empty pane.
   const visibleSections = useMemo(() => {
     if (isDemo || !workspace) return SECTIONS;
-    const perms = effectivePermissions(workspace.role, workspace.permissions);
+    const perms = effectivePermissions(workspace.role, workspace.permissions, workspace.extra_roles);
     const allowed = (p: string) => canOpenPath(workspace.role, perms, p);
     return SECTIONS.flatMap((s): Section[] => {
       if (s.path) return allowed(s.path) ? [s] : [];
