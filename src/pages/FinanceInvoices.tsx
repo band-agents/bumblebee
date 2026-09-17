@@ -1,678 +1,389 @@
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "../context/LanguageContext";
-import { FIN_INVOICES, FIN_PAYMENTS, type FinanceInvoice } from "../lib/finance-data";
+/**
+ * Finance · Invoices & Receipts
+ *
+ * Invoices are issued from a confirmed sales order (Sales Orders → Create
+ * invoice); this page is where money comes in against them. Every payment
+ * issues a numbered receipt; nothing here can be deleted — invoices and
+ * receipts are voided with a reason, and the database recomputes balances
+ * (supabase/documents.sql).
+ */
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "wouter";
 import {
-  FileText, Plus, Search, X, ChevronDown, ChevronUp,
-  Download, Filter, ArrowUpDown, DollarSign, TrendingUp,
-  Clock, AlertTriangle, CheckCircle2, Eye, Edit3,
-  Receipt, Users, Percent, Calendar, CreditCard,
-  Package, Tag, ArrowRight, Trash2,
+  FileText, Receipt as ReceiptIcon, Search, Loader2, Printer, Plus, X, AlertCircle, Ban, ChevronDown, ChevronRight, CheckCircle2, Clock,
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
+import { getDataSource } from "../lib/data-source";
+import {
+  PAYMENT_METHODS, recordInvoicePayment, voidInvoice, voidReceipt, openPrint,
+  type Invoice, type Receipt, type PaymentMethod,
+} from "../lib/documents";
 
-// ─── Currency ─────────────────────────────────────────────
+const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
+const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
+const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground text-body font-medium px-4 hover:opacity-90 transition-opacity disabled:opacity-40";
 
-const fmtEGP = (n: number) =>
-  new Intl.NumberFormat("en-EG", { style: "currency", currency: "EGP", minimumFractionDigits: 0 }).format(n);
+const fmt = (n: number) => n.toLocaleString("en", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const paidOf = (i: Invoice) => Number(i.amount_paid ?? (i as unknown as { paid_amount?: number }).paid_amount ?? 0);
+const balanceOf = (i: Invoice) => Math.round((Number(i.amount) - paidOf(i)) * 100) / 100;
+const isOverdue = (i: Invoice) => !!i.due_date && balanceOf(i) > 0 && !["void", "cancelled", "paid"].includes(i.status) && new Date(i.due_date) < new Date(new Date().toDateString());
 
-// ─── Status Meta ──────────────────────────────────────────
-
-const STATUS_META: Record<string, { en: string; ar: string; pill: string; dot: string }> = {
-  draft:     { en: "Draft",     ar: "مسودة",   pill: "bg-slate-100 text-slate-600",  dot: "bg-slate-400" },
-  sent:      { en: "Sent",      ar: "مُرسلة",  pill: "bg-blue-100 text-blue-600",    dot: "bg-blue-500" },
-  viewed:    { en: "Viewed",    ar: "تمت المشاهدة", pill: "bg-blue-100 text-blue-600", dot: "bg-blue-400" },
-  partial:   { en: "Partial",   ar: "مدفوعة جزئياً", pill: "bg-warning/15 text-warning", dot: "bg-warning" },
-  paid:      { en: "Paid",      ar: "مدفوعة",  pill: "bg-emerald-100 text-emerald-600", dot: "bg-emerald-500" },
-  overdue:   { en: "Overdue",   ar: "متأخرة",  pill: "bg-rose-100 text-rose-600",    dot: "bg-rose-500" },
-  cancelled: { en: "Cancelled", ar: "ملغاة",   pill: "bg-slate-100 text-slate-500",  dot: "bg-slate-400" },
+const STATUS: Record<string, { en: string; ar: string; pill: string }> = {
+  draft: { en: "Draft", ar: "مسودة", pill: "bg-slate-100 text-slate-600" },
+  sent: { en: "Unpaid", ar: "غير مدفوعة", pill: "bg-blue-100 text-blue-700" },
+  partially_paid: { en: "Partly paid", ar: "مدفوعة جزئياً", pill: "bg-warning/15 text-warning" },
+  paid: { en: "Paid", ar: "مدفوعة", pill: "bg-emerald-100 text-emerald-700" },
+  overdue: { en: "Overdue", ar: "متأخرة", pill: "bg-rose-100 text-rose-700" },
+  void: { en: "Void", ar: "ملغاة", pill: "bg-muted text-muted-foreground line-through" },
+  cancelled: { en: "Cancelled", ar: "ملغاة", pill: "bg-muted text-muted-foreground" },
 };
-
-const STATUS_FILTERS: { value: string; en: string; ar: string }[] = [
-  { value: "all",       en: "All",       ar: "الكل" },
-  { value: "draft",     en: "Draft",     ar: "مسودة" },
-  { value: "sent",      en: "Sent",      ar: "مُرسلة" },
-  { value: "paid",      en: "Paid",      ar: "مدفوعة" },
-  { value: "overdue",   en: "Overdue",   ar: "متأخرة" },
-  { value: "partial",   en: "Partial",   ar: "جزئي" },
-  { value: "cancelled", en: "Cancelled", ar: "ملغاة" },
-];
-
-// ─── Shared UI ────────────────────────────────────────────
-
-const inputCls = "w-full h-10 rounded-xl border border-border/60 bg-background px-3.5 text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20 transition placeholder:text-muted-foreground/50";
-const labelCls = "text-micro font-medium text-muted-foreground mb-1 block";
-const btnPrimary = "flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-body font-medium hover:opacity-90 transition-opacity disabled:opacity-50";
-
-// ═══════════════════════════════════════════════════════════
-// Detail Modal
-// ═══════════════════════════════════════════════════════════
-
-function InvoiceDetailModal({
-  invoice, payments, ar, onClose,
-}: {
-  invoice: FinanceInvoice;
-  payments: typeof FIN_PAYMENTS;
-  ar: boolean;
-  onClose: () => void;
-}) {
-  const s = STATUS_META[invoice.status] ?? STATUS_META.draft;
-  const invPayments = payments.filter((p) => p.invoice_id === invoice.id);
-  const payMethods: Record<string, { en: string; ar: string }> = {
-    bank_transfer: { en: "Bank Transfer", ar: "تحويل بنكي" },
-    cash:          { en: "Cash",          ar: "نقدي" },
-    card:          { en: "Card",          ar: "بطاقة" },
-    mobile_wallet: { en: "Mobile Wallet", ar: "محفظة إلكترونية" },
-    cheque:        { en: "Cheque",        ar: "شيك" },
-    online:        { en: "Online",        ar: "أونلاين" },
-  };
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          transition={{ duration: 0.2 }}
-          className="bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border/40">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center">
-                <Receipt size={16} strokeWidth={1.75} className="text-brand-ink" />
-              </div>
-              <div>
-                <h2 className="text-title font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
-                  {invoice.invoice_number}
-                </h2>
-                <p className="text-micro text-muted-foreground">{invoice.title}</p>
-              </div>
-            </div>
-            <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
-              <X size={16} strokeWidth={1.75} className="text-muted-foreground" />
-            </button>
-          </div>
-
-          {/* Body */}
-          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-            {/* Status + Dates */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className={`text-micro font-medium px-2.5 py-1 rounded-full ${s.pill}`}>
-                {ar ? s.ar : s.en}
-              </span>
-              <span className="text-micro text-muted-foreground flex items-center gap-1">
-                <Calendar size={10} /> {ar ? "تاريخ الإصدار:" : "Issued:"} {invoice.issue_date}
-              </span>
-              <span className="text-micro text-muted-foreground flex items-center gap-1">
-                <Clock size={10} /> {ar ? "الاستحقاق:" : "Due:"} {invoice.due_date}
-              </span>
-              {invoice.paid_date && (
-                <span className="text-micro text-emerald-600 flex items-center gap-1">
-                  <CheckCircle2 size={10} /> {ar ? "تم الدفع:" : "Paid:"} {invoice.paid_date}
-                </span>
-              )}
-            </div>
-
-            {/* Customer */}
-            <div className="bg-muted/20 rounded-xl px-4 py-3">
-              <p className="text-micro text-muted-foreground uppercase tracking-wider mb-1">{ar ? "العميل" : "Customer"}</p>
-              <p className="text-body font-medium text-foreground">{ar ? invoice.customer_name_ar : invoice.customer_name}</p>
-              <p className="text-micro text-muted-foreground">{invoice.customer_email} · {invoice.customer_phone}</p>
-            </div>
-
-            {/* Items */}
-            <div>
-              <p className="text-micro font-medium text-foreground mb-2">{ar ? "البنود" : "Items"}</p>
-              <div className="border border-border/40 rounded-xl overflow-hidden">
-                <table className="w-full text-caption">
-                  <thead>
-                    <tr className="bg-muted/30 border-b border-border/30">
-                      <th className="text-start px-4 py-2.5 font-medium text-muted-foreground">{ar ? "الوصف" : "Description"}</th>
-                      <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">{ar ? "الكمية" : "Qty"}</th>
-                      <th className="text-end px-3 py-2.5 font-medium text-muted-foreground">{ar ? "السعر" : "Unit Price"}</th>
-                      <th className="text-end px-4 py-2.5 font-medium text-muted-foreground">{ar ? "الإجمالي" : "Total"}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/20">
-                    {invoice.items.map((item, i) => (
-                      <tr key={i} className="hover:bg-muted/10 transition-colors">
-                        <td className="px-4 py-2.5 text-foreground">{ar ? item.description_ar : item.description}</td>
-                        <td className="text-center px-3 py-2.5 text-muted-foreground tabular-nums">{item.quantity}</td>
-                        <td className="text-end px-3 py-2.5 text-muted-foreground tabular-nums">{fmtEGP(item.unit_price)}</td>
-                        <td className="text-end px-4 py-2.5 text-foreground font-medium tabular-nums">{fmtEGP(item.total)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Totals */}
-            <div className="flex justify-end">
-              <div className="w-[260px] space-y-1.5">
-                <div className="flex justify-between text-caption">
-                  <span className="text-muted-foreground">{ar ? "المجموع الفرعي" : "Subtotal"}</span>
-                  <span className="text-foreground tabular-nums">{fmtEGP(invoice.subtotal)}</span>
-                </div>
-                {invoice.discount > 0 && (
-                  <div className="flex justify-between text-caption">
-                    <span className="text-muted-foreground">{ar ? "الخصم" : "Discount"}</span>
-                    <span className="text-rose-600 tabular-nums">-{fmtEGP(invoice.discount)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between text-caption">
-                  <span className="text-muted-foreground">{ar ? "الضريبة" : "Tax"} ({invoice.tax_rate}%)</span>
-                  <span className="text-foreground tabular-nums">{fmtEGP(invoice.tax_amount)}</span>
-                </div>
-                <div className="border-t border-border/40 pt-1.5 flex justify-between text-body-lg">
-                  <span className="font-medium text-foreground">{ar ? "الإجمالي" : "Total"}</span>
-                  <span className="font-semibold text-foreground tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtEGP(invoice.total)}</span>
-                </div>
-                {invoice.paid_amount > 0 && (
-                  <div className="flex justify-between text-caption">
-                    <span className="text-emerald-600">{ar ? "المدفوع" : "Paid"}</span>
-                    <span className="text-emerald-600 tabular-nums">{fmtEGP(invoice.paid_amount)}</span>
-                  </div>
-                )}
-                {invoice.balance > 0 && (
-                  <div className="flex justify-between text-caption">
-                    <span className="text-rose-600">{ar ? "المتبقي" : "Balance"}</span>
-                    <span className="text-rose-600 tabular-nums font-medium">{fmtEGP(invoice.balance)}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Payment History */}
-            {invPayments.length > 0 && (
-              <div>
-                <p className="text-micro font-medium text-foreground mb-2">{ar ? "سجل الدفع" : "Payment History"}</p>
-                <div className="border border-border/40 rounded-xl overflow-hidden">
-                  <div className="divide-y divide-border/20">
-                    {invPayments.map((pay) => {
-                      const pm = payMethods[pay.method] ?? { en: pay.method, ar: pay.method };
-                      return (
-                        <div key={pay.id} className="flex items-center gap-3 px-4 py-3 hover:bg-muted/10 transition-colors">
-                          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-                            <CreditCard size={14} strokeWidth={1.75} className="text-emerald-600" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-caption text-foreground">{ar ? pm.ar : pm.en} · {pay.reference}</p>
-                            <p className="text-micro text-muted-foreground">{pay.date} · {pay.recorded_by}</p>
-                          </div>
-                          <p className="text-body font-semibold text-emerald-600 tabular-nums shrink-0">{fmtEGP(pay.amount)}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Notes */}
-            {(invoice.notes || invoice.notes_ar) && (
-              <div className="bg-muted/20 rounded-xl px-4 py-3">
-                <p className="text-micro text-muted-foreground uppercase tracking-wider mb-1">{ar ? "ملاحظات" : "Notes"}</p>
-                <p className="text-caption text-foreground">{ar ? invoice.notes_ar : invoice.notes}</p>
-              </div>
-            )}
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// Create Invoice Modal
-// ═══════════════════════════════════════════════════════════
-
-function CreateInvoiceModal({ ar, onClose }: { ar: boolean; onClose: () => void }) {
-  const [customer, setCustomer] = useState("");
-  const [title, setTitle] = useState("");
-  const [items, setItems] = useState<{ desc: string; qty: string; price: string }[]>([
-    { desc: "", qty: "1", price: "" },
-  ]);
-  const [taxRate, setTaxRate] = useState("14");
-  const [discount, setDiscount] = useState("0");
-
-  const subtotal = useMemo(() =>
-    items.reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0),
-  [items]);
-  const taxAmt = subtotal * (Number(taxRate) || 0) / 100;
-  const total = subtotal + taxAmt - (Number(discount) || 0);
-
-  const addItem = () => setItems((prev) => [...prev, { desc: "", qty: "1", price: "" }]);
-  const removeItem = (idx: number) => setItems((prev) => prev.filter((_, i) => i !== idx));
-  const updateItem = (idx: number, key: string, val: string) =>
-    setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, [key]: val } : it)));
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        transition={{ duration: 0.2 }}
-        className="bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border/40">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center">
-              <Plus size={16} strokeWidth={1.75} className="text-brand-ink" />
-            </div>
-            <h2 className="text-title font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
-              {ar ? "إنشاء فاتورة جديدة" : "Create New Invoice"}
-            </h2>
-          </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
-            <X size={16} strokeWidth={1.75} className="text-muted-foreground" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
-          {/* Customer */}
-          <div>
-            <label className={labelCls}>{ar ? "العميل" : "Customer"} *</label>
-            <input value={customer} onChange={(e) => setCustomer(e.target.value)}
-              placeholder={ar ? "اسم العميل" : "Customer name"} className={inputCls} />
-          </div>
-
-          {/* Title */}
-          <div>
-            <label className={labelCls}>{ar ? "عنوان الفاتورة" : "Invoice Title"} *</label>
-            <input value={title} onChange={(e) => setTitle(e.target.value)}
-              placeholder={ar ? "عنوان الفاتورة" : "Invoice title"} className={inputCls} />
-          </div>
-
-          {/* Items */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className={labelCls + " !mb-0"}>{ar ? "البنود" : "Items"}</label>
-              <button onClick={addItem}
-                className="text-micro text-brand-ink hover:text-brand-ink/80 font-medium flex items-center gap-1 transition-colors">
-                <Plus size={12} /> {ar ? "إضافة بند" : "Add Item"}
-              </button>
-            </div>
-            <div className="space-y-2">
-              {items.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <input value={item.desc} onChange={(e) => updateItem(idx, "desc", e.target.value)}
-                    placeholder={ar ? "الوصف" : "Description"}
-                    className={inputCls + " flex-1"} />
-                  <input type="number" min="1" value={item.qty} onChange={(e) => updateItem(idx, "qty", e.target.value)}
-                    className={inputCls + " w-[60px] text-center"} />
-                  <input type="number" min="0" value={item.price} onChange={(e) => updateItem(idx, "price", e.target.value)}
-                    placeholder={ar ? "السعر" : "Price"}
-                    className={inputCls + " w-[100px] text-right"} />
-                  {items.length > 1 && (
-                    <button onClick={() => removeItem(idx)}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
-                      <Trash2 size={13} />
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Tax + Discount */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className={labelCls}>{ar ? "معدل الضريبة %" : "Tax Rate %"}</label>
-              <input type="number" min="0" max="100" value={taxRate} onChange={(e) => setTaxRate(e.target.value)}
-                className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>{ar ? "الخصم" : "Discount"}</label>
-              <input type="number" min="0" value={discount} onChange={(e) => setDiscount(e.target.value)}
-                className={inputCls} />
-            </div>
-          </div>
-
-          {/* Totals */}
-          <div className="border-t border-border/40 pt-3 space-y-1.5">
-            <div className="flex justify-between text-caption">
-              <span className="text-muted-foreground">{ar ? "المجموع الفرعي" : "Subtotal"}</span>
-              <span className="tabular-nums">{fmtEGP(subtotal)}</span>
-            </div>
-            {(Number(discount) || 0) > 0 && (
-              <div className="flex justify-between text-caption">
-                <span className="text-muted-foreground">{ar ? "الخصم" : "Discount"}</span>
-                <span className="text-rose-600 tabular-nums">-{fmtEGP(Number(discount))}</span>
-              </div>
-            )}
-            <div className="flex justify-between text-caption">
-              <span className="text-muted-foreground">{ar ? "الضريبة" : "Tax"} ({taxRate}%)</span>
-              <span className="tabular-nums">{fmtEGP(taxAmt)}</span>
-            </div>
-            <div className="border-t border-border/40 pt-1.5 flex justify-between text-body-lg">
-              <span className="font-medium">{ar ? "الإجمالي" : "Total"}</span>
-              <span className="font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtEGP(total)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-border/40">
-          <button onClick={onClose}
-            className="px-4 py-2 rounded-xl text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-            {ar ? "إلغاء" : "Cancel"}
-          </button>
-          <button
-            disabled={!customer || !title || items.every((i) => !i.desc)}
-            className={btnPrimary + " !bg-primary"}
-          >
-            {ar ? "إنشاء الفاتورة" : "Create Invoice"}
-          </button>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// Main Page
-// ═══════════════════════════════════════════════════════════
 
 export default function FinanceInvoices() {
   const { lang } = useLanguage();
   const ar = lang === "ar";
+  const { workspace } = useAuth();
+  const wid = workspace?.id || "demo";
+  const canVoid = ["owner", "admin", "finance", "manager"].includes(workspace?.role ?? "owner");
 
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [receipts, setReceipts] = useState<Receipt[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [tab, setTab] = useState<"invoices" | "receipts">("invoices");
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [sortField, setSortField] = useState<"date" | "amount" | "status">("date");
-  const [sortAsc, setSortAsc] = useState(false);
-  const [selectedInvoice, setSelectedInvoice] = useState<FinanceInvoice | null>(null);
-  const [showCreate, setShowCreate] = useState(false);
+  const [filter, setFilter] = useState<"all" | "due" | "overdue" | "paid" | "void">("all");
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [payFor, setPayFor] = useState<Invoice | null>(null);
+  const [voiding, setVoiding] = useState<{ kind: "invoice" | "receipt"; id: string; number: string } | null>(null);
 
-  // ── KPIs ──
-  const totalInvoiced = useMemo(() => FIN_INVOICES.reduce((s, i) => s + i.total, 0), []);
-  const totalCollected = useMemo(() => FIN_INVOICES.reduce((s, i) => s + i.paid_amount, 0), []);
-  const totalOutstanding = useMemo(() =>
-    FIN_INVOICES.filter((i) => ["sent", "viewed", "partial"].includes(i.status)).reduce((s, i) => s + i.balance, 0),
-  []);
-  const totalOverdue = useMemo(() =>
-    FIN_INVOICES.filter((i) => i.status === "overdue").reduce((s, i) => s + i.balance, 0),
-  []);
-  const collectionRate = totalInvoiced > 0 ? Math.round((totalCollected / totalInvoiced) * 100) : 0;
+  const load = useCallback(async () => {
+    try {
+      const ds = getDataSource();
+      const [inv, pay] = await Promise.all([ds.invoices.list(wid), ds.payments.list(wid)]);
+      setInvoices(inv as Invoice[]);
+      setReceipts(pay as Receipt[]);
+      setLoadError(null);
+    } catch (e) {
+      setLoadError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
+  }, [wid]);
+  useEffect(() => { load(); }, [load]);
 
-  // ── Filtering + Sorting ──
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    let list = FIN_INVOICES.filter((inv) => {
-      const matchSearch = !q ||
-        inv.invoice_number.toLowerCase().includes(q) ||
-        inv.customer_name.toLowerCase().includes(q) ||
-        inv.customer_name_ar.includes(q) ||
-        inv.title.toLowerCase().includes(q) ||
-        inv.title_ar.includes(q);
-      const matchStatus = statusFilter === "all" || inv.status === statusFilter;
-      return matchSearch && matchStatus;
+  const currency = String((workspace?.settings as Record<string, unknown> | undefined)?.currency ?? "EGP");
+
+  const stats = useMemo(() => {
+    const live = invoices.filter((i) => !["void", "cancelled"].includes(i.status));
+    const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    return {
+      outstanding: live.reduce((s, i) => s + Math.max(0, balanceOf(i)), 0),
+      overdue: live.filter(isOverdue).reduce((s, i) => s + balanceOf(i), 0),
+      overdueCount: live.filter(isOverdue).length,
+      collectedMonth: receipts.filter((r) => r.status === "completed" && r.paid_at && new Date(r.paid_at) >= monthStart).reduce((s, r) => s + Number(r.amount), 0),
+      invoicedMonth: live.filter((i) => new Date(i.issue_date ?? i.created_at) >= monthStart).reduce((s, i) => s + Number(i.amount), 0),
+    };
+  }, [invoices, receipts]);
+
+  const shown = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return invoices.filter((i) => {
+      const m = (i.metadata ?? {}) as Record<string, unknown>;
+      const hit = !q || [i.number, i.org_name_en, String(m.sales_order_number ?? "")].some((v) => v?.toLowerCase().includes(q));
+      const f = filter === "all"
+        || (filter === "due" && balanceOf(i) > 0 && !["void", "cancelled"].includes(i.status))
+        || (filter === "overdue" && isOverdue(i))
+        || (filter === "paid" && i.status === "paid")
+        || (filter === "void" && ["void", "cancelled"].includes(i.status));
+      return hit && f;
     });
+  }, [invoices, search, filter]);
 
-    list.sort((a, b) => {
-      let cmp = 0;
-      if (sortField === "date") cmp = a.issue_date.localeCompare(b.issue_date);
-      else if (sortField === "amount") cmp = a.total - b.total;
-      else if (sortField === "status") cmp = a.status.localeCompare(b.status);
-      return sortAsc ? cmp : -cmp;
+  const shownReceipts = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return receipts.filter((r) => {
+      const m = (r.metadata ?? {}) as Record<string, unknown>;
+      return !q || [r.receipt_number ?? "", String(m.invoice_number ?? ""), String(m.customer ?? ""), r.reference ?? ""].some((v) => v.toLowerCase().includes(q));
     });
+  }, [receipts, search]);
 
-    return list;
-  }, [search, statusFilter, sortField, sortAsc]);
-
-  const toggleSort = (field: typeof sortField) => {
-    if (sortField === field) setSortAsc(!sortAsc);
-    else { setSortField(field); setSortAsc(false); }
-  };
-
-  const SortIcon = ({ field }: { field: typeof sortField }) => (
-    <span className="inline-flex flex-col -space-y-0.5 ms-1">
-      <ChevronUp size={10} className={`${sortField === field && sortAsc ? "text-brand-ink" : "text-muted-foreground/30"}`} />
-      <ChevronDown size={10} className={`${sortField === field && !sortAsc ? "text-brand-ink" : "text-muted-foreground/30"}`} />
-    </span>
-  );
-
-  const kpis = [
-    { label: ar ? "إجمالي الفواتير" : "Total Invoiced", value: fmtEGP(totalInvoiced), icon: FileText, color: "text-brand-ink", bg: "bg-primary/8" },
-    { label: ar ? "المحصل" : "Total Collected", value: fmtEGP(totalCollected), icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50", trend: "+8%", up: true },
-    { label: ar ? "المعلق" : "Outstanding", value: fmtEGP(totalOutstanding), icon: Clock, color: "text-warning", bg: "bg-warning/10" },
-    { label: ar ? "المتأخر" : "Overdue", value: fmtEGP(totalOverdue), icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-50" },
-    { label: ar ? "نسبة التحصيل" : "Collection Rate", value: `${collectionRate}%`, icon: TrendingUp, color: "text-violet-600", bg: "bg-chart-4/10" },
-  ];
+  if (loading) return <div className="py-24 flex justify-center"><Loader2 className="animate-spin text-muted-foreground/40" /></div>;
 
   return (
     <div className="min-h-full">
-      {/* ── Header ── */}
-      <div className="border-b border-border/40 px-8 md:px-10 py-8"
-        style={{ background: "linear-gradient(160deg, hsl(var(--muted)/0.3) 0%, hsl(var(--background)) 60%)" }}>
-        <div className="max-w-[1200px]">
-          <p className="text-micro text-muted-foreground/60 tracking-[0.08em] uppercase mb-2">
-            {ar ? "المالية" : "Finance"}
-          </p>
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-display font-medium text-foreground leading-tight"
-              style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.025em" }}>
-              {ar ? "الفواتير" : "Invoices"}
-            </h1>
-            <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 h-9 px-3.5 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-                <Download size={13} strokeWidth={1.75} />
-                {ar ? "تصدير" : "Export"}
-              </button>
-              <button onClick={() => setShowCreate(true)}
-                className="flex items-center gap-2 h-9 px-4 rounded-xl bg-foreground text-background text-caption font-medium hover:opacity-90 transition-opacity">
-                <Plus size={13} strokeWidth={2} />
-                {ar ? "فاتورة جديدة" : "New Invoice"}
-              </button>
+      <div className="border-b border-border/40 px-7 md:px-10 py-7">
+        <div className="max-w-[1100px]">
+          <div className="flex items-start justify-between gap-4 mb-5">
+            <div>
+              <h1 className="text-display font-medium leading-tight" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "الفواتير والإيصالات" : "Invoices & Receipts"}</h1>
+              <p className="text-caption text-muted-foreground mt-1">
+                {ar ? "الفواتير تصدر من أمر بيع مؤكد. سجّل هنا كل دفعة ليصدر لها إيصال مرقم." : "Invoices are issued from a confirmed sales order. Record each payment here to issue a numbered receipt."}
+              </p>
             </div>
+            <Link href="/orders" className={btnPrimary + " h-9 shrink-0"}><Plus size={14} /> {ar ? "فاتورة من أمر بيع" : "Invoice a sales order"}</Link>
           </div>
-
-          {/* KPIs */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            {kpis.map((m, i) => (
-              <div key={i} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
-                <div className="flex items-center justify-between mb-2">
-                  <div className={`w-7 h-7 rounded-lg ${m.bg} flex items-center justify-center`}>
-                    <m.icon size={14} strokeWidth={1.75} className={m.color} />
-                  </div>
-                  {m.trend && (
-                    <span className={`text-micro font-medium ${m.up ? "text-emerald-600" : "text-rose-600"}`}>
-                      {m.trend}
-                    </span>
-                  )}
-                </div>
-                <p className="text-title font-medium text-foreground leading-none tabular-nums mb-1"
-                  style={{ fontFamily: "var(--app-font-serif)", letterSpacing: "-0.02em" }}>
-                  {m.value}
-                </p>
-                <p className="text-micro text-muted-foreground">{m.label}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: ar ? "مستحق التحصيل" : "Outstanding", value: stats.outstanding, tone: "text-foreground" },
+              { label: ar ? `متأخر (${stats.overdueCount})` : `Overdue (${stats.overdueCount})`, value: stats.overdue, tone: stats.overdue > 0 ? "text-rose-600" : "text-emerald-600" },
+              { label: ar ? "فواتير هذا الشهر" : "Invoiced this month", value: stats.invoicedMonth, tone: "text-foreground" },
+              { label: ar ? "تحصيل هذا الشهر" : "Collected this month", value: stats.collectedMonth, tone: "text-emerald-600" },
+            ].map((s) => (
+              <div key={s.label} className="bg-background border border-border/40 rounded-xl px-4 py-3.5">
+                <p className={`text-title font-medium tabular-nums ${s.tone}`} style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(s.value)} <span className="text-micro text-muted-foreground">{currency}</span></p>
+                <p className="text-micro text-muted-foreground">{s.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── Filters ── */}
-      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/40">
-        <div className="px-8 md:px-10 py-3 max-w-[1200px]">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <div className="relative min-w-[200px] flex-1 max-w-[280px]">
-              <Search size={13} strokeWidth={1.75} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-              <input type="search" value={search} onChange={(e) => setSearch(e.target.value)}
-                placeholder={ar ? "بحث بالفاتورة أو العميل…" : "Search invoices or customers…"}
-                className="w-full h-9 ps-8 pe-4 rounded-xl border border-border/80 bg-card text-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 transition-colors" />
-            </div>
-
-            <div className="h-5 w-px bg-border/60 hidden sm:block" />
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {STATUS_FILTERS.map((f) => (
-                <button key={f.value} onClick={() => setStatusFilter(f.value)}
-                  className={`h-7 px-3 rounded-lg text-caption font-medium border transition-all ${statusFilter === f.value ? "bg-primary/8 text-brand-ink border-primary/25" : "bg-card border-border text-muted-foreground hover:text-foreground"}`}>
-                  {ar ? f.ar : f.en}
-                </button>
-              ))}
-            </div>
-
-            {search && (
-              <button onClick={() => setSearch("")}
-                className="flex items-center gap-1 h-7 px-2.5 rounded-lg text-caption text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border transition-all">
-                <X size={11} strokeWidth={2} />{ar ? "مسح" : "Clear"}
+      <div className="px-7 md:px-10 py-4 border-b border-border/30 sticky top-0 z-20 bg-background/95 backdrop-blur-sm">
+        <div className="max-w-[1100px] flex flex-wrap items-center gap-3">
+          <div className="flex p-1 rounded-lg bg-muted/60">
+            {(["invoices", "receipts"] as const).map((t) => (
+              <button key={t} onClick={() => setTab(t)} className={`px-3 py-1.5 rounded-md text-caption font-medium flex items-center gap-1.5 ${tab === t ? "bg-card shadow-sm" : "text-muted-foreground"}`}>
+                {t === "invoices" ? <FileText size={12} /> : <ReceiptIcon size={12} />}
+                {t === "invoices" ? (ar ? "الفواتير" : "Invoices") : (ar ? "الإيصالات" : "Receipts")}
               </button>
-            )}
+            ))}
           </div>
+          <div className="relative flex-1 min-w-[200px] max-w-[320px]">
+            <Search size={13} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={ar ? "رقم، عميل، أمر بيع..." : "Number, customer, sales order…"} className={inputCls + " h-9 ps-9"} />
+          </div>
+          {tab === "invoices" && (
+            <select value={filter} onChange={(e) => setFilter(e.target.value as typeof filter)} className="h-9 px-3 rounded-xl border border-border/60 bg-background text-caption">
+              <option value="all">{ar ? "الكل" : "All"}</option>
+              <option value="due">{ar ? "عليها رصيد" : "Balance due"}</option>
+              <option value="overdue">{ar ? "متأخرة" : "Overdue"}</option>
+              <option value="paid">{ar ? "مدفوعة" : "Paid"}</option>
+              <option value="void">{ar ? "ملغاة" : "Void"}</option>
+            </select>
+          )}
         </div>
       </div>
 
-      {/* ── Table ── */}
-      <div className="px-8 md:px-10 py-6 max-w-[1200px]">
-        <p className="text-caption text-muted-foreground mb-4">
-          {ar ? `${filtered.length} فاتورة` : `${filtered.length} invoice${filtered.length !== 1 ? "s" : ""}`}
-        </p>
+      <div className="px-7 md:px-10 py-6 max-w-[1100px]">
+        {loadError && <p className="mb-4 text-caption text-rose-600">{loadError}</p>}
 
-        <div className="border border-border/40 rounded-xl overflow-hidden bg-background">
-          <div className="overflow-x-auto">
-            <table className="w-full text-caption">
-              <thead>
-                <tr className="bg-muted/30 border-b border-border/30">
-                  <th className="text-start px-5 py-3 font-medium text-muted-foreground whitespace-nowrap">
-                    {ar ? "رقم الفاتورة" : "Invoice #"}
-                  </th>
-                  <th className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
-                    {ar ? "العميل" : "Customer"}
-                  </th>
-                  <th className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap cursor-pointer hover:text-foreground transition-colors"
-                    onClick={() => toggleSort("date")}>
-                    <span className="inline-flex items-center">{ar ? "التاريخ" : "Date"}<SortIcon field="date" /></span>
-                  </th>
-                  <th className="text-start px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
-                    {ar ? "الاستحقاق" : "Due Date"}
-                  </th>
-                  <th className="text-end px-4 py-3 font-medium text-muted-foreground whitespace-nowrap cursor-pointer hover:text-foreground transition-colors"
-                    onClick={() => toggleSort("amount")}>
-                    <span className="inline-flex items-center justify-end">{ar ? "المبلغ" : "Amount"}<SortIcon field="amount" /></span>
-                  </th>
-                  <th className="text-end px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
-                    {ar ? "المدفوع" : "Paid"}
-                  </th>
-                  <th className="text-end px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
-                    {ar ? "المتبقي" : "Balance"}
-                  </th>
-                  <th className="text-center px-4 py-3 font-medium text-muted-foreground whitespace-nowrap cursor-pointer hover:text-foreground transition-colors"
-                    onClick={() => toggleSort("status")}>
-                    <span className="inline-flex items-center justify-center">{ar ? "الحالة" : "Status"}<SortIcon field="status" /></span>
-                  </th>
-                  <th className="text-center px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
-                    {ar ? "إجراءات" : "Actions"}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/20">
-                {filtered.map((inv) => {
-                  const s = STATUS_META[inv.status] ?? STATUS_META.draft;
-                  return (
-                    <tr key={inv.id}
-                      className="hover:bg-muted/15 transition-colors cursor-pointer group"
-                      onClick={() => setSelectedInvoice(inv)}>
-                      <td className="px-5 py-3.5">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center shrink-0">
-                            <Receipt size={13} strokeWidth={1.75} className="text-brand-ink" />
-                          </div>
-                          <span className="font-mono text-foreground group-hover:text-brand-ink transition-colors">{inv.invoice_number}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3.5">
-                        <p className="text-caption font-medium text-foreground truncate max-w-[140px]">
-                          {ar ? inv.customer_name_ar : inv.customer_name}
-                        </p>
-                        <p className="text-micro text-muted-foreground truncate max-w-[140px]">{inv.title}</p>
-                      </td>
-                      <td className="px-4 py-3.5 text-muted-foreground tabular-nums whitespace-nowrap">{inv.issue_date}</td>
-                      <td className="px-4 py-3.5 text-muted-foreground tabular-nums whitespace-nowrap">{inv.due_date}</td>
-                      <td className="px-4 py-3.5 text-end font-medium text-foreground tabular-nums whitespace-nowrap"
-                        style={{ fontFamily: "var(--app-font-serif)" }}>
-                        {fmtEGP(inv.total)}
-                      </td>
-                      <td className="px-4 py-3.5 text-end text-emerald-600 tabular-nums whitespace-nowrap">
-                        {inv.paid_amount > 0 ? fmtEGP(inv.paid_amount) : "—"}
-                      </td>
-                      <td className="px-4 py-3.5 text-end tabular-nums whitespace-nowrap font-medium"
-                        style={{ color: inv.balance > 0 ? "var(--foreground)" : "var(--muted-foreground)" }}>
-                        {fmtEGP(inv.balance)}
-                      </td>
-                      <td className="px-4 py-3.5 text-center">
-                        <span className={`inline-flex items-center gap-1.5 text-micro font-medium px-2.5 py-1 rounded-full ${s.pill}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-                          {ar ? s.ar : s.en}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3.5 text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); setSelectedInvoice(inv); }}
-                            className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
-                            title={ar ? "عرض" : "View"}>
-                            <Eye size={13} strokeWidth={1.75} className="text-muted-foreground" />
-                          </button>
-                          <button
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
-                            title={ar ? "تعديل" : "Edit"}>
-                            <Edit3 size={13} strokeWidth={1.75} className="text-muted-foreground" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-                {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan={9} className="px-6 py-14 text-center">
-                      <p className="text-body text-muted-foreground/60">
-                        {ar ? "لا توجد فواتير" : "No invoices found"}
+        {tab === "invoices" && (shown.length === 0 ? (
+          <div className="py-20 text-center">
+            <FileText size={26} className="mx-auto text-muted-foreground/30 mb-3" />
+            <p className="text-body text-muted-foreground">{invoices.length ? (ar ? "لا نتائج" : "No matching invoices") : (ar ? "لا توجد فواتير بعد — أصدرها من صفحة أوامر البيع." : "No invoices yet — issue one from a confirmed sales order.")}</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {shown.map((inv) => {
+              const m = (inv.metadata ?? {}) as Record<string, unknown>;
+              const bal = balanceOf(inv);
+              const st = isOverdue(inv) ? STATUS.overdue : STATUS[inv.status] ?? STATUS.sent;
+              const invReceipts = receipts.filter((r) => r.invoice_id === inv.id);
+              const open = expanded === inv.id;
+              const live = !["void", "cancelled"].includes(inv.status);
+              return (
+                <div key={inv.id} className="border border-border/40 rounded-xl bg-background">
+                  <div className="flex flex-wrap items-center gap-3 p-4">
+                    <button onClick={() => setExpanded(open ? null : inv.id)} className="text-muted-foreground" aria-label="Details">
+                      {open ? <ChevronDown size={15} /> : <ChevronRight size={15} className="rtl:rotate-180" />}
+                    </button>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-mono text-caption font-semibold">{inv.number}</span>
+                        <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                        {Boolean(m.sales_order_number) && <span className="text-micro text-muted-foreground font-mono">← {String(m.sales_order_number)}</span>}
+                      </div>
+                      <p className="text-body font-medium mt-0.5">{inv.org_name_en}</p>
+                      <p className="text-micro text-muted-foreground">
+                        {ar ? "صدرت" : "Issued"} {inv.issue_date ?? inv.created_at.slice(0, 10)}{inv.due_date ? ` · ${ar ? "تستحق" : "due"} ${inv.due_date}` : ""}
                       </p>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                    </div>
+                    <div className="text-end">
+                      <p className="text-title font-semibold tabular-nums">{fmt(Number(inv.amount))} <span className="text-micro text-muted-foreground">{inv.currency}</span></p>
+                      {live && <p className={`text-micro tabular-nums ${bal > 0 ? "text-rose-600" : "text-emerald-600"}`}>{bal > 0 ? `${fmt(bal)} ${ar ? "متبقي" : "due"}` : (ar ? "مسددة" : "settled")}</p>}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {live && bal > 0 && (
+                        <button onClick={() => setPayFor(inv)} className={btnPrimary + " h-8 text-caption px-3"}><Plus size={12} /> {ar ? "تسجيل دفعة" : "Record payment"}</button>
+                      )}
+                      <button onClick={() => openPrint("invoice", inv.id)} className="h-8 px-3 rounded-xl border border-border/60 text-caption inline-flex items-center gap-1.5 hover:bg-muted/50"><Printer size={12} /> {ar ? "طباعة" : "Print"}</button>
+                    </div>
+                  </div>
+
+                  {open && (
+                    <div className="border-t border-border/30 px-5 py-4 space-y-3 bg-muted/10">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-caption">
+                        <div><p className="text-micro text-muted-foreground">{ar ? "قبل الضريبة" : "Before VAT"}</p><p className="tabular-nums">{fmt(Number(inv.subtotal ?? inv.amount))}</p></div>
+                        <div><p className="text-micro text-muted-foreground">{ar ? "الضريبة" : "VAT"} {inv.tax_rate ? `${inv.tax_rate}%` : ""}</p><p className="tabular-nums">{fmt(Number(inv.tax_amount ?? 0))}</p></div>
+                        <div><p className="text-micro text-muted-foreground">{ar ? "المدفوع" : "Paid"}</p><p className="tabular-nums text-emerald-600">{fmt(paidOf(inv))}</p></div>
+                        <div><p className="text-micro text-muted-foreground">{ar ? "المتبقي" : "Balance"}</p><p className="tabular-nums">{fmt(bal)}</p></div>
+                      </div>
+                      {inv.status === "void" && <p className="text-caption text-rose-600">{ar ? "سبب الإلغاء" : "Void reason"}: {inv.void_reason}</p>}
+                      <div>
+                        <p className="text-micro font-medium text-muted-foreground mb-1.5">{ar ? "الإيصالات" : "Receipts"}</p>
+                        {invReceipts.length === 0 ? <p className="text-caption text-muted-foreground">{ar ? "لا توجد دفعات" : "No payments yet"}</p> : (
+                          <div className="space-y-1">
+                            {invReceipts.map((r) => <ReceiptRow key={r.id} r={r} ar={ar} canVoid={canVoid} onVoid={() => setVoiding({ kind: "receipt", id: r.id, number: r.receipt_number ?? "" })} />)}
+                          </div>
+                        )}
+                      </div>
+                      {live && canVoid && (
+                        <button onClick={() => setVoiding({ kind: "invoice", id: inv.id, number: inv.number })} className="text-micro text-rose-600 inline-flex items-center gap-1 hover:underline">
+                          <Ban size={11} /> {ar ? "إلغاء الفاتورة" : "Void invoice"}
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        </div>
+        ))}
+
+        {tab === "receipts" && (shownReceipts.length === 0 ? (
+          <div className="py-20 text-center text-body text-muted-foreground">{ar ? "لا توجد إيصالات بعد" : "No receipts yet"}</div>
+        ) : (
+          <div className="space-y-1.5">
+            {shownReceipts.map((r) => <ReceiptRow key={r.id} r={r} ar={ar} canVoid={canVoid} showInvoice onVoid={() => setVoiding({ kind: "receipt", id: r.id, number: r.receipt_number ?? "" })} />)}
+          </div>
+        ))}
       </div>
 
-      {/* ── Modals ── */}
-      <AnimatePresence>
-        {selectedInvoice && (
-          <InvoiceDetailModal
-            invoice={selectedInvoice}
-            payments={FIN_PAYMENTS}
-            ar={ar}
-            onClose={() => setSelectedInvoice(null)}
-          />
+      {payFor && <PaymentModal ar={ar} invoice={payFor} workspaceId={workspace?.id} onClose={() => setPayFor(null)} onDone={load} />}
+      {voiding && <VoidModal ar={ar} target={voiding} onClose={() => setVoiding(null)} onDone={load} />}
+    </div>
+  );
+}
+
+function ReceiptRow({ r, ar, canVoid, showInvoice, onVoid }: { r: Receipt; ar: boolean; canVoid: boolean; showInvoice?: boolean; onVoid: () => void }) {
+  const m = (r.metadata ?? {}) as Record<string, unknown>;
+  const method = PAYMENT_METHODS.find((x) => x.value === r.method);
+  const isVoid = r.status === "void";
+  return (
+    <div className={`flex flex-wrap items-center gap-3 px-3 py-2 rounded-lg border border-border/30 bg-background ${isVoid ? "opacity-60" : ""}`}>
+      {isVoid ? <Ban size={13} className="text-rose-600" /> : <CheckCircle2 size={13} className="text-emerald-600" />}
+      <span className={`font-mono text-caption ${isVoid ? "line-through" : ""}`}>{r.receipt_number ?? "—"}</span>
+      {showInvoice && <span className="text-micro text-muted-foreground font-mono">→ {String(m.invoice_number ?? "")}</span>}
+      <span className="text-caption flex-1 min-w-[120px]">{String(m.customer ?? "")}</span>
+      <span className="text-micro text-muted-foreground flex items-center gap-1"><Clock size={10} />{(r.paid_at ?? r.created_at).slice(0, 10)}</span>
+      <span className="text-micro text-muted-foreground">{method ? (ar ? method.ar : method.en) : r.method}{r.reference ? ` · ${r.reference}` : ""}</span>
+      <span className="text-caption font-semibold tabular-nums">{fmt(Number(r.amount))} {r.currency}</span>
+      <button onClick={() => openPrint("receipt", r.id)} className="h-7 px-2 rounded-lg border border-border/60 text-micro inline-flex items-center gap-1 hover:bg-muted/50"><Printer size={11} /> {ar ? "طباعة" : "Print"}</button>
+      {!isVoid && canVoid && r.receipt_number && (
+        <button onClick={onVoid} className="h-7 px-2 rounded-lg text-micro text-rose-600 hover:bg-rose-50" title={ar ? "إلغاء الإيصال" : "Void receipt"}><Ban size={11} /></button>
+      )}
+      {isVoid && <span className="w-full text-micro text-rose-600">{ar ? "ملغي" : "Void"}: {r.void_reason}</span>}
+    </div>
+  );
+}
+
+function PaymentModal({ ar, invoice, workspaceId, onClose, onDone }: { ar: boolean; invoice: Invoice; workspaceId: string | undefined; onClose: () => void; onDone: () => void }) {
+  const balance = balanceOf(invoice);
+  const [amount, setAmount] = useState(String(balance));
+  const [method, setMethod] = useState<PaymentMethod>("cash");
+  const [reference, setReference] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState<Receipt | null>(null);
+  const value = Math.round((parseFloat(amount) || 0) * 100) / 100;
+
+  async function submit() {
+    setBusy(true); setError(null);
+    try {
+      const r = await recordInvoicePayment(workspaceId, invoice, { amount: value, method, reference: reference.trim() || undefined, paidAt: new Date(`${date}T12:00:00`).toISOString() });
+      setDone(r);
+      onDone();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "تسجيل دفعة" : "Record payment"}</h2>
+          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted"><X size={14} /></button>
+        </div>
+        {done ? (
+          <div className="space-y-4">
+            <p className="text-body">{ar ? "تم إصدار الإيصال" : "Receipt issued"} <span className="font-mono font-semibold">{done.receipt_number}</span> — {fmt(Number(done.amount))} {done.currency}</p>
+            <div className="flex gap-2">
+              <button onClick={() => openPrint("receipt", done.id)} className={btnPrimary + " h-10 flex-1"}><Printer size={14} /> {ar ? "طباعة الإيصال" : "Print receipt"}</button>
+              <button onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-body">{ar ? "تم" : "Done"}</button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="rounded-xl bg-muted/20 p-3 text-caption space-y-1">
+              <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "الفاتورة" : "Invoice"}</span><span className="font-mono">{invoice.number}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "العميل" : "Customer"}</span><span>{invoice.org_name_en}</span></div>
+              <div className="flex justify-between font-medium"><span>{ar ? "المستحق" : "Balance due"}</span><span className="tabular-nums">{fmt(balance)} {invoice.currency}</span></div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className={labelCls}>{ar ? "المبلغ" : "Amount"}</label>
+                <input type="number" min={0} max={balance} step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} /></div>
+              <div><label className={labelCls}>{ar ? "التاريخ" : "Date"}</label>
+                <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputCls} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className={labelCls}>{ar ? "طريقة الدفع" : "Method"}</label>
+                <select value={method} onChange={(e) => setMethod(e.target.value as PaymentMethod)} className={inputCls}>
+                  {PAYMENT_METHODS.map((p) => <option key={p.value} value={p.value}>{ar ? p.ar : p.en}</option>)}
+                </select></div>
+              <div><label className={labelCls}>{ar ? "المرجع (اختياري)" : "Reference (optional)"}</label>
+                <input value={reference} onChange={(e) => setReference(e.target.value)} className={inputCls} placeholder={ar ? "رقم التحويل / الشيك" : "Transfer / cheque no."} /></div>
+            </div>
+            {value > balance && <p className="text-caption text-rose-600">{ar ? "المبلغ أكبر من المستحق" : "Amount is more than the balance due."}</p>}
+            {error && <p className="text-caption text-rose-600 flex items-start gap-1"><AlertCircle size={12} className="mt-0.5" />{error}</p>}
+            <button onClick={submit} disabled={busy || !(value > 0) || value > balance} className={btnPrimary + " h-10 w-full"}>
+              {busy && <Loader2 size={13} className="animate-spin" />} {ar ? "تسجيل وإصدار إيصال" : "Record & issue receipt"}
+            </button>
+          </div>
         )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {showCreate && (
-          <CreateInvoiceModal ar={ar} onClose={() => setShowCreate(false)} />
-        )}
-      </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+function VoidModal({ ar, target, onClose, onDone }: { ar: boolean; target: { kind: "invoice" | "receipt"; id: string; number: string }; onClose: () => void; onDone: () => void }) {
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  async function submit() {
+    setBusy(true); setError(null);
+    try {
+      if (target.kind === "invoice") await voidInvoice(target.id, reason.trim());
+      else await voidReceipt(target.id, reason.trim());
+      onDone(); onClose();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally { setBusy(false); }
+  }
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-title font-medium">{target.kind === "invoice" ? (ar ? "إلغاء الفاتورة" : "Void invoice") : (ar ? "إلغاء الإيصال" : "Void receipt")} <span className="font-mono">{target.number}</span></h2>
+        <p className="text-caption text-muted-foreground">
+          {ar ? "الرقم يبقى مسجلاً ويظهر كملغي. لا يمكن التراجع." : "The number stays on record, marked void. This can't be undone."}
+        </p>
+        <div><label className={labelCls}>{ar ? "السبب" : "Reason"}</label>
+          <input value={reason} onChange={(e) => setReason(e.target.value)} className={inputCls} autoFocus /></div>
+        {error && <p className="text-caption text-rose-600">{error}</p>}
+        <div className="flex gap-2">
+          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body">{ar ? "رجوع" : "Back"}</button>
+          <button onClick={submit} disabled={busy || !reason.trim()} className="flex-1 h-10 rounded-xl bg-rose-600 text-white text-body font-medium disabled:opacity-40 inline-flex items-center justify-center gap-2">
+            {busy && <Loader2 size={13} className="animate-spin" />}{ar ? "إلغاء نهائي" : "Void"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

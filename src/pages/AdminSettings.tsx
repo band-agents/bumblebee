@@ -120,6 +120,16 @@ export default function AdminSettings() {
     new Set((ws?.enabled_modules as string[]) || [])
   );
 
+  // Company details — printed at the top of every invoice, receipt and order.
+  const [company, setCompany] = useState<Record<string, string>>(() => {
+    const c = (ws?.company ?? {}) as Record<string, string>;
+    return {
+      legal_name: c.legal_name ?? (ws?.company_name as string) ?? workspace?.name ?? "",
+      legal_name_ar: c.legal_name_ar ?? "", address: c.address ?? "", phone: c.phone ?? "",
+      email: c.email ?? "", tax_number: c.tax_number ?? "", commercial_register: c.commercial_register ?? "",
+    };
+  });
+
   // Security state
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -173,16 +183,19 @@ export default function AdminSettings() {
           currency,
           language,
           enabled_modules: Array.from(enabledModules),
+          company: Object.fromEntries(Object.entries(company).map(([k, v]) => [k, v.trim()])),
         };
-        await (sb.from("workspaces") as any).update({ settings }).eq("id", workspace.id);
+        const { error } = await (sb.from("workspaces") as any).update({ settings }).eq("id", workspace.id);
+        if (error) throw error;
         await refreshWorkspace();
       }
       setSaving(false);
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
       showToast(ar ? "تم حفظ الإعدادات ✓" : "Settings saved ✓");
-    } catch {
+    } catch (err) {
       setSaving(false);
+      showToast(ar ? "تعذر الحفظ — للمالك أو المدير فقط" : `Couldn't save${err instanceof Error ? ": " + err.message : ""}`);
     }
   }
 
@@ -537,25 +550,43 @@ export default function AdminSettings() {
           {tab === "company" && (
             <motion.div key="company" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
               <div className={`${cardCls} p-5 space-y-4`}>
-                <h3 className="text-body font-semibold flex items-center gap-2"><Building2 size={13} /> {ar ? "معلومات الشركة" : "Company Information"}</h3>
+                <h3 className="text-body font-semibold flex items-center gap-2"><Building2 size={13} /> {ar ? "بيانات الشركة على المستندات" : "Company details on documents"}</h3>
+                <p className="text-micro text-muted-foreground">{ar ? "تظهر في رأس كل فاتورة وإيصال وأمر مطبوع." : "Shown in the header of every printed invoice, receipt and order."}</p>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={labelCls}>{ar ? "اسم الشركة" : "Company Name"}</label>
-                    <input defaultValue={(ws?.company_name as string) || ""} className={inputCls} />
+                    <label className={labelCls}>{ar ? "الاسم القانوني (إنجليزي)" : "Legal name (English)"}</label>
+                    <input value={company.legal_name} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, legal_name: e.target.value }))} className={inputCls} />
                   </div>
                   <div>
-                    <label className={labelCls}>{ar ? "نوع النشاط" : "Business Type"}</label>
-                    <input defaultValue={(ws?.business_type as string) || ""} className={inputCls} />
+                    <label className={labelCls}>{ar ? "الاسم القانوني (عربي)" : "Legal name (Arabic)"}</label>
+                    <input value={company.legal_name_ar} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, legal_name_ar: e.target.value }))} className={inputCls} />
                   </div>
                   <div>
-                    <label className={labelCls}>{ar ? "البلد" : "Country"}</label>
-                    <input defaultValue={(ws?.country as string) || ""} className={inputCls} />
+                    <label className={labelCls}>{ar ? "الهاتف" : "Phone"}</label>
+                    <input value={company.phone} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, phone: e.target.value }))} className={inputCls} />
                   </div>
                   <div>
-                    <label className={labelCls}>{ar ? "المدينة" : "City"}</label>
-                    <input defaultValue={(ws?.city as string) || ""} className={inputCls} />
+                    <label className={labelCls}>{ar ? "البريد الإلكتروني" : "Email"}</label>
+                    <input value={company.email} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, email: e.target.value }))} className={inputCls} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>{ar ? "رقم التسجيل الضريبي" : "Tax registration no."}</label>
+                    <input value={company.tax_number} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, tax_number: e.target.value }))} className={inputCls} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>{ar ? "رقم السجل التجاري" : "Commercial register no."}</label>
+                    <input value={company.commercial_register} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, commercial_register: e.target.value }))} className={inputCls} />
+                  </div>
+                  <div className="col-span-2">
+                    <label className={labelCls}>{ar ? "العنوان" : "Address"}</label>
+                    <input value={company.address} disabled={!canEdit} onChange={e => setCompany(c => ({ ...c, address: e.target.value }))} className={inputCls} />
                   </div>
                 </div>
+                {canEdit && (
+                  <button onClick={handleSaveSettings} disabled={saving} className="h-9 px-4 rounded-xl bg-foreground text-background text-caption font-medium hover:opacity-90 disabled:opacity-50">
+                    {saving ? (ar ? "جاري الحفظ..." : "Saving…") : (ar ? "حفظ" : "Save")}
+                  </button>
+                )}
               </div>
               <div className={`${cardCls} p-4`}>
                 <p className="text-micro text-muted-foreground space-y-0.5">

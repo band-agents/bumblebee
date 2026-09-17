@@ -12,6 +12,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { getDataSource } from "../lib/data-source";
 import { exportCSV } from "../lib/csv-export";
+import { nextDocumentNumber, openPrint } from "../lib/documents";
 import type { Database } from "../lib/database.types";
 import {
   Plus, Search, X, Loader2, AlertCircle, Download,
@@ -19,7 +20,7 @@ import {
   Edit3, Trash2, FileText, Play, Pause, Check,
   User, Building2, Layers, Package, Scissors,
   Wrench, Box, Paintbrush, ClipboardCheck, Truck,
-  AlertTriangle, ArrowRight, Timer, XCircle,
+  AlertTriangle, ArrowRight, Timer, XCircle, Printer,
 } from "lucide-react";
 
 type ProdOrder = Database["public"]["Tables"]["production_orders"]["Row"];
@@ -63,11 +64,6 @@ const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
-function genPONumber(): string {
-  const d = new Date();
-  const seq = Math.floor(Math.random() * 9000) + 1000;
-  return `PO-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}-${seq}`;
-}
 
 async function logActivity(wid: string, type: string, eid: string, en: string, ar: string) {
   const ds = getDataSource();
@@ -81,7 +77,7 @@ export function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspa
   orders: WorkItem[]; designs: DesignBrief[];
   editPO: ProdOrder | null; ar: boolean; workspaceId: string;
 }) {
-  const [poNumber, setPONumber] = useState(editPO?.po_number || genPONumber());
+  const poNumber = editPO?.po_number ?? "";
   const [title, setTitle] = useState(editPO?.title || "");
   const [salesOrderId, setSalesOrderId] = useState(editPO?.sales_order_id || "");
   const [designBriefId, setDesignBriefId] = useState(editPO?.design_brief_id || "");
@@ -106,19 +102,29 @@ export function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspa
   }
 
   async function handleSubmit() {
-    if (!poNumber.trim() || !title.trim()) { setError(ar ? "الرقم والعنوان مطلوبين" : "Number and title required"); return; }
+    if (!title.trim()) { setError(ar ? "العنوان مطلوب" : "Title is required"); return; }
+    if (!editPO && !(parseInt(plannedQty) > 0)) { setError(ar ? "أدخل الكمية" : "Enter the quantity to produce"); return; }
     setLoading(true); setError("");
     const ds = getDataSource();
+    const so = orders.find(o => o.id === salesOrderId);
+    const soNumber = so ? ((so.metadata as Record<string, unknown> | null)?.so_number as string | undefined) ?? so.doc_number ?? null : null;
+    let number = poNumber;
+    if (!editPO) {
+      // Issued by the database at save time — sequential, never duplicated.
+      try { number = await nextDocumentNumber(workspaceId, "production_order"); }
+      catch (e: any) { setError(e.message || "Couldn't issue a number"); setLoading(false); return; }
+    }
     const payload: any = {
-      workspace_id: workspaceId, po_number: poNumber.trim(), title: title.trim(),
+      workspace_id: workspaceId, po_number: number, title: title.trim(),
       sales_order_id: salesOrderId || null, design_brief_id: designBriefId || null,
       customer_name: customerName || null, assigned_station: assignedStation || null,
       priority, start_date: startDate || null, due_date: dueDate || null,
       notes: notes || null, status: editPO ? undefined : "pending",
-      metadata: { ...((editPO?.metadata as Record<string, unknown> | null) ?? {}), planned_qty: parseInt(plannedQty) || 0 },
+      metadata: { ...((editPO?.metadata as Record<string, unknown> | null) ?? {}), planned_qty: parseInt(plannedQty) || 0, sales_order_number: soNumber },
     };
     try {
       if (editPO) {
+        delete payload.po_number; // the number never changes once issued
         await ds.production_orders.update(workspaceId, editPO.id, payload);
       } else {
         const created = await ds.production_orders.create(workspaceId, payload);
@@ -152,7 +158,7 @@ export function POModal({ onClose, onSaved, orders, designs, editPO, ar, workspa
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelCls}>{ar ? "رقم أمر التشغيل" : "PO Number"}</label>
-              <input className={inputCls} value={poNumber} onChange={e => setPONumber(e.target.value)} /></div>
+              <div className={inputCls + " flex items-center bg-muted/30 text-muted-foreground font-mono"}>{poNumber || (ar ? "يصدر عند الحفظ" : "Issued on save")}</div></div>
             <div><label className={labelCls}>{ar ? "الأولوية" : "Priority"}</label>
               <select className={inputCls} value={priority} onChange={e => setPriority(e.target.value as never)}>
                 {PRIORITIES.map(p => <option key={p.value} value={p.value}>{ar ? p.ar : p.en}</option>)}
@@ -419,6 +425,7 @@ function PODetail({ po, onBack, ar, workspaceId, orders, onRefresh }: {
             </div>
             <span className="text-micro font-medium tabular-nums">{po.progress}%</span>
           </div>
+          <button onClick={() => openPrint("production_order", po.id)} className="text-micro text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Printer size={11} /> {ar ? "طباعة" : "Print"}</button>
           <button onClick={() => setEditPO(true)} className="text-micro text-muted-foreground font-medium hover:opacity-70 flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border/60"><Edit3 size={11} /> {ar ? "تعديل" : "Edit"}</button>
         </div>
       </div>

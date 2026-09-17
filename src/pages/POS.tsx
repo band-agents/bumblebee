@@ -11,6 +11,7 @@ import {
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { getDataSource } from "../lib/data-source";
+import { nextDocumentNumber, openPrint } from "../lib/documents";
 import { toast } from "sonner";
 import { posTransactionSchema, describeIssues } from "../lib/schemas/money-schemas";
 import { isValidationError } from "../lib/errors";
@@ -25,7 +26,7 @@ type Register = { id: string; branch_id: string; register_code: string; name: st
 type BranchInv = { id: string; branch_id: string; product_id: string; product_name: string; sku: string | null; quantity: number; reserved_quantity: number; reorder_level: number; unit_cost: number; unit_price: number; metadata?: Record<string, unknown>; };
 type TxnItem = { product_id: string | null; product_name: string; product_name_ar: string | null; sku: string | null; quantity: number; unit_price: number; discount_percent: number; cost_price: number; };
 
-const TAX_RATE = 0.15;
+const TAX_RATE = 0.14; // Egyptian VAT
 
 function formatEGP(n: number) {
   return new Intl.NumberFormat("en-EG", { style: "currency", currency: "EGP", minimumFractionDigits: 2 }).format(n);
@@ -86,7 +87,7 @@ export default function POS() {
   const [paymentMethod, setPaymentMethod] = useState<string>("cash");
   const [cashReceived, setCashReceived] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [receipt, setReceipt] = useState<null | { txnNumber: string; total: number; items: TxnItem[] }>(null);
+  const [receipt, setReceipt] = useState<null | { id: string | null; txnNumber: string; total: number; items: TxnItem[] }>(null);
   const [isOffline, setIsOffline] = useState(false);
 
   // Drawers
@@ -258,7 +259,8 @@ export default function POS() {
   }, []);
 
   const processPayment = useCallback(async () => {
-    const txnNumber = `TXN-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+    // Placeholder for validation; the real number is issued by the database when the sale is saved.
+    let txnNumber = "POS-PENDING";
     const txnPayload = {
       branch_id: selectedBranch,
       register_id: selectedRegister,
@@ -297,11 +299,14 @@ export default function POS() {
 
     setProcessing(true);
     await new Promise((r) => setTimeout(r, 1200));
+    let saleId: string | null = null;
     try {
-      await ds.pos_transactions.create(wsId, txnPayload);
+      txnNumber = await nextDocumentNumber(wsId, "pos_sale");
+      const saved = await ds.pos_transactions.create(wsId, { ...txnPayload, transaction_number: txnNumber });
+      saleId = (saved as { id?: string } | null)?.id ?? null;
       for (const item of cart) {
         await ds.pos_transaction_items.create(wsId, {
-          transaction_id: txnNumber,
+          transaction_id: saleId ?? txnNumber,
           product_id: item.product_id,
           product_name: item.product_name,
           product_name_ar: item.product_name_ar,
@@ -326,7 +331,7 @@ export default function POS() {
       }
       return;
     }
-    setReceipt({ txnNumber, total: cartTotals.total, items: [...cart] });
+    setReceipt({ id: saleId, txnNumber, total: cartTotals.total, items: [...cart] });
     setProcessing(false);
     setShowPayment(false);
     setCart([]);
@@ -382,7 +387,7 @@ export default function POS() {
               <button onClick={() => setReceipt(null)} className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-body font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5">
                 <Plus size={13} /> {lang === "ar" ? "بيع جديد" : "New Sale"}
               </button>
-              <button onClick={() => setReceipt(null)} className="h-10 px-4 rounded-xl border border-border text-body text-muted-foreground hover:bg-muted transition-colors flex items-center gap-1.5">
+              <button onClick={() => receipt.id ? openPrint("pos_sale", receipt.id) : window.print()} className="h-10 px-4 rounded-xl border border-border text-body text-muted-foreground hover:bg-muted transition-colors flex items-center gap-1.5">
                 <Printer size={13} /> {lang === "ar" ? "طباعة" : "Print"}
               </button>
             </div>

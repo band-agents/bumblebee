@@ -102,6 +102,7 @@ const LoyaltyNotificationsPage = lazy(() => import("./pages/LoyaltyNotifications
 import NoWorkspace from "./pages/NoWorkspace";
 import { RequireAccess } from "./components/RequireAccess";
 const AdminSettingsPage = lazy(() => import("./pages/AdminSettings"));
+const PrintDocumentPage = lazy(() => import("./pages/PrintDocument"));
 const CodeSettingsPage = lazy(() => import("./pages/CodeSettings"));
 const QuotationDesignerPage = lazy(() => import("./pages/QuotationDesigner"));
 const InventoryFabricsPage = lazy(() => import("./pages/InventoryFabrics"));
@@ -396,6 +397,7 @@ function Router() {
   // ── Dev bypass: straight into the app ─────────────────────
   if (SKIP_AUTH) {
     if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" />;
+    if (path.startsWith("/print/")) return <Suspense fallback={<LoadingScreen />}><PrintDocumentPage /></Suspense>;
     return <AppRoutes />;
   }
 
@@ -408,6 +410,7 @@ function Router() {
     }
     // No auth in demo — the landing's door leads straight into the app.
     if (path === "/auth") return <Redirect to="/" />;
+    if (path.startsWith("/print/")) return <Suspense fallback={<LoadingScreen />}><PrintDocumentPage /></Suspense>;
     return <AppRoutes />;
   }
 
@@ -426,6 +429,9 @@ function Router() {
   // Signing in happens on /auth; once the session exists, that URL has no page
   // inside the app, so move the user to the dashboard instead of a 404.
   if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" replace />;
+
+  // Printable documents open full-page, outside the app shell (and still behind sign-in).
+  if (path.startsWith("/print/")) return <RequireAccess><Suspense fallback={<LoadingScreen />}><PrintDocumentPage /></Suspense></RequireAccess>;
 
   return <AppRoutes />;
 }

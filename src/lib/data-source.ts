@@ -431,6 +431,22 @@ function demoCol(row: Record<string, unknown>, col: string): unknown {
   return row[col];
 }
 
+// Rows created/updated during a demo session, kept in memory so get() — used
+// by the print page — can find a document that was just issued. Lists still
+// come from the seed; pages keep their own local state for new rows.
+const demoWrites = new Map<string, Map<string, Record<string, unknown>>>();
+function demoStore(table: string) {
+  let m = demoWrites.get(table);
+  if (!m) { m = new Map(); demoWrites.set(table, m); }
+  return m;
+}
+
+/** Demo only: remember a row issued outside the adapters (invoices/receipts via documents.ts). */
+export function rememberDemoRow(table: string, row: Record<string, unknown>) {
+  const store = demoStore(table);
+  store.set(row.id as string, { ...(store.get(row.id as string) ?? {}), ...row });
+}
+
 function makeDemoAdapter<T>(loader: () => T[], table = "demo"): EntityAdapter<T> {
   return {
     async list() { return loader(); },
@@ -479,14 +495,22 @@ function makeDemoAdapter<T>(loader: () => T[], table = "demo"): EntityAdapter<T>
         pageSize,
       };
     },
-    async get(_ws, id) { return loader().find((r: unknown) => (r as { id: string }).id === id) ?? null; },
+    async get(_ws, id) {
+      const seed = loader().find((r: unknown) => (r as { id: string }).id === id) as Record<string, unknown> | undefined;
+      const written = demoStore(table).get(id);
+      if (!seed && !written) return null;
+      return { ...(seed ?? {}), ...(written ?? {}) } as T;
+    },
     async create(ws, data) {
       guardWrite("create", table, data as Record<string, unknown>, ws);
       console.warn("[DS] Demo mode — create is ephemeral");
-      return { ...data, id: `demo-${Date.now()}` } as T;
+      const row = { created_at: new Date().toISOString(), ...data, id: `demo-${Date.now()}` } as Record<string, unknown>;
+      demoStore(table).set(row.id as string, row);
+      return row as T;
     },
-    async update(ws, _id, data) {
+    async update(ws, id, data) {
       guardWrite("update", table, data as Record<string, unknown>, ws);
+      demoStore(table).set(id, { ...(demoStore(table).get(id) ?? {}), ...(data as Record<string, unknown>) });
       console.warn("[DS] Demo mode — update is ephemeral");
       return data as T;
     },
@@ -588,8 +612,8 @@ function loadTestRows(): WorkRow[] {
 const demoDataSource: DataSource = {
   mode: "demo",
   deals:           makeDemoAdapter(convertDeals),
-  invoices:        makeDemoAdapter(convertInvoices),
-  payments:        makeDemoAdapter(convertPayments),
+  invoices:        makeDemoAdapter(convertInvoices, "invoices"),
+  payments:        makeDemoAdapter(convertPayments, "payments"),
   expenses:        makeDemoAdapter(convertExpenses),
   people:          makeDemoAdapter(convertPeople),
   organizations:   makeDemoAdapter(() => [...convertOrganizations(), ...DEMO_VENDORS]),

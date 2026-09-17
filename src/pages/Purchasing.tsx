@@ -9,13 +9,14 @@ import { useState, useEffect, useMemo } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { getDataSource } from "../lib/data-source";
-import { generateCode, peekNextCode } from "../lib/code-generator";
+import { PurchaseDocModal, ReceiveGoodsModal, linesOf, type GoodsReceipt } from "../components/PurchaseDocs";
+import { openPrint } from "../lib/documents";
 import { exportCSV, downloadTemplate } from "../lib/csv-export";
 import type { Database } from "../lib/database.types";
 import {
   Truck, Building2, FileText, Plus, Search, X, Loader2, AlertCircle, Download,
   CheckCircle2, Clock, XCircle, Package, ShoppingCart, ClipboardList,
-  DollarSign, Users, ChevronRight, Upload, Trash2,
+  DollarSign, Users, ChevronRight, Upload, Trash2, Printer, ArrowRight, PackageCheck,
 } from "lucide-react";
 import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal";
 
@@ -190,169 +191,6 @@ function AddVendorModal({ onClose, onAdd, ar }: { onClose: () => void; onAdd: (o
   );
 }
 
-// ─── Add Purchase Request Modal ──────────────────────────
-
-function AddPRModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => void; onAdd: (w: WorkItem) => void; ar: boolean; vendors: Org[]; currency: string }) {
-  const { workspace } = useAuth();
-  const [form, setForm] = useState({ title: "", vendor: "", amount: "", priority: "medium", department: "", items: "", neededBy: "" });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!workspace || !form.title.trim()) return;
-    setLoading(true); setError(null);
-    const vendor = vendors.find((v) => v.id === form.vendor);
-    try {
-      const created = await getDataSource().work_items.create(workspace.id, {
-        title_en: form.title.trim(), title_ar: form.title.trim(),
-        type: "purchase_request" as WorkItem["type"],
-        status: "draft" as WorkItem["status"],
-        priority: form.priority as WorkItem["priority"],
-        due_date: form.neededBy || null,
-        organization_id: form.vendor || null,
-        progress: 0, tags: ["purchasing"],
-        metadata: {
-          vendor_id: form.vendor || null,
-          vendor_name: vendor?.name_en || null,
-          items_description: form.items.trim() || null,
-          estimated_amount: parseFloat(form.amount) || 0,
-          department: form.department || null,
-          currency,
-        },
-      });
-      if (created) onAdd(created as WorkItem);
-      onClose();
-    } catch { setError(ar ? "فشل الحفظ" : "Failed to save."); }
-    finally { setLoading(false); }
-  }
-
-  return (
-    <ModalShell title={ar ? "طلب شراء جديد" : "New Purchase Request"} onClose={onClose}>
-      <form onSubmit={handleSubmit} className="p-6 space-y-4">
-        <div>
-          <label className={labelCls}>{ar ? "عنوان الطلب" : "Request Title"} <span className="text-rose-600">*</span></label>
-          <input type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} required autoFocus className={inputCls} placeholder={ar ? "مثال: شراء أجهزة كمبيوتر" : "e.g. Purchase laptops for team"} />
-        </div>
-        <div>
-          <label className={labelCls}>{ar ? "المورد" : "Vendor"}</label>
-          <select value={form.vendor} onChange={(e) => setForm((f) => ({ ...f, vendor: e.target.value }))} className={selectCls}>
-            <option value="">{ar ? "اختار مورد..." : "Select vendor..."}</option>
-            {vendors.map((v) => <option key={v.id} value={v.id}>{v.name_en}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className={labelCls}>{ar ? "المواد/الخدمات المطلوبة" : "Items / Services"}</label>
-          <textarea value={form.items} onChange={(e) => setForm((f) => ({ ...f, items: e.target.value }))} className={inputCls + " h-16 py-2.5 resize-none"} placeholder={ar ? "وصف ما تحتاجه..." : "Describe what you need..."} />
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <div>
-            <label className={labelCls}>{ar ? `المبلغ (${currency})` : `Amount (${currency})`}</label>
-            <input type="number" value={form.amount} onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))} min="0" className={inputCls} placeholder="0" />
-          </div>
-          <div>
-            <label className={labelCls}>{ar ? "الأولوية" : "Priority"}</label>
-            <select value={form.priority} onChange={(e) => setForm((f) => ({ ...f, priority: e.target.value }))} className={selectCls}>
-              {["low", "medium", "high", "urgent", "critical"].map((p) => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className={labelCls}>{ar ? "مطلوب بحلول" : "Needed By"}</label>
-            <input type="date" value={form.neededBy} onChange={(e) => setForm((f) => ({ ...f, neededBy: e.target.value }))} className={inputCls} />
-          </div>
-        </div>
-        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
-        <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-          <button type="submit" disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
-            {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "أنشئ طلب" : "Create Request"}
-          </button>
-        </div>
-      </form>
-    </ModalShell>
-  );
-}
-
-// ─── Add Purchase Order Modal ────────────────────────────
-
-function AddPOModal({ onClose, onAdd, ar, vendors, currency }: { onClose: () => void; onAdd: (w: WorkItem) => void; ar: boolean; vendors: Org[]; currency: string }) {
-  const { workspace } = useAuth();
-  const [form, setForm] = useState({ poNumber: peekNextCode("purchase_order"), title: "", vendor: "", amount: "", deliveryDate: "" });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!workspace || !form.poNumber.trim() || !form.title.trim()) return;
-    setLoading(true); setError(null);
-    const vendor = vendors.find((v) => v.id === form.vendor);
-    // Mint the code (advancing the counter) only when the auto default is kept.
-    const auto = peekNextCode("purchase_order");
-    const poNumber = form.poNumber.trim() === auto ? generateCode("purchase_order") : form.poNumber.trim();
-    try {
-      const created = await getDataSource().work_items.create(workspace.id, {
-        title_en: form.title.trim(), title_ar: form.title.trim(),
-        type: "purchase_order" as WorkItem["type"],
-        status: "draft" as WorkItem["status"],
-        priority: "medium" as WorkItem["priority"],
-        due_date: form.deliveryDate || null,
-        organization_id: form.vendor || null,
-        progress: 0, tags: ["purchasing"],
-        metadata: {
-          po_number: poNumber,
-          vendor_id: form.vendor || null,
-          vendor_name: vendor?.name_en || null,
-          estimated_amount: parseFloat(form.amount) || 0,
-          currency,
-          delivery_date: form.deliveryDate || null,
-        },
-      });
-      if (created) onAdd(created as WorkItem);
-      onClose();
-    } catch { setError(ar ? "فشل الحفظ" : "Failed to save."); }
-    finally { setLoading(false); }
-  }
-
-  return (
-    <ModalShell title={ar ? "أمر شراء جديد" : "New Purchase Order"} onClose={onClose}>
-      <form onSubmit={handleSubmit} className="p-6 space-y-4">
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className={labelCls}>{ar ? "رقم أمر الشراء" : "PO Number"} <span className="text-rose-600">*</span></label>
-            <input type="text" value={form.poNumber} onChange={(e) => setForm((f) => ({ ...f, poNumber: e.target.value }))} required className={inputCls} placeholder="PO-001" />
-          </div>
-          <div>
-            <label className={labelCls}>{ar ? `المبلغ (${currency})` : `Amount (${currency})`}</label>
-            <input type="number" value={form.amount} onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))} min="0" className={inputCls} placeholder="0" />
-          </div>
-        </div>
-        <div>
-          <label className={labelCls}>{ar ? "وصف الأمر" : "Description"} <span className="text-rose-600">*</span></label>
-          <input type="text" value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} required className={inputCls} placeholder={ar ? "مثال: توريد مواد بناء" : "e.g. Building materials delivery"} />
-        </div>
-        <div>
-          <label className={labelCls}>{ar ? "المورد" : "Vendor"}</label>
-          <select value={form.vendor} onChange={(e) => setForm((f) => ({ ...f, vendor: e.target.value }))} className={selectCls}>
-            <option value="">{ar ? "اختار مورد..." : "Select vendor..."}</option>
-            {vendors.map((v) => <option key={v.id} value={v.id}>{v.name_en}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className={labelCls}>{ar ? "تاريخ التسليم المتوقع" : "Expected Delivery"}</label>
-          <input type="date" value={form.deliveryDate} onChange={(e) => setForm((f) => ({ ...f, deliveryDate: e.target.value }))} className={inputCls} />
-        </div>
-        {error && <p className="text-caption text-rose-600 flex items-center gap-1"><AlertCircle size={12} />{error}</p>}
-        <div className="flex gap-3 pt-1">
-          <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-          <button type="submit" disabled={loading || !form.poNumber.trim() || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
-            {loading && <Loader2 size={12} className="animate-spin" />} {ar ? "أنشئ أمر" : "Create PO"}
-          </button>
-        </div>
-      </form>
-    </ModalShell>
-  );
-}
-
 // ─── Main page ───────────────────────────────────────────
 
 type PurchTab = "dashboard" | "vendors" | "requests" | "orders";
@@ -372,6 +210,9 @@ export default function Purchasing() {
   const [vendorModal, setVendorModal] = useState(false);
   const [prModal, setPrModal] = useState(false);
   const [poModal, setPoModal] = useState(false);
+  const [poFromPR, setPoFromPR] = useState<WorkItem | null>(null);
+  const [receiveFor, setReceiveFor] = useState<WorkItem | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<WorkItem | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
@@ -408,7 +249,7 @@ export default function Purchasing() {
 
   const filteredPRs = useMemo(() => {
     const q = search.toLowerCase().trim();
-    return !q ? purchaseRequests : purchaseRequests.filter((p) => p.title_en.toLowerCase().includes(q) || (getPRMeta(p).vendor_name ?? "").toLowerCase().includes(q));
+    return !q ? purchaseRequests : purchaseRequests.filter((p) => p.title_en.toLowerCase().includes(q) || (getPRMeta(p).vendor_name ?? "").toLowerCase().includes(q) || (p.doc_number ?? "").toLowerCase().includes(q));
   }, [purchaseRequests, search]);
 
   const filteredPOs = useMemo(() => {
@@ -423,14 +264,26 @@ export default function Purchasing() {
   }
 
   // Delete PR/PO
+  // Numbered purchasing documents are cancelled, never deleted. A PO that has
+  // received goods can't be cancelled.
   async function handleDelete() {
     if (!deleteTarget) return;
+    const receipts = ((deleteTarget.metadata ?? {}) as { receipts?: GoodsReceipt[] }).receipts ?? [];
+    if (deleteTarget.type === "purchase_order" && receipts.length) {
+      setActionError(ar ? "تم استلام بضاعة على هذا الأمر — لا يمكن إلغاؤه." : "Goods were already received on this order, so it can't be cancelled.");
+      setDeleteTarget(null);
+      return;
+    }
     setDeleteLoading(true);
-    await getDataSource().work_items.remove(workspace?.id || "demo", deleteTarget.id);
-    setWorkItems((prev) => prev.filter((w) => w.id !== deleteTarget.id));
-    setDeleteLoading(false);
-    setDeleteTarget(null);
+    try {
+      await getDataSource().work_items.update(workspace?.id || "demo", deleteTarget.id, { status: "cancelled" as never });
+      setWorkItems((prev) => prev.map((w) => w.id === deleteTarget.id ? { ...w, status: "cancelled" as WorkItem["status"] } : w));
+    } finally {
+      setDeleteLoading(false);
+      setDeleteTarget(null);
+    }
   }
+  const replaceItem = (updated: WorkItem) => setWorkItems((prev) => prev.map((w) => (w.id === updated.id ? updated : w)));
 
   const hasData = vendors.length > 0 || purchaseRequests.length > 0 || purchaseOrders.length > 0;
 
@@ -654,8 +507,10 @@ export default function Purchasing() {
                     <div key={pr.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/40 bg-background hover:shadow-sm transition-all">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
+                          {pr.doc_number && <span className="text-micro font-mono text-muted-foreground">{pr.doc_number}</span>}
                           <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
                           <span className="text-micro text-muted-foreground">{meta.vendor_name || ""}</span>
+                          {(pr.metadata as { converted_po_number?: string } | null)?.converted_po_number && <span className="text-micro font-mono text-violet-600">→ {(pr.metadata as { converted_po_number?: string }).converted_po_number}</span>}
                         </div>
                         <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? (pr.title_ar ?? pr.title_en) : pr.title_en}</p>
                         {pr.due_date && <p className="text-micro text-muted-foreground mt-0.5">{ar ? "مطلوب بحلول" : "Needed by"} {pr.due_date.slice(0,10)}</p>}
@@ -670,9 +525,15 @@ export default function Purchasing() {
                       {pr.status === "draft" && (
                         <button onClick={() => updateStatus(pr.id, "submitted")} className="text-micro text-brand-ink font-medium hover:opacity-70">{ar ? "قدّم" : "Submit"}</button>
                       )}
-                      <button onClick={() => setDeleteTarget(pr)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
-                        <Trash2 size={12} />
-                      </button>
+                      {pr.status === "approved" && (
+                        <button onClick={() => setPoFromPR(pr)} className="text-micro text-brand-ink font-medium hover:opacity-70 flex items-center gap-1"><ArrowRight size={11} /> {ar ? "أمر شراء" : "Create PO"}</button>
+                      )}
+                      <button onClick={() => openPrint("purchase_request", pr.id)} title={ar ? "طباعة" : "Print"} className="p-1.5 rounded-lg hover:bg-muted text-foreground/70 shrink-0"><Printer size={13} /></button>
+                      {!["cancelled", "ordered", "rejected"].includes(pr.status) && (
+                        <button onClick={() => setDeleteTarget(pr)} title={ar ? "إلغاء" : "Cancel"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
+                          <X size={12} />
+                        </button>
+                      )}
                     </div>
                   );
                 })}
@@ -709,20 +570,27 @@ export default function Purchasing() {
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-micro font-mono text-muted-foreground">{meta.po_number}</span>
                           <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+                          {(po.metadata as { source_pr_number?: string } | null)?.source_pr_number && <span className="text-micro font-mono text-muted-foreground">← {(po.metadata as { source_pr_number?: string }).source_pr_number}</span>}
                         </div>
                         <p className="text-body-lg font-medium truncate" style={{ fontFamily: "var(--app-font-serif)" }}>{po.title_en}</p>
                         <p className="text-micro text-muted-foreground mt-0.5">{meta.vendor_name || ""}{meta.delivery_date ? ` · ${ar ? "تسليم" : "Delivery"} ${meta.delivery_date}` : ""}</p>
                       </div>
                       {meta.estimated_amount ? <p className="text-body-lg font-semibold tabular-nums shrink-0" style={{ fontFamily: "var(--app-font-serif)" }}>{fmtVal(meta.estimated_amount)}</p> : null}
                       {po.status === "draft" && (
-                        <button onClick={() => updateStatus(po.id, "sent")} className="text-micro text-brand-ink font-medium hover:opacity-70">{ar ? "أرسل" : "Send"}</button>
+                        <button onClick={() => updateStatus(po.id, "sent")} className="text-micro text-brand-ink font-medium hover:opacity-70">{ar ? "أرسل للمورد" : "Send to supplier"}</button>
                       )}
-                      {po.status === "sent" && (
-                        <button onClick={() => updateStatus(po.id, "received")} className="text-micro text-emerald-600 font-medium hover:opacity-70">{ar ? "تم الاستلام" : "Received"}</button>
+                      {["sent", "partially_received"].includes(po.status) && linesOf(po).length > 0 && (
+                        <button onClick={() => setReceiveFor(po)} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><PackageCheck size={12} /> {ar ? "استلام" : "Receive"}</button>
                       )}
-                      <button onClick={() => setDeleteTarget(po)} title={ar ? "حذف" : "Delete"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
-                        <Trash2 size={12} />
-                      </button>
+                      {((po.metadata as { receipts?: GoodsReceipt[] } | null)?.receipts ?? []).map((g) => (
+                        <button key={g.number} onClick={() => openPrint("goods_receipt", po.id, { grn: g.number })} className="text-micro font-mono text-muted-foreground hover:text-foreground" title={ar ? "طباعة إذن الاستلام" : "Print GRN"}>{g.number}</button>
+                      ))}
+                      <button onClick={() => openPrint("purchase_order", po.id)} title={ar ? "طباعة" : "Print"} className="p-1.5 rounded-lg hover:bg-muted text-foreground/70 shrink-0"><Printer size={13} /></button>
+                      {!["cancelled", "received"].includes(po.status) && (
+                        <button onClick={() => setDeleteTarget(po)} title={ar ? "إلغاء" : "Cancel"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors shrink-0">
+                          <X size={12} />
+                        </button>
+                      )}
                     </div>
                   );
                 })}
@@ -733,14 +601,25 @@ export default function Purchasing() {
       </div>
 
       {vendorModal && <AddVendorModal ar={ar} onClose={() => setVendorModal(false)} onAdd={(o) => setOrgs((prev) => [o, ...prev])} />}
-      {prModal && <AddPRModal ar={ar} vendors={vendors} currency={currency} onClose={() => setPrModal(false)} onAdd={(w) => setWorkItems((prev) => [w, ...prev])} />}
-      {poModal && <AddPOModal ar={ar} vendors={vendors} currency={currency} onClose={() => setPoModal(false)} onAdd={(w) => setWorkItems((prev) => [w, ...prev])} />}
+      {prModal && <PurchaseDocModal kind="purchase_request" ar={ar} vendors={vendors} currency={currency} onClose={() => setPrModal(false)} onSaved={(w) => setWorkItems((prev) => [w, ...prev])} />}
+      {(poModal || poFromPR) && (
+        <PurchaseDocModal kind="purchase_order" source={poFromPR} ar={ar} vendors={vendors} currency={currency}
+          onClose={() => { setPoModal(false); setPoFromPR(null); }}
+          onSaved={(w, src) => { setWorkItems((prev) => [w, ...prev]); if (src) replaceItem(src); setTab("orders"); }} />
+      )}
+      {receiveFor && <ReceiveGoodsModal po={receiveFor} ar={ar} onClose={() => setReceiveFor(null)} onSaved={(u) => replaceItem(u)} />}
+      {actionError && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md rounded-xl bg-foreground text-background px-5 py-3 text-body shadow-lg flex items-start gap-3">
+          <AlertCircle size={16} className="shrink-0 mt-0.5" /><span className="flex-1">{actionError}</span>
+          <button onClick={() => setActionError(null)} aria-label="Close"><X size={14} /></button>
+        </div>
+      )}
 
       <ConfirmDeleteModal
         open={!!deleteTarget}
         ar={ar}
-        title={deleteTarget?.type === "purchase_order" ? (ar ? "حذف أمر الشراء" : "Delete Purchase Order") : (ar ? "حذف طلب الشراء" : "Delete Purchase Request")}
-        itemName={deleteTarget ? (getPRMeta(deleteTarget).po_number || deleteTarget.title_en) : ""}
+        title={deleteTarget?.type === "purchase_order" ? (ar ? "إلغاء أمر الشراء" : "Cancel Purchase Order") : (ar ? "إلغاء طلب الشراء" : "Cancel Purchase Request")}
+        itemName={deleteTarget ? (deleteTarget.doc_number || getPRMeta(deleteTarget).po_number || deleteTarget.title_en) : ""}
         loading={deleteLoading}
         onCancel={() => setDeleteTarget(null)}
         onConfirm={handleDelete}

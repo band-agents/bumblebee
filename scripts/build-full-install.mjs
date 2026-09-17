@@ -28,6 +28,7 @@ const ORDER = [
   "supabase/sales-orders-foundation.sql",
   "supabase/pos-foundation.sql",
   "supabase/staff-accounts.sql",
+  "supabase/documents.sql",
   "supabase/fix-trigger-rls.sql",
   "supabase/fix-workspaces-select-rls.sql",
   "supabase/enable-crm-rls.sql",

@@ -15,6 +15,16 @@ import { getTemplateById, type PermissionAction, type PermissionMap } from "./pe
 
 /** Which permission module guards a route. Longest prefix wins; unlisted paths are open to every member. */
 const PATH_MODULES: [prefix: string, module: string][] = [
+  ["/print/quotation", "quotations"],
+  ["/print/sales_order", "orders"],
+  ["/print/invoice", "finance"],
+  ["/print/receipt", "finance"],
+  ["/print/purchase_request", "purchasing"],
+  ["/print/purchase_order", "purchasing"],
+  ["/print/goods_receipt", "inventory"],
+  ["/print/production_order", "production"],
+  ["/print/delivery_note", "delivery"],
+  ["/print/pos_sale", "orders"],
   ["/crm", "customers"],
   ["/organizations", "customers"],
   ["/people", "contacts"],

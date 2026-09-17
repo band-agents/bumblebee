@@ -11,6 +11,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import { getDataSource } from "../lib/data-source";
+import { nextDocumentNumber } from "../lib/documents";
 import { exportCSV, downloadTemplate } from "../lib/csv-export";
 import type { Database } from "../lib/database.types";
 import {
@@ -83,11 +84,6 @@ const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
-function genVisitNumber(): string {
-  const d = new Date();
-  const seq = Math.floor(Math.random() * 9000) + 1000;
-  return `SV-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}-${seq}`;
-}
 
 async function logActivity(workspaceId: string, type: string, entityType: string, entityId: string, descEn: string, descAr: string) {
   const ds = getDataSource();
@@ -124,7 +120,7 @@ interface VisitForm {
 
 function emptyForm(): VisitForm {
   return {
-    visitNumber: genVisitNumber(),
+    visitNumber: "",
     customerId: "", customerName: "", salesOrderId: "",
     siteAddress: "", assignedTechnician: "",
     visitDate: new Date().toISOString().slice(0, 10),
@@ -171,13 +167,17 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
   ];
 
   async function handleSubmit() {
-    if (!form.visitNumber.trim()) { setError(ar ? "رقم المعاينة مطلوب" : "Visit number required"); return; }
     setLoading(true);
     setError("");
     const ds = getDataSource();
+    let visitNumber = form.visitNumber;
+    if (!editVisit) {
+      try { visitNumber = await nextDocumentNumber(workspaceId, "site_visit"); }
+      catch (e: any) { setError(e.message || "Couldn't issue a number"); setLoading(false); return; }
+    }
     const payload: any = {
       workspace_id: workspaceId,
-      visit_number: form.visitNumber.trim(),
+      visit_number: visitNumber,
       customer_id: form.customerId || null,
       customer_name: form.customerName || (orgs.find((o) => o.id === form.customerId)?.name_en) || null,
       sales_order_id: form.salesOrderId || null,
@@ -231,7 +231,7 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
             <>
               <div className="grid grid-cols-2 gap-3">
                 <div><label className={labelCls}>{ar ? "رقم المعاينة" : "Visit Number"}</label>
-                  <input className={inputCls} value={form.visitNumber} onChange={(e) => set("visitNumber", e.target.value)} /></div>
+                  <div className={inputCls + " flex items-center bg-muted/30 text-muted-foreground font-mono"}>{form.visitNumber || (ar ? "يصدر عند الحفظ" : "Issued on save")}</div></div>
                 <div><label className={labelCls}>{ar ? "تاريخ المعاينة" : "Visit Date"}</label>
                   <input type="date" className={inputCls} value={form.visitDate} onChange={(e) => set("visitDate", e.target.value)} /></div>
               </div>
@@ -282,7 +282,7 @@ function VisitModal({ onClose, onSaved, orgs, orders, editVisit, ar, workspaceId
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button type="button" onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50 transition-colors">{ar ? "إلغاء" : "Cancel"}</button>
-          <button onClick={handleSubmit} disabled={loading || !form.visitNumber.trim()} className={btnPrimary + " flex-1 h-10"}>
+          <button onClick={handleSubmit} disabled={loading} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {editVisit ? (ar ? "حفظ" : "Save") : (ar ? "أنشئ المعاينة" : "Create Visit")}
           </button>
         </div>

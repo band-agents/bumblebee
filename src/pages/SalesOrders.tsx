@@ -5,13 +5,13 @@
  * 6-Step Wizard: Customer → Product Selection → Details → Mfg Route → Cost/Time → Confirm
  */
 
-import { useState, useEffect, useMemo, useDeferredValue } from "react";
+import { useState, useEffect, useMemo, useDeferredValue, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { isDemoMode } from "../lib/supabase";
 import { getDataSource } from "../lib/data-source";
-import { generateCode } from "../lib/code-generator";
+import { nextDocumentNumber, createInvoiceFromSalesOrder, openPrint, DocumentError, type Invoice } from "../lib/documents";
 import { exportCSV } from "../lib/csv-export";
 import { calcBreakdown } from "../lib/money";
 import { usePagedList, pagedKey } from "../hooks/usePagedList";
@@ -30,6 +30,7 @@ import {
   CheckCircle2, Clock, ChevronRight, ChevronLeft, Calendar,
   FileText, User, Building2, Package, DollarSign,
   Wrench, Truck, ClipboardCheck, AlertTriangle, Trash2,
+  Printer,
 } from "lucide-react";
 import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal";
 import VisualStages from "../components/VisualStages";
@@ -127,7 +128,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
   const [items, setItems] = useState<SOItem[]>([]);
 
   // Step 2: Details
-  const [soNumber] = useState(() => generateCode("sales_order"));
+  const soNumber = ar ? "يصدر عند الحفظ" : "Issued on save";
   const [projectName, setProjectName] = useState("");
   const [priority, setPriority] = useState<Priority>("medium");
   const [dueDate, setDueDate] = useState("");
@@ -241,17 +242,20 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
     setLoading(true);
     setError("");
     try {
+      if (!customerName.trim()) { setError(ar ? "اختر العميل" : "Choose the customer."); setLoading(false); return; }
+      if (!items.length) { setError(ar ? "أضف صنفاً واحداً على الأقل" : "Add at least one item."); setLoading(false); return; }
+      const issuedNumber = await nextDocumentNumber(workspace?.id, "sales_order");
       const meta: SOMeta = {
-        so_number: soNumber, customer_type: customerType,
+        so_number: issuedNumber, customer_type: customerType,
         customer_id: customerId, customer_name: customerName,
         contact_person: contactPerson, phone, email, address, city,
         company_name: companyName, project_name: projectName,
-        priority, items, payments,
+        priority, items, payments: [],
         customer_confirmed: customerConfirmed, measurements_done: measurementsDone,
         design_approved: designApproved, materials_available: materialsAvailable,
         deposit_received: depositReceived,
         subtotal, order_discount: orderDiscount, order_discount_type: orderDiscountType, tax_rate: taxRate,
-        total_amount: totalAmount, total_paid: totalPaid,
+        total_amount: totalAmount, total_paid: 0,
         estimated_days: estimatedDays, estimated_cost: estimatedCost,
         manufacturing_route: mfgRoute,
       };
@@ -265,8 +269,8 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
       }
       const res = await getDataSource().work_items.create(workspace?.id || "demo", {
         workspace_id: workspace?.id || "demo",
-        title_en: `${soNumber} — ${customerName || projectName}`,
-        title_ar: null, type: "sales_order", status: "draft",
+        title_en: `${issuedNumber} — ${customerName || projectName}`,
+        title_ar: null, type: "sales_order", status: "draft", doc_number: issuedNumber,
         priority: priority === "critical" ? "critical" : priority === "high" ? "urgent" : priority,
         due_date: dueDate || null, total_amount: totalAmount,
         metadata: meta as any,
@@ -274,7 +278,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
       if (res) { onAdd(res); onClose(); }
       else setError(ar ? "حصل خطأ" : "Failed to create order");
     } catch (err) {
-      setError(isValidationError(err) ? describeIssues(err.issues, ar) : (ar ? "حصل خطأ" : "Error creating order"));
+      setError(isValidationError(err) ? describeIssues(err.issues, ar) : err instanceof DocumentError ? err.message : (ar ? "حصل خطأ" : "Error creating order"));
     }
     setLoading(false);
   }
@@ -608,33 +612,11 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-body font-medium">{ar ? "الدفعات" : "Payments"}</p>
-                    <button type="button" onClick={addPayment} className="flex items-center gap-1 text-micro text-brand-ink font-medium hover:opacity-70"><Plus size={12} /> {ar ? "دفعة" : "Add"}</button>
-                  </div>
-                  {payments.map((p, i) => (
-                    <div key={p.id} className="border border-border/30 rounded-lg p-2.5 bg-muted/10">
-                      <div className="grid grid-cols-3 gap-2">
-                        <input type="number" value={p.amount} onChange={e => updatePayment(i, { ...p, amount: parseFloat(e.target.value) || 0 })} min={0} className={smallInput} placeholder={ar ? "المبلغ" : "Amount"} />
-                        <input type="date" value={p.date} onChange={e => updatePayment(i, { ...p, date: e.target.value })} className={smallInput} />
-                        <div className="flex gap-1">
-                          <select value={p.method} onChange={e => updatePayment(i, { ...p, method: e.target.value })} className={smallInput + " appearance-none cursor-pointer flex-1"}>
-                            <option value="cash">{ar ? "كاش" : "Cash"}</option>
-                            <option value="bank">{ar ? "تحويل بنكي" : "Bank"}</option>
-                            <option value="check">{ar ? "شيك" : "Check"}</option>
-                          </select>
-                          <button onClick={() => removePayment(i)} className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground/40 hover:text-rose-600"><X size={11} /></button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {totalPaid > 0 && (
-                    <div className="flex justify-between text-caption font-medium">
-                      <span className="text-muted-foreground">{ar ? "إجمالي المدفوع:" : "Total Paid:"}</span>
-                      <span className="tabular-nums">{fmt(totalPaid)} / {fmt(totalAmount)} {currency} ({totalAmount > 0 ? Math.round((totalPaid / totalAmount) * 100) : 0}%)</span>
-                    </div>
-                  )}
+                <div className="rounded-xl border border-border/40 bg-muted/10 p-4 text-caption text-muted-foreground">
+                  <p className="text-body font-medium text-foreground mb-1">{ar ? "الدفعات" : "Payments"}</p>
+                  {ar
+                    ? "بعد تأكيد الطلب، أنشئ فاتورة (كاملة أو عربون) وسجّل كل دفعة عليها — كل دفعة يصدر لها إيصال مرقم."
+                    : "After you confirm the order, create an invoice (full or a deposit) and record each payment against it — every payment gets a numbered receipt."}
                 </div>
               </div>
             </>
@@ -652,7 +634,7 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "الأولوية" : "Priority"}</span><span>{PRIORITIES.find(p => p.value === priority)?.[ar ? "ar" : "en"]}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "عدد الأصناف" : "Items"}</span><span>{items.length}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "القيمة" : "Value"}</span><span className="font-medium">{fmt(totalAmount)} {currency}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "المدفوع" : "Paid"}</span><span>{fmt(totalPaid)} {currency}</span></div>
+
                   <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "مدة التصنيع" : "Mfg Time"}</span><span>{estimatedDays || "—"} {ar ? "يوم" : "days"}</span></div>
                 </div>
               </div>
@@ -723,6 +705,91 @@ function SOWizard({ ar, currency, searchResults, products, onClose, onAdd }: {
 
 // ─── Main Page ───────────────────────────────────────────
 
+// ─── Invoice from order ───────────────────────────────────
+
+function InvoiceFromOrderModal({ ar, currency, order, total, invoiced, workspaceId, onClose, onCreated }: {
+  ar: boolean; currency: string; order: WorkItem; total: number; invoiced: number; workspaceId: string | undefined;
+  onClose: () => void; onCreated: (inv: Invoice) => void;
+}) {
+  const remaining = Math.round((total - invoiced) * 100) / 100;
+  const [mode, setMode] = useState<"full" | "part">("full");
+  const [amount, setAmount] = useState(String(remaining));
+  const [dueDate, setDueDate] = useState("");
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [created, setCreated] = useState<Invoice | null>(null);
+  const m = getM(order);
+
+  async function submit() {
+    setBusy(true); setError(null);
+    try {
+      const value = mode === "full" ? undefined : Math.round((parseFloat(amount) || 0) * 100) / 100;
+      const inv = await createInvoiceFromSalesOrder(workspaceId, { ...order, doc_number: order.doc_number ?? m.so_number }, {
+        amount: value, dueDate: dueDate || undefined, note: note.trim() || (mode === "part" ? (ar ? "دفعة مقدمة" : "Deposit") : undefined), alreadyInvoiced: invoiced,
+      });
+      setCreated(inv);
+      onCreated(inv);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      <div className="relative bg-background border border-border/40 rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-title font-medium" style={{ fontFamily: "var(--app-font-serif)" }}>{ar ? "إصدار فاتورة" : "Create invoice"}</h2>
+          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted"><X size={14} /></button>
+        </div>
+        {created ? (
+          <div className="space-y-4">
+            <p className="text-body">{ar ? "تم إصدار الفاتورة" : "Invoice issued"} <span className="font-mono font-semibold">{created.number}</span> — {fmt(created.amount)} {currency}</p>
+            <div className="flex gap-2">
+              <button onClick={() => openPrint("invoice", created.id)} className={btnPrimary + " h-10 flex-1"}><Printer size={14} /> {ar ? "طباعة الفاتورة" : "Print invoice"}</button>
+              <button onClick={onClose} className="h-10 px-4 rounded-xl border border-border/60 text-body">{ar ? "تم" : "Done"}</button>
+            </div>
+            <p className="text-micro text-muted-foreground">{ar ? "سجّل الدفعات من المالية ← الفواتير." : "Record payments in Finance → Invoices."}</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="rounded-xl bg-muted/20 p-3 text-caption space-y-1">
+              <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "أمر البيع" : "Sales order"}</span><span className="font-mono">{m.so_number}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "إجمالي الطلب" : "Order total"}</span><span className="tabular-nums">{fmt(total)} {currency}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{ar ? "مفوتر سابقاً" : "Already invoiced"}</span><span className="tabular-nums">{fmt(invoiced)} {currency}</span></div>
+              <div className="flex justify-between font-medium"><span>{ar ? "المتبقي للفوترة" : "Left to invoice"}</span><span className="tabular-nums">{fmt(remaining)} {currency}</span></div>
+            </div>
+            <div className="flex p-1 rounded-lg bg-muted/60">
+              {(["full", "part"] as const).map((k) => (
+                <button key={k} onClick={() => setMode(k)} className={`flex-1 py-1.5 rounded-md text-caption font-medium ${mode === k ? "bg-card shadow-sm" : "text-muted-foreground"}`}>
+                  {k === "full" ? (ar ? "المتبقي بالكامل" : "Full remaining") : (ar ? "جزء / عربون" : "Part / deposit")}
+                </button>
+              ))}
+            </div>
+            {mode === "part" && (
+              <div><label className={labelCls}>{ar ? `المبلغ شامل الضريبة (${currency})` : `Amount incl. VAT (${currency})`}</label>
+                <input type="number" min={0} max={remaining} value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} /></div>
+            )}
+            <div className="grid grid-cols-2 gap-3">
+              <div><label className={labelCls}>{ar ? "تاريخ الاستحقاق" : "Due date"}</label>
+                <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className={inputCls} /></div>
+              <div><label className={labelCls}>{ar ? "ملاحظة" : "Note"}</label>
+                <input value={note} onChange={(e) => setNote(e.target.value)} className={inputCls} placeholder={ar ? "مثال: دفعة 50%" : "e.g. 50% deposit"} /></div>
+            </div>
+            {error && <p className="text-caption text-rose-600 flex items-start gap-1"><AlertCircle size={12} className="mt-0.5" />{error}</p>}
+            <button onClick={submit} disabled={busy || (mode === "part" && !(parseFloat(amount) > 0))} className={btnPrimary + " h-10 w-full"}>
+              {busy && <Loader2 size={13} className="animate-spin" />} {ar ? "إصدار الفاتورة" : "Issue invoice"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function SalesOrders() {
   const { lang } = useLanguage();
   const { workspace } = useAuth();
@@ -746,6 +813,24 @@ export default function SalesOrders() {
   const [localSO, setLocalSO] = useState<WorkItem[]>([]);
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
   const queryClient = useQueryClient();
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [invoiceFor, setInvoiceFor] = useState<WorkItem | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  const loadInvoices = useCallback(() => {
+    getDataSource().invoices.list(workspace?.id || "demo").then((rows) => setInvoices(rows as Invoice[])).catch(() => {});
+  }, [workspace?.id]);
+  useEffect(() => { loadInvoices(); }, [loadInvoices]);
+  const billing = useMemo(() => {
+    const map = new Map<string, { invoiced: number; paid: number; count: number }>();
+    for (const inv of invoices) {
+      if (!inv.sales_order_id || ["void", "cancelled"].includes(inv.status)) continue;
+      const b = map.get(inv.sales_order_id) ?? { invoiced: 0, paid: 0, count: 0 };
+      b.invoiced += Number(inv.amount) || 0; b.paid += Number(inv.amount_paid) || 0; b.count += 1;
+      map.set(inv.sales_order_id, b);
+    }
+    return map;
+  }, [invoices]);
 
   useEffect(() => {
     const wid = workspace?.id || "demo";
@@ -832,15 +917,23 @@ export default function SalesOrders() {
     patchLocal(id, { status: newStatus as WorkItem["status"] });
   }
 
+  // Issued orders are cancelled, never deleted. An order with live invoices
+  // can't be cancelled until those invoices are voided.
   async function handleDelete() {
     if (!deleteTarget) return;
+    if ((billing.get(deleteTarget.id)?.count ?? 0) > 0) {
+      setActionError(ar ? "لا يمكن إلغاء طلب عليه فواتير — ألغِ الفواتير أولاً من صفحة الفواتير." : "This order has invoices. Void them in Finance → Invoices before cancelling the order.");
+      setDeleteTarget(null);
+      return;
+    }
     setDeleteLoading(true);
-    await getDataSource().work_items.remove(workspace?.id || "demo", deleteTarget.id);
-    setRemovedIds(prev => new Set(prev).add(deleteTarget.id));
-    setLocalSO(prev => prev.filter(p => p.id !== deleteTarget.id));
-    queryClient.invalidateQueries({ queryKey: pagedKey("work_items") });
-    setDeleteLoading(false);
-    setDeleteTarget(null);
+    try {
+      await getDataSource().work_items.update(workspace?.id || "demo", deleteTarget.id, { status: "cancelled" as never });
+      patchLocal(deleteTarget.id, { status: "cancelled" as WorkItem["status"] });
+    } finally {
+      setDeleteLoading(false);
+      setDeleteTarget(null);
+    }
   }
 
   async function toggleReadiness(id: string, field: string) {
@@ -870,7 +963,7 @@ export default function SalesOrders() {
             <div className="flex items-center gap-2 shrink-0">
               {orders.length > 0 && (
                 <button onClick={() => {
-                  const rows = orders.map(o => { const m = getM(o); return { so_number: m.so_number, customer: m.customer_name, project: m.project_name, priority: m.priority, items: (m.items||[]).length, total: soGrand(m), paid: calcPaid(m.payments||[]), status: o.status }; });
+                  const rows = orders.map(o => { const m = getM(o); return { so_number: m.so_number, customer: m.customer_name, project: m.project_name, priority: m.priority, items: (m.items||[]).length, total: soGrand(m), invoiced: billing.get(o.id)?.invoiced ?? 0, paid: billing.get(o.id)?.paid ?? 0, status: o.status }; });
                   exportCSV(rows, `bumblebee-sales-orders-${new Date().toISOString().slice(0,10)}.csv`);
                 }} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
@@ -939,8 +1032,11 @@ export default function SalesOrders() {
               const st = SO_STATUSES.find(s => s.value === o.status) ?? SO_STATUSES[0];
               const pri = PRIORITIES.find(p => p.value === m.priority);
               const itemsTotal = soGrand(m);
-              const paidTotal = calcPaid(m.payments || []);
+              const bill = billing.get(o.id);
+              const paidTotal = bill?.paid ?? 0;
+              const invoicedTotal = bill?.invoiced ?? 0;
               const remaining = itemsTotal - paidTotal;
+              const canInvoice = !["draft", "cancelled"].includes(o.status) && invoicedTotal < itemsTotal - 0.005;
               const isOd = o.due_date && !["done", "cancelled", "sent"].includes(o.status) && new Date(o.due_date) < new Date(new Date().toDateString());
               const readyCount = [m.customer_confirmed, m.measurements_done, m.design_approved, m.materials_available, m.deposit_received].filter(Boolean).length;
               const linkedProducts = (m.items || []).filter(i => i.product_id).length;
@@ -970,6 +1066,7 @@ export default function SalesOrders() {
                     </div>
                     <div className="text-right shrink-0">
                       <p className="text-title font-semibold tabular-nums" style={{ fontFamily: "var(--app-font-serif)" }}>{fmt(itemsTotal)}</p>
+                      {invoicedTotal > 0 && <p className="text-micro text-muted-foreground mt-0.5">{fmt(invoicedTotal)} {ar ? "مفوتر" : "invoiced"}</p>}
                       {paidTotal > 0 && <p className="text-micro text-emerald-600 mt-0.5">{fmt(paidTotal)} {ar ? "مدفوع" : "paid"}</p>}
                       {remaining > 0 && paidTotal > 0 && <p className="text-micro text-muted-foreground">{fmt(remaining)} {ar ? "متبقي" : "remaining"}</p>}
                     </div>
@@ -1003,9 +1100,19 @@ export default function SalesOrders() {
                     {o.status === "in_progress" && <button onClick={() => updateStatus(o.id, "review")} className="text-micro text-warning font-medium hover:opacity-70 flex items-center gap-1"><Package size={11} /> {ar ? "جاهز للتسليم" : "Ready"}</button>}
                     {o.status === "review" && <button onClick={() => updateStatus(o.id, "sent")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><Truck size={11} /> {ar ? "تم التسليم" : "Delivered"}</button>}
                     {o.status === "sent" && <button onClick={() => updateStatus(o.id, "done")} className="text-micro text-emerald-600 font-medium hover:opacity-70 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "اقفل الطلب" : "Close"}</button>}
-                    <button onClick={() => setDeleteTarget(o)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
-                      <Trash2 size={12} />
+                    {canInvoice && (
+                      <button onClick={() => setInvoiceFor(o)} className="text-micro text-brand-ink font-medium hover:opacity-70 flex items-center gap-1">
+                        <FileText size={11} /> {ar ? "إصدار فاتورة" : "Create invoice"}
+                      </button>
+                    )}
+                    <button onClick={() => openPrint("sales_order", o.id)} className="ms-auto text-micro text-foreground/80 font-medium hover:opacity-70 flex items-center gap-1">
+                      <Printer size={11} /> {ar ? "طباعة" : "Print"}
                     </button>
+                    {!["cancelled", "done"].includes(o.status) && (
+                      <button onClick={() => setDeleteTarget(o)} title={ar ? "إلغاء الطلب" : "Cancel order"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
+                        <X size={12} />
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -1017,10 +1124,28 @@ export default function SalesOrders() {
 
       {modal && <SOWizard ar={ar} currency={currency} searchResults={searchResults} products={products} onClose={() => setModal(false)} onAdd={w => { setLocalSO(prev => [w, ...prev]); queryClient.invalidateQueries({ queryKey: pagedKey("work_items") }); }} />}
 
+      {actionError && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md rounded-xl bg-foreground text-background px-5 py-3 text-body shadow-lg flex items-start gap-3">
+          <AlertCircle size={16} className="shrink-0 mt-0.5" /><span className="flex-1">{actionError}</span>
+          <button onClick={() => setActionError(null)} aria-label="Close"><X size={14} /></button>
+        </div>
+      )}
+
+      {invoiceFor && (
+        <InvoiceFromOrderModal
+          ar={ar} currency={currency} order={invoiceFor}
+          total={soGrand(getM(invoiceFor))}
+          invoiced={billing.get(invoiceFor.id)?.invoiced ?? 0}
+          workspaceId={workspace?.id}
+          onClose={() => setInvoiceFor(null)}
+          onCreated={(inv) => { setInvoices((prev) => [inv, ...prev]); loadInvoices(); }}
+        />
+      )}
+
       <ConfirmDeleteModal
         open={!!deleteTarget}
         ar={ar}
-        title={ar ? "حذف أمر البيع" : "Delete Sales Order"}
+        title={ar ? "إلغاء أمر البيع" : "Cancel Sales Order"}
         itemName={deleteTarget ? (getM(deleteTarget).so_number || deleteTarget.title_en) : ""}
         loading={deleteLoading}
         onCancel={() => setDeleteTarget(null)}

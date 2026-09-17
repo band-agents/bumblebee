@@ -11,6 +11,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import { getDataSource } from "../lib/data-source";
+import { nextDocumentNumber } from "../lib/documents";
 import { exportCSV, downloadTemplate } from "../lib/csv-export";
 import type { Database } from "../lib/database.types";
 import {
@@ -94,11 +95,6 @@ const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
-function genBriefNumber(): string {
-  const d = new Date();
-  const seq = Math.floor(Math.random() * 9000) + 1000;
-  return `DB-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}-${seq}`;
-}
 
 async function logActivity(workspaceId: string, type: string, entityType: string, entityId: string, descEn: string, descAr: string) {
   const ds = getDataSource();
@@ -122,7 +118,7 @@ interface BriefForm {
 
 function emptyForm(): BriefForm {
   return {
-    briefNumber: genBriefNumber(), title: "", salesOrderId: "", siteVisitId: "",
+    briefNumber: "", title: "", salesOrderId: "", siteVisitId: "",
     customerId: "", customerName: "", assignedDesigner: "",
     designType: "custom", style: "",
     preferredColors: "", preferredMaterials: "", specialNotes: "",
@@ -175,7 +171,7 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
   }
 
   async function handleSubmit() {
-    if (!form.briefNumber.trim() || !form.title.trim()) {
+    if (!form.title.trim()) {
       setError(ar ? "رقم التصميم والعنوان مطلوبين" : "Brief number and title required"); return;
     }
     setLoading(true); setError("");
@@ -192,9 +188,14 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
       }));
     }
 
+    let briefNumber = form.briefNumber;
+    if (!editBrief) {
+      try { briefNumber = await nextDocumentNumber(workspaceId, "design_brief"); }
+      catch (e: any) { setError(e.message || "Couldn't issue a number"); setLoading(false); return; }
+    }
     const payload: any = {
       workspace_id: workspaceId,
-      brief_number: form.briefNumber.trim(), title: form.title.trim(),
+      brief_number: briefNumber, title: form.title.trim(),
       sales_order_id: form.salesOrderId || null, site_visit_id: form.siteVisitId || null,
       customer_id: form.customerId || null,
       customer_name: form.customerName || (orgs.find(o => o.id === form.customerId)?.name_en) || null,
@@ -230,7 +231,7 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelCls}>{ar ? "رقم التصميم" : "Brief Number"}</label>
-              <input className={inputCls} value={form.briefNumber} onChange={e => set("briefNumber", e.target.value)} /></div>
+              <div className={inputCls + " flex items-center bg-muted/30 text-muted-foreground font-mono"}>{form.briefNumber || (ar ? "يصدر عند الحفظ" : "Issued on save")}</div></div>
             <div><label className={labelCls}>{ar ? "النوع" : "Design Type"}</label>
               <select className={inputCls} value={form.designType} onChange={e => set("designType", e.target.value)}>
                 {DESIGN_TYPES.map(t => <option key={t.value} value={t.value}>{ar ? t.ar : t.en}</option>)}
@@ -282,7 +283,7 @@ function BriefModal({ onClose, onSaved, orgs, orders, visits, editBrief, ar, wor
         </div>
         <div className="px-6 py-4 border-t border-border/40 shrink-0 flex gap-3">
           <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-border/60 text-body font-medium hover:bg-muted/50">{ar ? "إلغاء" : "Cancel"}</button>
-          <button onClick={handleSubmit} disabled={loading || !form.briefNumber.trim() || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
+          <button onClick={handleSubmit} disabled={loading || !form.title.trim()} className={btnPrimary + " flex-1 h-10"}>
             {loading && <Loader2 size={12} className="animate-spin" />} {editBrief ? (ar ? "حفظ" : "Save") : (ar ? "أنشئ التصميم" : "Create Brief")}
           </button>
         </div>

@@ -12,6 +12,7 @@ import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import { getDataSource } from "../lib/data-source";
 import { exportCSV } from "../lib/csv-export";
+import { nextDocumentNumber, openPrint } from "../lib/documents";
 import type { Database } from "../lib/database.types";
 import {
   Plus, Search, X, Loader2, AlertCircle, Download,
@@ -19,6 +20,7 @@ import {
   MapPin, Phone, User, Building2, Calendar, Package,
   Camera, Star, FileText, XCircle, AlertTriangle,
   Play, Check, RotateCcw, Pause, Navigation, Trash2,
+  Printer,
 } from "lucide-react";
 import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal";
 
@@ -62,11 +64,6 @@ const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
-function genNum(prefix: string): string {
-  const d = new Date();
-  const seq = Math.floor(Math.random() * 9000) + 1000;
-  return `${prefix}-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}-${seq}`;
-}
 
 async function logActivity(wid: string, type: string, eid: string, en: string, arTxt: string) {
   const ds = getDataSource();
@@ -79,7 +76,7 @@ function DeliveryModal({ onClose, onSaved, prodOrders, ar, wid }: {
   onClose: () => void; onSaved: () => void;
   prodOrders: ProdOrder[]; ar: boolean; wid: string;
 }) {
-  const [num] = useState(genNum("DEL"));
+  const num = "";
   const [poId, setPOId] = useState("");
   const [customer, setCustomer] = useState("");
   const [phone, setPhone] = useState("");
@@ -102,6 +99,10 @@ function DeliveryModal({ onClose, onSaved, prodOrders, ar, wid }: {
     setLoading(true);
     const ds = getDataSource();
     const po = prodOrders.find(p => p.id === poId);
+    let num: string;
+    try { num = await nextDocumentNumber(wid, "delivery_note"); }
+    catch (e) { setLoading(false); alert(e instanceof Error ? e.message : String(e)); return; }
+    const poMeta = (po?.metadata ?? {}) as Record<string, unknown>;
     await ds.deliveries.create(wid, {
       workspace_id: wid, delivery_number: num,
       production_order_id: poId || null, sales_order_id: po?.sales_order_id || null,
@@ -110,7 +111,11 @@ function DeliveryModal({ onClose, onSaved, prodOrders, ar, wid }: {
       delivery_time_slot: timeSlot || null, driver_name: driver || null,
       vehicle_info: vehicle || null, status: "scheduled",
       num_pieces: parseInt(pieces) || 0, num_packages: parseInt(packages) || 0,
-      metadata: {},
+      metadata: {
+        production_order_number: po?.po_number ?? null,
+        sales_order_number: (poMeta.sales_order_number as string) ?? null,
+        items: po ? [{ name: po.title, qty: parseInt(pieces) || Number(poMeta.planned_qty) || 0, unit: "pcs" }] : [],
+      },
     } as any);
     await logActivity(wid, "delivery_scheduled", num,
       `Delivery ${num} scheduled`, `تم جدولة التسليم ${num}`);
@@ -127,7 +132,7 @@ function DeliveryModal({ onClose, onSaved, prodOrders, ar, wid }: {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelCls}>{ar ? "رقم التسليم" : "Delivery #"}</label>
-              <input className={inputCls + " bg-muted/30"} value={num} readOnly /></div>
+              <input className={inputCls + " bg-muted/30"} value={num || (ar ? "يصدر عند الحفظ" : "Issued on save")} readOnly /></div>
             <div><label className={labelCls}>{ar ? "أمر التشغيل" : "Production Order"}</label>
               <select className={inputCls} value={poId} onChange={e => handlePO(e.target.value)}>
                 <option value="">{ar ? "— اختر —" : "— Select —"}</option>
@@ -182,7 +187,7 @@ function InstallModal({ onClose, onSaved, deliveries, ar, wid }: {
   onClose: () => void; onSaved: () => void;
   deliveries: Delivery[]; ar: boolean; wid: string;
 }) {
-  const [num] = useState(genNum("INS"));
+  const num = "";
   const [delId, setDelId] = useState("");
   const [customer, setCustomer] = useState("");
   const [phone, setPhone] = useState("");
@@ -205,6 +210,9 @@ function InstallModal({ onClose, onSaved, deliveries, ar, wid }: {
     setLoading(true);
     const ds = getDataSource();
     const del = deliveries.find(d => d.id === delId);
+    let num: string;
+    try { num = await nextDocumentNumber(wid, "installation"); }
+    catch (e) { setLoading(false); alert(e instanceof Error ? e.message : String(e)); return; }
     await ds.installations.create(wid, {
       workspace_id: wid, installation_number: num,
       delivery_id: delId || null, sales_order_id: del?.sales_order_id || null,
@@ -213,7 +221,7 @@ function InstallModal({ onClose, onSaved, deliveries, ar, wid }: {
       scheduled_time_slot: timeSlot || null, team_leader: leader || null,
       team_members: members ? members.split(",").map(m => m.trim()) : [],
       status: "scheduled", checklist: DEFAULT_INSTALL_CHECKLIST,
-      snag_list: [], photos: [], metadata: {},
+      snag_list: [], photos: [], metadata: { delivery_number: del?.delivery_number ?? null },
     } as any);
     await logActivity(wid, "installation_scheduled", num,
       `Installation ${num} scheduled`, `تم جدولة التركيب ${num}`);
@@ -230,7 +238,7 @@ function InstallModal({ onClose, onSaved, deliveries, ar, wid }: {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelCls}>{ar ? "رقم التركيب" : "Installation #"}</label>
-              <input className={inputCls + " bg-muted/30"} value={num} readOnly /></div>
+              <input className={inputCls + " bg-muted/30"} value={num || (ar ? "يصدر عند الحفظ" : "Issued on save")} readOnly /></div>
             <div><label className={labelCls}>{ar ? "التسليم" : "Delivery"}</label>
               <select className={inputCls} value={delId} onChange={e => handleDel(e.target.value)}>
                 <option value="">{ar ? "— اختر —" : "— Select —"}</option>
@@ -297,6 +305,7 @@ function DeliveryDetail({ del, onBack, ar, wid, onRefresh }: {
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="text-micro font-mono text-muted-foreground">{del.delivery_number}</span>
             <span className={`text-micro px-2 py-0.5 rounded-full font-medium ${st.pill}`}>{ar ? st.ar : st.en}</span>
+            <button onClick={() => openPrint("delivery_note", del.id)} className="text-micro font-medium text-foreground/70 hover:text-foreground flex items-center gap-1 px-2 py-0.5 rounded-lg border border-border/60"><Printer size={10} /> {ar ? "طباعة إذن التسليم" : "Print delivery note"}</button>
           </div>
           <h2 className="text-title font-semibold" style={{ fontFamily: "var(--app-font-serif)" }}>
             {del.customer_name || del.delivery_number}

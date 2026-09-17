@@ -11,6 +11,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import { getDataSource } from "../lib/data-source";
+import { nextDocumentNumber } from "../lib/documents";
 import { exportCSV } from "../lib/csv-export";
 import type { Database } from "../lib/database.types";
 import {
@@ -89,11 +90,6 @@ const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-xl bg-
 const inputCls = "w-full h-10 px-3 rounded-xl border border-border/60 bg-background text-body focus:outline-none focus:ring-2 focus:ring-brand-ink/20";
 const labelCls = "text-micro text-muted-foreground font-medium mb-1 block";
 
-function genInspNumber(): string {
-  const d = new Date();
-  const seq = Math.floor(Math.random() * 9000) + 1000;
-  return `QC-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}-${seq}`;
-}
 
 async function logActivity(wid: string, type: string, eid: string, en: string, arTxt: string) {
   const ds = getDataSource();
@@ -106,7 +102,7 @@ function InspectionModal({ onClose, onSaved, prodOrders, ar, workspaceId }: {
   onClose: () => void; onSaved: () => void;
   prodOrders: ProdOrder[]; ar: boolean; workspaceId: string;
 }) {
-  const [inspNumber, setInspNumber] = useState(genInspNumber());
+  const inspNumber = "";
   const [poId, setPOId] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [inspectorName, setInspectorName] = useState("");
@@ -121,12 +117,14 @@ function InspectionModal({ onClose, onSaved, prodOrders, ar, workspaceId }: {
   }
 
   async function handleSubmit() {
-    if (!inspNumber.trim()) { setError(ar ? "رقم الفحص مطلوب" : "Inspection number required"); return; }
     setLoading(true); setError("");
     const ds = getDataSource();
+    let inspNumber: string;
+    try { inspNumber = await nextDocumentNumber(workspaceId, "qc_inspection"); }
+    catch (e: any) { setError(e.message || "Couldn't issue a number"); setLoading(false); return; }
     const po = prodOrders.find(p => p.id === poId);
     await ds.qc_inspections.create(workspaceId, {
-      workspace_id: workspaceId, inspection_number: inspNumber.trim(),
+      workspace_id: workspaceId, inspection_number: inspNumber,
       production_order_id: poId || null, sales_order_id: po?.sales_order_id || null,
       customer_name: customerName || null, inspector_name: inspectorName || null,
       inspection_type: inspType as any, status: "pending",
@@ -147,7 +145,7 @@ function InspectionModal({ onClose, onSaved, prodOrders, ar, workspaceId }: {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelCls}>{ar ? "رقم الفحص" : "Inspection #"}</label>
-              <input className={inputCls} value={inspNumber} onChange={e => setInspNumber(e.target.value)} /></div>
+              <div className={inputCls + " flex items-center bg-muted/30 text-muted-foreground"}>{ar ? "يصدر عند الحفظ" : "Issued on save"}</div></div>
             <div><label className={labelCls}>{ar ? "النوع" : "Type"}</label>
               <select className={inputCls} value={inspType} onChange={e => setInspType(e.target.value)}>
                 {INSPECTION_TYPES.map(t => <option key={t.value} value={t.value}>{ar ? t.ar : t.en}</option>)}

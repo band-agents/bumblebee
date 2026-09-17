@@ -13,7 +13,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { getDataSource } from "../lib/data-source";
 import { exportCSV } from "../lib/csv-export";
-import { generateCode, peekNextCode } from "../lib/code-generator";
+import { nextDocumentNumber, openPrint, DocumentError, salesOrderTotal } from "../lib/documents";
 import { lineNet, calcBreakdown, calcGrand } from "../lib/money";
 import { quotationMetaSchema, describeIssues } from "../lib/schemas/money-schemas";
 import { isValidationError } from "../lib/errors";
@@ -23,7 +23,7 @@ import {
   FileText, Plus, Search, X, Loader2, AlertCircle, Download,
   CheckCircle2, Clock, XCircle, Building2, ChevronRight,
   DollarSign, Ruler, Package, ArrowRight, Layers,
-  Edit3, Palette, Box, Trash2,
+  Edit3, Palette, Box, Trash2, Printer,
 } from "lucide-react";
 import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal";
 
@@ -448,7 +448,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
 }) {
   const { workspace } = useAuth();
   const [form, setForm] = useState({
-    quotNumber: peekNextCode("quotation"),
+    quotNumber: "",
     customer: "", contactPerson: "", projectName: "", notes: "",
     orderDiscount: "", orderDiscountType: "pct" as "pct" | "fixed", taxRate: "",
     quotDate: new Date().toISOString().slice(0, 10),
@@ -495,12 +495,20 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!workspace || !form.quotNumber.trim()) return;
+    if (!workspace) return;
+    if (!items.some((i) => i.product.trim())) { setError(ar ? "أضف صنفاً واحداً على الأقل" : "Add at least one item."); return; }
     setLoading(true); setError(null);
 
-    // Mint the code (advancing the counter) only when the auto default is kept.
-    const auto = peekNextCode("quotation");
-    const quotNumber = form.quotNumber.trim() === auto ? generateCode("quotation") : form.quotNumber.trim();
+    // The number is issued by the database at the moment of saving, so two
+    // people can never get the same one.
+    let quotNumber: string;
+    try {
+      quotNumber = await nextDocumentNumber(workspace.id, "quotation");
+    } catch (err) {
+      setError(err instanceof DocumentError ? err.message : (ar ? "تعذر إصدار رقم" : "Couldn't issue a number."));
+      setLoading(false);
+      return;
+    }
     const meta = {
       quotation_number: quotNumber,
       customer_id: form.customer || null,
@@ -537,6 +545,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
         title_ar: form.projectName.trim() || quotNumber,
         type: "quotation" as WorkItem["type"],
         status: "draft" as WorkItem["status"],
+        doc_number: quotNumber,
         priority: "medium" as WorkItem["priority"],
         due_date: form.validityDate || null,
         organization_id: form.customer || null,
@@ -564,7 +573,7 @@ function CreateQuotationModal({ onClose, onAdd, ar, customers, currency, product
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>{ar ? "رقم عرض السعر" : "Quotation #"} <span className="text-rose-600">*</span></label>
-              <input type="text" value={form.quotNumber} onChange={(e) => setForm((f) => ({ ...f, quotNumber: e.target.value }))} required className={inputCls} />
+              <div className={inputCls + " flex items-center text-muted-foreground bg-muted/30"}>{ar ? "يصدر تلقائياً عند الحفظ" : "Issued automatically on save"}</div>
             </div>
             <div>
               <label className={labelCls}>{ar ? "العميل" : "Customer"}</label>
@@ -801,36 +810,59 @@ export default function Quotations() {
   }
 
   // Delete quotation
+  // Numbered quotations are cancelled, never deleted — the number stays accounted for.
   async function handleDelete() {
     if (!deleteTarget) return;
     setDeleteLoading(true);
-    await getDataSource().work_items.remove(workspace?.id || "demo", deleteTarget.id);
-    setWorkItems((prev) => prev.filter((w) => w.id !== deleteTarget.id));
-    setDeleteLoading(false);
-    setDeleteTarget(null);
+    try {
+      await getDataSource().work_items.update(workspace?.id || "demo", deleteTarget.id, { status: "cancelled" as never });
+      setWorkItems((prev) => prev.map((w) => w.id === deleteTarget.id ? { ...w, status: "cancelled" as WorkItem["status"] } : w));
+    } finally {
+      setDeleteLoading(false);
+      setDeleteTarget(null);
+    }
   }
 
   // Convert to sales order
+  const [converting, setConverting] = useState<string | null>(null);
   async function convertToSalesOrder(quot: WorkItem) {
     const m = getQM(quot);
-    const created = await getDataSource().work_items.create(workspace?.id ?? "", {
-      title_en: `SO - ${m.project_name || quot.title_en}`,
-      title_ar: `أمر بيع - ${m.project_name || quot.title_en}`,
-      type: "sales_order" as WorkItem["type"],
-      status: "approved" as WorkItem["status"],
-      priority: quot.priority,
-      due_date: quot.due_date,
-      organization_id: quot.organization_id,
-      progress: 0, tags: ["sales_order"],
-      metadata: { ...m, source_quotation: quot.id, source_quotation_number: m.quotation_number } as never,
-    });
-    if (created) {
-      // Mark quotation as converted
-      await getDataSource().work_items.update(workspace?.id ?? "", quot.id, {
-        status: "converted",
-        metadata: { ...m, converted_to: (created as WorkItem).id },
-      } as unknown as Partial<WorkItem>);
-      setWorkItems((prev) => [created as WorkItem, ...prev.map((w) => w.id === quot.id ? { ...w, status: "converted" as WorkItem["status"] } : w)]);
+    if (quot.status !== "approved" || m.converted_to) return; // one quotation → one sales order
+    setConverting(quot.id);
+    try {
+      const soNumber = await nextDocumentNumber(workspace?.id, "sales_order");
+      const items = (m.items || []).map((i) => ({ ...i, product_name: i.product, description: i.description }));
+      const soMeta = {
+        so_number: soNumber, customer_id: m.customer_id, customer_name: m.customer_name,
+        contact_person: m.contact_person, project_name: m.project_name, notes: m.notes, items,
+        order_discount: m.order_discount, order_discount_type: m.order_discount_type, tax_rate: m.tax_rate,
+        currency: m.currency, source_quotation: quot.id, source_quotation_number: m.quotation_number,
+      };
+      const total = salesOrderTotal({ id: "", status: "approved", metadata: soMeta });
+      const created = await getDataSource().work_items.create(workspace?.id ?? "", {
+        title_en: `${soNumber} — ${m.customer_name || m.project_name || quot.title_en}`,
+        title_ar: null,
+        type: "sales_order" as WorkItem["type"],
+        status: "approved" as WorkItem["status"],
+        doc_number: soNumber,
+        priority: quot.priority,
+        due_date: quot.due_date,
+        organization_id: quot.organization_id,
+        progress: 0, tags: ["sales_order"],
+        total_amount: total,
+        metadata: { ...soMeta, total_amount: total } as never,
+      } as never);
+      if (created) {
+        await getDataSource().work_items.update(workspace?.id ?? "", quot.id, {
+          status: "converted",
+          metadata: { ...m, converted_to: (created as WorkItem).id, converted_to_number: soNumber },
+        } as unknown as Partial<WorkItem>);
+        setWorkItems((prev) => [created as WorkItem, ...prev.map((w) => w.id === quot.id ? { ...w, status: "converted" as WorkItem["status"], metadata: { ...m, converted_to: (created as WorkItem).id, converted_to_number: soNumber } as never } : w)]);
+      }
+    } catch (err) {
+      alert(err instanceof Error ? err.message : String(err));
+    } finally {
+      setConverting(null);
     }
   }
 
@@ -979,17 +1011,22 @@ export default function Quotations() {
                         </button>
                       </>
                     )}
-                    {q.status === "approved" && (
-                      <button onClick={() => convertToSalesOrder(q)} className="text-micro text-brand-ink font-medium hover:opacity-70 flex items-center gap-1">
-                        <ArrowRight size={11} /> {ar ? "تحويل لأمر بيع" : "Convert to Sales Order"}
+                    {q.status === "approved" && !m.converted_to && (
+                      <button onClick={() => convertToSalesOrder(q)} disabled={converting === q.id} className="text-micro text-brand-ink font-medium hover:opacity-70 flex items-center gap-1 disabled:opacity-40">
+                        {converting === q.id ? <Loader2 size={11} className="animate-spin" /> : <ArrowRight size={11} />} {ar ? "تحويل لأمر بيع" : "Convert to Sales Order"}
                       </button>
                     )}
                     {q.status === "converted" && (
-                      <span className="text-micro text-violet-600 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تم التحويل لأمر بيع" : "Converted to Sales Order"}</span>
+                      <span className="text-micro text-violet-600 flex items-center gap-1"><CheckCircle2 size={11} /> {ar ? "تم التحويل لأمر بيع" : "Sales order"} {(m as { converted_to_number?: string }).converted_to_number ?? ""}</span>
                     )}
-                    <button onClick={() => setDeleteTarget(q)} title={ar ? "حذف" : "Delete"} className="ms-auto p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
-                      <Trash2 size={12} />
+                    <button onClick={() => openPrint("quotation", q.id)} className="ms-auto text-micro text-foreground/80 font-medium hover:opacity-70 flex items-center gap-1">
+                      <Printer size={11} /> {ar ? "طباعة" : "Print"}
                     </button>
+                    {!["cancelled", "converted"].includes(q.status) && (
+                      <button onClick={() => setDeleteTarget(q)} title={ar ? "إلغاء" : "Cancel quotation"} className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors">
+                        <XCircle size={12} />
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -1003,7 +1040,7 @@ export default function Quotations() {
       <ConfirmDeleteModal
         open={!!deleteTarget}
         ar={ar}
-        title={ar ? "حذف عرض السعر" : "Delete Quotation"}
+        title={ar ? "إلغاء عرض السعر" : "Cancel Quotation"}
         itemName={deleteTarget ? (getQM(deleteTarget).quotation_number || deleteTarget.title_en) : ""}
         loading={deleteLoading}
         onCancel={() => setDeleteTarget(null)}
