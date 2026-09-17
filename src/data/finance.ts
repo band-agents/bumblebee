@@ -100,20 +100,20 @@ export function fmtCurrency(value: number, currency: string = "EGP", locale: str
 const DEFAULT_INVOICES: Invoice[] = [
   {
     id: "inv-001", number: "INV-2025-001",
-    titleEn: "Corporate Office Furniture — Phase 1", titleAr: "أثاث مكتبي — المرحلة ١",
-    orgNameEn: "Meridian Group", orgNameAr: "مجموعة ميريديان", orgId: "org-1",
+    titleEn: "Autumn wholesale — deposit", titleAr: "طلبية الخريف — عربون",
+    orgNameEn: "Kids Corner Stores", orgNameAr: "كيدز كورنر", orgId: "org-1",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
     amount: 960000, currency: "EGP", status: "paid", paidAmount: 960000,
     issueDateEn: "Jul 1, 2025", issueDateAr: "١ يوليو ٢٠٢٥",
     dueDateEn: "Jul 30, 2025", dueDateAr: "٣٠ يوليو ٢٠٢٥", dueDateISO: "2025-07-30",
     relatedDealId: "d-001",
-    noteEn: "First milestone payment for the Meridian headquarters fit-out project.",
+    noteEn: "50% deposit on the autumn hoodie and jogger order.",
     noteAr: "دفعة المعلم الأول لمشروع تجهيز مقر ميريديان.",
   },
   {
     id: "inv-002", number: "INV-2025-002",
-    titleEn: "Warehouse Racking — Deposit", titleAr: "أرفف المستودعات — عربون",
-    orgNameEn: "Gulf Traders LLC", orgNameAr: "تجار الخليج", orgId: "org-2",
+    titleEn: "Pyjama restock — deposit", titleAr: "إعادة تخزين البيجامات — عربون",
+    orgNameEn: "Little Steps Boutique", orgNameAr: "ليتل ستبس", orgId: "org-2",
     contactNameEn: "Fahad Al-Otaibi", contactNameAr: "فهد العتيبي",
     amount: 425000, currency: "EGP", status: "sent", paidAmount: 0,
     issueDateEn: "Jul 25, 2025", issueDateAr: "٢٥ يوليو ٢٠٢٥",
@@ -122,8 +122,8 @@ const DEFAULT_INVOICES: Invoice[] = [
   },
   {
     id: "inv-003", number: "INV-2025-003",
-    titleEn: "Break Room Furniture — Final", titleAr: "أثاث غرفة الاستراحة — نهائي",
-    orgNameEn: "Atlas Manufacturing", orgNameAr: "أطلس للتصنيع", orgId: "org-3",
+    titleEn: "Summer tees — final", titleAr: "تيشيرتات الصيف — نهائي",
+    orgNameEn: "Mini Me Online", orgNameAr: "ميني مي", orgId: "org-3",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
     amount: 280000, currency: "EGP", status: "paid", paidAmount: 280000,
     issueDateEn: "Jul 15, 2025", issueDateAr: "١٥ يوليو ٢٠٢٥",
@@ -132,8 +132,8 @@ const DEFAULT_INVOICES: Invoice[] = [
   },
   {
     id: "inv-004", number: "INV-2025-004",
-    titleEn: "Lobby Renovation — Progress", titleAr: "تجديد اللوبي — تقدم",
-    orgNameEn: "Jeddah Grand Hotel", orgNameAr: "فندق جدة الكبير",
+    titleEn: "School PE kits — progress", titleAr: "ملابس رياضة — دفعة",
+    orgNameEn: "Cairo Language School", orgNameAr: "مدرسة القاهرة للغات",
     contactNameEn: "Fatima Al-Zahra", contactNameAr: "فاطمة الزهراء",
     amount: 720000, currency: "EGP", status: "overdue", paidAmount: 0,
     issueDateEn: "Jul 5, 2025", issueDateAr: "٥ يوليو ٢٠٢٥",
@@ -142,8 +142,8 @@ const DEFAULT_INVOICES: Invoice[] = [
   },
   {
     id: "inv-005", number: "INV-2025-005",
-    titleEn: "Penthouse Collection — Deposit", titleAr: "مجموعة البنتهاوس — عربون",
-    orgNameEn: "Premium Residences Co.", orgNameAr: "شركة المساكن الفاخرة",
+    titleEn: "Holiday gift sets — deposit", titleAr: "هدايا الأعياد — عربون",
+    orgNameEn: "Toy Town Kiosks", orgNameAr: "توي تاون",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
     amount: 1350000, currency: "EGP", status: "draft", paidAmount: 0,
     issueDateEn: "Aug 1, 2025", issueDateAr: "١ أغسطس ٢٠٢٥",
@@ -152,8 +152,8 @@ const DEFAULT_INVOICES: Invoice[] = [
   },
   {
     id: "inv-006", number: "INV-2025-006",
-    titleEn: "School Desks — Advance Payment", titleAr: "مقاعد مدرسية — دفعة مقدمة",
-    orgNameEn: "Ministry of Education", orgNameAr: "وزارة التعليم",
+    titleEn: "Uniform tender — advance", titleAr: "مناقصة الزي — دفعة مقدمة",
+    orgNameEn: "Nile Schools Group", orgNameAr: "مجموعة مدارس النيل",
     contactNameEn: "Ahmed Khalil", contactNameAr: "أحمد خليل",
     amount: 640000, currency: "EGP", status: "sent", paidAmount: 0,
     issueDateEn: "Aug 3, 2025", issueDateAr: "٣ أغسطس ٢٠٢٥",
@@ -162,8 +162,8 @@ const DEFAULT_INVOICES: Invoice[] = [
   },
   {
     id: "inv-007", number: "INV-2025-007",
-    titleEn: "Corporate Office — Phase 2", titleAr: "أثاث مكتبي — المرحلة ٢",
-    orgNameEn: "Meridian Group", orgNameAr: "مجموعة ميريديان",
+    titleEn: "Autumn wholesale — balance", titleAr: "طلبية الخريف — الباقي",
+    orgNameEn: "Kids Corner Stores", orgNameAr: "كيدز كورنر",
     contactNameEn: "Omar Al-Rashidi", contactNameAr: "عمر الراشدي",
     amount: 720000, currency: "EGP", status: "sent", paidAmount: 0,
     issueDateEn: "Aug 5, 2025", issueDateAr: "٥ أغسطس ٢٠٢٥",
@@ -172,8 +172,8 @@ const DEFAULT_INVOICES: Invoice[] = [
   },
   {
     id: "inv-008", number: "INV-2025-008",
-    titleEn: "Model Home Staging — Package A", titleAr: "تجهيز بيت نموذجي — حزمة أ",
-    orgNameEn: "Al-Bayt Real Estate", orgNameAr: "البيت للعقارات",
+    titleEn: "Franchise opening stock", titleAr: "بضاعة افتتاح الفرانشايز",
+    orgNameEn: "San Stefano Franchise", orgNameAr: "فرانشايز سان ستيفانو",
     contactNameEn: "Layla Hassan", contactNameAr: "ليلى حسن",
     amount: 140000, currency: "EGP", status: "cancelled", paidAmount: 0,
     issueDateEn: "Jun 20, 2025", issueDateAr: "٢٠ يونيو ٢٠٢٥",
@@ -191,13 +191,13 @@ const DEFAULT_PAYMENTS: Payment[] = [
 
 const DEFAULT_EXPENSES: Expense[] = [
   { id: "exp-001", vendorEn: "Amazon Web Services", vendorAr: "أمازون ويب سيرفيسز", category: "software", amount: 12500, currency: "EGP", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly cloud infrastructure", descAr: "بنية تحتية سحابية شهرية" },
-  { id: "exp-002", vendorEn: "Office Rent — Dubai HQ", vendorAr: "إيجار مكتب — دبي", category: "operations", amount: 85000, currency: "EGP", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly office lease", descAr: "إيجار مكتب شهري" },
+  { id: "exp-002", vendorEn: "Factory Rent — 10th of Ramadan", vendorAr: "إيجار المصنع — العاشر من رمضان", category: "operations", amount: 85000, currency: "EGP", status: "paid", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly office lease", descAr: "إيجار مكتب شهري" },
   { id: "exp-003", vendorEn: "Staff Salaries — August", vendorAr: "رواتب الموظفين — أغسطس", category: "payroll", amount: 420000, currency: "EGP", status: "approved", dateEn: "Aug 1, 2025", dateAr: "١ أغسطس ٢٠٢٥", descEn: "Monthly payroll for 58 employees", descAr: "رواتب شهرية لـ ٥٨ موظف" },
   { id: "exp-004", vendorEn: "Google Ads", vendorAr: "إعلانات جوجل", category: "marketing", amount: 35000, currency: "EGP", status: "paid", dateEn: "Jul 28, 2025", dateAr: "٢٨ يوليو ٢٠٢٥", descEn: "Q3 digital campaign", descAr: "حملة رقمية للربع الثالث" },
-  { id: "exp-005", vendorEn: "Dubai → Riyadh Flights", vendorAr: "رحلات دبي → الرياض", category: "travel", amount: 8500, currency: "EGP", status: "pending", dateEn: "Aug 3, 2025", dateAr: "٣ أغسطس ٢٠٢٥", descEn: "Team travel for client meetings", descAr: "سفر الفريق لاجتماعات العملاء" },
+  { id: "exp-005", vendorEn: "Istanbul fabric sourcing trip", vendorAr: "رحلة شراء أقمشة — إسطنبول", category: "travel", amount: 8500, currency: "EGP", status: "pending", dateEn: "Aug 3, 2025", dateAr: "٣ أغسطس ٢٠٢٥", descEn: "Team travel for client meetings", descAr: "سفر الفريق لاجتماعات العملاء" },
   { id: "exp-006", vendorEn: "Figma Enterprise", vendorAr: "فيجما إنتربرايز", category: "software", amount: 4200, currency: "EGP", status: "paid", dateEn: "Jul 15, 2025", dateAr: "١٥ يوليو ٢٠٢٥", descEn: "Annual design tool license", descAr: "ترخيص سنوي لأداة التصميم" },
   { id: "exp-007", vendorEn: "Office Supplies", vendorAr: "لوازم مكتبية", category: "operations", amount: 3200, currency: "EGP", status: "paid", dateEn: "Jul 20, 2025", dateAr: "٢٠ يوليو ٢٠٢٥", descEn: "Stationery and printer supplies", descAr: "قرطاسية ومستلزمات طابعة" },
-  { id: "exp-008", vendorEn: "Trade Show Booth — Riyadh", vendorAr: "جناح معرض — الرياض", category: "marketing", amount: 45000, currency: "EGP", status: "approved", dateEn: "Aug 5, 2025", dateAr: "٥ أغسطس ٢٠٢٥", descEn: "Annual furniture expo participation", descAr: "مشاركة في معرض الأثاث السنوي" },
+  { id: "exp-008", vendorEn: "Kids Fashion Fair booth — Cairo", vendorAr: "جناح معرض أزياء الأطفال — القاهرة", category: "marketing", amount: 45000, currency: "EGP", status: "approved", dateEn: "Aug 5, 2025", dateAr: "٥ أغسطس ٢٠٢٥", descEn: "Annual furniture expo participation", descAr: "مشاركة في معرض الأثاث السنوي" },
 ];
 
 // ─── localStorage persistence ─────────────────────────────

@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
 import { getSupabaseClient } from "../lib/supabase";
+import { updatePassword } from "../lib/auth";
 import {
   Settings, Building2, Globe, Users, Boxes, Factory, Truck,
   ShoppingCart, BarChart3, DollarSign, Shield, Save, Loader2,
@@ -101,11 +102,11 @@ export default function AdminSettings() {
   const [toast, setToast] = useState<string | null>(null);
 
   // Profile state
-  const [fullName, setFullName] = useState(user?.user_metadata?.full_name || "Admin User");
+  const [fullName, setFullName] = useState(user?.user_metadata?.full_name || "");
   const [email, setEmail] = useState(user?.email || "admin@bumblebee.app");
-  const [phone, setPhone] = useState(user?.user_metadata?.phone || "+20 100 000 0001");
+  const [phone, setPhone] = useState(user?.user_metadata?.phone || "");
   const [bio, setBio] = useState(user?.user_metadata?.bio || "");
-  const [jobTitle, setJobTitle] = useState(user?.user_metadata?.job_title || "Founder & CEO");
+  const [jobTitle, setJobTitle] = useState(user?.user_metadata?.job_title || "");
   const [department, setDepartment] = useState(user?.user_metadata?.department || "management");
   const [avatarUrl, setAvatarUrl] = useState(user?.user_metadata?.avatar_url || "");
   const [timezone, setTimezone] = useState(user?.user_metadata?.timezone || "Africa/Cairo");
@@ -165,7 +166,14 @@ export default function AdminSettings() {
 
   async function handleSaveProfile() {
     setSaving(true);
-    await new Promise(r => setTimeout(r, 800));
+    const sb = getSupabaseClient();
+    if (sb) {
+      const { error } = await sb.auth.updateUser({ data: {
+        full_name: fullName.trim(), phone: phone.trim(), bio, job_title: jobTitle.trim(), department,
+        avatar_url: avatarUrl, timezone, date_format: dateFormat, time_format: timeFormat,
+      } });
+      if (error) { setSaving(false); showToast(error.message); return; }
+    }
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -201,12 +209,23 @@ export default function AdminSettings() {
 
   async function handleChangePassword() {
     if (!newPassword) return;
+    if (newPassword.length < 8) { showToast(ar ? "كلمة المرور 8 أحرف على الأقل" : "Password must be at least 8 characters"); return; }
     setSaving(true);
-    await new Promise(r => setTimeout(r, 1000));
-    setSaving(false);
-    setCurrentPassword("");
-    setNewPassword("");
-    showToast(ar ? "تم تغيير كلمة المرور ✓" : "Password changed ✓");
+    try {
+      const sb = getSupabaseClient();
+      if (sb && user?.email) {
+        // Confirm the current password first — updateUser alone would not.
+        const { error: checkError } = await sb.auth.signInWithPassword({ email: user.email, password: currentPassword });
+        if (checkError) { showToast(ar ? "كلمة المرور الحالية غير صحيحة" : "Current password is wrong"); return; }
+      }
+      const { error } = await updatePassword(newPassword);
+      if (error) { showToast(error.message); return; }
+      setCurrentPassword("");
+      setNewPassword("");
+      showToast(ar ? "تم تغيير كلمة المرور ✓" : "Password changed ✓");
+    } finally {
+      setSaving(false);
+    }
   }
 
   function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {

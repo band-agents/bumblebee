@@ -187,6 +187,7 @@ function convertInvoices(): Tables["invoices"]["Row"][] {
     currency: i.currency || "EGP",
     status: i.status,
     paid_amount: i.paidAmount || 0,
+    amount_paid: i.paidAmount || 0,
     issue_date: i.issueDateEn || null,
     due_date: i.dueDateISO || null,
     tags: [],

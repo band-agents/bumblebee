@@ -16,7 +16,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowRight, Factory, Shirt, Boxes, ShoppingBag, Landmark, Users, ShieldCheck,
-  KeyRound, Globe, Check, Layers, Scissors, Wrench, Paintbrush, ClipboardCheck, Package, Truck, Play,
+  KeyRound, Globe, Check, Layers, Scissors, Wrench, Paintbrush, ClipboardCheck, Package, Truck, Play, BookOpen,
 } from "lucide-react";
 import { Logo } from "../components/Logo";
 import { CoBrand } from "./AuthPage";
@@ -106,10 +106,16 @@ export default function Landing() {
             <a href="#modules" className="hover:text-foreground transition-colors">Modules</a>
             <a href="#production" className="hover:text-foreground transition-colors">Production</a>
             <a href="#access" className="hover:text-foreground transition-colors">Team access</a>
+            <Link href="/docs" className="hover:text-foreground transition-colors">Docs</Link>
           </nav>
+          <div className="flex items-center gap-2">
+          <Link href="/docs" className="inline-flex md:hidden items-center gap-1.5 h-10 px-3.5 rounded-xl border border-border bg-card text-body font-semibold hover:bg-brand-wash transition-colors" aria-label="Documentation">
+            <BookOpen size={15} /> Docs
+          </Link>
           <Link href="/auth" className="inline-flex items-center gap-2 h-10 px-5 rounded-xl bg-primary text-primary-foreground text-body font-semibold hover:brightness-[0.97] transition">
             Sign in <ArrowRight size={15} className="rtl:rotate-180" />
           </Link>
+          </div>
         </div>
       </header>
 
@@ -140,6 +146,9 @@ export default function Landing() {
               <a href="#modules" className="inline-flex items-center gap-2 h-12 px-6 rounded-xl border border-border bg-card text-body font-semibold hover:bg-brand-wash transition-colors">
                 <Play size={15} /> See the modules
               </a>
+              <Link href="/docs" className="inline-flex items-center gap-2 h-12 px-6 rounded-xl border border-border bg-card text-body font-semibold hover:bg-brand-wash transition-colors">
+                <BookOpen size={15} /> Documentation
+              </Link>
             </div>
             <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-caption text-muted-foreground">
               {["Logins created by your admin", "Access set per person", "English / العربية"].map((t) => (
@@ -276,6 +285,40 @@ export default function Landing() {
       </section>
 
       {/* ── Closing ─────────────────────────────────────── */}
+      {/* ── Help Center ─────────────────────────────────── */}
+      <section id="docs" className="max-w-[1200px] mx-auto px-5 pt-20 sm:pt-28">
+        <div className="rounded-3xl border border-border bg-card px-6 sm:px-10 py-10 grid lg:grid-cols-[1.1fr_1fr] gap-10 items-center">
+          <div>
+            <p className="inline-flex items-center gap-2 text-caption font-semibold uppercase tracking-[0.14em] text-muted-foreground mb-4"><BookOpen size={14} /> Help Center</p>
+            <h2 className="text-[clamp(1.8rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] max-w-[20ch]">Every screen explained. Every error answered.</h2>
+            <p className="mt-4 text-[1.05rem] text-muted-foreground max-w-[52ch]">
+              Step-by-step guides with screenshots, a troubleshooting guide built from the real error messages, and answers to the questions your team will ask — online and as a PDF.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/docs" className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-primary text-primary-foreground text-body font-semibold hover:brightness-[0.97] transition">
+                Open the documentation <ArrowRight size={16} className="rtl:rotate-180" />
+              </Link>
+              <a href="/docs/Bumblebee-Documentation.pdf" download className="inline-flex items-center gap-2 h-12 px-6 rounded-xl border border-border bg-background text-body font-semibold hover:bg-brand-wash transition-colors">
+                Download PDF
+              </a>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              ["Guides", "Sales, production, stock, invoices, printing", "/docs"],
+              ["Troubleshooting", "The message you see, why, and the fix", "/docs/troubleshooting"],
+              ["FAQ", "Short answers to common questions", "/docs/faq"],
+              ["Fixing mistakes", "Void, cancel and re-issue the right way", "/docs/fixing-mistakes"],
+            ].map(([t, d, h]) => (
+              <Link key={h} href={h} className="rounded-2xl border border-border bg-background p-4 hover:bg-brand-wash transition-colors">
+                <span className="block text-body font-semibold">{t}</span>
+                <span className="block mt-1 text-caption text-muted-foreground">{d}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="max-w-[1200px] mx-auto px-5 py-20 sm:py-28">
         <div className="rounded-3xl bg-primary text-primary-foreground px-6 sm:px-12 py-14 sm:py-16 grid md:grid-cols-[1fr_auto] gap-8 items-center">
           <div>

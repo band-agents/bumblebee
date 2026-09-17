@@ -103,6 +103,8 @@ import NoWorkspace from "./pages/NoWorkspace";
 import { RequireAccess } from "./components/RequireAccess";
 const AdminSettingsPage = lazy(() => import("./pages/AdminSettings"));
 const PrintDocumentPage = lazy(() => import("./pages/PrintDocument"));
+const DocsPage = lazy(() => import("./pages/Docs"));
+const DocsPrintPage = lazy(() => import("./pages/DocsPrint"));
 const CodeSettingsPage = lazy(() => import("./pages/CodeSettings"));
 const QuotationDesignerPage = lazy(() => import("./pages/QuotationDesigner"));
 const InventoryFabricsPage = lazy(() => import("./pages/InventoryFabrics"));
@@ -393,6 +395,10 @@ function Router() {
 
   // ── Public landing page: reachable in every mode ──────────
   if (path === "/welcome") return <Landing />;
+
+  // ── Help Center: public in every mode ─────────────────────
+  if (path === "/docs/print") return <Suspense fallback={<LoadingScreen />}><DocsPrintPage /></Suspense>;
+  if (path === "/docs" || path.startsWith("/docs/")) return <Suspense fallback={<LoadingScreen />}><DocsPage /></Suspense>;
 
   // ── Dev bypass: straight into the app ─────────────────────
   if (SKIP_AUTH) {

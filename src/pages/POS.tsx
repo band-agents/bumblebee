@@ -837,7 +837,7 @@ export default function POS() {
                 </div>
               )}
               <div className="flex justify-between text-caption">
-                <span className="text-muted-foreground">{lang === "ar" ? "الضريبة (15%)" : "VAT (15%)"}</span>
+                <span className="text-muted-foreground">{lang === "ar" ? "الضريبة (14%)" : "VAT (14%)"}</span>
                 <span className="text-foreground">{formatEGP(cartTotals.tax)}</span>
               </div>
               <div className="flex justify-between text-body-lg font-semibold pt-1.5 border-t border-border/40">

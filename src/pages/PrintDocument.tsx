@@ -216,16 +216,25 @@ async function load(kind: PrintKind, id: string, ws: string, sub: string | null)
     const m = (inv.metadata ?? {}) as Json;
     const receipts = (await ds.payments.list(ws, { invoice_id: id })).filter((p) => p.status === "completed");
     const isPartial = Boolean(m.is_partial);
+    // Totals always come from the invoice itself (what was issued), never
+    // recomputed from the order — so the paper matches the amount due.
+    const amount = num(inv.amount);
+    const tax = num(inv.tax_amount);
+    const subtotal = num(inv.subtotal) || Math.max(0, amount - tax);
+    const itemRows = isPartial ? [] : itemLines(m.items, true);
     const lines: Line[] = isPartial
-      ? [{ name: `${m.note ? str(m.note) : "Instalment"} — Sales order ${str(m.sales_order_number)}`, description: `Order total ${num(m.order_total).toLocaleString()} ${inv.currency}`, qty: 1, unitPrice: num(inv.subtotal), total: num(inv.subtotal) }]
-      : itemLines(m.items, true);
-    const totals: Totals = isPartial
-      ? { rows: [
-          { label: "Amount before VAT", labelAr: "القيمة قبل الضريبة", value: num(inv.subtotal) },
-          ...(num(inv.tax_amount) ? [{ label: `VAT ${num(inv.tax_rate)}%`, labelAr: "ضريبة القيمة المضافة", value: num(inv.tax_amount) }] : []),
-          { label: "Invoice total", labelAr: "إجمالي الفاتورة", value: num(inv.amount), strong: true },
-        ] }
-      : moneyTotals(m);
+      ? [{ name: `${m.note ? str(m.note) : "Instalment"} — Sales order ${str(m.sales_order_number)}`, description: `Order total ${num(m.order_total).toLocaleString()} ${inv.currency}`, qty: 1, unitPrice: subtotal, total: subtotal }]
+      : itemRows.length
+        ? itemRows
+        : [{ name: str(m.title) || str(m.titleEn) || str(m.note) || `Invoice ${inv.number}`, qty: 1, unitPrice: subtotal, total: subtotal }];
+    const linesSum = lines.reduce((sum, l) => sum + num(l.total), 0);
+    const discount = Math.round((linesSum - subtotal) * 100) / 100;
+    const totals: Totals = { rows: [
+      ...(discount > 0.009 ? [{ label: "Lines total", labelAr: "إجمالي البنود", value: linesSum }, { label: "Discount", labelAr: "الخصم", value: discount, negative: true }] : []),
+      { label: "Amount before VAT", labelAr: "القيمة قبل الضريبة", value: subtotal },
+      ...(tax ? [{ label: `VAT ${num(inv.tax_rate)}%`, labelAr: "ضريبة القيمة المضافة", value: tax }] : []),
+      { label: "Invoice total", labelAr: "إجمالي الفاتورة", value: amount, strong: true },
+    ] };
     totals.rows.push({ label: "Paid", labelAr: "المدفوع", value: num(inv.amount_paid) }, { label: "Balance due", labelAr: "المتبقي", value: num(inv.amount) - num(inv.amount_paid), strong: true });
     return {
       type: "invoice", number: inv.number, date: day(inv.issue_date ?? inv.created_at), status: inv.status, currency: inv.currency, showPrices: true,
